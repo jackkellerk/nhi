@@ -23,6 +23,7 @@
   <button class="btn travis">Travis Line-Integral Analysis</button>
   <button class="btn eddie">Eddie Low Magnification Image</button>
   <button class="btn desai">Desai Multispectrum Analysis</button>
+  <butoon class="btn desai2">Desai Multispectrum Graph</button>
 
   <style>
     .btn {
@@ -45,6 +46,7 @@
     .travis {top: 170px;}
     .eddie {top: 230px;}
     .desai {top: 290px;}
+    .desai2 {top: 350px;}
   </style>
 
   <script type="text/javascript">

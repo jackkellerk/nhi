@@ -1,62 +1,19 @@
-
-
-
-
-
-
-
-
-
-
-        // Instantiate PIXI JS (from example)
-        let type = "WebGL";
-        if(!PIXI.utils.isWebGLSupported())
+        function startMultiblock()
         {
-            type = "canvas";
-        }
-        PIXI.utils.sayHello(type);
+             // Grab Background Image
+            var texture = PIXI.Texture.fromImage('Images/sinteredMetal.png', true);
+            texture.baseTexture.scaleMode = PIXI.SCALE_MODES.NEAREST;
 
-        let app = new PIXI.Application({ 
-			width: window.innerWidth,
-			height: window.innerHeight,
-			antialias: true,
-			transparent: false,
-			autoResize: true,
-            resolution: devicePixelRatio 
-        });
+            // Instantiate the PIXI JS Graphics Library
+            var graphics = new PIXI.Graphics();
 
-        document.body.appendChild(app.view);
-        window.addEventListener('resize', resize);
-
-        function resize()
-        {
-            const parent = app.view.parentNode;
-            app.renderer.resize(parent.clientWidth, parent.clientHeight);
-        }
-
-
-
-
-
-
-
-
-
-
-        // Grab Background Image
-        var texture = PIXI.Texture.fromImage('sinteredMetal.png', true);
-        texture.baseTexture.scaleMode = PIXI.SCALE_MODES.NEAREST;
-
-        // Instantiate the PIXI JS Graphics Library
-        var graphics = new PIXI.Graphics();
-
-        // Create draggable image
-        var dragImage = new PIXI.Sprite(texture);
-        dragImage.interactive = true;
-        dragImage.buttonMode = true;
-        dragImage.anchor.set(0, 0);
-        dragImage.scale.set(3); // 3 times actual size
-        dragImage
+            // Create draggable image
+            var dragImage = new PIXI.Sprite(texture);
+            dragImage.interactive = true;
+            dragImage.buttonMode = true;
+            dragImage.anchor.set(0, 0);
+            dragImage.scale.set(3); // 3 times actual size
+            /* dragImage
 				.on('pointerdown', onDragStart)
                 .on('pointerdown', getMousePositionBefore)
                 .on('pointerdown', highlightStart)
@@ -71,10 +28,10 @@
                 .on('pointermove', rotateImage)
                 .on('pointermove', onDragMove)
                 .on('pointermove', highlight)
-				.on('pointermove', updateMousePosition);
-        dragImage.x = 0;
-        dragImage.y = 0;
-        app.stage.addChild(dragImage);
+				.on('pointermove', updateMousePosition); */
+            dragImage.x = 0;
+            dragImage.y = 0;
+            app.stage.addChild(dragImage);
 
 
 
@@ -145,7 +102,7 @@
         var iconContainer = new PIXI.Container();
 
         // Create the rotateImage
-		var rotateImage = new PIXI.Sprite.fromImage('rotateImage.png', true);
+		var rotateImage = new PIXI.Sprite.fromImage('Images/rotateImage.png', true);
 		rotateImage.height = 30;
 		rotateImage.width = 30;
 		rotateImage.x = 100;
@@ -153,7 +110,7 @@
         rotateImage.alpha = 0.7;
         iconContainer.addChild(rotateImage);
 		// Create the pen icon
-		var penImage = new PIXI.Sprite.fromImage('penImage.png', true);
+		var penImage = new PIXI.Sprite.fromImage('Images/penImage.png', true);
 		penImage.height = 50;
 		penImage.width = 50;
 		penImage.x = 220;
@@ -161,7 +118,7 @@
         penImage.alpha = 0.7;
         iconContainer.addChild(penImage);
 		// Create the questionMark image
-		var questionMark = new PIXI.Sprite.fromImage('questionMark.png', true);
+		var questionMark = new PIXI.Sprite.fromImage('Images/questionMark.png', true);
 		questionMark.height = 30;
 		questionMark.width = 30;
 		questionMark.x = app.screen.width - 65;
@@ -169,7 +126,7 @@
         questionMark.alpha = 0.7;
         iconContainer.addChild(questionMark);
 		// Create the image to drag
-		var dragCursor = new PIXI.Sprite.fromImage('dragCursor.png', true);
+		var dragCursor = new PIXI.Sprite.fromImage('Images/dragCursor.png', true);
 		dragCursor.height = 40;
 		dragCursor.width = 40;
 		dragCursor.x = 30;
@@ -177,7 +134,7 @@
         dragCursor.alpha = 0.7;
         iconContainer.addChild(dragCursor);
         // Create the highlight image to highlight
-        var highlightCursor = new PIXI.Sprite.fromImage('highlightImage.png', true);
+        var highlightCursor = new PIXI.Sprite.fromImage('Images/highlightImage.png', true);
 		highlightCursor.height = 40;
 		highlightCursor.width = 40;
 		highlightCursor.x = 165;
@@ -187,6 +144,9 @@
 
         // Add the iconContainer to the stage
         app.stage.addChild(iconContainer);
+        }
+
+        throw new Error('Halt the rest of Multi-block for now! - Jack');
 
 
 

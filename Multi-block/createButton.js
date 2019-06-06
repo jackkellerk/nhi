@@ -25,8 +25,7 @@ function RectButton(x_position, y_position, height, width, action)
     graphics.on('mouseover', onHoverOver) // When mouse hovers over the button, it calls onHoverOver() function
     .on('mouseout', onHoverOff)
     .on('pointerdown', onSelect)
-    .on('pointerdown', removeLastStroke)
-    .on('pointerdown', makeButtonAppear);
+    .on('pointerdown', nextActivity);
     graphics.alpha = 0.5;
     graphics.assignAction(action);
     buttonArray[buttonArray.length] = graphics;
@@ -63,83 +62,22 @@ function onSelect(event)
     }
 }
 
-// Adds additional functionality to existing buttons
-function makeButtonAppear()
+// Moves the current activity to the next
+function nextActivity()
 {
-    var graphics = new PIXI.Graphics();
-
-    graphics.clear();
-
-    // remove all additional buttons from the screen
-    for(var i = buttonArray.length - 1; i > 4; i--)
+    if(currentlySelectedButtonAction != 'switchActivity')
+        return;
+    
+    // Loops through array to determine which activity we are on
+    for(var i = 0; i < activityArray.length; i++)
     {
-        buttonArray[i].parent.removeChild(buttonArray[i]);
-        buttonArray.length = i;
-    }
-
-    // remove all additional icons from the screen
-    for(var i = extraIconForButtonArray.length - 1; i > -1; i--)
-    {
-        extraIconForButtonArray[i].parent.removeChild(extraIconForButtonArray[i]);
-        extraIconForButtonArray.length = i;
-    }
-
-    if(currentlySelectedButtonAction == 'annotate' || currentlySelectedButtonAction == 'annotateUndo')
-    {
-        graphics.beginFill(0xFFFFFF, 1); // Color and opacity
-        graphics.lineStyle(2, 0x414141, 1);
-        graphics.drawRect(app.screen.width - 80, app.screen.height - 80, 60, 60);
-        graphics.endFill();
-        graphics.interactive = true;
-        graphics.on('mouseover', onHoverOver) // When mouse hovers over the button, it calls onHoverOver() function
-        .on('mouseout', onHoverOff)
-        .on('pointerdown', onSelect)
-        .on('pointerdown', removeLastStroke)
-        .on('pointerdown', makeButtonAppear);
-        graphics.alpha = 0.5;
-        graphics.assignAction('annotateUndo');
-        buttonArray[buttonArray.length] = graphics;
-        app.stage.addChild(graphics);
-
-        // Add the eraser icon
-        var eraserImage = new PIXI.Sprite.fromImage('eraser.png', true);
-        var iconContainer = new PIXI.Container();
-		eraserImage.height = 50;
-		eraserImage.width = 50;
-		eraserImage.x = app.screen.width - 75;
-		eraserImage.y = app.screen.height - 75;
-        eraserImage.alpha = 0.7;
-        iconContainer.addChild(eraserImage);
-        extraIconForButtonArray[extraIconForButtonArray.length] = iconContainer;
-        app.stage.addChild(iconContainer);
-    }
-    else if(currentlySelectedButtonAction == 'highlight' || currentlySelectedButtonAction == 'boxCalculation')
-    {
-        graphics.beginFill(0xFFFFFF, 1); // Color and opacity
-        graphics.lineStyle(2, 0x414141, 1);
-        graphics.drawRect(app.screen.width - 80, app.screen.height - 80, 60, 60);
-        graphics.endFill();
-        graphics.interactive = true;
-        graphics.on('mouseover', onHoverOver) // When mouse hovers over the button, it calls onHoverOver() function
-        .on('mouseout', onHoverOff)
-        .on('pointerdown', onSelect)
-        .on('pointerdown', boxCalculation)
-        .on('pointerdown', makeButtonAppear);
-        graphics.alpha = 0.5;
-        graphics.assignAction('boxCalculation');
-        buttonArray[buttonArray.length] = graphics;
-        app.stage.addChild(graphics);
-
-        // Add the eraser icon
-        var mathImage = new PIXI.Sprite.fromImage('math.png', true);
-        var iconContainer = new PIXI.Container();
-		mathImage.height = 40;
-		mathImage.width = 40;
-		mathImage.x = app.screen.width - 70;
-		mathImage.y = app.screen.height - 70;
-        mathImage.alpha = 0.7;
-        iconContainer.addChild(mathImage);
-        extraIconForButtonArray[extraIconForButtonArray.length] = iconContainer;
-        app.stage.addChild(iconContainer);
+        // if found current activity in the array, move it to the next one
+        if(currentActivity == activityArray[i] && activityArray[i + 1] != null)
+        {
+            currentActivity = activityArray[i + 1];
+            console.log(currentActivity);
+            updateActivity();
+            return;
+        }
     }
 }

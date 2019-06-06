@@ -8,5 +8,7 @@ I guess I will list some coding standards here:
 3. Use four spaces for an indent. I'm personally using four spaces as an indent because it is default in Visual Studio Code and because I prefer it (this is not solidified, let me know if you guys want me to change this)
 
 Thanks,
+
 Jack K
+
 Cell: 201-815-7780

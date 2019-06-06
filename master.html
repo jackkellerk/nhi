@@ -1,51 +1,123 @@
+<!--Version: 1 // Please raise the number every time you make an edit-->
+<!--Last Edited By: Jack Kellerk // Change to your name after every edit-->
 <html>
-  <head>
-    <title>Unifed Code</title>
-  </head>
-  <!--Dependencies-->
+    <head>
+        <title>Unified Code</title>
+
+        <!--Dependencies-->
+        <script src="pixi.min.js"></script>
+        <script src="globalVariables.js"></script>
+        <link rel="stylesheet" href="masterStyleSheet.css">
+
+        <!--Windows Dependencies-->
   
-  <!--Windows Dependencies-->
-  <script src="Windows/main.js"></script>
+        <!--Multi-block Dependencies-->
+        <script src="Multi-block/main.js"></script>
+        <script src="Multi-block/boxInformation.js"></script>
+        <script src="Multi-block/createButton.js"></script>
+        <script src="Multi-block/createGraph.js"></script>
+        <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
   
-  <!--Multi-block Dependencies-->
-  <script src="Multi-block/main.js"></script>
-  <script src="Multi-block/boxInformation.js"></script>
-  <script src="Multi-block/createButton.js"></script>
-  <script src="Multi-block/createGraph.js"></script>
-  
-  <!--Line Integral Dependencies-->
-  <script src=""></script>
-  
-  <!--Main javascript method-->
-  <script type="text/javascript">
+        <!--Line Integral Dependencies-->
+        <script src=""></script>
+
+    </head>
+    <body>
+        <!--Main javascript method-->
+        <script>
+
+            // Instantiate PIXI JS (from example)
+            let type = "WebGL";
+            if(!PIXI.utils.isWebGLSupported())
+            {
+                type = "canvas";
+            }
+            PIXI.utils.sayHello(type);
+
+            let app = new PIXI.Application({ 
+                    width: window.innerWidth,
+                    height: window.innerHeight,
+                    antialias: true,
+                    transparent: false,
+                    autoResize: true,
+                    resolution: devicePixelRatio,
+                });
     
-    // Instantiate PIXI JS (from example)
-        let type = "WebGL";
-        if(!PIXI.utils.isWebGLSupported())
-        {
-            type = "canvas";
-        }
-        PIXI.utils.sayHello(type);
-
-        let app = new PIXI.Application({ 
-			  width: window.innerWidth,
-			  height: window.innerHeight,
-			  antialias: true,
-			  transparent: false,
-			  autoResize: true,
-            resolution: devicePixelRatio 
-        });
-
-        document.body.appendChild(app.view);
-        window.addEventListener('resize', resize);
-
-        function resize()
-        {
-            const parent = app.view.parentNode;
-            app.renderer.resize(parent.clientWidth, parent.clientHeight);
-        }
+            document.body.appendChild(app.view);
+            window.addEventListener('resize', resize);
     
-  </script>
-  <body>
-  </body>
+            function resize()
+            {
+                const parent = app.view.parentNode;
+                app.renderer.resize(parent.clientWidth, parent.clientHeight);
+            }
+
+            // Initially call updateActivity to start application
+            updateActivity();
+
+            // Initially draw the change activity button
+            changeActivityButton();
+
+            // updates the current activity (this is called from the createButton file)
+            function updateActivity()
+            {
+                // clears the stage
+                clear();
+
+                // Everyone please updates these according to your code! - Jack
+                if(currentActivity == 'Welcome')
+                {
+
+                }
+                else if(currentActivity == 'Windows')
+                {
+
+                }
+                else if(currentActivity == 'Multi-block')
+                {
+                    // this function is in main.js in Multi-block folder. This function generates the UI for my activity
+                    startMultiblock();
+                }
+                else if(currentActivity == 'Line')
+                {
+
+                }
+                else if(currentActivity == 'Zoom')
+                {
+
+                }
+                else if(currentActivity == 'Multispectrum')
+                {
+
+                }
+
+                // redraw the switch activity button when done drawing UI
+                changeActivityButton();
+            }
+
+            function changeActivityButton()
+            {
+                // This button will be to switch activites (reference is in createButton.js in the folder Multi-block)
+                var changeActivitesButton = new RectButton(app.screen.width - 80, app.screen.height / 2, 60, 60, 'switchActivity');
+
+                // This creates the icon to switch activites
+                var arrowImage = new PIXI.Sprite.fromImage('arrow.png', true);
+                arrowImage.height = 60;
+                arrowImage.width = 60;
+                arrowImage.x = app.screen.width - 80;
+                arrowImage.y = app.screen.height / 2;
+                arrowImage.alpha = 0.7;
+                app.stage.addChild(arrowImage);
+            }
+
+            function clear()
+            {
+                for(var i = app.stage.children.length - 1; i > 0; i--)
+                {
+                    app.stage.removeChild(app.stage.children[i]);
+                }
+            }
+        
+        </script>
+    </body>
 </html>

@@ -3,7 +3,17 @@ var currentlySelectedButtonAction = null;
 var buttonArray = [];
 var extraIconForButtonArray = [];
 
-/* default button with white background, grey outline, and full opacity */
+/* default button with white background, grey outline, and full opacity
+ * To use, write 'var button = new RectButton(x_position, y_position, height, width, action);'
+ * x_position, y_position, height, and width are Integers in pixels
+ * action is supposed to be a string describing the action of the button (this is custom made by you)
+ * 
+ * Now, once you create your button, add '.on('pointerdown', yourFunctionName);' to the list of .on's below.
+ * add yourFunctionName() to where ever you want and program its function
+ * When programming your functionality, make sure the first line of your function starts with 'if(currentlySelectedButtonAction != 'yourAction') return;'
+ * This makes sure that your button is pressed, and not another button is pressed
+ * If you want to see some examples, look at the functions below. If you have any other questions, ask Jack Kellerk.
+*/
 function RectButton(x_position, y_position, height, width, action)
 {
     var graphics = new PIXI.Graphics();
@@ -39,7 +49,7 @@ function onHoverOff(event)
 
 function onSelect(event)
 {
-    instructionDisable();
+    // instructionDisable(); for now because we are implementing everyone's code
     this.data = event.data;
     currentlySelectedButtonAction = this.action;
     if(currentlySelectedButtonAction == 'help')

@@ -18,6 +18,33 @@
   
   <!--Main javascript method-->
   <script type="text/javascript">
+    
+    // Instantiate PIXI JS (from example)
+        let type = "WebGL";
+        if(!PIXI.utils.isWebGLSupported())
+        {
+            type = "canvas";
+        }
+        PIXI.utils.sayHello(type);
+
+        let app = new PIXI.Application({ 
+			  width: window.innerWidth,
+			  height: window.innerHeight,
+			  antialias: true,
+			  transparent: false,
+			  autoResize: true,
+            resolution: devicePixelRatio 
+        });
+
+        document.body.appendChild(app.view);
+        window.addEventListener('resize', resize);
+
+        function resize()
+        {
+            const parent = app.view.parentNode;
+            app.renderer.resize(parent.clientWidth, parent.clientHeight);
+        }
+    
   </script>
   <body>
   </body>

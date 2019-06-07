@@ -11,7 +11,6 @@ class Spectrum{
     static optionContainer = new PIXI.Container();
     static metalsprite;
     static dropdownBtn;
-    static optionBtns;
 // let colors = ['white', 'black', 'yellow', 'red', 'green', 'orange', 'blue', 'grey', 'purple'];
 
     static pixiSetup() {
@@ -58,17 +57,17 @@ class Spectrum{
         Spectrum.dropdownBtn.buttonMode = true;
         Spectrum.dropdownContainer.addChild(Spectrum.dropdownBtn);
 
-        Spectrum.optionBtns = [];
+        let optionBtns = [];
         let options = ["red", "green", "blue", "original"];
         let texts = [];
         for (let i = 0; i < 4; i++) {
-            Spectrum.optionBtns.push(Spectrum.createButton(85 + i*65, app.screen.height-80, 60, 60,
+            optionBtns.push(Spectrum.createButton(85 + i*65, app.screen.height-80, 60, 60,
                 function(){Spectrum.onClickColorOptions(options[i])}));
-            Spectrum.optionBtns[i].buttonMode = true;
+            optionBtns[i].buttonMode = true;
             texts.push(new PIXI.Text(options[i]));
             texts[i].style = {align: "center"};
-            Spectrum.optionBtns[i].addChild(texts[i]);
-            Spectrum.optionContainer.addChild(Spectrum.optionBtns[i]);
+            optionBtns[i].addChild(texts[i]);
+            Spectrum.optionContainer.addChild(optionBtns[i]);
         }
         Spectrum.optionContainer.visible = false;
         Spectrum.dropdownContainer.addChild(Spectrum.optionContainer);
@@ -79,10 +78,11 @@ class Spectrum{
 // actions: [pointerdown, pointerup, mouseover, mouseout]
     static createButton(x, y, height, width, clickAction)
     {
+        let container = new PIXI.Container();
         let graphics = new PIXI.Graphics();
         graphics.beginFill(0xFFFFFF, 1);
         graphics.lineStyle(2, 0x414141, 1);
-        graphics.drawRect(x, y, width, height);
+        graphics.drawRect(0, 0, width, height);
         graphics.endFill();
         graphics.interactive = true;
         graphics.on('mouseover', function(){ this.alpha = 1; })
@@ -91,7 +91,10 @@ class Spectrum{
             graphics.on('pointerdown', clickAction)
         }
         graphics.alpha = 0.5;
-        return graphics;
+        container.addChild(graphics);
+        container.x = x;
+        container.y = y;
+        return container;
     }
 
     static startSpectrum() {

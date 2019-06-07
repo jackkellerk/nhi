@@ -6,7 +6,7 @@ I guess I will list some coding standards here:
 1. Place all images in the 'Images' folder
 2. Please make a folder for your project when importing your files (such as Multi-block or Windows)
 3. Use four spaces for an indent. I'm personally using four spaces as an indent because it is default in Visual Studio Code and because I prefer it (this is not solidified, let me know if you guys want me to change this)
-4. In the future when you're writing the functionality of your code, make sure to add a unique identifer at the beginning of it. We don't want variable names to overlap as every variable not in a function is global in javascript. (i.e. var LI_graphics = new PIXI.Graphics(); in Travis' code)
+4. In the future when you're writing the functionality of your code, make sure to add a unique identifer at the beginning of of your variable names. We don't want variable names to overlap as every variable not in a function is global in javascript -- if not done this way, debugging will probably be a mess in the future. (i.e. var LI_graphics = new PIXI.Graphics(); in Travis' code)
 
 Thanks,
 

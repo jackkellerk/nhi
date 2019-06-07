@@ -4,19 +4,21 @@ todo:
     draw box and tint only inside the box
  */
 
-let dropdownContainer = new PIXI.Container();
-let optionContainer = new PIXI.Container();
-let metalsprite, dropdownBtn, optionBtns;
 
 class Spectrum{
 //globals
+    static dropdownContainer = new PIXI.Container();
+    static optionContainer = new PIXI.Container();
+    static metalsprite;
+    static dropdownBtn;
+    static optionBtns;
 // let colors = ['white', 'black', 'yellow', 'red', 'green', 'orange', 'blue', 'grey', 'purple'];
 
     static pixiSetup() {
-        metalsprite = new PIXI.Sprite.from('Images/sinteredMetal.png');
-        metalsprite.anchor.set(0.5);
-        metalsprite.scale.set(2);
-        app.stage.addChild(metalsprite);
+        Spectrum.metalsprite = new PIXI.Sprite.from('Images/sinteredMetal.png');
+        Spectrum.metalsprite.anchor.set(0.5);
+        Spectrum.metalsprite.scale.set(2);
+        app.stage.addChild(Spectrum.metalsprite);
     }
 
 
@@ -29,49 +31,49 @@ class Spectrum{
     }
 
     static onClickDropdownBtn(){
-        optionContainer.visible = !optionContainer.visible;
+        Spectrum.optionContainer.visible = !Spectrum.optionContainer.visible;
     }
 
     static onClickColorOptions(color){
         switch(color) {
             case "red":
-                metalsprite.tint = Spectrum.getHexColor("red");
+                Spectrum.metalsprite.tint = Spectrum.getHexColor("red");
                 break;
             case "green":
-                metalsprite.tint = Spectrum.getHexColor("green");
+                Spectrum.metalsprite.tint = Spectrum.getHexColor("green");
                 break;
             case "blue":
-                metalsprite.tint = Spectrum.getHexColor("blue");
+                Spectrum.metalsprite.tint = Spectrum.getHexColor("blue");
                 break;
             case "original":
-                metalsprite.tint = 0xFFFFFF;
+                Spectrum.metalsprite.tint = 0xFFFFFF;
                 break;
             default: void(0);
         }
     }
 
     static createColorPickDropdown(){
-        dropdownBtn = Spectrum.createButton(20,app.screen.height-80, 60, 60,
+        Spectrum.dropdownBtn = Spectrum.createButton(20,app.screen.height-80, 60, 60,
             Spectrum.onClickDropdownBtn);
-        dropdownBtn.buttonMode = true;
-        dropdownContainer.addChild(dropdownBtn);
+        Spectrum.dropdownBtn.buttonMode = true;
+        Spectrum.dropdownContainer.addChild(Spectrum.dropdownBtn);
 
-        optionBtns = [];
+        Spectrum.optionBtns = [];
         let options = ["red", "green", "blue", "original"];
         let texts = [];
         for (let i = 0; i < 4; i++) {
-            optionBtns.push(Spectrum.createButton(85 + i*65, app.screen.height-80, 60, 60,
+            Spectrum.optionBtns.push(Spectrum.createButton(85 + i*65, app.screen.height-80, 60, 60,
                 function(){Spectrum.onClickColorOptions(options[i])}));
-            optionBtns[i].buttonMode = true;
+            Spectrum.optionBtns[i].buttonMode = true;
             texts.push(new PIXI.Text(options[i]));
             texts[i].style = {align: "center"};
-            optionBtns[i].addChild(texts[i]);
-            optionContainer.addChild(optionBtns[i]);
+            Spectrum.optionBtns[i].addChild(texts[i]);
+            Spectrum.optionContainer.addChild(Spectrum.optionBtns[i]);
         }
-        optionContainer.visible = false;
-        dropdownContainer.addChild(optionContainer);
+        Spectrum.optionContainer.visible = false;
+        Spectrum.dropdownContainer.addChild(Spectrum.optionContainer);
 
-        app.stage.addChild(dropdownContainer);
+        app.stage.addChild(Spectrum.dropdownContainer);
     }
 
 // actions: [pointerdown, pointerup, mouseover, mouseout]
@@ -83,8 +85,8 @@ class Spectrum{
         graphics.drawRect(x, y, width, height);
         graphics.endFill();
         graphics.interactive = true;
-        graphics.on('mouseover', function(){ this.alpha = 0.5; })
-            .on('mouseout', function(){ this.alpha = 1; });
+        graphics.on('mouseover', function(){ this.alpha = 1; })
+            .on('mouseout', function(){ this.alpha = 0.5; });
         if(clickAction){
             graphics.on('pointerdown', clickAction)
         }

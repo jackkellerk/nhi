@@ -60,7 +60,7 @@ function createGraph(graphContainer, line, boundary_tlx, boundary_tly) {
             .lineTo(currentX, horizontalDashY + 5);
         graphContainer.addChild(indexLine);
 
-        const hText = new PIXI.Text(horizontalText[i], graphText);  //Adds text underneath it
+        const hText = new PIXI.Text(horizontalText[i], LI_graphText);  //Adds text underneath it
         hText.x = currentX - hText.width / 2;
         hText.y = horizontalDashY + 10;
         graphContainer.addChild(hText);
@@ -93,7 +93,7 @@ function createGraph(graphContainer, line, boundary_tlx, boundary_tly) {
     }
 
     for (var i = 0; i <= verticalRows; i++) {
-        const vText = new PIXI.Text(verticalText[i], graphText);
+        const vText = new PIXI.Text(verticalText[i], LI_graphText);
         vText.x = verticalDashX - 20;
         var vIndexLine = new PIXI.Graphics();
         vIndexLine.lineStyle(1, 0x000000)       //Vertical entry index

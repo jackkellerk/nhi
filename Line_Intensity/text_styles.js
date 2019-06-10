@@ -1,4 +1,4 @@
-const style = new PIXI.TextStyle({
+const LI_style = new PIXI.TextStyle({
     fontFamily: 'Arial',
     fontSize: 36,
     fontStyle: 'italic',
@@ -17,7 +17,7 @@ const style = new PIXI.TextStyle({
 });
 
 //Text style for words appearing on graph
-const graphText = new PIXI.TextStyle({
+const LI_graphText = new PIXI.TextStyle({
     fontFamily: 'Arial',
     fontSize: 7,
     align: 'center',

@@ -10,6 +10,13 @@
         <link rel="stylesheet" href="masterStyleSheet.css">
 
         <!--Windows Dependencies-->
+        <script src="Windows/main.js"></script>
+        
+        <!--Spectrum Imaging Dependencies-->
+        <script src="Spectrum_Imaging/spectrum.js"></script>
+        
+        <!--Tilting Dependencies-->
+        <script src="Tilting/tilting.js"></script>
   
         <!--Multi-block Dependencies-->
         <script src="Multi-block/main.js"></script>
@@ -27,11 +34,6 @@
         <script src="Line_Intensity/point.js"></script>
         <script src="Line_Intensity/text_styles.js"></script> src=""></script>
         
-        <!--Spectrum Imaging Dependencies-->
-        <script src="Spectrum_Imaging/spectrum.js"></script>
-        
-        <!--Tilting Dependencies-->
-        <script src="Tilting/tilting.js"></script>
 
     </head>
     <body>
@@ -86,15 +88,6 @@
                     // function in main.js in Windows folder
                     startWindows();
                 }
-                else if(currentActivity == 'Multi-block')
-                {
-                    // this function is in main.js in Multi-block folder. This function generates the UI for my activity
-                    startMultiblock();
-                }
-                else if(currentActivity == 'Line')
-                {
-                    LI_showAll();
-                }
                 else if(currentActivity == 'Zoom')
                 {
 
@@ -106,6 +99,15 @@
                 else if(currentActivity == 'Tilting')
                 {
                     Tilting.startTilting();
+                }
+                else if(currentActivity == 'Multi-block')
+                {
+                    // this function is in main.js in Multi-block folder. This function generates the UI for my activity
+                    startMultiblock();
+                }
+                else if(currentActivity == 'Line')
+                {
+                    LI_showAll();
                 }
 
                 // redraw the switch activity button when done drawing UI

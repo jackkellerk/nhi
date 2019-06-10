@@ -23,6 +23,9 @@
         
         <!--Spectrum Imaging Dependencies-->
         <script src="Spectrum_Imaging/spectrum.js"></script>
+        
+        <!--Tilting Dependencies-->
+        <script src="Tilting/tilting.js"></script>
 
     </head>
     <body>
@@ -92,6 +95,10 @@
                 else if(currentActivity == 'Multispectrum')
                 {
                     Spectrum.startSpectrum();
+                }
+                else if(currentActivity == 'Tilting')
+                {
+                    Tilting.startTilting();
                 }
 
                 // redraw the switch activity button when done drawing UI

@@ -6,6 +6,7 @@ var activityArray = ['Welcome', 'Windows', 'Zoom', 'Multispectrum', 'Line', 'Til
 
 // Instantiate the PIXI JS Graphics Library (this is for the UI stuff)
 var graphics = new PIXI.Graphics();
+var additionalButtons = new PIXI.Graphics();
 var dragImage = null;
 
 // These are the variables for the highlight function in Multi-block

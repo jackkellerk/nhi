@@ -48,7 +48,10 @@ function onHoverOff(event)
 
 function onSelect(event)
 {
-    // instructionDisable(); for now because we are implementing everyone's code
+    if(currentActivity == 'Multi-block')
+    {
+        instructionDisable();
+    }
     this.data = event.data;
     currentlySelectedButtonAction = this.action;
     if(currentlySelectedButtonAction == 'help')
@@ -75,7 +78,6 @@ function nextActivity()
         if(currentActivity == activityArray[i] && activityArray[i + 1] != null)
         {
             currentActivity = activityArray[i + 1];
-            console.log(currentActivity);
             updateActivity();
             return;
         }

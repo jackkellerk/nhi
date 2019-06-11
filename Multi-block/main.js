@@ -4,31 +4,28 @@
             var texture = PIXI.Texture.fromImage('Images/sinteredMetal.png', true);
             texture.baseTexture.scaleMode = PIXI.SCALE_MODES.NEAREST;
 
-            // Instantiate the PIXI JS Graphics Library
-            var graphics = new PIXI.Graphics();
-
             // Create draggable image
-            var dragImage = new PIXI.Sprite(texture);
+            dragImage = new PIXI.Sprite(texture);
             dragImage.interactive = true;
             dragImage.buttonMode = true;
             dragImage.anchor.set(0, 0);
             dragImage.scale.set(3); // 3 times actual size
-            /* dragImage
-				.on('pointerdown', onDragStart)
+            dragImage
+				.on('pointerdown', MB_onDragStart)
                 .on('pointerdown', getMousePositionBefore)
                 .on('pointerdown', highlightStart)
                 .on('pointerdown', rotateImageStart)
                 .on('pointerup', highlightFinish)
-				.on('pointerup', onDragEnd)
+				.on('pointerup', MB_onDragEnd)
                 .on('pointerup', getMousePositionAfter)
                 .on('pointerup', drawFinish)
                 .on('pointerup', rotateImageFinish)
-                .on('pointerupoutside', onDragEnd)
+                .on('pointerupoutside', MB_onDragEnd)
                 .on('pointermove', draw)
-                .on('pointermove', rotateImage)
-                .on('pointermove', onDragMove)
+                .on('pointermove', MB_rotateImage)
+                .on('pointermove', MB_onDragMove)
                 .on('pointermove', highlight)
-				.on('pointermove', updateMousePosition); */
+				.on('pointermove', updateMousePosition);
             dragImage.x = 0;
             dragImage.y = 0;
             app.stage.addChild(dragImage);
@@ -41,43 +38,40 @@
 
 
 
-        // This creates the welcome GUI (should probably be updated later)
-        var instructionGraphics = new PIXI.Graphics();
-        var instructionContainer = new PIXI.Container();
-        var style = { font: '36px Verdana', fill: '#FFF', stroke: '#000', strokeThickness : 3, wordWrap : true, wordWrapWidth : 780 }
-        var styleGotIt = { font: '50px Verdana', fill: '#8BBBFF', stroke: '#4090FF', strokeThickness: 2 }
+            // This creates the welcome GUI (should probably be updated later)
+            var instructionGraphics = new PIXI.Graphics();
+            var style = { font: '36px Verdana', fill: '#FFF', stroke: '#000', strokeThickness : 3, wordWrap : true, wordWrapWidth : 780 }
+            var styleGotIt = { font: '50px Verdana', fill: '#8BBBFF', stroke: '#4090FF', strokeThickness: 2 }
 
-        // Creates the big red circle
-        instructionGraphics.beginFill(0xFF5B5B, 0.9);
-        instructionGraphics.drawEllipse(25, app.screen.height - 70, app.screen.width * 3 / 4, app.screen.height * 3/ 4);
-        instructionGraphics.endFill();
-        instructionContainer.addChild(instructionGraphics);
+            // Creates the big red circle
+            instructionGraphics.beginFill(0xFF5B5B, 0.9);
+            instructionGraphics.drawEllipse(25, app.screen.height - 70, app.screen.width * 3 / 4, app.screen.height * 3/ 4);
+            instructionGraphics.endFill();
+            instructionContainer.addChild(instructionGraphics);
 
-        // Creates the welcome text
-        var textSample = new PIXI.Text('Welcome!', style);
-        textSample.position.x = 25;
-        textSample.position.y = app.screen.height * 1 / 4;
-        instructionContainer.addChild(textSample);
+            // Creates the welcome text
+            var textSample = new PIXI.Text('Welcome!', style);
+            textSample.position.x = 25;
+            textSample.position.y = app.screen.height * 1 / 4;
+            instructionContainer.addChild(textSample);
         
-        // Creates the instruction text
-        var textOtherSample = new PIXI.Text('Click the \n - move arrow button to drag the image across the screen \n - the rotate button to rotate the image \n - the highlight button to perform calculations \n - the help button for assistance \n - the draw button to annotate', style);
-		textOtherSample.position.x = 25;
-        textOtherSample.position.y = app.screen.height * 1 / 2;
-        instructionContainer.addChild(textOtherSample);
+            // Creates the instruction text
+            var textOtherSample = new PIXI.Text('Click the \n - move arrow button to drag the image across the screen \n - the rotate button to rotate the image \n - the highlight button to perform calculations \n - the help button for assistance \n - the draw button to annotate', style);
+		    textOtherSample.position.x = 25;
+            textOtherSample.position.y = app.screen.height * 1 / 2;
+            instructionContainer.addChild(textOtherSample);
         
-        // Creates the 'got it' text
-        var textGotIt = new PIXI.Text('Ok', styleGotIt);
-		textGotIt.position.x = app.screen.width * 7 / 11;
-		textGotIt.position.y = app.screen.height * 9 / 10;
-		textGotIt.interactive = true;
-		textGotIt.buttonMode = true;
-        textGotIt.on('pointerdown', instructionDisable);
-        instructionContainer.addChild(textGotIt);
+            // Creates the 'got it' text
+            var textGotIt = new PIXI.Text('Ok', styleGotIt);
+		    textGotIt.position.x = app.screen.width * 7 / 11;
+		    textGotIt.position.y = app.screen.height * 9 / 10;
+		    textGotIt.interactive = true;
+		    textGotIt.buttonMode = true;
+            textGotIt.on('pointerdown', instructionDisable);
+            instructionContainer.addChild(textGotIt);
 
-        // Add the container to the stage
-        app.stage.addChild(instructionContainer);
-
-
+            // Add the container to the stage
+            app.stage.addChild(instructionContainer);
 
 
 
@@ -85,68 +79,69 @@
 
 
 
-        // Create the button functionality GUI
 
-        // Create the button to drag
-		var dragButton = new RectButton( 20, app.screen.height - 80, 60, 60, 'drag');
-        // Create the button to rotate
-        var rotateButton = new RectButton( 85, app.screen.height - 80, 60, 60, 'rotate');
-        // Create the button to highlight
-        var highlightButton = new RectButton( 150, app.screen.height - 80, 60, 60, 'highlight');
-        // Create the help button for assistance
-        var helpButton = new RectButton( app.screen.width - 80, 20, 60, 60, 'help');
-        // Create the annotation button to draw
-        var annotateButton = new RectButton( 215, app.screen.height - 80, 60, 60, 'annotate');
 
-        // This creates the icons for each button
-        var iconContainer = new PIXI.Container();
+            // Create the button functionality GUI
 
-        // Create the rotateImage
-		var rotateImage = new PIXI.Sprite.fromImage('Images/rotateImage.png', true);
-		rotateImage.height = 30;
-		rotateImage.width = 30;
-		rotateImage.x = 100;
-		rotateImage.y = app.screen.height - 65;
-        rotateImage.alpha = 0.7;
-        iconContainer.addChild(rotateImage);
-		// Create the pen icon
-		var penImage = new PIXI.Sprite.fromImage('Images/penImage.png', true);
-		penImage.height = 50;
-		penImage.width = 50;
-		penImage.x = 220;
-		penImage.y = app.screen.height - 75;
-        penImage.alpha = 0.7;
-        iconContainer.addChild(penImage);
-		// Create the questionMark image
-		var questionMark = new PIXI.Sprite.fromImage('Images/questionMark.png', true);
-		questionMark.height = 30;
-		questionMark.width = 30;
-		questionMark.x = app.screen.width - 65;
-		questionMark.y = 33;
-        questionMark.alpha = 0.7;
-        iconContainer.addChild(questionMark);
-		// Create the image to drag
-		var dragCursor = new PIXI.Sprite.fromImage('Images/dragCursor.png', true);
-		dragCursor.height = 40;
-		dragCursor.width = 40;
-		dragCursor.x = 30;
-		dragCursor.y = app.screen.height - 70;
-        dragCursor.alpha = 0.7;
-        iconContainer.addChild(dragCursor);
-        // Create the highlight image to highlight
-        var highlightCursor = new PIXI.Sprite.fromImage('Images/highlightImage.png', true);
-		highlightCursor.height = 40;
-		highlightCursor.width = 40;
-		highlightCursor.x = 165;
-		highlightCursor.y = app.screen.height - 70;
-        highlightCursor.alpha = 1;
-        iconContainer.addChild(highlightCursor);
+            // Create the button to drag
+		    var dragButton = new RectButton( 20, app.screen.height - 80, 60, 60, 'drag');
+            // Create the button to rotate
+            var rotateButton = new RectButton( 85, app.screen.height - 80, 60, 60, 'rotate');
+            // Create the button to highlight
+            var highlightButton = new RectButton( 150, app.screen.height - 80, 60, 60, 'highlight');
+            // Create the help button for assistance
+            var helpButton = new RectButton( app.screen.width - 80, 20, 60, 60, 'help');
+            // Create the annotation button to draw
+            var annotateButton = new RectButton( 215, app.screen.height - 80, 60, 60, 'annotate');
 
-        // Add the iconContainer to the stage
-        app.stage.addChild(iconContainer);
+            // This creates the icons for each button
+            var iconContainer = new PIXI.Container();
+
+            // Create the rotateImage
+		    var rotateImage = new PIXI.Sprite.fromImage('Images/rotateImage.png', true);
+		    rotateImage.height = 30;
+		    rotateImage.width = 30;
+		    rotateImage.x = 100;
+		    rotateImage.y = app.screen.height - 65;
+            rotateImage.alpha = 0.7;
+            iconContainer.addChild(rotateImage);
+		    // Create the pen icon
+		    var penImage = new PIXI.Sprite.fromImage('Images/penImage.png', true);
+		    penImage.height = 50;
+		    penImage.width = 50;
+		    penImage.x = 220;
+		    penImage.y = app.screen.height - 75;
+            penImage.alpha = 0.7;
+            iconContainer.addChild(penImage);
+		    // Create the questionMark image
+		    var questionMark = new PIXI.Sprite.fromImage('Images/questionMark.png', true);
+		    questionMark.height = 30;
+		    questionMark.width = 30;
+		    questionMark.x = app.screen.width - 65;
+		    questionMark.y = 33;
+            questionMark.alpha = 0.7;
+            iconContainer.addChild(questionMark);
+		    // Create the image to drag
+		    var dragCursor = new PIXI.Sprite.fromImage('Images/dragCursor.png', true);
+		    dragCursor.height = 40;
+		    dragCursor.width = 40;
+		    dragCursor.x = 30;
+		    dragCursor.y = app.screen.height - 70;
+            dragCursor.alpha = 0.7;
+            iconContainer.addChild(dragCursor);
+            // Create the highlight image to highlight
+            var highlightCursor = new PIXI.Sprite.fromImage('Images/highlightImage.png', true);
+		    highlightCursor.height = 40;
+		    highlightCursor.width = 40;
+		    highlightCursor.x = 165;
+		    highlightCursor.y = app.screen.height - 70;
+            highlightCursor.alpha = 1;
+            iconContainer.addChild(highlightCursor);
+
+            // Add the iconContainer to the stage
+            app.stage.addChild(iconContainer);
         }
 
-        throw new Error('Halt the rest of Multi-block for now! - Jack');
 
 
 
@@ -154,19 +149,6 @@
 
 
 
-
-
-        // This creates the highlight functionality (this creates the rectangles)
-        var initialXMousePosition;
-        var initialYMousePosition;
-        var boxArray = [];
-        var comparisonBoxArray = [];
-        var informationBoxArray = [];
-        var intensity = []; // holds values for pixel intensity
-        var mouseData = app.renderer.plugins.interaction.mouse.global; // Change to pointer later
-        var offset = 50; // 50 pixels between comparison boxes
-        var width;
-        var height;
 
         // Start function to create rectangles
         function highlightStart(event)
@@ -311,8 +293,6 @@
 
 
         // Create the annotating button functionality (drawing functionality)
-        var strokeArray = [];
-        var drawingArray = [];
 
         function draw()
         {
@@ -365,7 +345,7 @@
 
 
         // These are the dragging functions (from example but I edited them)
-        function onDragStart(event)
+        function MB_onDragStart(event)
         {
             // Ensure that the last box is erased from highlight
             graphics.clear();
@@ -402,7 +382,7 @@
             }
         }
 
-        function onDragMove(event)
+        function MB_onDragMove(event)
         {
             // If the drag button is not selected, return; (this variable is in createButton.js)
             if(currentlySelectedButtonAction != 'drag')
@@ -446,7 +426,7 @@
             }
         }
 
-        function onDragEnd(event)
+        function MB_onDragEnd(event)
         {
             // If the drag button is not selected, return; (this variable is in createButton.js)
             if(currentlySelectedButtonAction != 'drag')
@@ -465,7 +445,6 @@
 
 
         // rotate the image starting function
-        var clockwiseRotation = null;
         function rotateImageStart(event)
         {
             if(currentlySelectedButtonAction != 'rotate')
@@ -500,7 +479,7 @@
         }
 
         // move function of rotateImage
-        function rotateImage(event)
+        function MB_rotateImage(event)
         {
             if((currentlySelectedButtonAction != 'rotate') || !down || (clockwiseRotation == null))
                 return;

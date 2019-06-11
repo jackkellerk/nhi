@@ -267,12 +267,11 @@
                     var rgba = context.getImageData((j + informationBoxArray[0].x_position) / 3, (i + informationBoxArray[0].y_position) / 3, 1, 1).data;
                     var temp = ((0.2126 * rgba[0]) + (0.7152 * rgba[1]) + (0.0722 * rgba[2]));
                     intensity[intensity.length] = temp;
-                    console.log(rgba[0]);
                 }
             }
 
             // once done collecting the data, call create a graph function
-            createGraph();
+            genericCreateGraph(graphics, intensity, app.screen.width / 2, app.screen.height / 2);
         }
 
         // Helper sleep function for async functions in milliseconds

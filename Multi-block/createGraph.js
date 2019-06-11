@@ -26,7 +26,7 @@ const graphText = new PIXI.TextStyle({
 
 
 // Not mine
-function createGraph() {
+function MB_createGraph() {
 
             //Tells user how to use application
             //Text will change along with process

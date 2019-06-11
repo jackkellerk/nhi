@@ -8,7 +8,7 @@ var LI_boundaryHeight = 300;
 * size and position that it sticks to.
 * @param line the line object to extract information from
 */
-function createGraph(graphContainer, values,boundary_tlx, boundary_tly) {
+function genericCreateGraph(graphContainer, values,boundary_tlx, boundary_tly) {
 
     graphContainer.clear();
     graphContainer.removeChildren();

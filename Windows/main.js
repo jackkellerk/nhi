@@ -38,7 +38,7 @@ function startWindows(){
   bgSprite.addChild(label2);
 
   var multiblock_btn = new RectButton(80, 240, 40, 330, 'Jack Multi-Block Analysis', "Images/Multiblock.jpg");
-  let label3 = new PIXI.Text('Jack Multi-Block Analysi', style);
+  let label3 = new PIXI.Text('Jack Multi-Block Analysis', style);
   label3.position.x = 98;
   label3.position.y = 248;
   bgSprite.addChild(label3);

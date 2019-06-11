@@ -64,7 +64,7 @@
     <img class="modal-content" id="img01">
   </div>
 
-  <h1 style="color:darkslategray;">Nano Human Interface</h1>
+  <!--<h1 style="color:darkslategray;">Nano Human Interface</h1>-->
 
   <script type="text/javascript">
       let type = "WebGL"
@@ -92,6 +92,11 @@
         app.render();
       }
 
+      var Title = new PIXI.Text('Nano Human Interface', {fontFamily: "Georgia", fontSize: 30, fill: 0x2f4f4f});
+      Title.position.x = 20;
+      Title.position.y = 10;
+      app.stage.addChild(Title);
+
       var buttonContainer = new PIXI.Container();
 
       var lowmag_btn = new RectButton(80, 100, 40, 315, 'Eddie Low Magnification Imaging', "LowMag.jpg");
@@ -99,6 +104,7 @@
       var multiblock_btn = new RectButton(80, 240, 40, 315, 'Jack Multi-Block Analysis', "Multiblock.jpg");
       var lineintegral_btn = new RectButton(80, 310, 40, 315, 'Travis Line-Integral Analysis', "LineIntegral.jpg");
 
+      buttonContainer.zIndex = 10;
       app.stage.addChild(buttonContainer);
 
       

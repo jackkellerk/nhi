@@ -25,7 +25,9 @@ function RectButton(x_position, y_position, height, width, action)
     graphics.on('mouseover', onHoverOver) // When mouse hovers over the button, it calls onHoverOver() function
     .on('mouseout', onHoverOff)
     .on('pointerdown', onSelect)
-    .on('pointerdown', nextActivity);
+    .on('pointerdown', nextActivity)
+    .on('pointerdown', removeLastStroke)
+    .on('pointerdown', makeButtonAppear);
     graphics.alpha = 0.5;
     graphics.assignAction(action);
     buttonArray[buttonArray.length] = graphics;
@@ -81,5 +83,89 @@ function nextActivity()
             updateActivity();
             return;
         }
+    }
+}
+
+// Adds additional functionality to existing buttons (for Multi-block)
+function makeButtonAppear()
+{
+    if(currentActivity != 'Multi-block')
+    {
+        return;
+    }
+
+    additionalButtons.clear();
+
+    // remove all additional buttons from the screen
+    for(var i = buttonArray.length - 1; i > 16; i--)
+    {
+        buttonArray[i].parent.removeChild(buttonArray[i]);
+        buttonArray.length = i;
+    }
+
+    // remove all additional icons from the screen
+    for(var i = extraIconForButtonArray.length - 1; i > -1; i--)
+    {
+        extraIconForButtonArray[i].parent.removeChild(extraIconForButtonArray[i]);
+        extraIconForButtonArray.length = i;
+    }
+
+    if(currentlySelectedButtonAction == 'annotate' || currentlySelectedButtonAction == 'annotateUndo')
+    {
+        additionalButtons.beginFill(0xFFFFFF, 1); // Color and opacity
+        additionalButtons.lineStyle(2, 0x414141, 1);
+        additionalButtons.drawRect(app.screen.width - 80, app.screen.height - 80, 60, 60);
+        additionalButtons.endFill();
+        additionalButtons.interactive = true;
+        additionalButtons.on('mouseover', onHoverOver) // When mouse hovers over the button, it calls onHoverOver() function
+        .on('mouseout', onHoverOff)
+        .on('pointerdown', onSelect)
+        .on('pointerdown', removeLastStroke)
+        .on('pointerdown', makeButtonAppear);
+        additionalButtons.alpha = 0.5;
+        additionalButtons.assignAction('annotateUndo');
+        buttonArray[buttonArray.length] = additionalButtons;
+        app.stage.addChild(additionalButtons);
+
+        // Add the eraser icon
+        var eraserImage = new PIXI.Sprite.fromImage('Images/eraser.png', true);
+        var iconContainer = new PIXI.Container();
+		eraserImage.height = 50;
+		eraserImage.width = 50;
+		eraserImage.x = app.screen.width - 75;
+		eraserImage.y = app.screen.height - 75;
+        eraserImage.alpha = 0.7;
+        iconContainer.addChild(eraserImage);
+        extraIconForButtonArray[extraIconForButtonArray.length] = iconContainer;
+        app.stage.addChild(iconContainer);
+    }
+    else if(currentlySelectedButtonAction == 'highlight' || currentlySelectedButtonAction == 'boxCalculation')
+    {
+        additionalButtons.beginFill(0xFFFFFF, 1); // Color and opacity
+        additionalButtons.lineStyle(2, 0x414141, 1);
+        additionalButtons.drawRect(app.screen.width - 80, app.screen.height - 80, 60, 60);
+        additionalButtons.endFill();
+        additionalButtons.interactive = true;
+        additionalButtons.on('mouseover', onHoverOver) // When mouse hovers over the button, it calls onHoverOver() function
+        .on('mouseout', onHoverOff)
+        .on('pointerdown', onSelect)
+        .on('pointerdown', boxCalculation)
+        .on('pointerdown', makeButtonAppear);
+        additionalButtons.alpha = 0.5;
+        additionalButtons.assignAction('boxCalculation');
+        buttonArray[buttonArray.length] = additionalButtons;
+        app.stage.addChild(additionalButtons);
+
+        // Add the eraser icon
+        var mathImage = new PIXI.Sprite.fromImage('Images/math.png', true);
+        var iconContainer = new PIXI.Container();
+		mathImage.height = 40;
+		mathImage.width = 40;
+		mathImage.x = app.screen.width - 70;
+		mathImage.y = app.screen.height - 70;
+        mathImage.alpha = 0.7;
+        iconContainer.addChild(mathImage);
+        extraIconForButtonArray[extraIconForButtonArray.length] = iconContainer;
+        app.stage.addChild(iconContainer);
     }
 }

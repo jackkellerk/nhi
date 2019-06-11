@@ -245,7 +245,7 @@
             var canvas = document.createElement('canvas');
             var context = canvas.getContext('2d');
             var img = new Image();
-            img.src = "sinteredMetal.png";
+            img.src = "Images/sinteredMetal.png";
 
             // Waits until image loads
             while(img.height <= 0)

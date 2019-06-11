@@ -19,11 +19,12 @@
         <script src="Tilting/tilting.js"></script>
   
         <!--Multi-block Dependencies-->
-        <script src="Multi-block/main.js"></script>
         <script src="Multi-block/boxInformation.js"></script>
         <script src="Multi-block/createButton.js"></script>
+        <script src="Multi-block/moveAroundCanvas.js"></script>
         <script src="Multi-block/createGraph.js"></script>
         <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+        <script src="Multi-block/main.js"></script>
   
         <!--Line Integral Dependencies-->
         <script src="Line_Intensity/text_styles.js"></script>
@@ -36,6 +37,15 @@
         
 
     </head>
+    <!--Determines whether Mouse Button is down or not using jQuery (this is for Multi-block)-->
+    <script>
+    var down = false;
+    $(document).mousedown(function() {
+            down = true;
+        }).mouseup(function() {
+            down = false;  
+        });
+    </script>
     <body>
         
         <!-- The Modal for Windowing System -->
@@ -74,6 +84,8 @@
                 app.renderer.resize(parent.clientWidth, parent.clientHeight);
             }
 
+            var mouseData = app.renderer.plugins.interaction.mouse.global; // Change to pointer later (this is for multi-block)
+
             // Initially call updateActivity to start application
             updateActivity();
 
@@ -85,6 +97,9 @@
             {
                 // clears the stage
                 clear();
+
+                // Logs the currentActivity (this variable is in globalVariables.js) (the function that this changes the currentActivity is in createButton.js in Multi-block // This is a temporary solution)
+                console.log("Current Activity: " + currentActivity);
 
                 // Everyone please updates these according to your code! - Jack
                 if(currentActivity == 'Welcome')
@@ -119,7 +134,10 @@
                 }
 
                 // redraw the switch activity button when done drawing UI
-                changeActivityButton();
+                if(currentActivity != activityArray[activityArray.length - 1])
+                {
+                    changeActivityButton();
+                }
             }
 
             function changeActivityButton()

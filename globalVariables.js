@@ -31,3 +31,11 @@ var clockwiseRotation = null;
 var instructionContainer = new PIXI.Container();
 
 /* End of Multi-block global variables */
+
+
+
+/* Begin of Window System global variables */
+
+
+
+/* End of Window System global variables */

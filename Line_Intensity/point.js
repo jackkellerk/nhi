@@ -9,7 +9,7 @@ class Point {
         this.image = new PIXI.Graphics();
         this.image.interactive = true;
         this.image.buttonMode = true;
-        this.image.beginFill(0xFFFF00);
+        this.image.beginFill(0xA50037);
         this.image.drawRect(x - 5, y - 5, 10, 10);
         this.image.endFill();
         var polyPts;
@@ -43,7 +43,7 @@ class Point {
      * where ever the coordiantes are located.
      */
     resetImage() {
-        this.image.beginFill(0xFFFF00);
+        this.image.beginFill(0xA50037);
         this.image.drawRect(this.x - 5, this.y - 5, 10, 10);
         this.image.endFill();
         var polyPts;

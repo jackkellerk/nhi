@@ -66,7 +66,7 @@ function createGraph(graphContainer, line, boundary_tlx, boundary_tly) {
         graphContainer.addChild(hText);
 
         var backgroundLine = new PIXI.Graphics();
-        backgroundLine.lineStyle(1, 0x33FFFC)               //Creates the background lines for the graph
+        backgroundLine.lineStyle(1, 0x1E6BAA)               //Creates the background lines for the graph
             .moveTo(currentX, horizontalDashY - graphHeight)
             .lineTo(currentX, horizontalDashY);
         graphContainer.addChild(backgroundLine);
@@ -103,7 +103,7 @@ function createGraph(graphContainer, line, boundary_tlx, boundary_tly) {
 
         if (i != 0) {
             var vBackgroundLine = new PIXI.Graphics();
-            vBackgroundLine.lineStyle(1, 0x33FFFC)   //Background lines
+            vBackgroundLine.lineStyle(1, 0x1E6BAA)   //Background lines
                 .moveTo(verticalDashX, currentY)
                 .lineTo(verticalDashX + graphWidth, currentY);
             graphContainer.addChild(vBackgroundLine);
@@ -141,21 +141,21 @@ function createGraph(graphContainer, line, boundary_tlx, boundary_tly) {
         }//end for
         if (peakCheck) {
             var peakBar = new PIXI.Graphics();
-            peakBar.lineStyle(2, 0x165F0A)               //Creates bar for the ith entry of the bar graph
+            peakBar.lineStyle(2, 0x000070)               //Creates bar for the ith entry of the bar graph
                 .moveTo(entryCurrentX - 1, entryStartY)
                 .lineTo(entryCurrentX - 1, entryStartY - (valueSpacing * (line.lineDataPoints[i])));
-            graphContainer.addChild(peakBar);
+            graphContainer.addChild(peakBar); 
         }// end if
         else if (valleyCheck) {
             var valleyBar = new PIXI.Graphics();
-            valleyBar.lineStyle(2, 0x0A175F)               //Creates bar for the ith entry of the bar graph
+            valleyBar.lineStyle(2, 0x8BBCD3)               //Creates bar for the ith entry of the bar graph
                 .moveTo(entryCurrentX - 1, entryStartY)
-                .lineTo(entryCurrentX - 1, graph_tly);
-            graphContainer.addChild(valleyBar);
+                .lineTo(entryCurrentX - 1, entryStartY - (valueSpacing * (line.lineDataPoints[i])));
+            graphContainer.addChild(valleyBar); 
         }// end else if
         else {
             var entryBar = new PIXI.Graphics();
-            entryBar.lineStyle(2, 0xC70039)               //Creates bar for the ith entry of the bar graph
+            entryBar.lineStyle(2, 0xA50037)               //Creates bar for the ith entry of the bar graph
                 .moveTo(entryCurrentX - 1, entryStartY)
                 .lineTo(entryCurrentX - 1, entryStartY - (valueSpacing * (line.lineDataPoints[i])));
             graphContainer.addChild(entryBar);
@@ -165,7 +165,7 @@ function createGraph(graphContainer, line, boundary_tlx, boundary_tly) {
     
     //Draw baseline
     var baslineImage = new PIXI.Graphics();
-    baslineImage.lineStyle(1, 0x4A235A)
+    baslineImage.lineStyle(2, 0x2B2D42)
         .moveTo(verticalDashX, entryStartY - (valueSpacing * (line.baseline)))
         .lineTo(verticalDashX + graphWidth, entryStartY - (valueSpacing * (line.baseline)));
     graphContainer.addChild(baslineImage);

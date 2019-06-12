@@ -3,9 +3,9 @@ const LI_style = new PIXI.TextStyle({
     fontSize: 36,
     fontStyle: 'italic',
     fontWeight: 'bold',
-    fill: ['#ffffff', '#00ff99'], // gradient
+    fill: ['#ffffff', '#A50037'], // gradient
     align: 'center',
-    stroke: '#4a1850',
+    stroke: '#000070',
     strokeThickness: 5,
     dropShadow: true,
     dropShadowColor: '#000000',

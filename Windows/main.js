@@ -18,7 +18,7 @@ function startWindows(){
   
   // background
 
-  var texture = PIXI.Texture.fromImage('sinteredMetal.png', true);
+  var texture = PIXI.Texture.fromImage('ImagessinteredMetal.png', true);
   texture.baseTexture.scaleMode = PIXI.SCALE_MODES.NEAREST;
 
   bgSprite = new PIXI.Sprite(texture);
@@ -28,25 +28,25 @@ function startWindows(){
 
   // Buttons for each activity
 
-  var lowmag_btn = new RectButton(80, 100, 40, 330, "LowMag.jpg");
+  var lowmag_btn = new RectButton(80, 100, 40, 330, "Images/LowMag.jpg");
   let label1 = new PIXI.Text('Eddie Low Mag Imaging', style);
   label1.position.x = 98;
   label1.position.y = 108;
   bgSprite.addChild(label1);
 
-  var multispec_btn = new RectButton(80, 170, 40, 330, "Multispectrum.jpg");
+  var multispec_btn = new RectButton(80, 170, 40, 330, "Images/Multispectrum.jpg");
   let label2 = new PIXI.Text('Desai Multispectrum Interface', style);
   label2.position.x = 98;
   label2.position.y = 178;
   bgSprite.addChild(label2);
 
-  var multiblock_btn = new RectButton(80, 240, 40, 330, "Multiblock.jpg");
+  var multiblock_btn = new RectButton(80, 240, 40, 330, "Images/Multiblock.jpg");
   let label3 = new PIXI.Text('Jack Multi-Block Analysis', style);
   label3.position.x = 98;
   label3.position.y = 248;
   bgSprite.addChild(label3);
 
-  var lineintegral_btn = new RectButton(80, 310, 40, 330, "LineIntegral.jpg");
+  var lineintegral_btn = new RectButton(80, 310, 40, 330, "Images/LineIntegral.jpg");
   let label4 = new PIXI.Text('Travis Line-Integral Analysis', style);
   label4.position.x = 98;
   label4.position.y = 318;
@@ -65,7 +65,7 @@ function startWindows(){
 
 
 
-  var closeTexture = PIXI.Texture.fromImage("cancel_icon.png");
+  var closeTexture = PIXI.Texture.fromImage("Images/cancel_icon.png");
   var closeImage = new PIXI.Sprite(closeTexture);
     closeImage.height = 30;
     closeImage.width = 30;

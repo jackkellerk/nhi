@@ -4,9 +4,6 @@ todo:
 
 // let colors = ['white', 'black', 'yellow', 'red', 'green', 'orange', 'blue', 'grey', 'purple'];
 class Spectrum{
-    //globals
-    static optionContainer = new PIXI.Container();
-    static metalsprite;
     
     //helper function
     static getHexColor(colorStr) {
@@ -39,63 +36,61 @@ class Spectrum{
         return container;
     }
 
-    static onClickDropdownBtn(){
-        Spectrum.optionContainer.visible = !Spectrum.optionContainer.visible;
-    }
-
-    static onClickColorOptions(color){
+    static onClickColorOptions(color, metalsprite){
         switch(color) {
             case "red":
-                Spectrum.metalsprite.tint = Spectrum.getHexColor("red");
+                metalsprite.tint = Spectrum.getHexColor("red");
                 break;
             case "green":
-                Spectrum.metalsprite.tint = Spectrum.getHexColor("green");
+                metalsprite.tint = Spectrum.getHexColor("green");
                 break;
             case "blue":
-                Spectrum.metalsprite.tint = Spectrum.getHexColor("blue");
+                metalsprite.tint = Spectrum.getHexColor("blue");
                 break;
             case "original":
-                Spectrum.metalsprite.tint = 0xFFFFFF;
+                metalsprite.tint = 0xFFFFFF;
                 break;
             default: void(0);
         }
     }
     
     static pixiSetup() {
-        Spectrum.metalsprite = new PIXI.Sprite.from('Images/sinteredMetal.png');
-        Spectrum.metalsprite.anchor.set(0.5);
-        Spectrum.metalsprite.scale.set(2);
-        app.stage.addChild(Spectrum.metalsprite);
+        let metalsprite = new PIXI.Sprite.from('Images/sinteredMetal.png');
+        metalsprite.anchor.set(0.5);
+        metalsprite.scale.set(2);
+        app.stage.addChild(metalsprite);
+        return metalsprite;
     }
     
-    static createColorPickDropdown(){
+    static createColorPickDropdown(metalsprite){
+        let optionContainer = new PIXI.Container();
         let dropdownContainer = new PIXI.Container();
         let dropdownBtn = Spectrum.createButton(20,app.screen.height-80, 60, 60,
-            Spectrum.onClickDropdownBtn);
+            function(){
+                optionContainer.visible = !optionContainer.visible;
+        });
         dropdownBtn.buttonMode = true;
         dropdownContainer.addChild(dropdownBtn);
 
-        let optionBtns = [];
         let options = ["red", "green", "blue", "original"];
-        let texts = [];
         for (let i = 0; i < 4; i++) {
-            optionBtns.push(Spectrum.createButton(85 + i*65, app.screen.height-80, 60, 60,
-                function(){Spectrum.onClickColorOptions(options[i])}));
-            optionBtns[i].buttonMode = true;
-            texts.push(new PIXI.Text(options[i]));
-            texts[i].style = {align: "center"};
-            optionBtns[i].addChild(texts[i]);
-            Spectrum.optionContainer.addChild(optionBtns[i]);
+            let optionBtn = Spectrum.createButton(85 + i*65, app.screen.height-80, 60, 60,
+                function(){Spectrum.onClickColorOptions(options[i], metalsprite)});
+            optionBtn.buttonMode = true;
+            let text = new PIXI.Text(options[i]);
+            text.style = {align: "center"};
+            optionBtn.addChild(text);
+            optionContainer.addChild(optionBtn);
         }
-        Spectrum.optionContainer.visible = false;
-        dropdownContainer.addChild(Spectrum.optionContainer);
+        optionContainer.visible = false;
+        dropdownContainer.addChild(optionContainer);
 
         app.stage.addChild(dropdownContainer);
     }
 
     static startSpectrum() {
-        Spectrum.pixiSetup();
-        Spectrum.createColorPickDropdown();
+        let metalsprite = Spectrum.pixiSetup();
+        Spectrum.createColorPickDropdown(metalsprite);
     }
 
 }

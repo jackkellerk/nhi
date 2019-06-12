@@ -1,49 +1,53 @@
 
 class Tilting{
-    //Globals
-    static optionContainer = new PIXI.Container();
+    static bgContainer = new PIXI.Container();
     static sprites = [];
-    static metalsprite;
+    static current = 0;
+    static TOTAL = 4;
+    
+    static rotateRight(){
+        Tilting.bgContainer.removeChildAt(0);
+        if(Tilting.current < Tilting.TOTAL - 1){
+            Tilting.current++;
+        }else{
+            Tilting.current = 0;
+        }
+        Tilting.bgContainer.addChild(Tilting.sprites[Tilting.current]);
+    }
+    
+    static rotateLeft(){
+        Tilting.bgContainer.removeChildAt(0);
+        if(Tilting.current > 0){
+            Tilting.current--;
+        }else{
+            Tilting.current = Tilting.TOTAL - 1;
+        }
+        Tilting.bgContainer.addChild(Tilting.sprites[Tilting.current]);
+    }
     
     static pixiSetup() {
-        this.metalsprite = new PIXI.Sprite.from('Images/sinteredMetal.png');
-        this.metalsprite.anchor.set(0.5);
-        this.metalsprite.scale.set(2);
-        app.stage.addChild(this.metalsprite);
-    }
-    
-    static onClickDropdownBtn(){
-        Tilting.optionContainer.visible = !Tilting.optionContainer.visible;
-    }
-    
-    static createTiltingDropdown(){
-        let dropdownBtn = Spectrum.createButton(20,app.screen.height-80, 60, 60,
-                this.onClickDropdownBtn);
-        dropdownBtn.buttonMode = true;
-        let dropdownContainer = new PIXI.Container();
-        dropdownContainer.addChild(dropdownBtn);
-        
-        let optionBtns = [];
-        let options = ["red", "green", "blue", "original"];
-        let texts = [];
         for (let i = 0; i < 4; i++) {
-            optionBtns.push(Spectrum.createButton(85 + i*65, app.screen.height-80, 60, 60,
-                    function(){Spectrum.onClickColorOptions(options[i])}));
-            optionBtns[i].buttonMode = true;
-            texts.push(new PIXI.Text(options[i]));
-            texts[i].style = {align: "center"};
-            optionBtns[i].addChild(texts[i]);
-            this.optionContainer.addChild(optionBtns[i]);
+            Tilting.sprites.push(new PIXI.Sprite.from(`Images/tilt${i}.png`));
+            Tilting.sprites[i].anchor.set(0.5);
         }
-        this.optionContainer.visible = false;
-        dropdownContainer.addChild(this.optionContainer);
-        
-        app.stage.addChild(dropdownContainer);
+        Tilting.bgContainer.addChild(Tilting.sprites[Tilting.current]);
+        app.stage.addChild(Tilting.bgContainer);
+    }
+    
+    static createTiltingButtons(){
+        let rotateContainer = new PIXI.Container();
+        let onclickFuncs = [Tilting.rotateLeft, Tilting.rotateRight];
+        for (let i = 0; i < 2; i++) {
+            let tiltingBtn = Spectrum.createButton(20 + i*65, app.screen.height-80, 60, 60,
+                    onclickFuncs[i]);
+            tiltingBtn.buttonMode = true;
+            rotateContainer.addChild(tiltingBtn);
+        }
+        app.stage.addChild(rotateContainer);
     }
     
     static startTilting(){
-        this.pixiSetup();
-        this.createTiltingDropdown();
-    
+        Tilting.pixiSetup();
+        Tilting.createTiltingButtons();
     }
 }

@@ -36,10 +36,6 @@ var instructionContainer = new PIXI.Container();
 
 /* Begin of Window System global variables */
 
-// for popup window
-var w_PopupContainer = new PIXI.Container();
 
-// PIXI Text style
-var w_style = {fontFamily: 'Georgia', fontSize: 22, fill: 0x990902};
 
 /* End of Window System global variables */

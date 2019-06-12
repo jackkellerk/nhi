@@ -1,7 +1,4 @@
 
-// popup
-
-var PopupContainer = new PIXI.Container();
 
 
 

@@ -38,8 +38,9 @@ class Tilting{
         let rotateContainer = new PIXI.Container();
         let onclickFuncs = [Tilting.rotateLeft, Tilting.rotateRight];
         for (let i = 0; i < 2; i++) {
+            let icon = new PIXI.Sprite.from(`Images/rotate${i}.png`);
             let tiltingBtn = Spectrum.createButton(20 + i*65, app.screen.height-80, 60, 60,
-                    onclickFuncs[i]);
+                    onclickFuncs[i], icon);
             tiltingBtn.buttonMode = true;
             rotateContainer.addChild(tiltingBtn);
         }

@@ -15,7 +15,8 @@ class Spectrum{
     }
     
 // actions: [pointerdown, pointerup, mouseover, mouseout]
-    static createButton(x, y, height, width, clickAction)
+    //icon: Sprite
+    static createButton(x, y, height, width, clickAction, icon=null)
     {
         let container = new PIXI.Container();
         let graphics = new PIXI.Graphics();
@@ -24,13 +25,22 @@ class Spectrum{
         graphics.drawRect(0, 0, width, height);
         graphics.endFill();
         graphics.interactive = true;
-        graphics.on('mouseover', function(){ this.alpha = 1; })
-                .on('mouseout', function(){ this.alpha = 0.5; });
+        graphics.on('mouseover', function(){ this.alpha = 1; if(icon){icon.alpha = 1;}})
+                .on('mouseout', function(){ this.alpha = 0.5; if(icon){icon.alpha = 0.5;}});
         if(clickAction){
             graphics.on('pointerdown', clickAction)
         }
         graphics.alpha = 0.5;
         container.addChild(graphics);
+        if(icon){
+            container.addChild(icon);
+            icon.height = 60;
+            icon.width = 60;
+            icon.alpha = 0.5;
+            // icon.x = x;
+            // icon.y = y;
+            
+        }
         container.x = x;
         container.y = y;
         return container;

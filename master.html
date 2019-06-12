@@ -1,5 +1,5 @@
-<!--Version: 2 // Please raise the number every time you make an edit-->
-<!--Last Edited By: Anna Thomas // Change to your name after every edit-->
+<!--Version: 3 // Please raise the number every time you make an edit-->
+<!--Last Edited By: Eddie Sohn // Change to your name after every edit-->
 <html>
     <head>
         <title>Unified Code</title>
@@ -36,6 +36,8 @@
         <script src="Line_Intensity/line.js"></script>
         <script src="Line_Intensity/point.js"></script>
         
+        <!-- Low Magnification Screening / Imaging (Zoom, pinch, crop, etc) Dependencies -->
+        <script src="./pixi-viewport.js" type="text/javascript"></script>
 
     </head>
     <!--Determines whether Mouse Button is down or not using jQuery (this is for Multi-block)-->
@@ -114,7 +116,20 @@
                 }
                 else if(currentActivity == 'Zoom')
                 {
+                    // TOOD: Encapsulate these codes below...
+                    // calls pixi-viewport library
+                    // var Viewport = new PIXI.extras.Viewport({
+                    //     screenWidth: window.innerWidth,
+                    //     screenHeight: window.innerHeight,
+                    //     worldWidth: 1000,
+                    //     worldHeight: 1000,
+                    //     interaction: app.renderer.plugins.interaction // the interaction module is important for wheel() to work properly when renderer.view is placed or scaled
+                    // });
+                    
+                    // stage viewport to app
 
+                    // activate mouse/touch gestures
+                    // Viewport.drag().pinch().wheel().decelerate();
                 }
                 else if(currentActivity == 'Multispectrum')
                 {

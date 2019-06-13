@@ -3,7 +3,7 @@
 var w_PopupContainer = new PIXI.Container();
 
 // PIXI Text style
-var w_style = {fontFamily: 'Georgia', fontSize: 22, fill: 0x990902};
+var w_style = {fontFamily: 'Arial Black', fontSize: 22, fill: 0x990902};
 
 
 function startWindows(){
@@ -21,25 +21,25 @@ function startWindows(){
 
   // Buttons for each activity
 
-  var lowmag_btn = new makeRectButton(80, 100, 40, 330, "Images/LowMag.jpg");
+  var lowmag_btn = new makeRectButton(80, 100, 40, 405, "Images/LowMag.jpg");
   let label1 = new PIXI.Text('Eddie Low Mag Imaging', w_style);
   label1.position.x = 98;
   label1.position.y = 108;
   bgSprite.addChild(label1);
 
-  var multispec_btn = new makeRectButton(80, 170, 40, 330, "Images/Multispectrum.jpg");
+  var multispec_btn = new makeRectButton(80, 170, 40, 405, "Images/Multispectrum.jpg");
   let label2 = new PIXI.Text('Desai Multispectrum Interface', w_style);
   label2.position.x = 98;
   label2.position.y = 178;
   bgSprite.addChild(label2);
 
-  var multiblock_btn = new makeRectButton(80, 240, 40, 330, "Images/Multiblock.jpg");
+  var multiblock_btn = new makeRectButton(80, 240, 40, 405, "Images/Multiblock.jpg");
   let label3 = new PIXI.Text('Jack Multi-Block Analysis', w_style);
   label3.position.x = 98;
   label3.position.y = 248;
   bgSprite.addChild(label3);
 
-  var lineintegral_btn = new makeRectButton(80, 310, 40, 330, "Images/LineIntegral.jpg");
+  var lineintegral_btn = new makeRectButton(80, 310, 40, 405, "Images/LineIntegral.jpg");
   let label4 = new PIXI.Text('Travis Line-Integral Analysis', w_style);
   label4.position.x = 98;
   label4.position.y = 318;

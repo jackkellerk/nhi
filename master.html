@@ -9,6 +9,10 @@
         <script src="globalVariables.js"></script>
         <link rel="stylesheet" href="masterStyleSheet.css">
 
+        <!--Login Dependencies-->
+        <script src="Login/login.js"></script>
+        <script src="Login/captionFactory.js"></script>
+        
         <!--Windows Dependencies-->
         <script src="Windows/main.js"></script>
         <script src="Windows/makeButton.js"></script>
@@ -69,6 +73,7 @@
                     transparent: false,
                     autoResize: true,
                     resolution: devicePixelRatio,
+                    backgroundColor: 0x1099bb 
                 });
     
             document.body.appendChild(app.view);
@@ -100,7 +105,7 @@
                 // Everyone please updates these according to your code! - Jack
                 if(currentActivity == 'Welcome')
                 {
-
+                    startLoginPage();
                 }
                 else if(currentActivity == 'Windows')
                 {

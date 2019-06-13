@@ -225,7 +225,7 @@ function LI_drawPoint(event) {
         LI_pointContainer.push(endPoint);
         //Contructs the line graphic to be place inside the line object
         var lineImage = new PIXI.Graphics();
-             lineImage.lineStyle(1, 0xA50037)
+             lineImage.lineStyle(1, 0x000070)
             .moveTo(LI_currentStart.x, LI_currentStart.y)
             .lineTo(endPoint.x, endPoint.y);
         lineImage.name = LI_lineContainer.length;

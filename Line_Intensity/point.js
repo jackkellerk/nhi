@@ -9,7 +9,7 @@ class Point {
         this.image = new PIXI.Graphics();
         this.image.interactive = true;
         this.image.buttonMode = true;
-        this.image.beginFill(0xA50037);
+        this.image.beginFill(0x000070);
         this.image.drawRect(x - 5, y - 5, 10, 10);
         this.image.endFill();
         var polyPts;
@@ -37,19 +37,23 @@ class Point {
      */
     clearImage() {
         this.image.clear();
+        this.image.interactive = false;
+        this.image.buttonMode = false;
     }
     /**
      * Typically used after the clearImage function, this allows the object to draw itself again 
      * where ever the coordiantes are located.
      */
     resetImage() {
-        this.image.beginFill(0xA50037);
+        this.image.beginFill(0x000070);
         this.image.drawRect(this.x - 5, this.y - 5, 10, 10);
         this.image.endFill();
         var polyPts;
         polyPts = [this.x - 5, this.y - 5, this.x - 5, this.y + 5, this.x + 5, this.y + 5, this.x + 5, this.y - 5];
         this.image.hitArea = new PIXI.Polygon(polyPts);
         app.stage.addChild(this.image);
+        this.image.interactive = true;
+        this.image.buttonMode = true;
     }
 
     setOwner(line) {

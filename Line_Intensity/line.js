@@ -303,7 +303,7 @@ class Line {
      * Will redraw the line using the current starting and end point information
      */
     resetImage() {
-        this.image.lineStyle(1, 0xA50037)
+        this.image.lineStyle(1, 0x000070)
             .moveTo(this.startPoint.x, this.startPoint.y)
             .lineTo(this.endPoint.x, this.endPoint.y);
         var polyPts;
@@ -352,8 +352,8 @@ class Line {
         const data = new PIXI.Graphics();
         for (var i = 0; i <= entries; i++) {
             //Creates small squares denoting where measurements were taken
-            data.beginFill(0x1E6BAA);
-            data.lineStyle(1, 0x000070, 1);
+            data.beginFill(0xA50037);
+            data.lineStyle(1, 0x52001B, 1);
             data.drawRect(currentX - 2, currentY - 2, 4, 4);
             data.endFill();
             app.stage.addChild(data);

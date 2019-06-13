@@ -519,6 +519,9 @@ function LI_onDragPointMove() {
             LI_pointContainer[this.name].owner.clearImage();
             LI_pointContainer[this.name].owner.resetImage();
             LI_pointContainer[this.name].resetImage();
+            LI_pointContainer[this.name].owner.fetchInformation();
+            updateGraph(LI_graphs, LI_currentLine, LI_boundary_tlx, LI_boundary_tly);
+
         }
     }
 }
@@ -535,7 +538,7 @@ function LI_onDragLineEnd() {
         LI_lineContainer[this.name].endPoint.resetImage();
         LI_lineContainer[this.name].displayDetails();
         this.dragging = false;
-        createGraph(LI_graphs, LI_currentLine, LI_boundary_tlx, LI_boundary_tly);
+        updateGraph(LI_graphs, LI_currentLine, LI_boundary_tlx, LI_boundary_tly);
         app.stage.addChild(LI_graphs);
 
         this.eventData = null;
@@ -585,6 +588,8 @@ function LI_onDragLineMove() {
                 this.dragy = newPosition.y;
                 LI_lineContainer[this.name].clearImage();
                 LI_lineContainer[this.name].resetImage();
+                LI_lineContainer[this.name].fetchInformation();
+                updateGraph(LI_graphs, LI_currentLine, LI_boundary_tlx, LI_boundary_tly);
             }
         }
     }

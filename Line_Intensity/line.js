@@ -95,7 +95,8 @@ class Line {
         var currentY = this.startPoint.y;
         var canvas = app.renderer.plugins.extract.canvas(this.background);
         var context = canvas.getContext('2d');
-        for (var i = 0; i <= entries; i++) {
+        var i = 0;
+        for (i; i <= entries; i++) {
 
 
             //Takes the rgba values of a specific pixel and calculates intensity 

@@ -97,7 +97,8 @@ function makeButtonAppear()
     additionalButtons.clear();
 
     // remove all additional buttons from the screen
-    for(var i = buttonArray.length - 1; i > 16; i--)
+    console.log(buttonArray.length);
+    for(var i = buttonArray.length - 1; i > 12; i--)
     {
         buttonArray[i].parent.removeChild(buttonArray[i]);
         buttonArray.length = i;

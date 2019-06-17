@@ -246,32 +246,34 @@
             var context = canvas.getContext('2d');
             var img = new Image();
             img.src = "Images/sinteredMetal.png";
+            img.onload = function() {
+                canvas.width = img.width;
+                canvas.height = img.height;      
+                context.drawImage(img, 0, 0);
 
-            // Waits until image loads
-            while(img.height <= 0)
-            {
-                await sleep(50);
-            }
-
-            canvas.width = img.width;
-            canvas.height = img.height;      
-            context.drawImage(img, 0, 0);  
-
-            // iterate through each column **ONLY WORKS FOR THE FIRST BOX CREATED RIGHT NOW**
-            for(var i = 0; i < /* informationBoxArray[0].height  ONLY USE THE FIRST ROW RIGHT NOW */ 1; i++)
-            {
-                // iterate through each row
-                for(var j = 0; j < informationBoxArray[0].width; j++)
+                // iterate through each column **ONLY WORKS FOR THE FIRST BOX CREATED RIGHT NOW**
+                for(var i = 0; i < informationBoxArray[0].height; i++)
                 {
-                    // getImageData takes in x-cooridinate/y-coordinate/width/height **Remember to divide each of the values by 3 because it is scaled by 3**
-                    var rgba = context.getImageData((j + informationBoxArray[0].x_position) / 3, (i + informationBoxArray[0].y_position) / 3, 1, 1).data;
-                    var temp = ((0.2126 * rgba[0]) + (0.7152 * rgba[1]) + (0.0722 * rgba[2]));
-                    intensity[intensity.length] = temp;
-                }
-            }
+                    // This is used to find the average pixel intensity in each row (this is the sum so we can divide later)
+                    var tempSum = 0;
 
-            // once done collecting the data, call create a graph function
-            genericCreateGraph(graphics, intensity, app.screen.width / 2, app.screen.height / 2);
+                    // iterate through each row
+                    for(var j = 0; j < informationBoxArray[0].width; j++)
+                    {
+                        // getImageData takes in x-cooridinate/y-coordinate/width/height **Remember to divide each of the values by 3 because it is scaled by 3**
+                        var rgba = context.getImageData((j + informationBoxArray[0].x_position) / 3, (i + informationBoxArray[0].y_position) / 3, 1, 1).data;                  
+                        var temp = ((0.2126 * rgba[0]) + (0.7152 * rgba[1]) + (0.0722 * rgba[2]));
+
+                        // Summing each pixel value
+                        tempSum += temp;
+                    }
+
+                    tempSum = tempSum / informationBoxArray[0].width;
+                    intensity[intensity.length] = tempSum;
+                }
+
+                genericCreateGraph(graphics, intensity, app.screen.width / 2, app.screen.height / 2);
+            };
         }
 
         // Helper sleep function for async functions in milliseconds

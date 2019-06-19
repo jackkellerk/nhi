@@ -12,6 +12,61 @@ function drawHexOutline(tip_x, tip_y, scale)
 
 
 
+function makeSettingsHex(tip_x, tip_y, scale)
+{
+    var hex = new PIXI.Graphics();
+    hex.beginFill(0xFFFFFF, 1); // Color and opacity
+    hex.lineStyle(2, 0x414141, 3);
+    hex.drawPolygon([tip_x*scale,tip_y*scale, (tip_x+8.7)*scale,(tip_y+5)*scale, (tip_x+8.7)*scale,(tip_y+15)*scale, tip_x*scale,(tip_y+20)*scale, (tip_x-8.7)*scale,(tip_y+15)*scale, (tip_x-8.7)*scale,(tip_y+5)*scale]);
+    hex.endFill();
+    hex.interactive = true;
+    hex.on('mouseover', w_SettingsHoverOver); // When mouse hovers over the button, it calls onHoverOver() function
+    hex.on('mouseout', w_SettingsHoverOff);
+    hex.on('pointerdown', w_SettingsSelect);
+    hex.alpha = 0.6;
+    app.stage.addChild(hex);
+
+    const settingsIcon = new PIXI.Sprite.fromImage("Images/settings.png");
+    settingsIcon.width = 82;
+    settingsIcon.height = 82;
+    settingsIcon.position.x = 113;
+    settingsIcon.position.y = 32;
+    app.stage.addChild(settingsIcon);
+}
+
+function w_SettingsHoverOver()
+{
+    app.stage.addChild(w_settingsContainer);
+    this.alpha = 0.8;
+}
+
+function w_SettingsHoverOff()
+{
+    app.stage.removeChild(w_settingsContainer);
+    this.alpha = 0.6;
+}
+
+function w_SettingsSelect()
+{
+    if (settingsCC == 0)
+    {
+        //app.stage.addChild(w_settingsContainer);
+        settingsCC = 1;
+    }
+    else if (settingsCC == 1)
+    {
+        //app.stage.removeChild(w_settingsContainer);
+        settingsCC = 0;
+    }
+}
+
+
+
+
+
+
+
+
 function makeHex(tip_x, tip_y, scale, source, containerID)
 {
 
@@ -28,9 +83,7 @@ function makeHex(tip_x, tip_y, scale, source, containerID)
     hex.on('mouseout', w_hexHoverOff);
 
     if (containerID == 1) {
-        hex.on('pointerdown', w_ImageMenuSelect);
-    } else if (containerID == 2) {
-        hex.on('pointerdown', w_SettingsSelect);
+        hex.on('pointerdown', w_MicMenuSelect);
     } else if (containerID == 3) {
         hex.on('pointerdown', w_SaveSelect);
     }
@@ -38,13 +91,11 @@ function makeHex(tip_x, tip_y, scale, source, containerID)
     app.stage.addChild(hex);
 
     const hexImg = new PIXI.Sprite.fromImage(source);
-    hexImg.width = 16*scale;
-    hexImg.height = 16*scale;
-    hexImg.position.x = (tip_x-8.3)*scale;
-    hexImg.position.y = (tip_y+2)*scale;
+    hexImg.width = 13.5*scale;
+    hexImg.height = 13.5*scale;
+    hexImg.position.x = (tip_x-6.9)*scale;
+    hexImg.position.y = (tip_y+2.2)*scale;
     app.stage.addChild(hexImg);
-
-
 
 }
 
@@ -58,8 +109,12 @@ function w_hexHoverOff()
     this.alpha = 0.6;
 }
 
-function w_ImageMenuSelect()
+function w_MicMenuSelect()
 {
+    if (showTitle == 1) {
+        app.stage.removeChild(w_titleContainer);
+        showTitle = 0;
+    }
     if (clickcounter == 0)
     {
         app.stage.addChild(w_menuContainer);
@@ -69,24 +124,6 @@ function w_ImageMenuSelect()
     {
         app.stage.removeChild(w_menuContainer);
         clickcounter = 0;
-    }
-}
-
-function w_SettingsSelect()
-{
-    if (showTitle == 1) {
-        app.stage.removeChild(w_titleContainer);
-        showTitle = 0;
-    }
-    if (settingsCC == 0)
-    {
-        app.stage.addChild(w_settingsContainer);
-        settingsCC = 1;
-    }
-    else if (settingsCC == 1)
-    {
-        app.stage.removeChild(w_settingsContainer);
-        settingsCC = 0;
     }
 }
 
@@ -109,6 +146,7 @@ function w_SaveSelect()
 
 
 
+
 function makeImageHex(tip_x, tip_y, scale, source, text)
 {
 
@@ -121,7 +159,7 @@ function makeImageHex(tip_x, tip_y, scale, source, text)
     btn.on('mouseover', w_ImageHoverOver); // When mouse hovers over the button, it calls onHoverOver() function
     btn.on('mouseout', w_ImageHoverOff);
     btn.on('pointerdown', w_ImageSelect);
-    btn.alpha = 0.4;
+    btn.alpha = 0.3;
     btn.source = source;
     w_menuContainer.addChild(btn);
 
@@ -142,7 +180,7 @@ function w_ImageHoverOver(event)
 function w_ImageHoverOff(event)
 {
     this.data = event.data;
-    this.alpha = 0.4;
+    this.alpha = 0.3;
 }
 
 function w_ImageSelect(event)

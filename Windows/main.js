@@ -2,10 +2,12 @@
 var clickcounter; // image menu click counter
 var settingsCC; // settings menu
 var saveCC;
+var micCC;
 
 var showTitle; // title disappears after first interaction
 
 var w_titleContainer = new PIXI.Container(); // title container
+var w_microscopeContainer = new PIXI.Container(); // miscroscope collection
 var w_menuContainer = new PIXI.Container(); // for image selection
 var w_settingsContainer = new PIXI.Container(); // for settings menu
 var w_PopupContainer = new PIXI.Container(); // for popup window
@@ -49,7 +51,7 @@ function startWindows(){
   w_titleContainer.addChild(title);
 
   const subtitleStyle = new PIXI.TextStyle({fill: "#d3d3d3", fontFamily: "Helvetica", fontSize: 24, letterSpacing: 3});
-  const subtitle = new PIXI.Text('by clicking the image icon', subtitleStyle);
+  const subtitle = new PIXI.Text('by clicking the microscope icon', subtitleStyle);
   subtitle.position.x = window.innerWidth/3 +40;
   subtitle.position.y = 92;
   w_titleContainer.addChild(subtitle);
@@ -66,22 +68,22 @@ function startWindows(){
     saveIcon.position.x = 57;
     saveIcon.position.y = 49;
   app.stage.addChild(saveIcon);
+  //var saveInfo = new drawInfoBox(25, 13, 10, "Save & Exit");
+
 
   // settings button
-  var settingsButton = new makeHex(38.5, 8, 4, "transparent.png", 2);
-  const settingsIcon = new PIXI.Sprite.fromImage("Images/settings.png");
-    settingsIcon.width = 82;
-    settingsIcon.height = 82;
-    settingsIcon.position.x = 113;
-    settingsIcon.position.y = 32;
-  app.stage.addChild(settingsIcon);
+  var settingsButton = new makeSettingsHex(38.5, 8, 4);
 
+  var settingsInfo = new drawInfoBox(155, 90, 4, "Project Settings");
+
+
+  // Microscope Menu
+
+  var micMenuHex = new makeHex(20, 40, 4, "Images/microscope.png", 1);
 
 
 
   // Image Menu (Container)
-
-  var imageHex = new makeHex(20, 40, 4, "Images/picture-icon.png", 1);
 
   var lowmag_btn = new makeImageHex(30, 56, 4, "Images/LowMag.jpg", "Low Mag\n Imaging");
   var multispec_btn = new makeImageHex(20.5, 72, 4, "Images/Multispectrum.jpg", "   Multi\nspectrum");

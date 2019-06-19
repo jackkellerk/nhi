@@ -3,7 +3,7 @@ class Tilting{
     static bgContainer = new PIXI.Container();
     static sprites = [];
     static current = 0;
-    static TOTAL = 4;
+    static TOTAL = 1;
     
     static rotateRight(){
         Tilting.bgContainer.removeChildAt(0);
@@ -26,9 +26,9 @@ class Tilting{
     }
     
     static pixiSetup() {
-        for (let i = 0; i < 4; i++) {
-            Tilting.sprites.push(new PIXI.Sprite.from(`Images/tilt${i}.png`));
-            Tilting.sprites[i].anchor.set(0.5);
+        for (let i = 0; i < Tilting.TOTAL; i++) {
+            Tilting.sprites.push(new PIXI.Sprite.from(`Images/Tilting/CBED_${i+1}.png`));
+            // Tilting.sprites[i].anchor.set(0.5);
         }
         Tilting.bgContainer.addChild(Tilting.sprites[Tilting.current]);
         app.stage.addChild(Tilting.bgContainer);

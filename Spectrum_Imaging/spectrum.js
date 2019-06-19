@@ -17,7 +17,7 @@ class Spectrum{
     
 // actions: [pointerdown, pointerup, mouseover, mouseout]
     //icon: Sprite
-    static createButton(x, y, height, width, clickAction, icon=null)
+    static createButton(x, y, height, width, clickAction, icon=null, text=null)
     {
         let container = new PIXI.Container();
         let graphics = new PIXI.Graphics();
@@ -35,9 +35,17 @@ class Spectrum{
         container.addChild(graphics);
         if(icon){
             container.addChild(icon);
-            icon.height = 60;
-            icon.width = 60;
+            icon.height = height;
+            icon.width = width;
             icon.alpha = 0.5;
+        }
+        if(text){
+            let style = {align: "center", fontWeight:"bold", fontSize: "60"};
+            let textSprite = new PIXI.Text(text, style);
+            textSprite.anchor.set(0.5);
+            textSprite.x = width/2;
+            textSprite.y = height/2;
+            container.addChild(textSprite);
         }
         container.x = x;
         container.y = y;
@@ -72,7 +80,8 @@ class Spectrum{
     static createColorPickDropdown(){
         let optionContainer = new PIXI.Container();
         let dropdownContainer = new PIXI.Container();
-        let dropdownBtn = Spectrum.createButton(20,app.screen.height-80, 60, 60,
+        let side = 60;
+        let dropdownBtn = Spectrum.createButton(20,app.screen.height-80, side, side,
             function(){
                 optionContainer.visible = !optionContainer.visible;
         });
@@ -81,12 +90,9 @@ class Spectrum{
 
         let options = ["red", "green", "blue", "original"];
         for (let i = 0; i < 4; i++) {
-            let optionBtn = Spectrum.createButton(85 + i*65, app.screen.height-80, 60, 60,
-                function(){Spectrum.onClickColorOptions(options[i])});
+            let optionBtn = Spectrum.createButton(85 + i*65, app.screen.height-80, side, side,
+                function(){Spectrum.onClickColorOptions(options[i])}, null, options[i]);
             optionBtn.buttonMode = true;
-            let text = new PIXI.Text(options[i]);
-            text.style = {align: "center"};
-            optionBtn.addChild(text);
             optionContainer.addChild(optionBtn);
         }
         optionContainer.visible = false;

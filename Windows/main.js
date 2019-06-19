@@ -1,15 +1,17 @@
-// for image selection container
-var w_menuContainer = new PIXI.Container();
 
-// title container
-var w_titleContainer = new PIXI.Container();
+var clickcounter; // image menu click counter
+var settingsCC; // settings menu
+var saveCC;
 
+var showTitle; // title disappears after first interaction
 
-// for popup window
-var w_PopupContainer = new PIXI.Container();
+var w_titleContainer = new PIXI.Container(); // title container
+var w_menuContainer = new PIXI.Container(); // for image selection
+var w_settingsContainer = new PIXI.Container(); // for settings menu
+var w_PopupContainer = new PIXI.Container(); // for popup window
 
 // PIXI Text style
-var w_style = {fontFamily: 'Helvetica', fontSize: 22, fill: 0xffffff};
+var w_style = {fontFamily: 'Helvetica', fontSize: 15, fill: 0xffffff};
 
 
 function startWindows(){
@@ -24,18 +26,31 @@ function startWindows(){
   sprite.height = window.innerHeight;
   app.stage.addChild(sprite);
 
+
+
+  // decorative hexagons
+
+  var y = -8;
+  for(var i=0; i<4; i++)
+  {
+    var deco_hex2 = new drawHexOutline(1.5, y+16, 4);
+    var deco_hex1 = new drawHexOutline(11, y, 4);
+    y = y+32;
+  }
+
+
   
   // page title text
 
   const titleStyle = new PIXI.TextStyle({fill: "#d3d3d3", fontFamily: "Helvetica", fontSize: 32, letterSpacing: 3});
   const title = new PIXI.Text('Select an image to begin', titleStyle);
-  title.position.x = 50;
+  title.position.x = window.innerWidth/3;
   title.position.y = 50;
   w_titleContainer.addChild(title);
 
   const subtitleStyle = new PIXI.TextStyle({fill: "#d3d3d3", fontFamily: "Helvetica", fontSize: 24, letterSpacing: 3});
   const subtitle = new PIXI.Text('by clicking the image icon', subtitleStyle);
-  subtitle.position.x = 105;
+  subtitle.position.x = window.innerWidth/3 +40;
   subtitle.position.y = 92;
   w_titleContainer.addChild(subtitle);
 
@@ -43,56 +58,40 @@ function startWindows(){
 
 
 
+  // save button
+  var saveButton = new makeHex(20, 8, 4, "transparent.png", 3);
+  const saveIcon = new PIXI.Sprite.fromImage("Images/save-icon.png");
+    saveIcon.width = 46;
+    saveIcon.height = 46;
+    saveIcon.position.x = 57;
+    saveIcon.position.y = 49;
+  app.stage.addChild(saveIcon);
+
+  // settings button
+  var settingsButton = new makeHex(38.5, 8, 4, "transparent.png", 2);
+  const settingsIcon = new PIXI.Sprite.fromImage("Images/settings.png");
+    settingsIcon.width = 82;
+    settingsIcon.height = 82;
+    settingsIcon.position.x = 113;
+    settingsIcon.position.y = 32;
+  app.stage.addChild(settingsIcon);
+
+
+
 
   // Image Menu (Container)
-/*
-  const menuGraphics = new PIXI.Graphics();
-    menuGraphics.beginFill(0xFFFFFF, 1.5); // Color and opacity
-    menuraphics.lineStyle(2, 0x414141, 2);
-    menuGraphics.drawRoundedRect(0, 10, 320, 200, 2);
-    menuGraphics.endFill();
-    menuGraphics.alpha = 0.05;
-  w_imageMenuContainer.addChild(menuGraphics);
-*/
 
-  var img_btn = new makeMenuButton(10, 0.3*window.innerHeight-26, 55, 55);
+  var imageHex = new makeHex(20, 40, 4, "Images/picture-icon.png", 1);
 
-  const imgIcon = new PIXI.Sprite.fromImage("Images/picture-icon.png");
-  imgIcon.width = 50;
-  imgIcon.height = 50;
-  imgIcon.position.x = 11;
-  imgIcon.position.y = 0.3*window.innerHeight-24;
-  app.stage.addChild(imgIcon);
+  var lowmag_btn = new makeImageHex(30, 56, 4, "Images/LowMag.jpg", "Low Mag\n Imaging");
+  var multispec_btn = new makeImageHex(20.5, 72, 4, "Images/Multispectrum.jpg", "   Multi\nspectrum");
+  var multiblock_btn = new makeImageHex(30, 88, 4, "Images/Multiblock.jpg", "   Multi\n   block");
+  var lineintegral_btn = new makeImageHex(20.5, 104, 4, "Images/LineIntegral.jpg", "    Line\n Integral");
+
+
+
 
   
-
-
-  var lowmag_btn = new makeRectButton(0, 0.3*window.innerHeight, 40, 250, "Images/LowMag.jpg");
-  let label1 = new PIXI.Text('Low Mag Imaging', w_style);
-  label1.position.x = 10;
-  label1.position.y = 0.3*window.innerHeight + 7;
-  w_menuContainer.addChild(label1);
-
-  var multispec_btn = new makeRectButton(0, 0.3*window.innerHeight +70, 40, 250, "Images/Multispectrum.jpg");
-  let label2 = new PIXI.Text('Multispectrum Interface', w_style);
-  label2.position.x = 10;
-  label2.position.y = 0.3*window.innerHeight +77;
-  w_menuContainer.addChild(label2);
-
-  var multiblock_btn = new makeRectButton(0, 0.3*window.innerHeight +140, 40, 250, "Images/Multiblock.jpg");
-  let label3 = new PIXI.Text('Multi-Block Analysis', w_style);
-  label3.position.x = 10;
-  label3.position.y = 0.3*window.innerHeight +147;
-  w_menuContainer.addChild(label3);
-
-  var lineintegral_btn = new makeRectButton(0, 0.3*window.innerHeight + 210, 40, 250, "Images/LineIntegral.jpg");
-  let label4 = new PIXI.Text('Line-Integral Analysis', w_style);
-  label4.position.x = 10;
-  label4.position.y = 0.3*window.innerHeight +217;
-  w_menuContainer.addChild(label4);
-
-  //app.stage.addChild(w_menuContainer);
-
 
 
   // POPUP WINDOW 
@@ -123,39 +122,8 @@ function startWindows(){
       closeImage.on('mousedown', w_disablePopup);
       closeImage.alpha = 0.7;
   w_PopupContainer.addChild(closeImage);
-    
+
+
 }
 
-function createGradTexture() {
-  // adjust it if somehow you need better quality for very very big images
-  const quality = 256;
-  const canvas = document.createElement('canvas');
-  canvas.width = quality;
-  canvas.height = 1;
-
-  const ctx = canvas.getContext('2d');
-
-  // use canvas2d API to create gradient
-  const grd = ctx.createLinearGradient(0, 0, quality, 0);
-  grd.addColorStop(0, 'rgba(0, 0, 0, 1)');
-  grd.addColorStop(1, 'rgba(47, 79, 79, 1)');
-
-  ctx.fillStyle = grd;
-  ctx.fillRect(0, 0, quality, 1);
-
-  return PIXI.Texture.from(canvas);
-}
-
-
-function w_hoverCloseButton(event) {
-  this.alpha = 1;
-}
-
-function w_hoverCloseButtonOff(event) {
-  this.alpha = 0.5;
-}
-
-function w_disablePopup(event) {
-  app.stage.removeChild(w_PopupContainer);
-}
 

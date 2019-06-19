@@ -6,31 +6,13 @@
 // pixi: 5.0.3
 // pixi-viewport: 3.4.1 (local - modified by Eddie Sohn)
 
-// calls pixi-viewport
-var Viewport = new PIXI.extras.Viewport({
-    screenWidth: window.innerWidth,
-    screenHeight: window.innerHeight,
-    worldWidth: 1000,
-    worldHeight: 1000,
-    interaction: app.renderer.plugins.interaction // the interaction module is important for wheel() to work properly when renderer.view is placed or scaled
-});
-
 // initialize images need to be used
 var zoom_background = PIXI.Texture.from('./Images/lowmag_test.jpg');
 const cancel_button =  PIXI.Sprite.from('./Images/cancel_icon.png');
 
-// activate mouse/touch gestures
-Viewport
-    .drag()
-    .pinch()
-    .wheel()
-    .decelerate();
-
 // call the image and added to Viewport
 // create a new new texture from image
 var testimg = new PIXI.Sprite(zoom_background);
-testimg.width = app.screen.width;
-testimg.height = app.screen.height;
 
 //Cancel button is used to end line drawing process prematurely
 //Will appear once first point has been added
@@ -38,7 +20,7 @@ testimg.height = app.screen.height;
 cancel_button.width = 50;
 cancel_button.height = 50;
 cancel_button.x = 0;
-cancel_button.y = app.screen.height - 100;
+cancel_button.y = 0;
 cancel_button.alpha = 0;
 cancel_button.interactive = true;
 cancel_button.buttonMode = true;
@@ -64,16 +46,6 @@ const style = new PIXI.TextStyle({
     wordWrapWidth: 500,
 });
 
-//Tells user how to use application
-//Text will change along with process
-const richText = new PIXI.Text('Select an rectangular area over image to crop', style);
-richText.x = app.screen.width / 2 - 250;
-richText.y = 0;
-
-//Some constants initialized here to be used later
-//Graphics concern the line itself
-const graphics = new PIXI.Graphics();
-
 //This determines whether a line is currently being drawn
 //is used in the draw point function
 let drawing = false;
@@ -90,14 +62,37 @@ var valueDifference = maxValue - minValue;
  * fucntion called from master.html for 'Zoom' (Low Magnification Screening / Imaging) to show Low Magnification Screening / Imaging
  */
 function LSMI() {
+    // calls pixi-viewport
+    var Viewport = new PIXI.extras.Viewport({
+        screenWidth: window.innerWidth,
+        screenHeight: window.innerHeight,
+        worldWidth: 1000,
+        worldHeight: 1000,
+        interaction: app.renderer.plugins.interaction // the interaction module is important for wheel() to work properly when renderer.view is placed or scaled
+    });
     
+    // activate mouse/touch gestures
+    Viewport
+    .drag()
+    .pinch()
+    .wheel()
+    .decelerate();
+
     // add the viewport to the stage
     app.stage.addChild(Viewport);
+
+    testimg.width = app.screen.width;
+    testimg.height = app.screen.height;
 
     // add background image and cancel button to viewport
     var sprite = Viewport.addChild(testimg);
     var button = Viewport.addChild(cancel_button);
 
+    //Tells user how to use application
+    //Text will change along with process
+    richText = new PIXI.Text('Select an rectangular area over image to crop.', style);
+    richText.x = app.screen.width / 2 - 250;
+    richText.y = 0;
     app.stage.addChild(richText);
 
     app.stage.on('pointerdown', drawPoint);
@@ -136,7 +131,7 @@ function drawPoint(event) {
             points = [event.data.global.x, event.data.global.y];
 
             //Updates text and cancel button
-            richText.text = 'Select the ending point to crop the area.';
+            richText.text = 'Select the ending point to crop the area. (Touch cancel to stop)';
 
             // Alpha of cancle button
             cancel_button.alpha = 1;
@@ -164,25 +159,27 @@ function drawPoint(event) {
 
             // get selected screen as image
             // select 'pixiCanvas' to display cropped Image
-            var myCanvas = document.getElementById('pixiCanvas');
+            // var myCanvas = document.getElementById('pixiCanvas');
             
-            // TODO: use 't1' instead 'test_image', to make it compatiable
-            var ctx = myCanvas.getContext('2d');
-            var img = new Image();
-            img.onload = function(){
-                // points[]: starting point (x, y) of rectangle drawn
-                // event.data.global: ending point (x, y) of rectangle drawn
-                // event.data.global - points[]: width & height of rectangle drawn
+            // CROP - commented
+            // TODO: save cropped image
+            // // TODO: use 't1' instead 'test_image', to make it compatiable
+            // var ctx = myCanvas.getContext('2d');
+            // var img = new Image();
+            // img.onload = function(){
+            //     // points[]: starting point (x, y) of rectangle drawn
+            //     // event.data.global: ending point (x, y) of rectangle drawn
+            //     // event.data.global - points[]: width & height of rectangle drawn
 
-                // draw new image using points selected by user
-                ctx.drawImage(img, points[0], points[1], event.data.global.x - points[0], event.data.global.y - points[1], 0, 0, 2 * (event.data.global.x - points[0]), 2 * (event.data.global.y - points[1]));
+            //     // draw new image using points selected by user
+            //     ctx.drawImage(img, points[0], points[1], event.data.global.x - points[0], event.data.global.y - points[1], 0, 0, 2 * (event.data.global.x - points[0]), 2 * (event.data.global.y - points[1]));
 
-            };
+            // };
 
-            document.body.appendChild(myCanvas);
+            // document.body.appendChild(myCanvas);
 
-            // set the image source
-            img.src = './Images/lowmag_test.jpg';
+            // // set the image source
+            // img.src = './Images/lowmag_test.jpg';
 
             //Changes draw value and updates other information
             drawing = false;
@@ -214,7 +211,7 @@ function cancelDraw(event) {
         points = [0, 0];
         cancel = true;
         drawing = false;
-        richText.text = 'Make a starting point for your line by clicking on the screen';
+        richText.text = 'Make a starting point for your line by clicking on the screen.';
     }
 } // end cancel draw
 

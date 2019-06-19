@@ -32,7 +32,9 @@ var instructionContainer = new PIXI.Container();
 
 /* End of Multi-block global variables */
 
-
+/* Start of global variables for Zoom (LMSI) */
+var richText;
+/* End of global variables for Zoom (LMSI) */
 
 /* Begin of Window System global variables */
 

@@ -1,0 +1,7 @@
+
+class Projects{
+    
+    static startProjects(){
+    
+    }
+}

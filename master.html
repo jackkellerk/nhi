@@ -19,6 +19,9 @@
         <script src="Windows/drawHex.js"></script>
         <script src="Windows/drawInfoBox.js"></script>
         
+        <!--Projects Page Dependencies-->
+        <script src="ProjectsPage/projects.js"></script>
+        
         <!--Spectrum Imaging Dependencies-->
         <script src="Spectrum_Imaging/spectrum.js"></script>
         
@@ -113,6 +116,11 @@
                 {
                     // function in main.js in Windows folder
                     startWindows();
+                }
+                else if(currentActivity == 'Projects')
+                {
+                    Projects.startProjects();
+                    
                 }
                 else if(currentActivity == 'Zoom')
                 {

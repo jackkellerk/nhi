@@ -1,14 +1,17 @@
 
+var menuCC; // main menu
 var clickcounter; // image menu click counter
 var settingsCC; // settings menu
 var saveCC;
-var micCC;
 
 var showTitle; // title disappears after first interaction
 
+var images = ["Images/LowMag.jpg", "Images/Multispectrum.jpg", "Images/Multiblock.jpg", "Images/LineIntegral.jpg"]; // array with images sources.. for now
+
+var w_hexGridContainer = new PIXI.Container(); 
 var w_titleContainer = new PIXI.Container(); // title container
-var w_microscopeContainer = new PIXI.Container(); // miscroscope collection
-var w_menuContainer = new PIXI.Container(); // for image selection
+var w_menuContainer = new PIXI.Container(); // menu container
+var w_imageMenuContainer = new PIXI.Container(); // for image selection
 var w_settingsContainer = new PIXI.Container(); // for settings menu
 var w_PopupContainer = new PIXI.Container(); // for popup window
 
@@ -30,15 +33,9 @@ function startWindows(){
 
 
 
-  // decorative hexagons
+  //  hexagon grid
 
-  var y = -8;
-  for(var i=0; i<4; i++)
-  {
-    var deco_hex2 = new drawHexOutline(1.5, y+16, 4);
-    var deco_hex1 = new drawHexOutline(11, y, 4);
-    y = y+32;
-  }
+  drawHexGrid(true); // parameter indicates with/without coordinates
 
 
   
@@ -60,35 +57,95 @@ function startWindows(){
 
 
 
+
+
+  // menu button
+
+  var menuButton = new makeTaskHex(36.8, 8, "menu");
+  const menuIcon = new PIXI.Sprite.fromImage("Images/menu.png");
+    menuIcon.width = 44;
+    menuIcon.height = 37;
+    menuIcon.position.x = 15;
+    menuIcon.position.y = 31;
+  app.stage.addChild(menuIcon);
+
+
+
+
   // save button
-  var saveButton = new makeHex(20, 8, 4, "transparent.png", 3);
+
+  var saveButton = new makeTaskHex(110.8, 8, "save");
   const saveIcon = new PIXI.Sprite.fromImage("Images/save-icon.png");
     saveIcon.width = 46;
     saveIcon.height = 46;
-    saveIcon.position.x = 57;
-    saveIcon.position.y = 49;
-  app.stage.addChild(saveIcon);
-  //var saveInfo = new drawInfoBox(25, 13, 10, "Save & Exit");
+    saveIcon.position.x = 88;
+    saveIcon.position.y = 23;
+  w_menuContainer.addChildAt(saveIcon, w_menuContainer.children.length-2);
 
 
   // settings button
-  var settingsButton = new makeSettingsHex(38.5, 8, 4);
+  var settingsButton = new makeTaskHex(184.8, 8, "settings");
+  const settingsIcon = new PIXI.Sprite.fromImage("Images/settings.png");
+    settingsIcon.width = 80;
+    settingsIcon.height = 80;
+    settingsIcon.position.x = 145;
+    settingsIcon.position.y = 8;
+  w_menuContainer.addChildAt(settingsIcon, w_menuContainer.children.length-2);
 
-  var settingsInfo = new drawInfoBox(155, 90, 4, "Project Settings");
+  
 
+  // Hide Menu Option
+
+  var HideButton = new makeTaskHex(258.8, 8, "Hide Menu");
+  let label1 = new PIXI.Text("Hide\nMenu", w_style);
+    label1.position.x = 260;
+    label1.position.y = 18;
+  w_menuContainer.addChild(label1);
 
   // Microscope Menu
-
-  var micMenuHex = new makeHex(20, 40, 4, "Images/microscope.png", 1);
-
+/*
+  var micMenuHex = new makeTaskHex(36, 136, "microscope");
+  const hexImg = new PIXI.Sprite.fromImage("Images/microscope.png");
+    hexImg.width = 54;
+    hexImg.height = 54;
+    hexImg.position.x = 20.4;
+    hexImg.position.y = 144.8;
+    hexImg.alpha = 0.5;
+  app.stage.addChild(hexImg);
+  const plusIcon = new PIXI.Sprite.fromImage("Images/plus.png");
+    plusIcon.width = 46;
+    plusIcon.height = 46;
+    plusIcon.position.x = 11;
+    plusIcon.position.y = 153;
+    plusIcon.alpha = 0.5;
+  w_menuContainer.addChild(plusIcon);
+ */
 
 
   // Image Menu (Container)
 
-  var lowmag_btn = new makeImageHex(30, 56, 4, "Images/LowMag.jpg", "Low Mag\n Imaging");
-  var multispec_btn = new makeImageHex(20.5, 72, 4, "Images/Multispectrum.jpg", "   Multi\nspectrum");
-  var multiblock_btn = new makeImageHex(30, 88, 4, "Images/Multiblock.jpg", "   Multi\n   block");
-  var lineintegral_btn = new makeImageHex(20.5, 104, 4, "Images/LineIntegral.jpg", "    Line\n Integral");
+  var images = ["Images/LowMag.jpg", "Images/Multispectrum.jpg", "Images/Multiblock.jpg", "Images/LineIntegral.jpg"];
+
+  var lowmag_btn = new makeTaskHex(36.8, 136, "image1");
+  let label1 = new PIXI.Text("Low Mag\nImaging", w_style);
+    label1.position.x = 9;
+    label1.position.y = 156;
+  app.stage.addChild(label1);
+  var multispec_btn = new makeTaskHex(74, 200, "image2");
+  let label2 = new PIXI.Text("   Multi\nspectrum", w_style);
+    label2.position.x = 44;
+    label2.position.y = 220;
+  app.stage.addChild(label2);
+  var multiblock_btn = new makeTaskHex(36.8, 264, "image3");
+  let label3 = new PIXI.Text("Multi\nblock", w_style);
+    label3.position.x = 18;
+    label3.position.y = 284;
+  app.stage.addChild(label3);
+  var lineintegral_btn = new makeTaskHex(74, 328, "image4");
+  let label4 = new PIXI.Text("  Line\nIntegral", w_style);
+    label4.position.x = 47;
+    label4.position.y = 346;
+  app.stage.addChild(label4);
 
 
 

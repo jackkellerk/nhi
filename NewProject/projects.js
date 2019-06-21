@@ -15,9 +15,20 @@ class Projects{
             center0 = windowHexagons[i * 2].getCenterRight(0.005 * h);
         }
         // h1.graphics.lineStyle(2, 0x414141, 3);
+        
+        // const
+    }
+    
+    static createBg(){
+        const gradTexture = createGradTexture();
+        const sprite = new PIXI.Sprite(gradTexture);
+        sprite.width = window.innerWidth;
+        sprite.height = window.innerHeight;
+        app.stage.addChild(sprite);
     }
     
     static startProjects(){
+        Projects.createBg();
         Projects.createWindowHexagons();
     }
 }

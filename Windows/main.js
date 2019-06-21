@@ -11,7 +11,7 @@ var images = ["Images/LowMag.jpg", "Images/Multispectrum.jpg", "Images/Multibloc
 var w_hexGridContainer = new PIXI.Container(); 
 var w_titleContainer = new PIXI.Container(); // title container
 var w_menuContainer = new PIXI.Container(); // menu container
-var w_imageMenuContainer = new PIXI.Container(); // for image selection
+var w_imageContainer = new PIXI.Container(); // for image selection
 var w_settingsContainer = new PIXI.Container(); // for settings menu
 var w_PopupContainer = new PIXI.Container(); // for popup window
 
@@ -130,25 +130,24 @@ function startWindows(){
   let label5 = new PIXI.Text("Low Mag\nImaging", w_style);
     label5.position.x = 9;
     label5.position.y = 156;
-  app.stage.addChild(label5);
+  w_imageContainer.addChild(label5);
   var multispec_btn = new makeTaskHex(74, 200, "image2");
   let label2 = new PIXI.Text("   Multi\nspectrum", w_style);
     label2.position.x = 44;
     label2.position.y = 220;
-  app.stage.addChild(label2);
+  w_imageContainer.addChild(label2);
   var multiblock_btn = new makeTaskHex(36.8, 264, "image3");
   let label3 = new PIXI.Text("Multi\nblock", w_style);
     label3.position.x = 18;
     label3.position.y = 284;
-  app.stage.addChild(label3);
+  w_imageContainer.addChild(label3);
   var lineintegral_btn = new makeTaskHex(74, 328, "image4");
   let label4 = new PIXI.Text("  Line\nIntegral", w_style);
     label4.position.x = 47;
     label4.position.y = 346;
-  app.stage.addChild(label4);
+  w_imageContainer.addChild(label4);
 
-
-
+  app.stage.addChild(w_imageContainer);
 
   
 

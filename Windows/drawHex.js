@@ -82,26 +82,27 @@ function makeTaskHex(x, y, task)
             break;
         case "Hide Menu":
             hex.on('pointerdown', w_HideSelect);
+            w_menuContainer.addChild(hex);
             break;
         case "image1":
             hex.source = images[0];
             hex.on('pointerdown', w_ImageSelect);
-            app.stage.addChild(hex);
+            w_imageContainer.addChild(hex);
             break;
         case "image2":
             hex.source = images[1];
             hex.on('pointerdown', w_ImageSelect);
-            app.stage.addChild(hex);
+            w_imageContainer.addChild(hex);
             break;
         case "image3":
             hex.source = images[2];
             hex.on('pointerdown', w_ImageSelect);
-            app.stage.addChild(hex);
+            w_imageContainer.addChild(hex);
             break;
         case "image4":
             hex.source = images[3];
             hex.on('pointerdown', w_ImageSelect);
-            app.stage.addChild(hex);
+            w_imageContainer.addChild(hex);
             break;
         default:
           // code block
@@ -163,9 +164,11 @@ function w_SettingsSelect()
     }
 }
 
-function w_ImagesSelect()
+function w_HideSelect()
 {
-    app.stage.removeChild(w_settingsContainer)
+    app.stage.removeChild(w_settingsContainer);
+    app.stage.removeChild(w_imageContainer);
+    app.stage.removeChild(w_menuContainer);
 }
 
 function w_ImageSelect()
@@ -185,53 +188,3 @@ function w_ImageSelect()
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-
-
-
-function makeImageHex(tip_x, tip_y, source, text)
-{
-
-    var btn = new PIXI.Graphics();
-    btn.beginFill(0xFFFFFF, 1); // Color and opacity
-    btn.lineStyle(2, 0x414141, 3);
-    btn.drawPolygon([tip_x,tip_y, tip_x+34.8,tip_y+20, tip_x+34.8,tip_y+60, tip_x,tip_y+80, tip_x-34.8,tip_y+60, tip_x-34.8,tip_y+20]);
-    btn.endFill();
-    btn.interactive = true;
-    btn.on('mouseover', w_ImageHoverOver); // When mouse hovers over the button, it calls onHoverOver() function
-    btn.on('mouseout', w_ImageHoverOff);
-    btn.on('pointerdown', w_ImageSelect);
-    btn.alpha = 0.3;
-    btn.source = source;
-    w_imageMenuContainer.addChild(btn);
-
-    
-
-
-}
-
-function w_ImageHoverOver(event)
-{
-    this.data = event.data;
-    this.alpha = 0.7;
-}
-
-function w_ImageHoverOff(event)
-{
-    this.data = event.data;
-    this.alpha = 0.3;
-}
-
-*/

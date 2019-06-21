@@ -127,10 +127,10 @@ function startWindows(){
   var images = ["Images/LowMag.jpg", "Images/Multispectrum.jpg", "Images/Multiblock.jpg", "Images/LineIntegral.jpg"];
 
   var lowmag_btn = new makeTaskHex(36.8, 136, "image1");
-  let label1 = new PIXI.Text("Low Mag\nImaging", w_style);
-    label1.position.x = 9;
-    label1.position.y = 156;
-  app.stage.addChild(label1);
+  let label5 = new PIXI.Text("Low Mag\nImaging", w_style);
+    label5.position.x = 9;
+    label5.position.y = 156;
+  app.stage.addChild(label5);
   var multispec_btn = new makeTaskHex(74, 200, "image2");
   let label2 = new PIXI.Text("   Multi\nspectrum", w_style);
     label2.position.x = 44;

@@ -27,15 +27,15 @@ function startWindows(){
   const gradTexture = createGradTexture();
 
   const sprite = new PIXI.Sprite(gradTexture);
-  sprite.width = window.innerWidth;
-  sprite.height = window.innerHeight;
+  sprite.width = app.screen.width;
+  sprite.height = app.screen.height;
   app.stage.addChild(sprite);
 
 
 
   //  hexagon grid
 
-  drawHexGrid(true); // parameter indicates with/without coordinates
+  //drawHexGrid(true); // parameter indicates with/without coordinates
 
 
   
@@ -60,6 +60,26 @@ function startWindows(){
 
 
   // menu button
+
+  let myHex = new Hexagon({x: 300, y: 100}, null, 20);
+  myHex.graphics.interactive = true;
+  myHex.draw(0xFFFFFF);
+
+/*
+
+  let h = app.screen.height; // window height
+  let rad = h * 0.7 / 3.5; // radius
+  let hexWidth = rad / 2 * Math.sqrt(3);
+  let center0 = {x: 0.3 * h + hexWidth, y: 0.2 * h + rad};
+  let HexList = [];
+  for (let i = 0; i < 3; i++) {
+    HexList.push(new Hexagon(center0, null, rad));
+    HexList[i * 2].draw(Hexagon.getHexColor("white"));
+    HexList.push(new Hexagon(HexList[i*2].getCenterLowerRight(0.005 * h), null, rad));
+    HexList[i * 2 + 1].draw(Hexagon.getHexColor("white"));
+    center0 = HexList[i * 2].getCenterRight(0.005 * h);
+  }
+
 
   var menuButton = new makeTaskHex(36.8, 8, "menu");
   const menuIcon = new PIXI.Sprite.fromImage("Images/menu.png");
@@ -103,7 +123,7 @@ function startWindows(){
   w_menuContainer.addChild(label1);
 
   // Microscope Menu
-/*
+
   var micMenuHex = new makeTaskHex(36, 136, "microscope");
   const hexImg = new PIXI.Sprite.fromImage("Images/microscope.png");
     hexImg.width = 54;
@@ -119,7 +139,7 @@ function startWindows(){
     plusIcon.position.y = 153;
     plusIcon.alpha = 0.5;
   w_menuContainer.addChild(plusIcon);
- */
+
 
 
   // Image Menu (Container)
@@ -181,7 +201,7 @@ function startWindows(){
       closeImage.alpha = 0.7;
   w_PopupContainer.addChild(closeImage);
 
-
+*/
 }
 
 

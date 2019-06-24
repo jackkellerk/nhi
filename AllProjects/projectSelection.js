@@ -35,16 +35,20 @@ function startAllProjects()
     app.stage.addChild(a_titleContainer);
 
 
-/*
-    let myHex = new Hexagon({x: 100, y: 100}, 5, 0);
-    myHex.graphics.interactive = true;
-    myHex.graphics.on('mouseover', a_hexHoverOver); // When mouse hovers over the button, it calls onHoverOver() function
-    myHex.graphics.on('mouseout', a_hexHoverOff);
-    myHex.draw(0xFFFFFF);
-*/
 
+    // Settings Hex
 
-    let settings = drawHex(50, 55, 37, 32, 0xFFFFFF);
+    a_settingsCC = 1;
+
+    let settings = new Hexagon({x:50, y:55}, 32, 37);
+    settings.graphics.lineStyle(2, 0x7D7D7D, 3);
+    settings.graphics.interactive = true;
+    settings.graphics.on('mouseover', a_hexHoverOver);
+    settings.graphics.on('mouseout', a_hexHoverOff);
+    settings.graphics.on('pointerdown', a_SettingsSelect);
+    settings.graphics.alpha = 0.7;
+    settings.draw(0xFFFFFF);
+
     let profilesettings = new PIXI.Sprite.fromImage("Images/profilesettings.png");
         profilesettings.width = 65;
         profilesettings.height = 60;
@@ -52,40 +56,49 @@ function startAllProjects()
         profilesettings.position.y = 26;
     app.stage.addChild(profilesettings);
 
-    //let project1 = drawHex(270, 220, 80, 70, 0x000000);
-    let x = 270;
-    let y = 220;
-    let radius = 80;
-    let hwidth = 70;
-    let fill = 0xFFFFFF;
-    let myHex = new PIXI.Graphics();
-    myHex.beginFill(fill);
-    myHex.lineStyle(2, 0x7D7D7D, 3);
-    myHex.drawPolygon([  // every two number represents a coordinate of a point on the path of this hexagon
-        x, y - radius,
-        x + hwidth, y - radius/2,
-        x + hwidth, y + radius/2,
-        x, y + radius,
-        x - hwidth, y + radius/2,
-        x - hwidth, y - radius/2
-    ]);
-    myHex.endFill();
-    myHex.interactive = true;
-    myHex.on('mouseover', a_hexHoverOver); // When mouse hovers over the button, it calls onHoverOver() function
-    myHex.on('mouseout', a_hexHoverOff);
-    myHex.on('pointerdown', a_SettingsSelect);
-    myHex.alpha = 0.7;
-    app.stage.addChild(myHex);
+
+
+    // Project 1
 
     let p1_image = new PIXI.Sprite.fromImage("Images/sinteredMetal.png");
-        p1_image.width = 100;
-        p1_image.height = 100;
-        p1_image.position.x = 200;
-        p1_image.position.y = 200;
+        p1_image.width = 500;
+        p1_image.height = 500;
+        p1_image.position.x = 150;
+        p1_image.position.y = 140;
     a_project1Container.addChild(p1_image);
     app.stage.addChild(a_project1Container);
 
-    a_project1Container.mask = myHex;
+    let maskHexes = [];
+    maskHexes.push(drawMaskHex(270, 220, 70, 80));
+    maskHexes.push(drawMaskHex(345, 350, 70, 80));
+    a_project1Container.mask = maskHexes[0];
+
+    let project1 = new Hexagon({x:270, y:220}, 70, 80);
+    project1.graphics.lineStyle(3, 0xFFFFFF, 3);
+    project1.graphics.interactive = true;
+    project1.graphics.on('mouseover', a_projectHoverOver);
+    project1.graphics.on('mouseout', a_projectHoverOff);
+    project1.graphics.on('pointerdown', a_project1Select);
+    project1.graphics.alpha = 0;
+    project1.draw(0xFFFFFF);
+
+
+/*
+    let tempHex1 = new PIXI.Graphics();
+        tempHex1.beginFill(0xFFFFFF);
+        tempHex1.lineStyle(2, 0x7D7D7D, 3);
+        tempHex1.drawPolygon([ 270,140, 340,180, 340,260, 270,300, 200,260, 200,180 ]);
+        tempHex1.endFill();
+    app.stage.addChild(tempHex1);
+    a_project1Container.mask = tempHex1;
+
+     let tempHex2 = new PIXI.Graphics();
+        tempHex2.beginFill(0xFFFFFF);
+        tempHex2.lineStyle(2, 0x7D7D7D, 3);
+        tempHex2.drawPolygon([ 270,140, 340,180, 340,260, 270,300, 200,260, 200,180 ]);
+        tempHex2.endFill();
+
+*/
 
 
 
@@ -95,7 +108,7 @@ function startAllProjects()
 
 function a_hexHoverOver()
 {
-    this.alpha = 0.9;
+    this.alpha = 1;
 }
 
 function a_hexHoverOff()
@@ -117,31 +130,30 @@ function a_SettingsSelect()
     }
 }
 
+function a_projectHoverOver()
+{
+    this.alpha = 0.1;
+}
+
+function a_projectHoverOff()
+{
+    this.alpha = 0;
+}
+
 function a_project1Select()
 {
     app.stage.removeChild(a_titleContainer);
 }
 
 
-function drawHex(x, y, radius, hwidth, fill)
-{
-    let myHex = new PIXI.Graphics();
-    myHex.beginFill(fill);
-    myHex.lineStyle(2, 0x7D7D7D, 3);
-    myHex.drawPolygon([  // every two number represents a coordinate of a point on the path of this hexagon
-        x, y - radius,
-        x + hwidth, y - radius/2,
-        x + hwidth, y + radius/2,
-        x, y + radius,
-        x - hwidth, y + radius/2,
-        x - hwidth, y - radius/2
-    ]);
-    myHex.endFill();
-    myHex.interactive = true;
-    myHex.on('mouseover', a_hexHoverOver); // When mouse hovers over the button, it calls onHoverOver() function
-    myHex.on('mouseout', a_hexHoverOff);
-    myHex.on('pointerdown', a_SettingsSelect);
-    myHex.alpha = 0.7;
-    app.stage.addChild(myHex);
 
+
+function drawMaskHex(x, y, hwidth, radius)
+{
+    let maskHex = new PIXI.Graphics;
+        maskHex.beginFill(0x000000);
+        maskHex.drawPolygon([ x,y-radius, x+hwidth,y-radius/2, x+hwidth,y+radius/2, x,y+radius, x-hwidth,y+radius/2, x-hwidth,y-radius/2 ]);
+        maskHex.endFill();
+    app.stage.addChild(maskHex);
+    return maskHex;
 }

@@ -27,8 +27,10 @@ class Projects{
         app.stage.addChild(sprite);
     }
     
+    static
+    
     static startProjects(){
         Projects.createBg();
-        Projects.createWindowHexagons();
+        // Projects.createWindowHexagons();
     }
 }

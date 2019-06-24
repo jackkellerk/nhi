@@ -14,6 +14,9 @@
         <script src="Login/login.js"></script>
         <script src="Login/captionFactory.js"></script>
         
+        <!--Project Selection Dependencies-->
+        <script src="AllProjects/projectSelection.js"></script>
+        
         <!--Windows Dependencies-->
         <script src="Windows/windows.js"></script>
         <script src="Windows/makeBg.js"></script>
@@ -113,12 +116,16 @@
                 {
                     startLoginPage();
                 }
+                else if(currentActivity == 'AllProjects')
+                {
+                    startAllProjects();
+                }
                 else if(currentActivity == 'Windows')
                 {
                     // function in windows.js in Windows folder
                     startWindows();
                 }
-                else if(currentActivity == 'Projects')
+                else if(currentActivity == 'NewProject')
                 {
                     Projects.startProjects();
                     

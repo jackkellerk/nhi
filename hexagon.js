@@ -2,13 +2,15 @@
 PIXI hexagon
  */
 class Hexagon{
-    static SQRT3 = Math.sqrt(3);
+    // static SQRT3 = Math.sqrt(3); //can only use 'static' for methods in js..? see line 12
     
     /*
     center: {x, y}, a Javascript object, coordinate of center
     hwidth: half width
      */
     constructor(center, hwidth=null, radius=null){
+        let SQRT3 = Math.sqrt(3); // now just a local var
+        
         this.center = center;
         this.x = center.x;
         this.y = center.y;

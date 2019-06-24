@@ -1,5 +1,5 @@
 
-class Projects{
+class NewProject{
     
     static createWindowHexagons(){
         let h = app.screen.height;
@@ -30,7 +30,7 @@ class Projects{
     static
     
     static startProjects(){
-        Projects.createBg();
-        // Projects.createWindowHexagons();
+        NewProject.createBg();
+        // NewProject.createWindowHexagons();
     }
 }

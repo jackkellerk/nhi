@@ -1,3 +1,5 @@
+// To access phpMyAdmin (Web Client for MySQL Server) goto: https://remotemysql.com/phpmyadmin/index.php (username: 1Iz28Ynucw and password: nUAiAivff5)
+
 // Locate to the directory of the mysql-connector.jar and the MySQLConnectionTest java file
 // Then run this command to compile the code: 'javac -cp .;mysql-connector.jar MySQLConnectionTest.java'
 // Then run this command to run this code: 'java -cp .;mysql-connector.jar MySQLConnection'

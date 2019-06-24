@@ -27,10 +27,16 @@ class NewProject{
         app.stage.addChild(sprite);
     }
     
-    static
+    static createNewProjectPrompt(){
+        let h = app.screen.height;
+        let prompt = new Hexagon({x: app.screen.width/2, y: h/2}, 0.4 * h);
+        prompt.graphics.lineStyle(2, 0x414141, 3);
+        prompt.draw(Hexagon.getHexColor("transparent"), 0);
+    }
     
     static startProjects(){
         NewProject.createBg();
+        NewProject.createNewProjectPrompt();
         // NewProject.createWindowHexagons();
     }
 }

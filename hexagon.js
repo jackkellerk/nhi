@@ -40,8 +40,8 @@ class Hexagon{
     Customize , i.e. lineStyle, before call this function.
     fill: color used in Graphics.beginFill(fill)
      */
-    draw(fill=0xFFFFFF){
-        this.graphics.beginFill(fill);
+    draw(fill=0xFFFFFF, alpha=1){
+        this.graphics.beginFill(fill, alpha);
         // this.graphics.lineStyle(2, 0x414141, 3);
         this.graphics.drawPolygon([  // every two number represents a coordinate of a point on the path of this hexagon
             0, 0 - this.radius,
@@ -107,6 +107,8 @@ class Hexagon{
         a.style.color = colorStr;
         let colors = window.getComputedStyle( document.body.appendChild(a) ).color.match(/\d+/g).map(function(a){ return parseInt(a,10); });
         document.body.removeChild(a);
-        return (colors.length >= 3) ? '0x' + (((1 << 24) + (colors[0] << 16) + (colors[1] << 8) + colors[2]).toString(16).substr(1)) : false;
+        let ret = (colors.length >= 3) ? '0x' + (((1 << 24) + (colors[0] << 16) + (colors[1] << 8) + colors[2]).toString(16).substr(1)) : false;
+        console.log(ret);
+        return ret;
     }
 }

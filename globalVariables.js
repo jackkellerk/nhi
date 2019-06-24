@@ -1,6 +1,6 @@
 // Determining what activity we are on
 var currentActivity = 'Welcome';
-var activityArray = ['Welcome', 'Windows', 'Projects', 'Zoom', 'Multispectrum', 'Line', 'Tilting', 'Multi-block'];
+var activityArray = ['Welcome', 'AllProjects', 'Windows', 'NewProject', 'Zoom', 'Multispectrum', 'Line', 'Tilting', 'Multi-block'];
 
 /* These are global variables for Multi-block */
 
@@ -35,9 +35,3 @@ var instructionContainer = new PIXI.Container();
 /* Start of global variables for Zoom (LMSI) */
 var richText;
 /* End of global variables for Zoom (LMSI) */
-
-/* Begin of Window System global variables */
-
-
-
-/* End of Window System global variables */

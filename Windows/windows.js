@@ -60,25 +60,12 @@ function startWindows(){
 
 
   // menu button
-
+/*
   let myHex = new Hexagon({x: 300, y: 100}, null, 20);
   myHex.graphics.interactive = true;
   myHex.draw(0xFFFFFF);
+*/
 
-/*
-
-  let h = app.screen.height; // window height
-  let rad = h * 0.7 / 3.5; // radius
-  let hexWidth = rad / 2 * Math.sqrt(3);
-  let center0 = {x: 0.3 * h + hexWidth, y: 0.2 * h + rad};
-  let HexList = [];
-  for (let i = 0; i < 3; i++) {
-    HexList.push(new Hexagon(center0, null, rad));
-    HexList[i * 2].draw(Hexagon.getHexColor("white"));
-    HexList.push(new Hexagon(HexList[i*2].getCenterLowerRight(0.005 * h), null, rad));
-    HexList[i * 2 + 1].draw(Hexagon.getHexColor("white"));
-    center0 = HexList[i * 2].getCenterRight(0.005 * h);
-  }
 
 
   var menuButton = new makeTaskHex(36.8, 8, "menu");
@@ -201,7 +188,7 @@ function startWindows(){
       closeImage.alpha = 0.7;
   w_PopupContainer.addChild(closeImage);
 
-*/
+
 }
 
 

@@ -1,6 +1,6 @@
 
 
-startAllProjects()
+function startAllProjects()
 {
     // background from gradient texture
 

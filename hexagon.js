@@ -30,8 +30,8 @@ class Hexagon{
         
         // Use this container to add icon and stuff that are with this hexagon
         this.container = new PIXI.Container();
-        this.container.x = this.x;
-        this.container.y = this.y;
+        this.container.x = this.x - this.hwidth;
+        this.container.y = this.y - this.radius;
         // Add click handlers to this graphics. Remember to set this.graphics.interactive = true;
         this.graphics = new PIXI.Graphics();
     }
@@ -44,12 +44,12 @@ class Hexagon{
         this.graphics.beginFill(fill, alpha);
         // this.graphics.lineStyle(2, 0x414141, 3);
         this.graphics.drawPolygon([  // every two number represents a coordinate of a point on the path of this hexagon
-            0, 0 - this.radius,
-            0 + this.hwidth, 0 - this.radius/2,
-            0 + this.hwidth, 0 + this.radius/2,
-            0, 0 + this.radius,
-            0 - this.hwidth, 0 + this.radius/2,
-            0 - this.hwidth, 0 - this.radius/2
+            this.hwidth, 0,
+            this.hwidth * 2, this.radius / 2,
+            this.hwidth * 2, this.radius * 3 / 2,
+            this.hwidth, this.radius * 2,
+            0, this.radius * 3 / 2,
+            0, this.radius / 2
         ]);
         this.graphics.endFill();
         this.container.addChild(this.graphics);
@@ -108,7 +108,7 @@ class Hexagon{
         let colors = window.getComputedStyle( document.body.appendChild(a) ).color.match(/\d+/g).map(function(a){ return parseInt(a,10); });
         document.body.removeChild(a);
         let ret = (colors.length >= 3) ? '0x' + (((1 << 24) + (colors[0] << 16) + (colors[1] << 8) + colors[2]).toString(16).substr(1)) : false;
-        console.log(ret);
+        // console.log(ret);
         return ret;
     }
 }

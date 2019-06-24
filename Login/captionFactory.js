@@ -6,20 +6,21 @@ function Title(options) {
     this.style = new PIXI.TextStyle({
         fontSize: options.fontSize || 36,
         fontFamily: options.fontFamily || 'Arial Black',
-        fontVariant: options.fontVariant || 'small-caps'
+        fontVariant: options.fontVariant || 'small-caps',
+        fill: options.fill || Hexagon.getHexColor("black")
     });
 }
 Title.prototype.display = function (container) {
     this.text = new PIXI.Text(this.content, this.style);
     this.text.x = 50;
-    this.text.y = 50;
+    this.text.y = container.height * 0.28;
     container.addChild(this.text);
-    return this.text.height;
-}
+    return this.text.y;
+};
 
 Title.prototype.clear = function () {
     this.text.visible = false;
-}
+};
 
 
 
@@ -47,11 +48,11 @@ AvailableOption.prototype.display = function (container, options) {
     this.text.y = options.y;
     container.addChild(this.text);
     return this.text.height;
-}
+};
 
 AvailableOption.prototype.clear = function () {
     this.text.visible = false;
-}
+};
 
 function UnavailableOption(options) {
     this.content = options.content;
@@ -69,11 +70,11 @@ UnavailableOption.prototype.display = function (container, options) {
     this.text.y = options.y;
     container.addChild(this.text);
     return this.text.height;
-}
+};
 
 UnavailableOption.prototype.clear = function () {
     this.text.visible = false;
-}
+};
 
 
 
@@ -83,7 +84,7 @@ const checkboxUncheckedTexture = new PIXI.Texture.from('Images/checkbox_unchecke
 const checkboxUncheckedSelectedTexture = new PIXI.Texture.from('Images/checkbox_unchecked_selected.png');
 
 function Choice(options) {
-    var text = new PIXI.Text(options.content, new PIXI.TextStyle({
+    let text = new PIXI.Text(options.content, new PIXI.TextStyle({
         fill: options.fill || "#2d2d2d",
         fontSize: options.fontSize || 30
     }));
@@ -97,7 +98,7 @@ function Choice(options) {
         .on('pointerover', checkboxOnPointerOver)
         .on('pointerout', checkboxOnPointerOut);
     this.optionContainer.isChecked = false;
-    var checkbox = new PIXI.Sprite(checkboxUncheckedTexture);
+    let checkbox = new PIXI.Sprite(checkboxUncheckedTexture);
     this.optionContainer.addChild(checkbox);
     this.optionContainer.addChild(text);
     checkbox.width = 30;
@@ -122,7 +123,7 @@ function Choice(options) {
             if (this.isChecked) {
                 checkbox.texture = checkboxCheckedTexture;
             } else {
-                checkbox.texture = checkboxUncheckedTextures;
+                checkbox.texture = checkboxUncheckedTexture;
             }
         }
     }
@@ -158,17 +159,19 @@ Choice.prototype.display = function (container, options) {
     this.optionContainer.y = options.y;
     container.addChild(this.optionContainer);
     return this.optionContainer.height;
-}
+};
 
 Choice.prototype.clear = function () {
     this.optionContainer.visible = false;
-}
+};
 
 
 
 function QuestionPage(options) {
     this.questionTitle = new Title({
-        content: options.questionTitle
+        content: options.questionTitle,
+        fill: options.fill,
+        fontSize: options.fontSize
     });
     this.availableOptions = [];
     if ('availableOptions' in options) {
@@ -176,7 +179,9 @@ function QuestionPage(options) {
             // console.log(answerOption.answer)
             this.availableOptions.push(new AvailableOption({
                 content: answer.content,
-                onClick: answer.onClick
+                onClick: answer.onClick,
+                fill: options.fill,
+                fontSize: options.fontSize
             }));
         });
     }
@@ -185,7 +190,9 @@ function QuestionPage(options) {
         options.unavailableOptions.forEach(answer => {
             // console.log(answerOption.answer)
             this.unavailableOptions.push(new UnavailableOption({
-                content: answer
+                content: answer,
+                fill: options.fill,
+                fontSize: options.fontSize
             }));
         });
     }
@@ -194,14 +201,16 @@ function QuestionPage(options) {
         options.choices.forEach(choice => {
             // console.log(answerOption.answer)
             this.choices.push(new Choice({
-                content: choice
+                content: choice,
+                fill: options.fill,
+                fontSize: options.fontSize
             }));
         });
     }
 }
 
 QuestionPage.prototype.display = function (container) {
-    var height = this.questionTitle.display(container) + 50;
+    let height = this.questionTitle.display(container) + 50;
     // console.log(height);
     this.availableOptions.forEach(answer => {
         height += answer.display(container, { y: height }) + 10;
@@ -216,33 +225,33 @@ QuestionPage.prototype.display = function (container) {
         height += choice.display(container, { y: height }) + 10;
         // console.log(height);
     });
-}
+};
 
 QuestionPage.prototype.clear = function () {
     this.questionTitle.clear();
     this.availableOptions.forEach(answer => {
         answer.clear();
-    })
+    });
     this.unavailableOptions.forEach(answer => {
         answer.clear();
-    })
+    });
     
     this.choices.forEach(choices => {
         choices.clear();
     })
-}
+};
 function onButtonDown() {
     this.isdown = true;
-    this.style.fill = 0x00FF00;
+    this.style.fill = 0xcccccc;
 }
 
 function onButtonUp() {
     this.isdown = false;
     if (this.isOver) {
-        this.style.fill = 0x777777;
+        this.style.fill = 0x808080;
         this.onClick();
     } else {
-        this.style.fill = 0x2d2d2d;
+        this.style.fill = 0xffffff;
     }
 }
 
@@ -251,7 +260,7 @@ function onButtonOver() {
     if (this.isdown) {
         return;
     }
-    this.style.fill = 0x777777;
+    this.style.fill = 0x808080;
 }
 
 function onButtonOut() {
@@ -259,5 +268,5 @@ function onButtonOut() {
     if (this.isdown) {
         return;
     }
-    this.style.fill = 0x2d2d2d;
+    this.style.fill = 0xffffff;
 }

@@ -47,7 +47,7 @@ function removeHexGrid()
 
 
 
-
+/*
 function makeTaskHex(x, y, task)
 {
     this.task = task;
@@ -112,79 +112,6 @@ function makeTaskHex(x, y, task)
 
 }
 
-function w_hexHoverOver()
-{
-    app.stage.addChildAt(w_settingsContainer, app.stage.children.length-1);
-    this.alpha = 0.8;
-}
-
-function w_hexHoverOff()
-{
-    app.stage.removeChild(w_settingsContainer);
-    this.alpha = 0.6;
-}
-
-function w_MenuSelect()
-{
-    if (menuCC == 0)
-    {
-        app.stage.addChild(w_menuContainer);
-        menuCC = 1;
-    }
-    else if (menuCC == 1)
-    {
-        app.stage.removeChild(w_menuContainer);
-        menuCC = 0;
-    }
-}
-
-function w_SaveSelect()
-{
-    if (saveCC == 0)
-    {
-        saveCC = 1;
-    }
-    else if (settingsCC == 1)
-    {
-        saveCC = 0;
-    }
-}
-
-function w_SettingsSelect()
-{
-    if (settingsCC == 0)
-    {
-        app.stage.addChild(w_settingsContainer);
-        settingsCC = 1;
-    }
-    else if (settingsCC == 1)
-    {
-        app.stage.removeChild(w_settingsContainer);
-        settingsCC = 0;
-    }
-}
-
-function w_HideSelect()
-{
-    app.stage.removeChild(w_settingsContainer);
-    app.stage.removeChild(w_imageContainer);
-    app.stage.removeChild(w_menuContainer);
-}
-
-function w_ImageSelect()
-{
-    if (showTitle == 1) {
-        app.stage.removeChild(w_titleContainer);
-        showTitle = 0;
-    }
-    var PopupSprite = new PIXI.Sprite.fromImage(this.source);
-        PopupSprite.scale.set(0.9, 0.9);
-        PopupSprite.x = 20;
-        PopupSprite.width = app.screen.width * 0.9;
-    w_PopupContainer.addChild(PopupSprite);
-
-    app.stage.addChild(w_PopupContainer);
-}
 
 
-
+*/

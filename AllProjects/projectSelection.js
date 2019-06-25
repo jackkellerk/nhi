@@ -6,6 +6,10 @@ var a_settingsContainer = new PIXI.Container();
 var a_project1Container = new PIXI.Container();
 let maskContainer = new PIXI.Container();
 
+var p1_image;
+var p1Hex;
+var p1Hover;
+
 var a_settingsCC; // settings button counter (open/closed)
 
 function startAllProjects()
@@ -76,7 +80,7 @@ function startAllProjects()
     settTitle.position.y = 40;
     a_settingsContainer.addChild(settTitle);
 
-    let settUsername = new PIXI.Text("Username:             akt221", {fill: "#ffffff", fontFamily: "Helvetica", fontSize: 18, letterSpacing: 3});
+    let settUsername = new PIXI.Text("Username:             jjk322", {fill: "#ffffff", fontFamily: "Helvetica", fontSize: 18, letterSpacing: 3});
     settUsername.position.x = (w/5)+35;
     settUsername.position.y = 140;
     a_settingsContainer.addChild(settUsername);
@@ -91,55 +95,100 @@ function startAllProjects()
     settInstitution.position.y = 220;
     a_settingsContainer.addChild(settInstitution);
 
+    let settName = new PIXI.Text("Name:                   Jack Kellerk", {fill: "#ffffff", fontFamily: "Helvetica", fontSize: 18, letterSpacing: 3});
+    settName.position.x = (w/5)+35;
+    settName.position.y = 260;
+    a_settingsContainer.addChild(settName);
+
+    let signoutButton = new PIXI.Graphics();
+    signoutButton.lineStyle(3, 0xA9A9A9, 3);
+    signoutButton.beginFill(0xffffff);
+    signoutButton.drawPolygon([(w/5)+35,h-100, w-(w/5+35),h-100, w-(w/5+35),h-70, (w/5)+35,h-70]);
+    signoutButton.endFill();
+    a_settingsContainer.addChild(signoutButton);
+
+    let settSignout = new PIXI.Text("SIGN OUT", {fill: "#000000", fontFamily: "Helvetica", fontSize: 18, letterSpacing: 4});
+    settSignout.position.x = w/2-60;
+    settSignout.position.y = h-96;
+    a_settingsContainer.addChild(settSignout);
 
 
 
 
     // Project 1
 
-    let p1_image = new PIXI.Sprite.fromImage("Images/sinteredMetal.png");
-        p1_image.width = 700;
-        p1_image.height = 700;
-        p1_image.position.x = 150;
-        p1_image.position.y = 120;
-        p1_image.interactive = true;
-        p1_image.on('mouseover', a_projectHoverOver);
-        p1_image.on('mouseout', a_projectHoverOff);
-        p1_image.on('pointerdown', a_project1Select);
-        p1_image.alpha = 0.8;
+    p1Hover = false;
+
+    p1_image = new PIXI.Sprite.fromImage("Images/sinteredMetal.png");
+    p1_image.width = 700;
+    p1_image.height = 700;
+    p1_image.position.x = 150;
+    p1_image.position.y = 120;
     app.stage.addChild(p1_image);
 
-    let p1A = new Hexagon({x:270, y:220}, 0, 80);
-    p1A.graphics.lineStyle(3, 0xFFFFFF, 3);
-    p1A.draw(0xFFFFFF);
-    p1_image.mask = p1A.graphics;
 
-    let p1B = new Hexagon({x:p1A.getCenterLowerRight(0).x, y:p1A.getCenterLowerRight(0).y}, 0,80);
-    p1B.graphics.lineStyle(3, 0xFFFFFF, 3);
-    p1B.draw(0xFFFFFF);
-    //p1_image.mask = p1B.graphics;
+    p1Hex = new PIXI.Graphics();
+    p1Hex.beginFill(0x000000);
+    p1Hex.drawPolygon([339.282,140, 408.564,180, 477.846,140, 547.128,180, 547.128,260, 477.846,300, 477.846,380, 408.564,420, 339.282,380, 339.282,300, 270,260, 270,180]);
+    p1Hex.endFill();
+    p1Hex.position.x = -71;
+    app.stage.addChild(p1Hex);
+    p1_image.mask = p1Hex;
 
-    let p1C = new Hexagon({x:p1A.getCenterRight(0).x, y:p1A.getCenterRight(0).y}, 0,80);
-    p1C.graphics.lineStyle(3, 0xFFFFFF, 3);
-    p1C.draw(0xFFFFFF);
-    //p1_image.mask = p1C.graphics;
 
-    let p1D = new Hexagon({x:p1B.getCenterRight(0).x, y:p1B.getCenterRight(0).y}, 0,80);
-    p1D.graphics.lineStyle(3, 0xFFFFFF, 3);
-    p1D.draw(0xFFFFFF);
+    p1Info = new PIXI.Graphics();
+    p1Info.beginFill(0x000000);
+    p1Info.drawPolygon([339.282,140, 408.564,180, 477.846,140, 547.128,180, 547.128,260, 477.846,300, 477.846,380, 408.564,420, 339.282,380, 339.282,300, 270,260, 270,180]);
+    p1Info.endFill();
+    p1Info.alpha = 0.5;
+    p1Info.position.x = -71;
+    a_project1Container.addChild(p1Info);
+
+
+    let p1A = new Hexagon({x: 476.12, y: 340}, 0,80);
+    p1A.graphics.interactive = true;
+    p1A.graphics.on('mouseover', a_projectHoverOver);
+    p1A.graphics.on('mouseout', a_projectHoverOff);
+    p1A.graphics.alpha = 0.8;
+    p1A.draw(0xf0f0f0);
+
+    let p1Title = new PIXI.Text("Project 1", {fill: "#000000", fontFamily: "Helvetica", fontWeight: "bold", fontSize: 18, letterSpacing: 2, dropShadow: true, dropShadowAlpha: 0.2, dropShadowAngle: 0.05, dropShadowColor: "white",dropShadowDistance: 2});
+    p1Title.position.x = p1A.x - 46;
+    p1Title.position.y = p1A.y - 35;
+    app.stage.addChild(p1Title);
+
+    let p1Select = new PIXI.Graphics();
+    p1Select.lineStyle(3, 0xf5f5f5, 3);
+    p1Select.beginFill(0xffffff);
+    p1Select.drawPolygon([p1A.x-46,p1A.y+10, p1A.x+46,p1A.y+10, p1A.x+46,p1A.y+30, p1A.x-46,p1A.y+30]);
+    p1Select.endFill();
+    p1Select.interactive = true;
+    p1Select.on('mouseover', a_hexHoverOver);
+    p1Select.on('mouseout', a_hexHoverOff);
+    p1Select.on('pointerdown', a_project1Select);
+    p1Select.alpha = 0.8;
+    app.stage.addChild(p1Select);
+
+    let p1SelectTitle = new PIXI.Text("Open", {fill: "#606060", fontFamily: "Arial", fontWeight: "bold", fontSize: 14, letterSpacing:1.5});
+    p1SelectTitle.position.x = p1A.x-22;
+    p1SelectTitle.position.y = p1A.y+11;
+    app.stage.addChild(p1SelectTitle);
+
+
+
 
 
 
     // New Project
 
-    let newP = new Hexagon({x:p1C.getCenterRight(130).x, y: p1C.getCenterRight(0).y}, 0,80);
+    let newP = new Hexagon({x:p1A.getCenterUpperRight(300).x, y: p1A.getCenterUpperRight(0).y}, 0,80);
     newP.graphics.lineStyle(3, 0xA9A9A9, 3);
-    newP.interactive = true;
-    newP.graphics.alpha = 0.7;
-    p1_image.on('mouseover', a_projectHoverOver);
-    p1_image.on('mouseout', a_projectHoverOff);
-    p1_image.on('pointerdown', a_project1Select);
-    newP.draw(Hexagon.getHexColor(909090));
+    newP.graphics.interactive = true;
+    newP.graphics.on('mouseover', a_hexHoverOver);
+    newP.graphics.on('mouseout', a_hexHoverOff);
+    newP.graphics.on('pointerdown', a_newPSelect);
+    newP.graphics.alpha = 0.8;
+    newP.draw(0x909090);
 
     let plus = new PIXI.Text("+", {fill: "#ffffff", fontFamily: "Helvetica", fontSize: 100});
     plus.position.x = newP.x-30;
@@ -151,7 +200,15 @@ function startAllProjects()
 
 
 
+    // inside Hexagon.draw();
+    /* 
+    let str = (this.x+this.hwidth) + ", " + (this.y-this.radius) + "\n" + (this.x+this.hwidth*2) + ", " + (this.y-this.radius+this.radius/2) + "\n" + (this.x+this.hwidth*2) + ", " + (this.y-this.radius+this.radius*3/2) + "\n" + (this.x+this.hwidth) + ", " + (this.y-this.radius+this.radius*2) + "\n" + this.x + ", " + (this.y-this.radius+this.radius*3/2) + "\n" + this.x + ", " + (this.y-this.radius+this.radius/2);
 
+    let text = new PIXI.Text(str, {fill: "#ffffff", fontFamily: "Helvetica", fontSize: 10});
+    text.position.x = this.x -50;
+    text.position.y = this.y + 200;
+    app.stage.addChild(text);
+    */
 
 }
 
@@ -181,12 +238,14 @@ function a_SettingsSelect()
 
 function a_projectHoverOver()
 {
-    this.alpha = 1;
+    this.alpha = 0.9;
+    app.stage.addChild(a_project1Container);
 }
 
 function a_projectHoverOff()
 {
     this.alpha = 0.8;
+    app.stage.removeChild(a_project1Container);
 }
 
 function a_project1Select()
@@ -194,15 +253,7 @@ function a_project1Select()
     app.stage.removeChild(a_titleContainer);
 }
 
-
-
-
-function drawMaskHex(x, y, hwidth, radius)
+function a_newPSelect()
 {
-    let maskHex = new PIXI.Graphics;
-        maskHex.beginFill(0x000000);
-        maskHex.drawPolygon([ x,y-radius, x+hwidth,y-radius/2, x+hwidth,y+radius/2, x,y+radius, x-hwidth,y+radius/2, x-hwidth,y-radius/2 ]);
-        maskHex.endFill();
-    app.stage.addChild(maskHex);
-    return maskHex;
+
 }

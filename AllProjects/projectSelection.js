@@ -75,7 +75,7 @@ function startAllProjects()
     settingsMenu.endFill();
     a_settingsContainer.addChild(settingsMenu);
 
-    let settTitle = new PIXI.Text("Settings", {fill: "#ffffff", fontFamily: "Helvetica", fontSize: 32, letterSpacing: 3});
+    let settTitle = new PIXI.Text("Profile Settings", {fill: "#ffffff", fontFamily: "Helvetica", fontSize: 32, letterSpacing: 3});
     settTitle.position.x = (w/5)+35;
     settTitle.position.y = 40;
     a_settingsContainer.addChild(settTitle);
@@ -152,6 +152,15 @@ function startAllProjects()
     p1A.graphics.alpha = 0.8;
     p1A.draw(0xf0f0f0);
 
+
+    let details = "Last Edited\n\n         Whitaker Laboratory\n         Lehigh University\n         06/25/19\n         13:23"
+    let p1Details = new PIXI.Text(details, {fill: "#ffffff", fontFamily: "Arial", fontWeight: "bold", fontSize: 14, lineHeight: 20});
+    p1Details.position.x = 253;
+    p1Details.position.y = 193;
+    a_project1Container.addChild(p1Details);
+
+
+
     let p1Title = new PIXI.Text("Project 1", {fill: "#000000", fontFamily: "Helvetica", fontWeight: "bold", fontSize: 18, letterSpacing: 2, dropShadow: true, dropShadowAlpha: 0.2, dropShadowAngle: 0.05, dropShadowColor: "white",dropShadowDistance: 2});
     p1Title.position.x = p1A.x - 46;
     p1Title.position.y = p1A.y - 35;
@@ -163,8 +172,8 @@ function startAllProjects()
     p1Select.drawPolygon([p1A.x-46,p1A.y+10, p1A.x+46,p1A.y+10, p1A.x+46,p1A.y+30, p1A.x-46,p1A.y+30]);
     p1Select.endFill();
     p1Select.interactive = true;
-    p1Select.on('mouseover', a_hexHoverOver);
-    p1Select.on('mouseout', a_hexHoverOff);
+    p1Select.on('mouseover', a_projectHoverOver);
+    p1Select.on('mouseout', a_projectHoverOff);
     p1Select.on('pointerdown', a_project1Select);
     p1Select.alpha = 0.8;
     app.stage.addChild(p1Select);
@@ -181,7 +190,7 @@ function startAllProjects()
 
     // New Project
 
-    let newP = new Hexagon({x:p1A.getCenterUpperRight(300).x, y: p1A.getCenterUpperRight(0).y}, 0,80);
+    let newP = new Hexagon({x:p1A.getCenterUpperRight(315).x, y: p1A.getCenterUpperRight(0).y}, 0,80);
     newP.graphics.lineStyle(3, 0xA9A9A9, 3);
     newP.graphics.interactive = true;
     newP.graphics.on('mouseover', a_hexHoverOver);
@@ -238,6 +247,7 @@ function a_SettingsSelect()
 
 function a_projectHoverOver()
 {
+    app.stage.removeChild(a_titleContainer);
     this.alpha = 0.9;
     app.stage.addChild(a_project1Container);
 }
@@ -250,10 +260,12 @@ function a_projectHoverOff()
 
 function a_project1Select()
 {
-    app.stage.removeChild(a_titleContainer);
+    currentActivity = activityArray[2];
+    updateActivity();
 }
 
 function a_newPSelect()
 {
-
+    currentActivity = activityArray[3];
+    updateActivity();
 }

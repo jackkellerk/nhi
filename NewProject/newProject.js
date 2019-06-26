@@ -1,4 +1,6 @@
-
+/*
+TODO: Make textStyle in captionFactory customizable
+ */
 class NewProject{
     
     static createWindowHexagons(){
@@ -29,53 +31,50 @@ class NewProject{
     
     static createNewProjectPrompt(){
         let h = app.screen.height;
-        let prompt = new Hexagon({x: app.screen.width/2, y: h/2}, 0.4 * h);
-        prompt.graphics.lineStyle(2, 0x414141, 3);
-        prompt.draw(Hexagon.getHexColor("transparent"), 0);
-    
-        let proficiencyPage = new QuestionPage({
+        let w = app.screen.width;
+        let numPrompts = 4;
+        let prompts = [];
+        let contents = [];
+        
+        contents.push(new QuestionPage({
             questionTitle: 'Choose your proficiency:',
             availableOptions: [{
                 content: 'Negligible',
-                onClick: function () {
-                    proficiencyPage.clear();
-                    materialTypePage.display(prompt.container);
-                }
+                onClick: shiftToNextPrompt
+            }, {
+                /*
+                TODO: Only the descendent QuestionPages of the first options are known. These are simply displaying the same things. The actual contents are to be designed.
+                */
+                content: 'Moderate',
+                onClick: shiftToNextPrompt
+            }, {
+                content: "Expert",
+                onClick: shiftToNextPrompt
             }],
-            unavailableOptions: ['Moderate', 'Expert'],
             fill: Hexagon.getHexColor("white"),
             fontSize: 23
-        });
-    
-        let materialTypePage = new QuestionPage({
-            questionTitle: 'What material(s) are you investigating',
+        }));
+        contents.push(new QuestionPage({
+            questionTitle: 'What material(s) are you \ninvestigating',
             availableOptions: [{
                 content: 'Generate bar code',
-                onClick: function () {
-                    materialTypePage.clear();
-                    scientificObjectivePage.display(prompt.container);
-                }
+                onClick: shiftToNextPrompt
             }],
             choices: ['Ceramics', 'Metals', 'Other'],
             fill: Hexagon.getHexColor("white"),
             fontSize: 23
-        });
-    
-        let scientificObjectivePage = new QuestionPage({
+        }));
+        contents.push(new QuestionPage({
             questionTitle: 'What is your scientific objective?',
             availableOptions: [{
                 content: 'Grain boundary structure/chemistry',
-                onClick: function () {
-                    scientificObjectivePage.clear();
-                    otherOptions.display(prompt.container);
-                }
+                onClick: shiftToNextPrompt
             }],
             unavailableOptions: ['identify second phases', 'search for rare events', 'Other'],
             fill: Hexagon.getHexColor("white"),
             fontSize: 23
-        });
-    
-        let otherOptions = new QuestionPage({
+        }));
+        contents.push(new QuestionPage({
             questionTitle: 'To optimize the data acquisition \nworkflow, you may want to ...',
             availableOptions: [{
                 content: 'confirm',
@@ -84,9 +83,26 @@ class NewProject{
             choices: ['Operate microscope at 200 kV', 'Set probe current to 150 pA', 'Set detector collection angles', 'Etc.'],
             fill: Hexagon.getHexColor("white"),
             fontSize: 23
-        });
+        }));
+        
+        let gap = w / 2 - 0.4 * h - 0.1 * h;
+        let centerNext = {x: w / 2, y: h / 2};
+        let hwidth = 0.4 * h;
+        
+        for (let i = 0; i < numPrompts; i++) {
+            prompts.push(new Hexagon(centerNext, hwidth));
+            centerNext = prompts[i].getCenterRight(gap);
+            prompts[i].graphics.lineStyle(2, 0x414141, 3);
+            prompts[i].draw(Hexagon.getHexColor("transparent"), 0);
+            contents[i].display(prompts[i].container);
+        }
     
-        proficiencyPage.display(prompt.container);
+        function shiftToNextPrompt(){
+            for (let i = 0; i < numPrompts; i++) {
+                prompts[i].container.x -= (gap + hwidth * 2);
+            }
+        }
+    
         
         let cancel = NewProject.createCancelButton();
         prompt.container.addChild(cancel);

@@ -4,7 +4,19 @@ var source_infoContainer = new PIXI.Container();
 // graphics for line and hexagon
 var line = new PIXI.Graphics();
 var hex = new PIXI.Graphics();
+var ps_title;
 
+//Creates style used by text. It is currently unnecessary but more of an example
+const ps_title_style = new PIXI.TextStyle({
+    fontFamily: 'Helvetica',
+    fontSize: 30,
+    fontWeight: 'bold',
+    fill: '#FFFFFF', // gradient
+    align: 'center',
+    strokeThickness: 4,
+    wordWrap: true,
+    wordWrapWidth: 500,
+});
 // set background image
 var source_bg = new PIXI.Sprite.from('Images/projectSource_test.jpg');
 
@@ -116,6 +128,7 @@ function drawSourceInfo(numSource) {
     // add child to the container
     source_infoContainer.addChild(hex);
     source_infoContainer.addChild(line);
+    // source_infoContainer.addChild(ps_title);
     source_infoContainer.addChild(ps_prevPage);
     source_infoContainer.addChild(ps_nextPage);
 
@@ -143,6 +156,12 @@ function startSourcePage() {
     ps_prevPage.y = y_limit;
     ps_nextPage.x = x_limit + 50 + 10;
     ps_nextPage.y = y_limit;
+
+    // set title
+    ps_title = new PIXI.Text('Sources: Lehigh', ps_title_style);
+    ps_title.x = 10;
+    ps_title.y = 10;
+    app.stage.addChild(ps_title);
     
 }
 

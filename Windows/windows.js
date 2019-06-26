@@ -1,8 +1,12 @@
 
+var renderer;
+
 var w_menuCC; // main menu
 var w_settingsCC; // settings menu
 var w_hideCC;
 var w_popupCC;
+
+var bg = new PIXI.Graphics();
 
 var images = ["Images/LowMag.jpg", "Images/Multispectrum.jpg", "Images/Multiblock.jpg", "Images/LineIntegral.jpg"]; // array with images sources.. for now
 
@@ -39,12 +43,24 @@ function startWindows(){
   //dHexGrid(true); // parameter indicates with/without coordinates
 
 
+
+
+  // for draggable windows
+
+  renderer = PIXI.autoDetectRenderer(window.innerWidth, window.innerHeight, null);
+	
+	// add the renderer view element to the DOM
+	document.body.appendChild(renderer.view);
+	renderer.view.style.position = "absolute";
+	requestAnimationFrame( animate );
+
+
   
   // page title text
 
   const screenInfo = new PIXI.Text('Last Edit:     06/25/2019\n                   13:23', {fill: "#d3d3d3", fontFamily: "Helvetica", fontSize: 20, letterSpacing: 1.5});
   w_titleContainer.addChild(screenInfo);
-  w_titleContainer.x = window.innerWidth - 300;
+  w_titleContainer.x = app.screen.width - 300;
   w_titleContainer.y = 30;
   app.stage.addChild(w_titleContainer);
 
@@ -63,6 +79,7 @@ function startWindows(){
 
   let menuButton = new Hexagon({x:50, y:55}, 0, 37);
       menuButton.graphics.lineStyle(2, 0x7D7D7D, 3);
+      menuButton.buttonMode = true;
       menuButton.graphics.interactive = true;
       menuButton.graphics.on('mouseover', w_hexHoverOver);
       menuButton.graphics.on('mouseout', w_hexHoverOff);
@@ -88,7 +105,7 @@ function startWindows(){
       w_saveButton.graphics.on('mouseover', w_hexHoverOver);
       w_saveButton.graphics.on('mouseout', w_hexHoverOff);
       w_saveButton.graphics.on('pointerdown', w_SaveSelect);
-      w_saveButton.graphics.alpha = 0.8;
+      w_saveButton.graphics.alpha = 0.95;
   w_saveButton.draw(0xFFFFFF);
   app.stage.removeChild(w_saveButton.container);
   w_menuContainer.addChild(w_saveButton.container);
@@ -112,7 +129,7 @@ function startWindows(){
       settingsButton.graphics.on('mouseover', w_hexHoverOver);
       settingsButton.graphics.on('mouseout', w_hexHoverOff);
       settingsButton.graphics.on('pointerdown', w_SettingsSelect);
-      settingsButton.graphics.alpha = 0.8;
+      settingsButton.graphics.alpha = 0.95;
   settingsButton.draw(0xFFFFFF);
   app.stage.removeChild(settingsButton.container);
   w_menuContainer.addChild(settingsButton.container);
@@ -126,8 +143,8 @@ function startWindows(){
 
 
 
-  let w = window.innerWidth;
-  let h = window.innerHeight;
+  let w = app.screen.width;
+  let h = app.screen.height;
   let w_settingsMenu = new PIXI.Graphics();
       w_settingsMenu.lineStyle(5, 0x707070, 3);
       w_settingsMenu.beginFill(0x7D7D7D);
@@ -185,7 +202,7 @@ function startWindows(){
       w_hideButton.graphics.on('mouseover', w_hexHoverOver);
       w_hideButton.graphics.on('mouseout', w_hexHoverOff);
       w_hideButton.graphics.on('pointerdown', w_HideSelect);
-      w_hideButton.graphics.alpha = 0.8;
+      w_hideButton.graphics.alpha = 0.95;
       w_hideButton.draw(0xFFFFFF);
   app.stage.removeChild(w_hideButton.container);
   w_menuContainer.addChild(w_hideButton.container);
@@ -277,9 +294,9 @@ function startWindows(){
 
   w_popupCC = 0;
   
-  // recall: w = window.innerWidth; h = window.innerHeight
-  w = window.innerWidth;
-  h = window.innerHeight;
+  // recall: w = app.screen.width; h = app.screen.height
+  w = app.screen.width;
+  h = app.screen.height
 
   let w_workWindow = new PIXI.Graphics();
       w_workWindow.lineStyle(5, 0x707070, 3);
@@ -288,7 +305,23 @@ function startWindows(){
       w_workWindow.endFill();
       w_workWindow.position.x = w/4;
       w_workWindow.position.y = 20;
+      w_workWindow.interactive = true;
+      // events for drag start
+      w_workWindow.on('mousedown', onDragStart);
+      w_workWindow.on('touchstart', onDragStart)
+      // events for drag end
+      w_workWindow.on('mouseup', onDragEnd);
+      w_workWindow.on('mouseupoutside', onDragEnd);
+      w_workWindow.on('touchend', onDragEnd);
+      w_workWindow.on('touchendoutside', onDragEnd);
+      // events for drag move
+      w_workWindow.on('mousemove', onDragMove);
+      w_workWindow.on('touchmove', onDragMove);
+
   w_Popup1Container.addChild(w_workWindow);
+
+
+
 
   let w_activity1 = new PIXI.Graphics();
       w_activity1.lineStyle(5, 0x707070, 3);
@@ -361,13 +394,13 @@ function startWindows(){
 
   // fade/darken background
 
-  var bg = new PIXI.Graphics();
+  //var bg = new PIXI.Graphics();
   bg.beginFill(0x000000, 1); // Color and opacity
   bg.drawRect(0, 0, app.screen.width, app.screen.height);
   bg.endFill();
   bg.alpha = 0.7;
 
-  //w_PopupContainer.addChild(bg);
+  //w_Popup1Container.addChild(bg);
 
 
   // close button
@@ -458,10 +491,14 @@ function w_ImageSelect()
 {
   if (w_popupCC == 0) {
     app.stage.addChild(w_Popup1Container);
+    w_popupCC = 1;
+    //this.alpha = 1;
   }
   else if (w_popupCC == 1)
   {
     app.stage.removeChild(w_Popup1Container);
+    w_popupCC = 0;
+    //this.alpha = 0.8;
   }
 }
 
@@ -471,11 +508,11 @@ function w_a1Select()
   this.alpha = 1;
 
   var PopupSprite = new PIXI.Sprite.fromImage(images[0]);
-      PopupSprite.width = window.innerWidth * 0.545;
+      PopupSprite.width = app.screen.width * 0.545;
       PopupSprite.height = PopupSprite.width * 0.645;
-      PopupSprite.x = window.innerWidth/4 + 3;
+      PopupSprite.x = app.screen.width/4 + 3;
       PopupSprite.y = 23;
-  app.stage.addChild(PopupSprite);
+  w_Popup1Container.addChild(PopupSprite);
 }
 
 function w_a2Select()
@@ -483,11 +520,11 @@ function w_a2Select()
   this.alpha = 1;
 
   var PopupSprite = new PIXI.Sprite.fromImage(images[1]);
-      PopupSprite.width = window.innerWidth * 0.545;
+      PopupSprite.width = app.screen.width * 0.545;
       PopupSprite.height = PopupSprite.width * 0.645;
-      PopupSprite.x = window.innerWidth/4 + 3;
+      PopupSprite.x = app.screen.width/4 + 3;
       PopupSprite.y = 23;
-  app.stage.addChild(PopupSprite);
+  w_Popup1Container.addChild(PopupSprite);
 }
 
 function w_a3Select()
@@ -495,11 +532,11 @@ function w_a3Select()
   this.alpha = 1;
 
   var PopupSprite = new PIXI.Sprite.fromImage(images[2]);
-      PopupSprite.width = window.innerWidth * 0.545;
+      PopupSprite.width = app.screen.width * 0.545;
       PopupSprite.height = PopupSprite.width * 0.645;
-      PopupSprite.x = window.innerWidth/4 + 3;
+      PopupSprite.x = app.screen.width/4 + 3;
       PopupSprite.y = 23;
-  app.stage.addChild(PopupSprite);
+  w_Popup1Container.addChild(PopupSprite);
 }
 
 function w_a4Select()
@@ -507,10 +544,63 @@ function w_a4Select()
   this.alpha = 1;
 
   var PopupSprite = new PIXI.Sprite.fromImage(images[3]);
-      PopupSprite.width = window.innerWidth * 0.545;
+      PopupSprite.width = app.screen.width * 0.545;
       PopupSprite.height = PopupSprite.width * 0.645;
-      PopupSprite.x = window.innerWidth/4 + 3;
+      PopupSprite.x = app.screen.width/4 + 3;
       PopupSprite.y = 23;
-  app.stage.addChild(PopupSprite);
+  w_Popup1Container.addChild(PopupSprite);
 
 }
+
+
+function animate() {
+
+  requestAnimationFrame( animate );
+
+  // render the stage
+  renderer.render(app.stage);
+}
+
+function onDragStart(event)
+{
+  // store a reference to the data
+  // the reason for this is because of multitouch
+  // we want to track the movement of this particular touch
+  this.data = event.data;
+  this.alpha = 0.5;
+  this.dragging = true;
+
+  //this.sx = this.data.getLocalPosition(w_Popup1Container).x;
+  //this.sy = this.data.getLocalPosition(w_Popup1Container).y;
+
+}
+
+function onDragEnd()
+{
+  this.alpha = 1;
+
+  this.dragging = false;
+
+  // set the interaction data to null
+  this.data = null;
+}
+
+function onDragMove()
+{
+  /*
+  if (this.dragging)
+  {
+    var newPosition = this.data.getLocalPosition(this.parent);
+    w_Popup1Container.position.x = newPosition.x - this.sx;
+    w_Popup1Container.position.y = newPosition.y - this.sy;
+  }
+*/
+  if (this.dragging)
+  {
+    var newPosition = this.data.getLocalPosition(this.parent);
+    w_Popup1Container.position.x = newPosition.x;
+    w_Popup1Container.position.y = newPosition.y;
+  }
+
+}
+

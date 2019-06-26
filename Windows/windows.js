@@ -150,6 +150,7 @@ function startWindows(){
       w_settingsMenu.beginFill(0x7D7D7D);
       w_settingsMenu.drawPolygon([w/5,20, w-(w/5),20, w-(w/5),h-20, w/5,h-20]);
       w_settingsMenu.endFill();
+      w_settingsMenu.interactive = true;
   w_settingsContainer.addChild(w_settingsMenu);
 
   let w_settTitle = new PIXI.Text("Project Settings", {fill: "#ffffff", fontFamily: "Helvetica", fontSize: 32, letterSpacing: 2});

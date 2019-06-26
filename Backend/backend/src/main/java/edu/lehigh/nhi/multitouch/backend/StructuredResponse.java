@@ -17,8 +17,9 @@ public class StructuredResponse {
 
     public JSONObject toJson(){
         JSONObject retval = new JSONObject();
-        retval.append("errorCode", mErrorCode);
-        retval.append("message", mMessage);
-        retval.append("data", mData);
+        retval.put("errorCode", mErrorCode);
+        retval.put("message", mMessage);
+        retval.put("data", mData);
+        return retval;
     }
 }

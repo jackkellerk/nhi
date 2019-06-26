@@ -119,11 +119,11 @@ function startAllProjects()
 
     p1Hover = false;
 
-    p1_image = new PIXI.Sprite.fromImage("Images/sinteredMetal.png");
+    p1_image = new PIXI.Sprite.fromImage("Images/LineIntegral.jpg");
     p1_image.width = 700;
-    p1_image.height = 700;
-    p1_image.position.x = 150;
-    p1_image.position.y = 120;
+    p1_image.height = 500;
+    p1_image.position.x = 90;
+    p1_image.position.y = 90;
     app.stage.addChild(p1_image);
 
 
@@ -136,46 +136,46 @@ function startAllProjects()
     p1_image.mask = p1Hex;
 
 
-    p1Info = new PIXI.Graphics();
-    p1Info.beginFill(0x000000);
-    p1Info.drawPolygon([339.282,140, 408.564,180, 477.846,140, 547.128,180, 547.128,260, 477.846,300, 477.846,380, 408.564,420, 339.282,380, 339.282,300, 270,260, 270,180]);
-    p1Info.endFill();
-    p1Info.alpha = 0.5;
-    p1Info.position.x = -71;
+    let p1Info = new PIXI.Graphics();
+        p1Info.beginFill(0x000000);
+        p1Info.drawPolygon([339.282,140, 408.564,180, 477.846,140, 547.128,180, 547.128,260, 477.846,300, 477.846,380, 408.564,420, 339.282,380, 339.282,300, 270,260, 270,180]);
+        p1Info.endFill();
+        p1Info.alpha = 0.5;
+        p1Info.position.x = -71;
     a_project1Container.addChild(p1Info);
 
 
     let p1A = new Hexagon({x: 476.12, y: 340}, 0,80);
-    p1A.graphics.interactive = true;
-    p1A.graphics.on('mouseover', a_projectHoverOver);
-    p1A.graphics.on('mouseout', a_projectHoverOff);
-    p1A.graphics.alpha = 0.8;
+        p1A.graphics.interactive = true;
+        //p1A.graphics.on('mouseover', a_projectHoverOver);
+        //p1A.graphics.on('mouseout', a_projectHoverOff);
+        p1A.graphics.alpha = 0.8;
     p1A.draw(0xf0f0f0);
 
 
     let details = "Last Edited\n\n         Whitaker Laboratory\n         Lehigh University\n         06/25/19\n         13:23"
     let p1Details = new PIXI.Text(details, {fill: "#ffffff", fontFamily: "Arial", fontWeight: "bold", fontSize: 14, lineHeight: 20});
-    p1Details.position.x = 253;
-    p1Details.position.y = 193;
+        p1Details.position.x = 253;
+        p1Details.position.y = 193;
     a_project1Container.addChild(p1Details);
 
 
 
     let p1Title = new PIXI.Text("Project 1", {fill: "#000000", fontFamily: "Helvetica", fontWeight: "bold", fontSize: 18, letterSpacing: 2, dropShadow: true, dropShadowAlpha: 0.2, dropShadowAngle: 0.05, dropShadowColor: "white",dropShadowDistance: 2});
-    p1Title.position.x = p1A.x - 46;
-    p1Title.position.y = p1A.y - 35;
+        p1Title.position.x = p1A.x - 46;
+        p1Title.position.y = p1A.y - 35;
     app.stage.addChild(p1Title);
 
     let p1Select = new PIXI.Graphics();
-    p1Select.lineStyle(3, 0xf5f5f5, 3);
-    p1Select.beginFill(0xffffff);
-    p1Select.drawPolygon([p1A.x-46,p1A.y+10, p1A.x+46,p1A.y+10, p1A.x+46,p1A.y+30, p1A.x-46,p1A.y+30]);
-    p1Select.endFill();
-    p1Select.interactive = true;
-    p1Select.on('mouseover', a_projectHoverOver);
-    p1Select.on('mouseout', a_projectHoverOff);
-    p1Select.on('pointerdown', a_project1Select);
-    p1Select.alpha = 0.8;
+        p1Select.lineStyle(3, 0xf5f5f5, 3);
+        p1Select.beginFill(0xffffff);
+        p1Select.drawPolygon([p1A.x-46,p1A.y+10, p1A.x+46,p1A.y+10, p1A.x+46,p1A.y+30, p1A.x-46,p1A.y+30]);
+        p1Select.endFill();
+        p1Select.interactive = true;
+        p1Select.on('mouseover', a_projectHoverOver);
+        p1Select.on('mouseout', a_projectHoverOff);
+        p1Select.on('pointerdown', a_project1Select);
+        p1Select.alpha = 0.8;
     app.stage.addChild(p1Select);
 
     let p1SelectTitle = new PIXI.Text("Open", {fill: "#606060", fontFamily: "Arial", fontWeight: "bold", fontSize: 14, letterSpacing:1.5});
@@ -247,7 +247,7 @@ function a_SettingsSelect()
 
 function a_projectHoverOver()
 {
-    app.stage.removeChild(a_titleContainer);
+    //app.stage.removeChild(a_titleContainer);
     this.alpha = 0.9;
     app.stage.addChild(a_project1Container);
 }

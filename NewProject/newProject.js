@@ -33,19 +33,6 @@ class NewProject{
         prompt.graphics.lineStyle(2, 0x414141, 3);
         prompt.draw(Hexagon.getHexColor("transparent"), 0);
     
-        let chooseProjectPage = new QuestionPage({
-            questionTitle: 'Choose your project:',
-            availableOptions: [{
-                content: 'new project..',
-                onClick: function () {
-                    chooseProjectPage.clear();
-                    proficiencyPage.display(prompt.container);
-                }
-            }],
-            fill: Hexagon.getHexColor("white"),
-            fontSize: 23
-        });
-    
         let proficiencyPage = new QuestionPage({
             questionTitle: 'Choose your proficiency:',
             availableOptions: [{
@@ -92,39 +79,35 @@ class NewProject{
             questionTitle: 'To optimize the data acquisition \nworkflow, you may want to ...',
             availableOptions: [{
                 content: 'confirm',
-                onClick: function () {
-                    currentActivity = activityArray[1];
-                    updateActivity();
-                }
+                onClick: returnToAllProjects
             }],
             choices: ['Operate microscope at 200 kV', 'Set probe current to 150 pA', 'Set detector collection angles', 'Etc.'],
             fill: Hexagon.getHexColor("white"),
             fontSize: 23
         });
     
-        chooseProjectPage.display(prompt.container);
-        // make the input scale with h
-        // let names = ["Project Name", "Proficiency", "Bar Code"];
-        // let inputs = [];
-        // let labels = [];
-        // let promptContainer = new PIXI.Container();
-        // for (let i = 0; i < 3; i++) {
-        //     inputs.push(new PIXI.TextInput({
-        //         input: {
-        //             fontSize: '14pt',
-        //             padding: '10px',
-        //             width: `${h * 0.5}px`,
-        //             color: '#26272E'
-        //         },
-        //         box: {
-        //             default: {fill: 0xE8E9F3,  stroke: {color: 0xCBCEE0, width: 1}},
-        //             focused: {fill: 0xE1E3EE,  stroke: {color: 0xABAFC6, width: 1}},
-        //             disabled: {fill: 0xDBDBDB}
-        //         }
-        //     }));
-        //     labels.push(new PIXI.Text());
-        // }
-        // prompt.container.addChild(promptContainer);
+        proficiencyPage.display(prompt.container);
+        
+        let cancel = NewProject.createCancelButton();
+        prompt.container.addChild(cancel);
+        cancel.x = prompt.container.width / 2 - cancel.width / 2;
+        cancel.y = prompt.container.height * 0.8;
+    }
+    
+    /*
+    Goes back to All Projects Page
+     */
+    static createCancelButton(){
+        // let h = app.screen.height;
+        let cancel = new PIXI.Text("Cancel", {fill: Hexagon.getHexColor("white")});
+        cancel.interactive = true;
+        cancel.onClick = returnToAllProjects;
+        cancel.on('pointerdown', onButtonDown)
+                .on('pointerup', onButtonUp)
+                .on('pointerupoutside', onButtonUp)
+                .on('pointerover', onButtonOver)
+                .on('pointerout', onButtonOut);
+        return cancel;
     }
     
     static startProjects(){
@@ -132,4 +115,9 @@ class NewProject{
         NewProject.createNewProjectPrompt();
         // NewProject.createWindowHexagons();
     }
+}
+
+function returnToAllProjects(){
+    currentActivity = activityArray[1];
+    updateActivity();
 }

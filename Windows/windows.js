@@ -300,6 +300,11 @@ function startWindows(){
       w_activity1.alpha = 0.8;
   w_Popup1Container.addChild(w_activity1);
 
+  let w_label1 = new PIXI.Text("Low\nMagnifi\ncation",{fontFamily: 'Arial', fontSize: 13, fill: 0x000000});
+      w_label1.position.x = w/4-55;
+      w_label1.position.y = 32;
+  w_Popup1Container.addChild(w_label1);
+
   let w_activity2 = new PIXI.Graphics();
       w_activity2.lineStyle(5, 0x707070, 3);
       w_activity2.beginFill(0xdcdcdc);
@@ -309,6 +314,11 @@ function startWindows(){
       w_activity2.on('pointerdown', w_a2Select);
       w_activity2.alpha = 0.8;
   w_Popup1Container.addChild(w_activity2);
+
+  let w_label2 = new PIXI.Text("Spectrum\n Imaging",{fontFamily: 'Arial', fontSize: 13, fill: 0x000000});
+      w_label2.position.x = w/4-63;
+      w_label2.position.y = 105;
+  w_Popup1Container.addChild(w_label2);
 
   let w_activity3 = new PIXI.Graphics();
       w_activity3.lineStyle(5, 0x707070, 3);
@@ -320,6 +330,11 @@ function startWindows(){
       w_activity3.alpha = 0.8;
   w_Popup1Container.addChild(w_activity3);
 
+  let w_label3 = new PIXI.Text(" Grain\nBoundary",{fontFamily: 'Arial', fontSize: 13, fill: 0x000000});
+      w_label3.position.x = w/4-63;
+      w_label3.position.y = 175;
+  w_Popup1Container.addChild(w_label3);
+
   let w_activity4 = new PIXI.Graphics();
       w_activity4.lineStyle(5, 0x707070, 3);
       w_activity4.beginFill(0xdcdcdc);
@@ -329,12 +344,14 @@ function startWindows(){
       w_activity4.on('pointerdown', w_a4Select);
       w_activity4.alpha = 0.8;
   w_Popup1Container.addChild(w_activity4);
-  /*
-  var Popup = new PIXI.Sprite.fromImage(images[0]);
-      Popup.x = 20;
-      Popup.width = app.screen.width * 0.9;
-  w_Popup1Container.addChild(Popup1);
-*/
+
+  let w_label4 = new PIXI.Text(" Line\nIntegral",{fontFamily: 'Arial', fontSize: 13, fill: 0x000000});
+      w_label4.position.x = w/4-60;
+      w_label4.position.y = 245;
+  w_Popup1Container.addChild(w_label4);
+
+  app.stage.addChild(w_Popup1Container);
+
 
 
 

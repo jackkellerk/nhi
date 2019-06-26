@@ -10,6 +10,7 @@
         <script src="dist/PIXI.TextInput.min.js"></script>
 
         <script src="makeBg.js"></script>
+        <script src="jsToBackend.js"></script>
         
     </head>
     <body>
@@ -165,6 +166,9 @@ const signUp_style = new PIXI.TextStyle({
             const loginText = new PIXI.Text("Login", login_style);
             loginText.x = app.screen.width * (4/8) - loginText.width/2;
             loginText.y = app.screen.height * (6/8);
+            loginText.interactive = true;
+            loginText.buttonMode = true;
+            loginText.on("pointerdown", loginToBackend);
             //loginText.on("pointerdown",moveLogin);
             login_UI.addChild(loginText);
 

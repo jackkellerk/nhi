@@ -89,7 +89,7 @@ class NewProject{
         });
     
         let otherOptions = new QuestionPage({
-            questionTitle: 'To optimize the data acquisition workflow, you may want to ...',
+            questionTitle: 'To optimize the data acquisition \nworkflow, you may want to ...',
             availableOptions: [{
                 content: 'confirm'
             }],

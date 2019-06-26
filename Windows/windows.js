@@ -1,10 +1,8 @@
 
-var menuCC; // main menu
-var clickcounter; // image menu click counter
-var settingsCC; // settings menu
-var saveCC;
-
-var showTitle; // title disappears after first interaction
+var w_menuCC; // main menu
+var w_settingsCC; // settings menu
+var w_hideCC;
+var w_popupCC;
 
 var images = ["Images/LowMag.jpg", "Images/Multispectrum.jpg", "Images/Multiblock.jpg", "Images/LineIntegral.jpg"]; // array with images sources.. for now
 
@@ -13,7 +11,10 @@ var w_titleContainer = new PIXI.Container(); // title container
 var w_menuContainer = new PIXI.Container(); // menu container
 var w_windowContainer = new PIXI.Container(); // for image selection
 var w_settingsContainer = new PIXI.Container(); // for settings menu
-var w_PopupContainer = new PIXI.Container(); // for popup window
+var w_Popup1Container = new PIXI.Container(); // for popup window
+var w_Popup2Container = new PIXI.Container(); // for popup window
+var w_Popup3Container = new PIXI.Container(); // for popup window
+var w_Popup4Container = new PIXI.Container(); // for popup window
 
 // PIXI Text style
 var w_style = {fontFamily: 'Arial', fontSize: 15, fill: 0x000000};
@@ -35,7 +36,7 @@ function startWindows(){
 
   //  hexagon grid
 
-  //drawHexGrid(true); // parameter indicates with/without coordinates
+  //dHexGrid(true); // parameter indicates with/without coordinates
 
 
   
@@ -51,24 +52,29 @@ function startWindows(){
 
 
 
+
+
+
+
+
   // menu button
 
-  menuCC == 0
+  w_menuCC = 0;
 
   let menuButton = new Hexagon({x:50, y:55}, 0, 37);
-    menuButton.graphics.lineStyle(2, 0x7D7D7D, 3);
-    menuButton.graphics.interactive = true;
-    menuButton.graphics.on('mouseover', a_hexHoverOver);
-    menuButton.graphics.on('mouseout', a_hexHoverOff);
-    menuButton.graphics.on('pointerdown', w_MenuSelect);
-    menuButton.graphics.alpha = 0.8;
+      menuButton.graphics.lineStyle(2, 0x7D7D7D, 3);
+      menuButton.graphics.interactive = true;
+      menuButton.graphics.on('mouseover', w_hexHoverOver);
+      menuButton.graphics.on('mouseout', w_hexHoverOff);
+      menuButton.graphics.on('pointerdown', w_MenuSelect);
+      menuButton.graphics.alpha = 0.8;
   menuButton.draw(0xFFFFFF);
 
-  const menuIcon = new PIXI.Sprite.fromImage("Images/menu.png");
-    menuIcon.width = 45;
-    menuIcon.height = 37;
-    menuIcon.position.x = 27.5;
-    menuIcon.position.y = 38;
+  let menuIcon = new PIXI.Sprite.fromImage("Images/menu.png");
+      menuIcon.width = 45;
+      menuIcon.height = 37;
+      menuIcon.position.x = 27.5;
+      menuIcon.position.y = 38;
   app.stage.addChild(menuIcon);
 
 
@@ -76,34 +82,35 @@ function startWindows(){
 
   // save button
 
-  var saveButton = new Hexagon({x:menuButton.getCenterRight(0).x, y:menuButton.getCenterRight(0).y}, 0, 37);
-      saveButton.graphics.lineStyle(2, 0x7D7D7D, 3);
-      saveButton.graphics.interactive = true;
-      saveButton.graphics.on('mouseover', a_hexHoverOver);
-      saveButton.graphics.on('mouseout', a_hexHoverOff);
-      saveButton.graphics.on('pointerdown', w_SaveSelect);
-      saveButton.graphics.alpha = 0.8;
-  saveButton.draw(0xFFFFFF);
-  //app.stage.removeChild(saveButton.container);
-  //w_menuContainer.addChild(saveButton.container);
+  var w_saveButton = new Hexagon({x:menuButton.getCenterRight(0).x, y:menuButton.getCenterRight(0).y}, 0, 37);
+      w_saveButton.graphics.lineStyle(2, 0x7D7D7D, 3);
+      w_saveButton.graphics.interactive = true;
+      w_saveButton.graphics.on('mouseover', w_hexHoverOver);
+      w_saveButton.graphics.on('mouseout', w_hexHoverOff);
+      w_saveButton.graphics.on('pointerdown', w_SaveSelect);
+      w_saveButton.graphics.alpha = 0.8;
+  w_saveButton.draw(0xFFFFFF);
+  app.stage.removeChild(w_saveButton.container);
+  w_menuContainer.addChild(w_saveButton.container);
 
-  const saveIcon = new PIXI.Sprite.fromImage("Images/save-icon.png");
-    saveIcon.width = 40;
-    saveIcon.height = 40;
-    saveIcon.position.x = 94;
-    saveIcon.position.y = 35;
-  app.stage.addChild(saveIcon);
-  w_menuContainer.addChild(saveIcon);
+  let w_saveIcon = new PIXI.Sprite.from("Images/save-icon.png");
+      w_saveIcon.width = 40;
+      w_saveIcon.height = 40;
+      w_saveIcon.position.x = 94;
+      w_saveIcon.position.y = 35;
+  w_menuContainer.addChild(w_saveIcon);
 
 
 
   // settings button
 
-  var settingsButton = new Hexagon({x:saveButton.getCenterRight(0).x, y:saveButton.getCenterRight(0).y}, 0, 37);
+  w_settingsCC = 0;
+
+  var settingsButton = new Hexagon({x:w_saveButton.getCenterRight(0).x, y:w_saveButton.getCenterRight(0).y}, 0, 37);
       settingsButton.graphics.lineStyle(2, 0x7D7D7D, 3);
       settingsButton.graphics.interactive = true;
-      settingsButton.graphics.on('mouseover', a_hexHoverOver);
-      settingsButton.graphics.on('mouseout', a_hexHoverOff);
+      settingsButton.graphics.on('mouseover', w_hexHoverOver);
+      settingsButton.graphics.on('mouseout', w_hexHoverOff);
       settingsButton.graphics.on('pointerdown', w_SettingsSelect);
       settingsButton.graphics.alpha = 0.8;
   settingsButton.draw(0xFFFFFF);
@@ -111,99 +118,84 @@ function startWindows(){
   w_menuContainer.addChild(settingsButton.container);
   
   const settingsIcon = new PIXI.Sprite.fromImage("Images/settings.png");
-    settingsIcon.width = 68;
-    settingsIcon.height = 68;
-    settingsIcon.position.x = 144;
-    settingsIcon.position.y = 21;
+        settingsIcon.width = 68;
+        settingsIcon.height = 68;
+        settingsIcon.position.x = 144;
+        settingsIcon.position.y = 21;
   w_menuContainer.addChild(settingsIcon);
+
+
 
   let w = window.innerWidth;
   let h = window.innerHeight;
-  let settingsMenu = new PIXI.Graphics();
-  settingsMenu.lineStyle(5, 0x707070, 3);
-  settingsMenu.beginFill(0x7D7D7D);
-  settingsMenu.drawPolygon([w/5,20, w-(w/5),20, w-(w/5),h-20, w/5,h-20]);
-  settingsMenu.endFill();
-  w_settingsContainer.addChild(settingsMenu);
+  let w_settingsMenu = new PIXI.Graphics();
+      w_settingsMenu.lineStyle(5, 0x707070, 3);
+      w_settingsMenu.beginFill(0x7D7D7D);
+      w_settingsMenu.drawPolygon([w/5,20, w-(w/5),20, w-(w/5),h-20, w/5,h-20]);
+      w_settingsMenu.endFill();
+  w_settingsContainer.addChild(w_settingsMenu);
 
-  let settTitle = new PIXI.Text("Project Settings", {fill: "#ffffff", fontFamily: "Helvetica", fontSize: 32, letterSpacing: 3});
-  settTitle.position.x = (w/5)+35;
-  settTitle.position.y = 40;
-  w_settingsContainer.addChild(settTitle);
+  let w_settTitle = new PIXI.Text("Project Settings", {fill: "#ffffff", fontFamily: "Helvetica", fontSize: 32, letterSpacing: 2});
+      w_settTitle.position.x = (w/5)+35;
+      w_settTitle.position.y = 40;
+  w_settingsContainer.addChild(w_settTitle);
 
-  let settUsername = new PIXI.Text("Project Name:          Ceramics 48032-23441", {fill: "#ffffff", fontFamily: "Helvetica", fontSize: 18, letterSpacing: 3});
-  settUsername.position.x = (w/5)+35;
-  settUsername.position.y = 140;
-  w_settingsContainer.addChild(settUsername);
+  let w_settUsername = new PIXI.Text("Project Name:          Ceramics 48032-23441", {fill: "#ffffff", fontFamily: "Helvetica", fontSize: 18, letterSpacing: 1.5});
+      w_settUsername.position.x = (w/5)+35;
+      w_settUsername.position.y = 140;
+  w_settingsContainer.addChild(w_settUsername);
 
-  let settPassword = new PIXI.Text("Microscope(s):      JEOL JEM-ARM200CF", {fill: "#ffffff", fontFamily: "Helvetica", fontSize: 18, letterSpacing: 3});
-  settPassword.position.x = (w/5)+35;
-  settPassword.position.y = 180;
-  w_settingsContainer.addChild(settPassword);
+  let w_settPassword = new PIXI.Text("Microscope(s):         JEOL JEM-ARM200CF", {fill: "#ffffff", fontFamily: "Helvetica", fontSize: 18, letterSpacing: 1.5});
+      w_settPassword.position.x = (w/5)+35;
+      w_settPassword.position.y = 180;
+  w_settingsContainer.addChild(w_settPassword);
 
-  let settInstitution = new PIXI.Text("Institution:             Lehigh University", {fill: "#ffffff", fontFamily: "Helvetica", fontSize: 18, letterSpacing: 3});
-  settInstitution.position.x = (w/5)+35;
-  settInstitution.position.y = 220;
-  w_settingsContainer.addChild(settInstitution);
+  let w_settInstitution = new PIXI.Text("Institution:               Lehigh University", {fill: "#ffffff", fontFamily: "Helvetica", fontSize: 18, letterSpacing: 1.5});
+      w_settInstitution.position.x = (w/5)+35;
+      w_settInstitution.position.y = 220;
+  w_settingsContainer.addChild(w_settInstitution);
 
-  let settName = new PIXI.Text("Last Edited:               06/25/19 at 13:23", {fill: "#ffffff", fontFamily: "Helvetica", fontSize: 18, letterSpacing: 3});
-  settName.position.x = (w/5)+35;
-  settName.position.y = 260;
-  w_settingsContainer.addChild(settName);
+  let w_settName = new PIXI.Text("Last Edited:             06/25/19  at  13:23", {fill: "#ffffff", fontFamily: "Helvetica", fontSize: 18, letterSpacing: 1.5});
+      w_settName.position.x = (w/5)+35;
+      w_settName.position.y = 260;
+  w_settingsContainer.addChild(w_settName);
 
-  let editButton = new PIXI.Graphics();
-  editButton.lineStyle(3, 0xA9A9A9, 3);
-  editButton.beginFill(0xffffff);
-  editButton.drawPolygon([(w/5)+35,h-100, w-(w/5+35),h-100, w-(w/5+35),h-70, (w/5)+35,h-70]);
-  editButton.endFill();
-  w_settingsContainer.addChild(editButton);
+  let w_editButton = new PIXI.Graphics();
+      w_editButton.lineStyle(3, 0xA9A9A9, 3);
+      w_editButton.beginFill(0xffffff);
+      w_editButton.drawPolygon([(w/5)+35,h-100, w-(w/5+35),h-100, w-(w/5+35),h-70, (w/5)+35,h-70]);
+      w_editButton.endFill();
+  w_settingsContainer.addChild(w_editButton);
 
-  let settEdit = new PIXI.Text("Edit", {fill: "#000000", fontFamily: "Helvetica", fontSize: 18, letterSpacing: 4});
-  settEdit.position.x = w/2-60;
-  settEdit.position.y = h-96;
-  w_settingsContainer.addChild(settEdit);
+  let w_settEdit = new PIXI.Text("Edit", {fill: "#000000", fontFamily: "Helvetica", fontSize: 18, letterSpacing: 3});
+      w_settEdit.position.x = w/2-30;
+      w_settEdit.position.y = h-96;
+  w_settingsContainer.addChild(w_settEdit);
 
-  
+
+
 
   // Hide Menu Option
 
-  var hideButton = new Hexagon({x:settingsButton.getCenterRight(0).x, y:settingsButton.getCenterRight(0).y}, 0, 37);
-      hideButton.graphics.lineStyle(2, 0x7D7D7D, 3);
-      hideButton.graphics.interactive = true;
-      hideButton.graphics.on('mouseover', a_hexHoverOver);
-      hideButton.graphics.on('mouseout', a_hexHoverOff);
-      hideButton.graphics.on('pointerdown', w_HideSelect);
-      hideButton.graphics.alpha = 0.8;
-  hideButton.draw(0xFFFFFF);
-  app.stage.removeChild(hideButton.container);
-  w_menuContainer.addChild(hideButton.container);
+  w_hideCC = 0;
 
-  let menuLabel = new PIXI.Text("Hide\nMenu", w_style);
-    menuLabel.position.x = 224;
-    menuLabel.position.y = 36;
-  w_menuContainer.addChild(menuLabel);
+  var w_hideButton = new Hexagon({x:settingsButton.getCenterRight(0).x, y:settingsButton.getCenterRight(0).y}, 0, 37);
+      w_hideButton.graphics.lineStyle(2, 0x7D7D7D, 3);
+      w_hideButton.graphics.interactive = true;
+      w_hideButton.graphics.on('mouseover', w_hexHoverOver);
+      w_hideButton.graphics.on('mouseout', w_hexHoverOff);
+      w_hideButton.graphics.on('pointerdown', w_HideSelect);
+      w_hideButton.graphics.alpha = 0.8;
+      w_hideButton.draw(0xFFFFFF);
+  app.stage.removeChild(w_hideButton.container);
+  w_menuContainer.addChild(w_hideButton.container);
 
+  let hideMenuLabel = new PIXI.Text("Hide\nMenu", {fontFamily: 'Arial', fontSize: 15, fill: 0x000000});
+      hideMenuLabel.position.x = 224;
+      hideMenuLabel.position.y = 36;
+  w_menuContainer.addChild(hideMenuLabel);
 
-/*
-
-  // Microscope Menu
-
-  var micMenuHex = new makeTaskHex(36, 136, "microscope");
-  const hexImg = new PIXI.Sprite.fromImage("Images/microscope.png");
-    hexImg.width = 54;
-    hexImg.height = 54;
-    hexImg.position.x = 20.4;
-    hexImg.position.y = 144.8;
-    hexImg.alpha = 0.5;
-  app.stage.addChild(hexImg);
-  const plusIcon = new PIXI.Sprite.fromImage("Images/plus.png");
-    plusIcon.width = 46;
-    plusIcon.height = 46;
-    plusIcon.position.x = 11;
-    plusIcon.position.y = 153;
-    plusIcon.alpha = 0.5;
-  w_menuContainer.addChild(plusIcon);
-*/
+  
 
 
   // Image Menu (Container)
@@ -213,73 +205,139 @@ function startWindows(){
   var window1 = new Hexagon({x:50, y:200}, 0, 37);
       window1.graphics.lineStyle(2, 0x7D7D7D, 3);
       window1.graphics.interactive = true;
-      window1.graphics.on('mouseover', a_hexHoverOver);
-      window1.graphics.on('mouseout', a_hexHoverOff);
+      window1.graphics.on('mouseover', w_hexHoverOver);
+      window1.graphics.on('mouseout', w_hexHoverOff);
       window1.graphics.on('pointerdown', w_ImageSelect);
       window1.graphics.alpha = 0.8;
   window1.draw(0xFFFFFF);
   app.stage.removeChild(window1.container);
   w_windowContainer.addChild(window1.container);
 
-  let window1Label = new PIXI.Text("Image\n    1", w_style);
-      window1Label.position.x = window1.x - 21;
-      window1Label.position.y = window1.y - 17;
+  let window1Label = new PIXI.Text("Window\n     1", w_style);
+      window1Label.position.x = window1.x - 26;
+      window1Label.position.y = window1.y - 15;
   w_windowContainer.addChild(window1Label);
 
 
   var window2 = new Hexagon({x:window1.getCenterLowerRight(0).x, y:window1.getCenterLowerRight(0).y}, 0, 37);
       window2.graphics.lineStyle(2, 0x7D7D7D, 3);
       window2.graphics.interactive = true;
-      window2.graphics.on('mouseover', a_hexHoverOver);
-      window2.graphics.on('mouseout', a_hexHoverOff);
+      window2.graphics.on('mouseover', w_hexHoverOver);
+      window2.graphics.on('mouseout', w_hexHoverOff);
       window2.graphics.on('pointerdown', w_ImageSelect);
       window2.graphics.alpha = 0.8;
   window2.draw(0xFFFFFF);
   app.stage.removeChild(window2.container);
   w_windowContainer.addChild(window2.container);
   
-  let window2Label = new PIXI.Text("Image\n    2", w_style);
-      window2Label.position.x = window2.x - 21;
-      window2Label.position.y = window2.y - 17;
+  let window2Label = new PIXI.Text("Window\n     2", w_style);
+      window2Label.position.x = window2.x - 26;
+      window2Label.position.y = window2.y - 15;
   w_windowContainer.addChild(window2Label);
 
 
   var window3 = new Hexagon({x:window2.getCenterLowerLeft(0).x, y:window2.getCenterLowerLeft(0).y}, 0, 37);
       window3.graphics.lineStyle(2, 0x7D7D7D, 3);
       window3.graphics.interactive = true;
-      window3.graphics.on('mouseover', a_hexHoverOver);
-      window3.graphics.on('mouseout', a_hexHoverOff);
+      window3.graphics.on('mouseover', w_hexHoverOver);
+      window3.graphics.on('mouseout', w_hexHoverOff);
       window3.graphics.on('pointerdown', w_ImageSelect);
       window3.graphics.alpha = 0.8;
   window3.draw(0xFFFFFF);
   app.stage.removeChild(window3.container);
   w_windowContainer.addChild(window3.container);
 
-  let window3Label = new PIXI.Text("Image\n    3", w_style);
-      window3Label.position.x = window3.x - 21;
-      window3Label.position.y = window3.y - 17;
+  let window3Label = new PIXI.Text("Window\n     3", w_style);
+      window3Label.position.x = window3.x - 26;
+      window3Label.position.y = window3.y - 15;
   w_windowContainer.addChild(window3Label);
 
 
   var window4 = new Hexagon({x:window3.getCenterLowerRight(0).x, y:window3.getCenterLowerRight(0).y}, 0, 37);
       window4.graphics.lineStyle(2, 0x7D7D7D, 3);
       window4.graphics.interactive = true;
-      window4.graphics.on('mouseover', a_hexHoverOver);
-      window4.graphics.on('mouseout', a_hexHoverOff);
-      window4.graphics.on('pointerdown', w_ImageSelect);
+      window4.graphics.on('mouseover', w_hexHoverOver);
+      window4.graphics.on('mouseout', w_hexHoverOff);
+      window4.graphics.on('mousedown', w_ImageSelect);
       window4.graphics.alpha = 0.8;
   window4.draw(0xFFFFFF);
   app.stage.removeChild(window4.container);
   w_windowContainer.addChild(window4.container);
 
-  let window4Label = new PIXI.Text("Image\n    4", w_style);
-      window4Label.position.x = window4.x - 21;
-      window4Label.position.y = window4.y - 17;
+  let window4Label = new PIXI.Text("Window\n     4", w_style);
+      window4Label.position.x = window4.x - 26;
+      window4Label.position.y = window4.y - 15;
   w_windowContainer.addChild(window4Label);
 
   app.stage.addChild(w_windowContainer);
 
+
   
+  // Popup
+
+  w_popupCC = 0;
+  
+  // recall: w = window.innerWidth; h = window.innerHeight
+  w = window.innerWidth;
+  h = window.innerHeight;
+
+  let w_workWindow = new PIXI.Graphics();
+      w_workWindow.lineStyle(5, 0x707070, 3);
+      w_workWindow.beginFill(0x7F7F7F);
+      w_workWindow.drawPolygon([0,0, w*0.55,0, w*0.55, w*0.3575, 0,w*0.3575]);
+      w_workWindow.endFill();
+      w_workWindow.position.x = w/4;
+      w_workWindow.position.y = 20;
+  w_Popup1Container.addChild(w_workWindow);
+
+  let w_activity1 = new PIXI.Graphics();
+      w_activity1.lineStyle(5, 0x707070, 3);
+      w_activity1.beginFill(0xdcdcdc);
+      w_activity1.drawPolygon([w/4-70,20, w/4,20, w/4,90, w/4-70,90]);
+      w_activity1.endFill();
+      w_activity1.interactive = true;
+      w_activity1.on('pointerdown', w_a1Select);
+      w_activity1.alpha = 0.8;
+  w_Popup1Container.addChild(w_activity1);
+
+  let w_activity2 = new PIXI.Graphics();
+      w_activity2.lineStyle(5, 0x707070, 3);
+      w_activity2.beginFill(0xdcdcdc);
+      w_activity2.drawPolygon([w/4-70,90, w/4,90, w/4,160, w/4-70,160]);
+      w_activity2.endFill();
+      w_activity2.interactive = true;
+      w_activity2.on('pointerdown', w_a2Select);
+      w_activity2.alpha = 0.8;
+  w_Popup1Container.addChild(w_activity2);
+
+  let w_activity3 = new PIXI.Graphics();
+      w_activity3.lineStyle(5, 0x707070, 3);
+      w_activity3.beginFill(0xdcdcdc);
+      w_activity3.drawPolygon([w/4-70,160, w/4,160, w/4,230, w/4-70,230]);
+      w_activity3.endFill();
+      w_activity3.interactive = true;
+      w_activity3.on('pointerdown', w_a3Select);
+      w_activity3.alpha = 0.8;
+  w_Popup1Container.addChild(w_activity3);
+
+  let w_activity4 = new PIXI.Graphics();
+      w_activity4.lineStyle(5, 0x707070, 3);
+      w_activity4.beginFill(0xdcdcdc);
+      w_activity4.drawPolygon([w/4-70,230, w/4,230, w/4,300, w/4-70,300]);
+      w_activity4.endFill();
+      w_activity4.interactive = true;
+      w_activity4.on('pointerdown', w_a4Select);
+      w_activity4.alpha = 0.8;
+  w_Popup1Container.addChild(w_activity4);
+  /*
+  var Popup = new PIXI.Sprite.fromImage(images[0]);
+      Popup.x = 20;
+      Popup.width = app.screen.width * 0.9;
+  w_Popup1Container.addChild(Popup1);
+*/
+
+
+
 
 
   // POPUP WINDOW 
@@ -292,7 +350,7 @@ function startWindows(){
   bg.endFill();
   bg.alpha = 0.7;
 
-  w_PopupContainer.addChild(bg);
+  //w_PopupContainer.addChild(bg);
 
 
   // close button
@@ -309,7 +367,11 @@ function startWindows(){
       closeImage.on('mouseout', w_hoverCloseButtonOff);
       closeImage.on('mousedown', w_disablePopup);
       closeImage.alpha = 0.7;
-  w_PopupContainer.addChild(closeImage);
+  w_Popup1Container.addChild(closeImage);
+  w_Popup2Container.addChild(closeImage);
+  w_Popup3Container.addChild(closeImage);
+  w_Popup4Container.addChild(closeImage);
+
 
 
 }
@@ -317,82 +379,121 @@ function startWindows(){
 
 function w_hexHoverOver()
 {
-    this.alpha = 0.8;
+  this.alpha = 1;
 }
 
 function w_hexHoverOff()
 {
-    this.alpha = 0.6;
+  this.alpha = 0.8;
 }
 
 
 function w_MenuSelect()
 {
-  if (menuCC == 0)
+  if(w_hideCC == 1)
+  {
+    app.stage.addChild(w_windowContainer);
+    w_hideCC = 0;
+  }
+
+  if (w_menuCC == 0)
   {
     app.stage.addChild(w_menuContainer);
-    menuCC = 1;
+    w_menuCC = 1;
   }
-  else if (menuCC == 1)
+  else if (w_menuCC == 1)
   {
     app.stage.removeChild(w_menuContainer);
-    menuCC = 0;
+    w_menuCC = 0;
   }
 }
 
-
-function w_MenuSelect()
-{
-  if (menuCC == 0)
-  {
-      app.stage.addChild(w_menuContainer);
-      menuCC = 1;
-  }
-  else if (menuCC == 1)
-  {
-      app.stage.removeChild(w_menuContainer);
-      menuCC = 0;
-  }
-}
 
 function w_SaveSelect()
 {
-  currentActivity = activityArray[2];
+  currentActivity = activityArray[1];
   updateActivity();
 }
 
 function w_SettingsSelect()
 {
-  if (settingsCC == 0)
+  if (w_settingsCC == 0)
   {
-      app.stage.addChild(w_settingsContainer);
-      settingsCC = 1;
+    app.stage.addChild(w_settingsContainer);
+    w_settingsCC = 1;
   }
-  else if (settingsCC == 1)
+  else if (w_settingsCC == 1)
   {
-      app.stage.removeChild(w_settingsContainer);
-      settingsCC = 0;
+    app.stage.removeChild(w_settingsContainer);
+    w_settingsCC = 0;
   }
 }
 
 function w_HideSelect()
 {
-  app.stage.removeChild(w_imageContainer);
-  menuCC = 0;
+  app.stage.removeChild(w_windowContainer);
+  w_menuCC = 0;
   app.stage.removeChild(w_menuContainer);
+  w_hideCC = 1;
 }
 
 function w_ImageSelect()
 {
-  app.stage.removeChild(w_titleContainer); //if not removed already
-
-  var PopupSprite = new PIXI.Sprite.fromImage(images[0]);
-    PopupSprite.scale.set(0.9, 0.9);
-    PopupSprite.x = 20;
-    PopupSprite.width = app.screen.width * 0.9;
-  w_PopupContainer.addChild(PopupSprite);
-
-  app.stage.addChild(w_PopupContainer);
+  if (w_popupCC == 0) {
+    app.stage.addChild(w_Popup1Container);
+  }
+  else if (w_popupCC == 1)
+  {
+    app.stage.removeChild(w_Popup1Container);
+  }
 }
 
 
+function w_a1Select()
+{
+  this.alpha = 1;
+
+  var PopupSprite = new PIXI.Sprite.fromImage(images[0]);
+      PopupSprite.width = window.innerWidth * 0.545;
+      PopupSprite.height = PopupSprite.width * 0.645;
+      PopupSprite.x = window.innerWidth/4 + 3;
+      PopupSprite.y = 23;
+  app.stage.addChild(PopupSprite);
+}
+
+function w_a2Select()
+{
+  this.alpha = 1;
+
+  var PopupSprite = new PIXI.Sprite.fromImage(images[1]);
+      PopupSprite.width = window.innerWidth * 0.545;
+      PopupSprite.height = PopupSprite.width * 0.645;
+      PopupSprite.x = window.innerWidth/4 + 3;
+      PopupSprite.y = 23;
+  app.stage.addChild(PopupSprite);
+}
+
+function w_a3Select()
+{
+  this.alpha = 1;
+
+  var PopupSprite = new PIXI.Sprite.fromImage(images[2]);
+      PopupSprite.width = window.innerWidth * 0.545;
+      PopupSprite.height = PopupSprite.width * 0.645;
+      PopupSprite.x = window.innerWidth/4 + 3;
+      PopupSprite.y = 23;
+  app.stage.addChild(PopupSprite);
+}
+
+function w_a4Select()
+{
+  this.alpha = 1;
+
+  var PopupSprite = new PIXI.Sprite.fromImage(images[3]);
+      PopupSprite.width = window.innerWidth * 0.545;
+      PopupSprite.height = PopupSprite.width * 0.645;
+      PopupSprite.x = window.innerWidth/4 + 3;
+      PopupSprite.y = 23;
+  app.stage.addChild(PopupSprite);
+
+}

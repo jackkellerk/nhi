@@ -91,7 +91,11 @@ class NewProject{
         let otherOptions = new QuestionPage({
             questionTitle: 'To optimize the data acquisition \nworkflow, you may want to ...',
             availableOptions: [{
-                content: 'confirm'
+                content: 'confirm',
+                onClick: function () {
+                    currentActivity = activityArray[1];
+                    updateActivity();
+                }
             }],
             choices: ['Operate microscope at 200 kV', 'Set probe current to 150 pA', 'Set detector collection angles', 'Etc.'],
             fill: Hexagon.getHexColor("white"),

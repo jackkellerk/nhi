@@ -1,5 +1,5 @@
-<!--Version: 8 // Please raise the number every time you make an edit-->
-<!--Last Edited By: Desai Xie // Change to your name after every edit-->
+<!--Version: 9 // Please raise the number every time you make an edit-->
+<!--Last Edited By: Eddie Sohn // Change to your name after every edit-->
 <html>
     <head>
         <title>Unified Code</title>
@@ -27,6 +27,9 @@
         <!--NewProject Page Dependencies-->
         <script src="NewProject/newProject.js"></script>
         <script src="NewProject/captionFactory.js"></script>
+        
+        <!--Source Page Dependencies-->
+        <script src="projectSource.js"></script>
         
         <!--Spectrum Imaging Dependencies-->
         <script src="Spectrum_Imaging/spectrum.js"></script>
@@ -131,6 +134,11 @@
                 {
                     NewProject.startProjects();
                     
+                }
+                else if(currentActivity == 'Source')
+                {
+                    startSourcePage();
+                    drawSourceInfo();
                 }
                 else if(currentActivity == 'Zoom')
                 {

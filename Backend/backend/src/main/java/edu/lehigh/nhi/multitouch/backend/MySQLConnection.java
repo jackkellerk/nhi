@@ -53,4 +53,22 @@ class MySQLConnection {
 
         return false;
     }
+
+    // Returns true if it was successful, returns false otherwise // Ask if the email must be an edu email specifically from one of the partnering universities
+    public boolean signup(String username, String password, String email)
+    {
+        try
+        {
+            Statement stmt = connection.createStatement();
+            stmt.executeUpdate("INSERT INTO users (username, password, email, profile_picture) VALUES ('" + username + "', '" + password + "', '" + email + "', '')");
+            stmt.close();
+
+            return login(username, password);
+        }
+        catch(SQLException e)
+        {
+            System.out.println(e);
+            return false;
+        }
+    }
 }

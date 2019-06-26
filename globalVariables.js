@@ -1,6 +1,6 @@
 // Determining what activity we are on
 var currentActivity = 'Welcome';
-var activityArray = ['Welcome', 'AllProjects', 'Windows', 'NewProject', 'Zoom', 'Multispectrum', 'Line', 'Tilting', 'Multi-block'];
+var activityArray = ['Welcome', 'AllProjects', 'Windows', 'NewProject', 'Source', 'Zoom', 'Multispectrum', 'Line', 'Tilting', 'Multi-block'];
 
 /* These are global variables for Multi-block */
 

@@ -6,6 +6,9 @@ var line = new PIXI.Graphics();
 var hex = new PIXI.Graphics();
 var ps_title;
 
+// boolean to determine whether next page is required
+var nextpage = false;
+
 //Creates style used by text. It is currently unnecessary but more of an example
 const ps_title_style = new PIXI.TextStyle({
     fontFamily: 'Helvetica',
@@ -29,6 +32,9 @@ var x_infostarts;
 var x_infoends;
 var y_infostarts;
 // var y_infoends;
+
+var ps_sampleText;
+var ps_sampleImage;
 
 // screen_limit is the x coordinate of hexagon right before it go gover x_limit
 var screen_limit;
@@ -105,6 +111,7 @@ function drawSourceInfo(numSource) {
         console.log("y: " + y + "y_limit: " + y_limit);
         // if lowest point of the new row is over y_limit, break;
         if (y + 80 * 2 > y_limit) {
+            nextpage = true;
             break;
         }
 
@@ -162,6 +169,12 @@ function startSourcePage() {
     ps_title.x = 10;
     ps_title.y = 10;
     app.stage.addChild(ps_title);
+
+    // set example texts
+    ps_sampleImage = new PIXI.Text('1', ps_title_style);
+    ps_sampleImage.x = app.screen.width / 8 + 38.8;
+    ps_sampleImage.y = 117 + 40;
+    app.stage.addChild(ps_sampleImage);
     
 }
 

@@ -416,7 +416,7 @@ function startWindows(){
       closeImage.on('mouseout', w_hoverCloseButtonOff);
       closeImage.on('mousedown', w_disablePopup);
       closeImage.alpha = 0.7;
-  w_Popup1Container.addChild(closeImage);
+  //w_Popup1Container.addChild(closeImage);
 
 
 

@@ -4,7 +4,11 @@ var renderer;
 var w_menuCC; // main menu
 var w_settingsCC; // settings menu
 var w_hideCC;
-var w_popupCC;
+var w_popup1CC;
+var w_popup2CC;
+var w_popup3CC;
+var w_popup4CC;
+
 
 var bg = new PIXI.Graphics();
 
@@ -226,8 +230,11 @@ function startWindows(){
   var window1 = new Hexagon({x:50, y:200}, 0, 37);
       window1.graphics.lineStyle(2, 0x7D7D7D, 3);
       window1.graphics.interactive = true;
-      window1.graphics.on('pointerdown', w_ImageSelect);
-      window1.graphics.alpha = 1;
+      window1.graphics.on('mouseover', w_WindowHoverOver);
+      window1.graphics.on('mouseout', w_WindowHoverOff);
+      window1.graphics.on('pointerdown', w_WindowSelect);
+      window1.graphics.alpha = 0.85;
+      window1.cc = 0;
   window1.draw(0xFFFFFF);
   app.stage.removeChild(window1.container);
 
@@ -239,8 +246,10 @@ function startWindows(){
   var window2 = new Hexagon({x:window1.x, y:window1.getCenterLowerRight(0).y}, 0, 37);
       window2.graphics.lineStyle(2, 0x7D7D7D, 3);
       window2.graphics.interactive = true;
-      window2.graphics.on('pointerdown', w_ImageSelect);
-      window2.graphics.alpha = 1;
+      window2.graphics.on('mouseover', w_WindowHoverOver);
+      window2.graphics.on('mouseout', w_WindowHoverOff);
+      window2.graphics.on('pointerdown', w_WindowSelect);
+      window2.graphics.alpha = 0.85;
   window2.draw(0xFFFFFF);
   app.stage.removeChild(window2.container);
   
@@ -253,8 +262,10 @@ function startWindows(){
   var window3 = new Hexagon({x:window2.x, y:window2.getCenterLowerLeft(0).y}, 0, 37);
       window3.graphics.lineStyle(2, 0x7D7D7D, 3);
       window3.graphics.interactive = true;
-      window3.graphics.on('pointerdown', w_ImageSelect);
-      window3.graphics.alpha = 1;
+      window3.graphics.on('mouseover', w_WindowHoverOver);
+      window3.graphics.on('mouseout', w_WindowHoverOff);
+      window3.graphics.on('pointerdown', w_WindowSelect);
+      window3.graphics.alpha = 0.85;
   window3.draw(0xFFFFFF);
   app.stage.removeChild(window3.container);
 
@@ -263,12 +274,15 @@ function startWindows(){
   window3Label.position.y = window3.y - 15;
 
 
+  w_popup4CC = 0;
 
   var window4 = new Hexagon({x:window3.x, y:window3.getCenterLowerRight(0).y}, 0, 37);
       window4.graphics.lineStyle(2, 0x7D7D7D, 3);
       window4.graphics.interactive = true;
-      window4.graphics.on('mousedown', w_ImageSelect);
-      window4.graphics.alpha = 1;
+      window4.graphics.on('mouseover', w_WindowHoverOver);
+      window4.graphics.on('mouseout', w_WindowHoverOff);
+      window4.graphics.on('mousedown', w_WindowSelect);
+      window4.graphics.alpha = 0.85;
   window4.draw(0xFFFFFF);
   app.stage.removeChild(window4.container);
 
@@ -298,8 +312,11 @@ function startWindows(){
 
   let w_workWindow = new PIXI.Graphics();
       w_workWindow.lineStyle(5, 0x707070, 3);
+      w_workWindow.beginFill(0x707070);
+      w_workWindow.drawPolygon([0,-20, w*0.55,-20, w*0.55,w*0.3575, 0,w*0.3575]);
+      w_workWindow.endFill();
       w_workWindow.beginFill(0x7F7F7F);
-      w_workWindow.drawPolygon([0,0, w*0.55,0, w*0.55, w*0.3575, 0,w*0.3575]);
+      w_workWindow.drawPolygon([0,0, w*0.55,0, w*0.55,w*0.3575, 0,w*0.3575]);
       w_workWindow.endFill();
       //w_workWindow.anchor.set(0.5);
       w_workWindow.position.x = w/4;
@@ -316,8 +333,19 @@ function startWindows(){
       // events for drag move
       w_workWindow.on('mousemove', onDragMove);
       w_workWindow.on('touchmove', onDragMove);
-
   w_Popup1Container.addChild(w_workWindow);
+
+  let w1_menuLabel = new PIXI.Text("Window 1",{fontFamily: 'Arial', fontSize: 15, fill: 0xffffff});
+      w1_menuLabel.position.x = w_workWindow.x + 10;
+      w1_menuLabel.position.y = w_workWindow.y - 19;
+  w_Popup1Container.addChild(w1_menuLabel);
+
+  let windowSettings = new PIXI.Sprite.fromImage('Images/window-settings.png');
+      windowSettings.width = 28;
+      windowSettings.height = 28;
+      windowSettings.position.x = w*0.74;
+      windowSettings.position.y = -3;
+  w_Popup1Container.addChild(windowSettings);
 
 
 
@@ -484,20 +512,40 @@ function w_HideSelect()
   w_hideCC = 1;
 }
 
-function w_ImageSelect()
+
+
+
+function w_WindowHoverOver()
+{
+  this.alpha = 1;
+}
+
+function w_WindowHoverOff()
+{
+  if (this.cc == 0)
+  {
+    this.alpha = 0.85;
+  }
+}
+
+function w_WindowSelect()
 {
   if (w_popupCC == 0) {
     app.stage.addChild(w_Popup1Container);
     w_popupCC = 1;
-    //this.alpha = 1;
+    this.cc = 1;
+    this.alpha = 1;
   }
   else if (w_popupCC == 1)
   {
     app.stage.removeChild(w_Popup1Container);
     w_popupCC = 0;
-    //this.alpha = 0.8;
+    this.cc = 0;
+    //this.alpha = 0.85;
   }
 }
+
+
 
 
 function w_a1Select()
@@ -567,8 +615,8 @@ function onDragStart(event)
   this.alpha = 0.5;
   this.dragging = true;
 
-  //this.sx = this.data.getLocalPosition(w_Popup1Container).x;
-  //this.sy = this.data.getLocalPosition(w_Popup1Container).y;
+  this.sx = this.data.getLocalPosition(w_Popup1Container).x;
+  this.sy = this.data.getLocalPosition(w_Popup1Container).y;
 
 }
 
@@ -584,20 +632,20 @@ function onDragEnd()
 
 function onDragMove()
 {
-  /*
+
   if (this.dragging)
   {
     var newPosition = this.data.getLocalPosition(this.parent);
     w_Popup1Container.position.x = newPosition.x - this.sx;
     w_Popup1Container.position.y = newPosition.y - this.sy;
   }
-*/
+/*
   if (this.dragging)
   {
     var newPosition = this.data.getLocalPosition(this.parent);
     w_Popup1Container.position.x = newPosition.x;
     w_Popup1Container.position.y = newPosition.y;
   }
-
+*/
 }
 

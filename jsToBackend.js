@@ -23,20 +23,17 @@ function loginToBackend()
     });
 
     // This works for POST Requests
+    var root = 'localhost:4567';
     $.ajax({
         method: 'POST',
         contentType: 'application/json',
         data: JSON.stringify(theData),
-        url: 'http://localhost:4567/login',
+        url: root + '/login',
         dataType: 'json',
-        crossDomain: 'true',
-        xhrFields: {
-            withCredentials: true
-        },
         success: function(data) {
             alert(JSON.stringify(data));
         },
-        error: function(xhr, status, error) {
+        error: function(error) {
             alert("Error");
         }
     })

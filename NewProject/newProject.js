@@ -104,10 +104,10 @@ class NewProject{
         }
     
         
-        let cancel = NewProject.createCancelButton();
-        prompt.container.addChild(cancel);
-        cancel.x = prompt.container.width / 2 - cancel.width / 2;
-        cancel.y = prompt.container.height * 0.8;
+        // let cancel = NewProject.createCancelButton();
+        // prompt.container.addChild(cancel);
+        // cancel.x = prompt.container.width / 2 - cancel.width / 2;
+        // cancel.y = prompt.container.height * 0.8;
     }
     
     /*

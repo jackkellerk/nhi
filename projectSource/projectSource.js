@@ -21,6 +21,7 @@ var defaultLines = 6; // default number of lines to display
 
 // names and images for institution & sources
 var insArr = new Array (10);
+var insHexArr = new Array (10);
 var insTile = "Images/institution/cmu.png";
 var insImages = ['Images/institution/cmu.png', 'Images/institution/drexel.png', 'Images/institution/lehigh.png', 'Images/institution/ohio.png', 'Images/institution/pennstate.png',];
 var insNames = ['CMU', 'Drexel', 'Lehigh', 'Ohio', 'Penn State'];
@@ -120,19 +121,27 @@ function drawInsInfo (numIns) {
         
 
         console.log("numSource: " + numIns + "\nx: " + x + "\ny: " + y);
+        console.log("i:" + i + "\ninsImage:" + " " + insImages[i]);
 
         // 1st try
         insArr[i] = new PIXI.Graphics();
         insArr[i].lineStyle(2, 0xffffff, 3);
-        insArr[i].beginFill(0x808080);
+        // insArr[i].beginFill(0x808080);
 		insArr[i].drawPolygon([x+(34.8 + 4)*2,y, x+(34.8*2 + 4)*2,y+20*2, x+(34.8*2 + 4)*2,y+60*2, x+(34.8 + 4)*2,y+80*2, x+4*2,y+60*2, x+4*2,y+20*2]);
 
         app.stage.addChild(insArr[i]);
 
+        insHexArr[i] = PIXI.Sprite.from(insImages[i]);
+
+        // app.stage.addChild(insHexArr[i]);
+
+        //mask 1st thumbnail image
+        insHexArr[i].mask = insArr[i];
+
         // end fill
-        insArr[i].endFill();
+        // insArr[i].endFill();
             
-        ins_infoContainer.addChild(insArr[i]);
+        // ins_infoContainer.addChild(insHexArr[i]);
 
 
         // 2nd try
@@ -141,20 +150,20 @@ function drawInsInfo (numIns) {
         // ins_mask.drawPolygon([x+(34.8 + 4)*2,y, x+(34.8*2 + 4)*2,y+20*2, x+(34.8*2 + 4)*2,y+60*2, x+(34.8 + 4)*2,y+80*2, x+4*2,y+60*2, x+4*2,y+20*2]);
 
         // set image
-        console.log("i:" + i + "\ninsImage:" + " " + insImages[i]);
+        // console.log("i:" + i + "\ninsImage:" + " " + insImages[i]);
         // const insTile = PIXI.BaseTexture.from(insImages[i]);
         // const insImage = new PIXI.Texture(insTile, hex.drawPolygon([x+(34.8 + 4)*2,y, x+(34.8*2 + 4)*2,y+20*2, x+(34.8*2 + 4)*2,y+60*2, x+(34.8 + 4)*2,y+80*2, x+4*2,y+60*2, x+4*2,y+20*2]));
-        insTile = PIXI.Sprite.from(insImages[i]);
+        // insTile = PIXI.Sprite.from(insImages[i]);
         // app.stage.addChild(insTile);
         // app.stage.addChild(hex);
 
         //mask 1st thumbnail image
-        insTile.mask = ins_mask;
+        // insTile.mask = ins_mask;
 
         x += (80 * 2 + 4 * 2) * 2;
 
         // draw hexagon for institution
-        ins_mask.drawPolygon([x+(34.8 + 4)*2,y, x+(34.8*2 + 4)*2,y+20*2, x+(34.8*2 + 4)*2,y+60*2, x+(34.8 + 4)*2,y+80*2, x+4*2,y+60*2, x+4*2,y+20*2]);
+        hex.drawPolygon([x+(34.8 + 4)*2,y, x+(34.8*2 + 4)*2,y+20*2, x+(34.8*2 + 4)*2,y+60*2, x+(34.8 + 4)*2,y+80*2, x+4*2,y+60*2, x+4*2,y+20*2]);
         
         // mask 2nd thumbnail
         // const insTile = PIXI.Sprite.from(insImages[i]);
@@ -167,7 +176,7 @@ function drawInsInfo (numIns) {
         x += (80 * 2 + 4 * 2) * 2;
 
         // draw hexagon for institution
-        ins_mask.drawPolygon([x+(34.8 + 4)*2,y, x+(34.8*2 + 4)*2,y+20*2, x+(34.8*2 + 4)*2,y+60*2, x+(34.8 + 4)*2,y+80*2, x+4*2,y+60*2, x+4*2,y+20*2]);
+        hex.drawPolygon([x+(34.8 + 4)*2,y, x+(34.8*2 + 4)*2,y+20*2, x+(34.8*2 + 4)*2,y+60*2, x+(34.8 + 4)*2,y+80*2, x+4*2,y+60*2, x+4*2,y+20*2]);
 
         x -= (80 * 2 + 4 * 2) * 3;
 

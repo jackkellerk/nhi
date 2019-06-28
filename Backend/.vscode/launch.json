@@ -1,0 +1,18 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - App",
+            "request": "launch",
+            "mainClass": "edu.lehigh.nhi.multitouch.backend.App",
+            "projectName": "backend"
+        },
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - MySQLConnection",
+            "request": "launch",
+            "mainClass": "edu.lehigh.nhi.multitouch.backend.MySQLConnection",
+            "projectName": "backend"
+        }
+    ]
+}

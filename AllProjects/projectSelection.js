@@ -69,10 +69,11 @@ function startAllProjects()
     let w = window.innerWidth;
     let h = window.innerHeight;
     let settingsMenu = new PIXI.Graphics();
-    settingsMenu.lineStyle(5, 0x707070, 3);
-    settingsMenu.beginFill(0x7D7D7D);
-    settingsMenu.drawPolygon([w/5,20, w-(w/5),20, w-(w/5),h-20, w/5,h-20]);
-    settingsMenu.endFill();
+        settingsMenu.lineStyle(5, 0x707070, 3);
+        settingsMenu.beginFill(0x7D7D7D);
+        settingsMenu.drawPolygon([w/5,20, w-(w/5),20, w-(w/5),h-20, w/5,h-20]);
+        settingsMenu.endFill();
+        settingsMenu.interactive = true;
     a_settingsContainer.addChild(settingsMenu);
 
     let settTitle = new PIXI.Text("Profile Settings", {fill: "#ffffff", fontFamily: "Helvetica", fontSize: 32, letterSpacing: 3});

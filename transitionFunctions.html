@@ -1,0 +1,202 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Hello World</title>
+</head>
+  <script src="pixi/pixi.min.js"></script>
+<body>
+    <script type="text/javascript">
+
+    /*
+    * NHI transitons demo
+    * Agustin Mendoza Ortiz
+    */
+
+    const app = new PIXI.Application({
+        width: 1520, height: 700, 
+        backgroundColor: 0xADC7DB, antialias:true
+    });
+    document.body.appendChild(app.view);
+
+    /*
+    * IMPORTANT: I found an issue, regarding the way the animations are I applied. 
+    * I need to alter them so that you can perform a second animation on an object.
+    * At the moment, there's a ticker conflict that allows one animation. I will fix these 
+    * In some cases, applying a function twice works (blur and scaling) .
+    * Also, slack me if you have an issue or if you find another issue that I didn't catch
+    */
+
+    /*
+    * This is just a demo with two sprites. One is placed in a container so that I could test if animations can work on containers.
+    * The demo applies animations that can be used for transitions on the rest of our platform. 
+    * Tinker with the parameters to see how the animations get altered
+    * 
+    */
+
+    //Making the container and creating the texture from an image url 
+    const container = new PIXI.Container();
+    app.stage.addChild(container);
+    const texture = PIXI.Texture.from('https://pbs.twimg.com/profile_images/717183484192796672/9lb8iHU4_400x400.jpg');
+
+    // Making the sprites
+    const menu = new PIXI.Sprite(texture);
+    const sprite2 = new PIXI.Sprite(texture);
+    const offScreenSprite = new PIXI.Sprite(texture);
+    menu.anchor.set(0.5);
+    sprite2.anchor.set(0.5);
+    offScreenSprite.anchor.set(0.5);
+
+    //Setting Sprite scales
+    menu.scale.x *= 0.5;
+    menu.scale.y *= 0.5;
+    sprite2.scale.x *= 0.5;
+    sprite2.scale.y *= 0.5;
+    offScreenSprite.scale.x *= 0.5;
+    offScreenSprite.scale.y *= 0.5;
+
+    //Setting initial sprite locations
+    menu.x = (app.screen.width / 2) - 100;
+    menu.y = app.screen.height / 2;
+    sprite2.x = (app.screen.width / 2) + 100;
+    sprite2.y = app.screen.height / 2;
+    offScreenSprite.x = app.screen.width + 100;
+    offScreenSprite.y = app.screen.height / 2;
+    
+    container.addChild(sprite2);
+    app.stage.addChild(menu);
+    app.stage.addChild(offScreenSprite);
+    
+    // Opt-in to interactivity
+    menu.interactive = true;
+    sprite2.interactive = true;
+    offScreenSprite.interactive = true;
+
+    // Shows hand cursor
+    menu.buttonMode = true;
+    sprite2.buttonMode = true;
+    offScreenSprite.buttonMode = true;
+
+    // Pointers normalize touch and mouse
+    menu.on('pointerdown', moveBlurTransition);
+    sprite2.on('pointerdown', offScreenTransition);
+
+    
+
+    //Function for left-most sprite on a click
+    function moveBlurTransition() {
+        //positionTransform(200, 100, this, 20);
+        positionTransform(200, 700, this, 0.5);
+        scaleTransform(1.8, 1.5, this, 1.015);
+        blurTransform(container, 1.0, 10, 0.10);
+    }
+
+    //Function for the right-most sprite on a clicl
+    function offScreenTransition() {
+        positionTransform(200, 150, offScreenSprite, 4);
+        positionTransform(700, 700, this, 4);
+        //positionTransform(200, 150, this, 4);
+        scaleTransform(1.5, 1.5, offScreenSprite, 1.015);
+        alphaTransformDown(this, 0.0, 0.035)
+        //alphaTransformUp(this, 1.0, 0.035)
+    }
+
+    /*
+    * This function can create an animation for moving an object to an (x,y) coordinate 
+    * xPos and yPos relate to the final position that you want the object moved to
+    * element relates to the object you're transforming
+    * inSpeed relates to the incremental position change per tick. Increasing it will make the move faster
+    */
+    function positionTransform(xPos, yPos, element, inSpeed){
+        //Setting initial speed
+        element.speed = 1;
+        element.anchor.set(0.0);
+        //Finding slope and then direction of transformation
+        let m = (element.x - xPos)/(element.y - yPos);
+        element.direction = Math.atan(m);
+        app.ticker.add(() => {
+            if(element.x > xPos && element.y > yPos){
+                element.speed += inSpeed;
+                element.x -= Math.sin(element.direction) * element.speed;
+                element.y -= Math.cos(element.direction)* element.speed;
+            }
+        });
+    }
+
+    /*
+    * This function can create an animation for scaling an object up 
+    * scaleX/scaleY relates to how much you want to augementate the width/height of the object
+    * element relates to the object you're transforming
+    * rate relates to the incremental scale change per tick. Increasing it will make the sacling faster
+    */
+    function scaleTransform(scaleX, scaleY, element, rate){
+        app.ticker.add(() => {
+            if (element.scale.x < scaleX ){
+                element.scale.x += rate;
+            }
+            if (element.scale.y < scaleY){
+                element.scale.y += rate;
+            }
+        });
+    }
+
+    /*
+    * This function can create an animation for blurring an object 
+    * element relates to the object you're transforming
+    * blurStregth will determine the percentage that the blur filter will apply (0.00 - 1.00)
+    * intensity will describe how extreme the blur filter is. Scaling it up will make the blur spread over a larger area
+    * rate relates to the incremental blurchange per tick. Increasing it will make the blurring faster
+    */
+    function blurTransform(element, blurStrength, intensity, rate){
+        //Blur filter properties
+        var blurFilter = new PIXI.filters.BlurFilter();
+        blurFilter.blur = 0;
+        let blurCount = 0;
+        element.filters = [blurFilter];
+        //Ticker
+        app.ticker.add(() => {
+            if (blurCount < blurStrength){
+                blurCount += rate;
+                const blurAmount = Math.cos(blurCount);
+                blurFilter.blur = intensity * (blurAmount);
+            } 
+        });
+    }
+
+    /*
+    * This function can create an animation for changing the alpha variable of an object up 
+    * element relates to the object you're transforming
+    * decreaseTo is the percentage you're changing the opacity to (0.0 - 1.0)
+    * rate relates to the incremental alpha change per tick. Increasing it will make the change faster
+    */
+    function alphaTransformDown(element, decreaseTo, rate ){
+        app.ticker.add(() => {
+            if (element.alpha > decreaseTo){
+                element.alpha -= rate;
+            }
+            if( element.alpha < decreaseTo){
+                element.alpha = decreaseTo;
+            }
+        });
+    }
+
+    /*
+    * This function can create an animation for changing the alpha variable of an object up 
+    * element relates to the object you're transforming
+    * increaseTo is the percentage you're changing the opacity to (0.0 - 1.0)
+    * rate relates to the incremental alpha change per tick. Increasing it will make the change faster
+    */
+    function alphaTransformUp(element, increaseTo, rate ){
+        app.ticker.add(() => {
+            if (element.alpha < increaseTo){
+                element.alpha += rate;
+            }
+            if ( element.alpha > increaseTo ){
+                element.alpha = increaseTo
+            }
+        });
+    }
+
+    </script>
+</body>
+</html>

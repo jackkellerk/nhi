@@ -1,10 +1,12 @@
-<!--Version: 9 // Please raise the number every time you make an edit-->
+<!--Version: 11 // Please raise the number every time you make an edit-->
 <!--Last Edited By: Eddie Sohn // Change to your name after every edit-->
 <html>
     <head>
         <title>Unified Code</title>
 
         <!--Dependencies-->
+
+        <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
         <script src="pixi.min.js"></script>
         <script src="globalVariables.js"></script>
         <link rel="stylesheet" href="masterStyleSheet.css">
@@ -29,7 +31,7 @@
         <script src="NewProject/captionFactory.js"></script>
         
         <!--Source Page Dependencies-->
-        <script src="projectSource.js"></script>
+        <script src="projectSource/projectSource.js"></script>
         
         <!--Spectrum Imaging Dependencies-->
         <script src="Spectrum_Imaging/spectrum.js"></script>
@@ -41,7 +43,7 @@
         <script src="Multi-block/boxInformation.js"></script>
         <script src="Multi-block/createButton.js"></script>
         <script src="Multi-block/moveAroundCanvas.js"></script>
-        <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+        
         <script src="Multi-block/main.js"></script>
   
         <!--Line Integral Dependencies-->
@@ -143,7 +145,7 @@
                 else if(currentActivity == 'Zoom')
                 {
                     // Low_Mag/LMSI.js
-                    // LSMI();
+                    LSMI();
                 }
                 else if(currentActivity == 'Multispectrum')
                 {

@@ -1,0 +1,530 @@
+<!--Version: 4 // Please raise the number every time you make an edit-->
+<!--Last Edited By: Anna Thomas // Change to your name after every edit-->
+<html>
+    <head>
+        <title>Test Login Screen</title>
+
+        <!--Dependencies-->
+        
+        <script src="pixi.min.js"></script>
+        <script src="dist/PIXI.TextInput.min.js"></script>
+
+        <script src="makeBg.js"></script>
+        <script src="jsToBackend.js"></script>
+        
+    </head>
+    <body>
+        <!--Main javascript method-->
+        <script>
+            // Instantiate PIXI JS (from example)
+            let type = "WebGL";
+            if(!PIXI.utils.isWebGLSupported())
+            {
+                type = "canvas";
+            }
+            PIXI.utils.sayHello(type);
+
+            let app = new PIXI.Application({ 
+                    width: window.innerWidth,
+                    height: window.innerHeight,
+                    antialias: true,
+                    transparent: false,
+                    autoResize: true,
+                    resolution: devicePixelRatio,
+                    backgroundColor: 0x1099bb 
+            });
+    
+            document.body.appendChild(app.view);
+
+const ui_style = new PIXI.TextStyle({
+    fontFamily: 'Tahoma',
+    fontSize: 18,
+    fill: ['#ffffff'], // gradient
+    align: 'center',
+    wordWrap: true,
+    wordWrapWidth: 500,
+});
+const login_style = new PIXI.TextStyle({
+    fontFamily: 'Tahoma',
+    fontSize: 30,
+    fill: ['#ffffff'], // gradient
+    align: 'center',
+    wordWrap: true,
+    wordWrapWidth: 500,
+});
+const signUp_style = new PIXI.TextStyle({
+    fontFamily: 'Tahoma',
+    fontSize: 15,
+    fill: ['#ffffff'], // gradient
+    align: 'center',
+    wordWrap: true,
+    wordWrapWidth: 500,
+});
+
+
+            const LI_backgroundImage = new PIXI.Sprite.from("login_background.jpg");
+            
+            app.stage.addChild(LI_backgroundImage);
+            LI_backgroundImage.width = app.screen.width;
+            LI_backgroundImage.height = app.screen.height;
+            LI_backgroundImage.interactive = true;
+            LI_backgroundImage.buttonMode = true;
+            LI_backgroundImage.on("pointerdown",showLogin);
+            var polyPoints = [];
+           
+
+            polyPoints.push(app.screen.width/2);
+            polyPoints.push(app.screen.height * (1/8));
+
+            polyPoints.push(app.screen.width * (1/4));
+            polyPoints.push(app.screen.height* (3/8));
+
+            polyPoints.push(app.screen.width * (1/4));
+            polyPoints.push(app.screen.height * (5/8));
+
+            polyPoints.push(app.screen.width/2);
+            polyPoints.push(app.screen.height * (7/8));
+
+            polyPoints.push(app.screen.width * (3/4));
+            polyPoints.push(app.screen.height * (5/8));   
+
+            polyPoints.push(app.screen.width * (3/4));
+            polyPoints.push(app.screen.height * (3/8)); 
+
+           
+
+            var login_UI = new PIXI.Graphics();
+            const path = [600, 370, 700, 460, 780, 420, 730, 570, 590, 520];
+            
+            login_UI.lineStyle(10, 0xFFFFFF);
+            login_UI.drawPolygon(polyPoints);
+            login_UI.alpha = 0;
+            login_UI.hitArea = new PIXI.Polygon(polyPoints);
+            //login_UI.interactive = false;
+            //login_UI.interactiveChildren = false;
+            login_UI.on("pointerdown",moveLogin);
+            //login_UI.on("pointerdown",hideLogin);
+            
+           // login_UI.endFill();
+            const userNameText = new PIXI.Text("Username", ui_style);
+            userNameText.x = app.screen.width * (1/4) + 50;
+            userNameText.y = app.screen.height * (3/8);
+            login_UI.addChild(userNameText);
+            
+            const userTextBox = new PIXI.TextInput({
+                input: {
+                    fontSize: '18pt',
+                    padding: '10px',
+                    width: '250px',
+                    color: '#26272E'
+                }, 
+                box: {
+                    default: {fill: 0xFFFFFF, rounded: 0, stroke: {color: 0xCBCEE0, width: 2}},
+                    focused: {fill: 0xE1E3EE, rounded: 0, stroke: {color: 0xABAFC6, width: 2}},
+                    disabled: {fill: 0xDBDBDB, rounded: 16}
+                }
+            });
+            userTextBox.x = app.screen.width * (1/4) + 50;
+            userTextBox.y = userNameText.y + 25;
+            userTextBox.interactiveChildren = false;
+            userTextBox.placeholder = "Enter Username";
+            login_UI.addChild(userTextBox);
+
+            const passwordText = new PIXI.Text("Password", ui_style);
+            passwordText.x = app.screen.width * (1/4) + 50;
+            passwordText.y = app.screen.height * (4/8);
+            login_UI.addChild(passwordText);
+
+            const passwordTextBox = new PIXI.TextInput({
+                input: {
+                    fontSize: '18pt',
+                    padding: '10px',
+                    width: '250px',
+                    color: '#26272E'
+                }, 
+                box: {
+                    default: {fill: 0xFFFFFF, rounded: 0, stroke: {color: 0xCBCEE0, width: 2}},
+                    focused: {fill: 0xE1E3EE, rounded: 0, stroke: {color: 0xABAFC6, width: 2}},
+                    disabled: {fill: 0xDBDBDB, rounded: 16}
+                }
+            });
+            passwordTextBox.x = app.screen.width * (1/4) + 50;
+            passwordTextBox.y = passwordText.y + 25;
+            passwordTextBox.interactiveChildren = false;
+            passwordTextBox.placeholder = "Enter Password";
+            passwordTextBox.on("input",changePassword);
+            passwordTextBox.on("keydown",keyDown);
+            login_UI.addChild(passwordTextBox);
+
+            var password = "";
+
+            const passwordShow = new PIXI.Text(password, ui_style);
+            passwordShow.x = app.screen.width * (1/4) + 50;
+            passwordShow.y = passwordTextBox.y + passwordTextBox.height + 20;
+            login_UI.addChild(passwordShow);
+
+            const loginText = new PIXI.Text("Login", login_style);
+            loginText.x = app.screen.width * (4/8) - loginText.width/2;
+            loginText.y = app.screen.height * (6/8);
+            loginText.interactive = true;
+            loginText.buttonMode = true;
+            loginText.on("pointerdown", loginToBackend);
+            //loginText.on("pointerdown",moveLogin);
+            login_UI.addChild(loginText);
+
+            var signUpContainer = new PIXI.Container();
+
+            
+
+            const signUpText = new PIXI.Text("Sign Up", signUp_style);
+            signUpText.x = app.screen.width * (4/8) - signUpText.width/2;
+            signUpText.y = app.screen.height * (7/8) + 20;
+            signUpText.on("pointerdown",moveLogin);
+            signUpText.interactive = true;
+            signUpText.buttonMode = true;
+            signUpContainer.addChild(signUpText);
+
+        
+            const signUpUnderline = new PIXI.Graphics();
+            signUpUnderline.lineStyle(1, 0xFFFFFF)
+            .moveTo(signUpText.x, signUpText.y + signUpText.height)
+            .lineTo(signUpText.x + signUpText.width, signUpText.y + signUpText.height);
+
+            signUpContainer.addChild(signUpUnderline);
+            signUpContainer.alpha = 0;
+
+            app.stage.addChild(signUpContainer);
+            app.stage.addChild(login_UI);
+
+            
+
+            const blurText = new PIXI.Text("Hello", login_style);
+            blurText.x = app.screen.width/2;
+            blurText.y = app.screen.height/2;
+            blurText.interactive = true;
+            blurText.on("keypress",showInput);
+           // app.stage.addChild(blurText);
+            
+
+
+            var signUp_UI = new PIXI.Graphics();
+            signUp_UI.lineStyle(10, 0xFFFFFF);
+            signUp_UI.drawPolygon(polyPoints);
+            signUp_UI.alpha = 1;
+            signUp_UI.hitArea = new PIXI.Polygon(polyPoints);
+            signUp_UI.y = app.screen.height;
+            signUp_UI.interactiveChildren = true;
+            //login_UI.interactive = false;
+            //login_UI.interactiveChildren = false;
+            signUp_UI.on("pointerdown",moveLogin);
+
+            const SU_emailText = new PIXI.Text("Email", ui_style);
+            SU_emailText.x = app.screen.width * (1/4) + 75;
+            SU_emailText.y = app.screen.height * (3/8);
+            signUp_UI.addChild(SU_emailText);
+            
+            const SU_emailTextBox = new PIXI.TextInput({
+                input: {
+                    fontSize: '18pt',
+                    padding: '10px',
+                    width: '250px',
+                    color: '#26272E'
+                }, 
+                box: {
+                    default: {fill: 0xFFFFFF, rounded: 0, stroke: {color: 0xCBCEE0, width: 2}},
+                    focused: {fill: 0xE1E3EE, rounded: 0, stroke: {color: 0xABAFC6, width: 2}},
+                    disabled: {fill: 0xDBDBDB, rounded: 16}
+                }
+            });
+            SU_emailTextBox.x = app.screen.width * (1/4) + 75;
+            SU_emailTextBox.y = SU_emailText.y + 25;
+            SU_emailTextBox.interactiveChildren = false;
+            SU_emailTextBox.placeholder = "Enter Email";
+            signUp_UI.addChild(SU_emailTextBox);
+
+            const SU_userNameText = new PIXI.Text("Username", ui_style);
+            SU_userNameText.x = app.screen.width * (2/4) + 50;
+            SU_userNameText.y = app.screen.height * (3/8);
+            signUp_UI.addChild(SU_userNameText);
+            
+            const SU_userTextBox = new PIXI.TextInput({
+                input: {
+                    fontSize: '18pt',
+                    padding: '10px',
+                    width: '250px',
+                    color: '#26272E'
+                }, 
+                box: {
+                    default: {fill: 0xFFFFFF, rounded: 0, stroke: {color: 0xCBCEE0, width: 2}},
+                    focused: {fill: 0xE1E3EE, rounded: 0, stroke: {color: 0xABAFC6, width: 2}},
+                    disabled: {fill: 0xDBDBDB, rounded: 16}
+                }
+            });
+            SU_userTextBox.x = app.screen.width * (2/4) + 50;
+            SU_userTextBox.y = SU_userNameText.y + 25;
+            SU_userTextBox.interactiveChildren = false;
+            SU_userTextBox.placeholder = "Enter Username";
+            signUp_UI.addChild(SU_userTextBox);
+
+            const SU_passwordText = new PIXI.Text("Password", ui_style);
+            SU_passwordText.x = app.screen.width * (1/4) + 75;
+            SU_passwordText.y = app.screen.height * (4/8);
+            signUp_UI.addChild(SU_passwordText);
+
+            const SU_passwordTextBox = new PIXI.TextInput({
+                input: {
+                    fontSize: '18pt',
+                    padding: '10px',
+                    width: '250px',
+                    color: '#26272E'
+                }, 
+                box: {
+                    default: {fill: 0xFFFFFF, rounded: 0, stroke: {color: 0xCBCEE0, width: 2}},
+                    focused: {fill: 0xE1E3EE, rounded: 0, stroke: {color: 0xABAFC6, width: 2}},
+                    disabled: {fill: 0xDBDBDB, rounded: 16}
+                }
+            });
+            SU_passwordTextBox.x = app.screen.width * (1/4) + 75;
+            SU_passwordTextBox.y = SU_passwordText.y + 25;
+            SU_passwordTextBox.interactiveChildren = false;
+            SU_passwordTextBox.placeholder = "Enter Password";
+            SU_passwordTextBox.on("input",changePassword);
+            SU_passwordTextBox.on("keydown",keyDown);
+            signUp_UI.addChild(SU_passwordTextBox);
+
+            const SU_repasswordText = new PIXI.Text("Password again", ui_style);
+            SU_repasswordText.x = app.screen.width * (2/4) + 50;
+            SU_repasswordText.y = app.screen.height * (4/8);
+            signUp_UI.addChild(SU_repasswordText);
+
+            const SU_repasswordTextBox = new PIXI.TextInput({
+                input: {
+                    fontSize: '18pt',
+                    padding: '10px',
+                    width: '250px',
+                    color: '#26272E'
+                }, 
+                box: {
+                    default: {fill: 0xFFFFFF, rounded: 0, stroke: {color: 0xCBCEE0, width: 2}},
+                    focused: {fill: 0xE1E3EE, rounded: 0, stroke: {color: 0xABAFC6, width: 2}},
+                    disabled: {fill: 0xDBDBDB, rounded: 16}
+                }
+            });
+            SU_repasswordTextBox.x = app.screen.width * (2/4) + 50;
+            SU_repasswordTextBox.y = SU_repasswordText.y + 25;
+            SU_repasswordTextBox.interactiveChildren = false;
+            SU_repasswordTextBox.placeholder = "Re-enter Password";
+            SU_repasswordTextBox.on("input",changePassword);
+            SU_repasswordTextBox.on("keydown",keyDown);
+            signUp_UI.addChild(SU_repasswordTextBox);
+
+            const SU_signUpText = new PIXI.Text("Sign Up", login_style);
+            SU_signUpText.x = app.screen.width * (4/8) - SU_signUpText.width/2;
+            SU_signUpText.y = app.screen.height * (5/8);
+            SU_signUpText.on("pointerdown",moveLogin);
+            signUp_UI.addChild(SU_signUpText);
+
+            
+            app.stage.addChild(signUp_UI);
+            
+
+
+
+
+
+
+            const blurFilter1 = new PIXI.filters.BlurFilter();
+            const blurFilter2 = new PIXI.filters.BlurFilter();
+
+            login_UI.filters = [blurFilter1];
+            signUpContainer.filters = [blurFilter1];
+            LI_backgroundImage.filters = [blurFilter2];
+            blurFilter2.blur = 0;
+
+            let count = 0;
+            let timer = 0;
+            let blurIn = false;
+            let blurOut = false;
+            let moveUp = false;
+            let moveDown = false;
+            let runTimer = false;
+            
+            app.ticker.add(() => {
+                //Blur animation
+               // blurText.text = timer;
+                if(runTimer){
+                    timer += 0.01;
+                }
+
+                if(timer >= 30){
+                    hideLogin();
+                }
+                
+                if(blurIn){
+                    count += 0.04;
+                    
+                    blurFilter2.blur = 20 * count;
+                    blurFilter1.blur =  20 * (1 - count);
+                    login_UI.alpha = count;
+                    signUpContainer.alpha = count;
+
+
+                    
+                    blurText.text = "count: " + count;
+                    if(count >= 1){
+                        blurIn = false;
+                        count = 0;
+                        loginText.interactive = true;
+                        loginText.buttonMode = true;
+                        signUpText.interactive = true;
+                        signUpText.buttonMode = true;
+                        passwordTextBox.interactiveChildren = true;
+                        userTextBox.interactiveChildren = true;
+                        AFKtimerStart();
+                    }
+                }
+                if(blurOut){
+                    count += 0.04;
+
+                    blurFilter1.blur = 20 * count;
+                    blurFilter2.blur =  20 * (1 - count);
+                    login_UI.alpha = 1 - count;
+                    if(count >= 1){
+                        blurOut = false;
+                        count = 0;
+                        LI_backgroundImage.interactive = true;
+                        LI_backgroundImage.buttonMode = true;
+                        passwordTextBox.interactiveChildren = false;
+                        userTextBox.interactiveChildren = false;
+                    }
+                }
+
+                if(moveUp){
+                    count += 0.08;
+                    movementSpeed = 20;
+                    login_UI.y -= movementSpeed;
+                    signUp_UI.y -= movementSpeed;
+                    signUpContainer.y -= movementSpeed;
+                    signUpContainer.alpha = 1 - count;
+                    if(login_UI.y <= ((-1) * (app.screen.height * (6/8)))){
+                        count = 0;
+                        moveUp = false;
+                        login_UI.y  = (-1) * (app.screen.height * (6/8));
+                        
+                        login_UI.interactive = true;
+                        login_UI.buttonMode = true;
+                      //  signUp_UI.interactive = false;
+                        signUp_UI.interactiveChildren = true;
+                        SU_emailTextBox.interactiveChildren = true;
+                        SU_userTextBox.interactiveChildren = true;
+                        SU_passwordTextBox.interactiveChildren = true;
+                        SU_repasswordTextBox.interactiveChildren = true;
+                       // signUp_UI.buttonMode = false;
+
+                    }
+                    
+                }
+                if(moveDown){
+                    count += 0.08;
+                    movementSpeed = 20;
+                    login_UI.y += movementSpeed;
+                    signUp_UI.y += movementSpeed;
+                    signUpContainer.y += movementSpeed;
+                    signUpContainer.alpha = count;
+                    if(login_UI.y >= 0){
+                        count = 0;
+                        moveDown = false;
+                        login_UI.y  = 0;
+                        loginText.interactive = true;
+                        loginText.buttonMode = true;
+                        signUpText.interactive = true;
+                        signUpText.buttonMode = true;
+                        
+                        AFKtimerStart();
+                    }
+                    
+                }
+            });
+
+            function showLogin(event){
+                blurIn = true;
+                this.interactive = false;
+                this.buttonMode = false;
+               
+            }
+            
+            function hideLogin(event){
+                blurOut = true;
+                loginText.interactive = false;
+                loginText.buttonMode = false;
+                AFKtimerStop();
+            }
+
+            function moveLogin(event){
+                if(login_UI.y == 0 && !moveDown){
+                    moveUp = true;
+                    AFKtimerStop();
+                    loginText.interactive = false;
+                    loginText.buttonMode = false;
+                    signUpText.interactive = false;
+                    signUpText.buttonMode = false;
+                }
+                else if (!moveUp){
+                    moveDown = true;
+                    login_UI.interactive = false;
+                    login_UI.buttonMode = false;
+                }
+            }
+
+            function AFKtimerStart(){
+                runTimer = true;
+            }
+
+            function AFKtimerStop(){
+                timer = 0;
+                runTimer = false;
+            }
+
+            function showInput(event){
+                var x = event.keyCode;
+                console.log("Activated function");
+                blurText.text += x;
+            }
+
+            function keyDown(keycode){
+            var valid = 
+                (keycode > 47 && keycode < 58)   || // number keys
+                keycode == 32 || keycode == 13   || // spacebar & return key(s) (if you want to allow carriage returns)
+                (keycode > 64 && keycode < 91)   || // letter keys
+                (keycode > 95 && keycode < 112)  || // numpad keys
+                (keycode > 185 && keycode < 193) || // ;=,-./` (in order)
+                (keycode > 218 && keycode < 223);   // [\]' (in order)
+                if(valid){
+                    passwordTextBox.text = password;
+                    console.log("Activated down function: " + password);
+                }
+            }
+            function changePassword(text){
+                password = text;
+                console.log("Activated function: " + text);
+                var length = password.length;
+                passwordTextBox.text = "";
+                for(var i = 0; i < length; i++){
+                    passwordTextBox.text += "*";
+                }
+               
+              /*  .
+                if(text.length > password.length){
+                    var char = passwordTextBox.text.slice(passwordTextBox.text.length() - 1);
+                    passwordTextBox.text += "*";
+                    password += char;
+                }
+                else if(){
+                    var char = password.slice(password.length() - 1);
+
+                }*/
+                
+            }
+        </script>
+    </body>
+</html>

@@ -18,7 +18,7 @@ const login_style = new PIXI.TextStyle({
     letterSpacing: 2
 });
 
-const signUp_style = new PIXI.TextStyle({ 
+var signUp_style = new PIXI.TextStyle({ 
     fontFamily: 'Tahoma',
     fontSize: 15,
     fill: ['#ffffff'], // gradient
@@ -26,12 +26,20 @@ const signUp_style = new PIXI.TextStyle({
     wordWrap: true,
     wordWrapWidth: 500,
 });
+
+var passwordTextBox;
+var password = "";
+var userTextBox;
+var SU_userTextBox;
+var SU_emailTextBox;
+var SU_passwordTextBox;
+var SU_repasswordTextBox;
     
 
 function startPreLogin()
 {
     
-    const LI_backgroundImage = new PIXI.Sprite.from("Images/login_background.jpg");
+    var LI_backgroundImage = new PIXI.Sprite.from("Images/login_background.jpg");
     
     app.stage.addChild(LI_backgroundImage);
     LI_backgroundImage.width = app.screen.width;
@@ -56,7 +64,7 @@ function startPreLogin()
     login_UI.addChild(login_hex.container);
 
     
-    const userTextBox = new PIXI.TextInput({
+    userTextBox = new PIXI.TextInput({
         input: {
             fontFamily: 'Tahoma',
             fontSize: '14pt',
@@ -73,12 +81,12 @@ function startPreLogin()
     userTextBox.placeholder = "Username";
     login_UI.addChild(userTextBox);
 
-    const passwordText = new PIXI.Text("Password", ui_style);
+    var passwordText = new PIXI.Text("Password", ui_style);
     passwordText.x = login_hex.x - 120;
     passwordText.y = login_hex.y + 60;
     //login_UI.addChild(passwordText);
 
-    const passwordTextBox = new PIXI.TextInput({
+    passwordTextBox = new PIXI.TextInput({
         input: {
             fontFamily: 'Tahoma',
             fontSize: '14pt',
@@ -99,7 +107,7 @@ function startPreLogin()
 
     var password = "";
 
-    const passwordShow = new PIXI.Text(password, ui_style);
+    var passwordShow = new PIXI.Text(password, ui_style);
     passwordShow.x = app.screen.width * (1/4) + 50;
     passwordShow.y = passwordTextBox.y + passwordTextBox.height + 20;
     login_UI.addChild(passwordShow);
@@ -110,7 +118,7 @@ function startPreLogin()
     loginText.interactive = true;
     loginText.buttonMode = true;
     loginText.on("pointerdown", loginToBackend);
-    loginText.on("pointerdown",toProjectSelection);
+    //loginText.on("pointerdown",toProjectSelection);
     login_UI.addChild(loginText);
 
     var signUpContainer = new PIXI.Container();
@@ -136,7 +144,7 @@ function startPreLogin()
 
     
 
-    const blurText = new PIXI.Text("Hello", login_style);
+    var blurText = new PIXI.Text("Hello", login_style);
     blurText.x = app.screen.width/2;
     blurText.y = app.screen.height/2;
     blurText.interactive = true;
@@ -162,7 +170,7 @@ function startPreLogin()
     signUp_UI.addChild(signup_hex.container);
 
     
-    const SU_userTextBox = new PIXI.TextInput({
+    SU_userTextBox = new PIXI.TextInput({
         input: {
             fontFamily: 'Tahoma',
             fontSize: '13pt',
@@ -179,7 +187,7 @@ function startPreLogin()
     SU_userTextBox.placeholder = "Enter Username";
     signUp_UI.addChild(SU_userTextBox);
 
-    const SU_emailTextBox = new PIXI.TextInput({
+    SU_emailTextBox = new PIXI.TextInput({
         input: {
             fontFamily: 'Tahoma',
             fontSize: '13pt',
@@ -197,7 +205,7 @@ function startPreLogin()
     signUp_UI.addChild(SU_emailTextBox);
 
 
-    const SU_passwordTextBox = new PIXI.TextInput({
+    SU_passwordTextBox = new PIXI.TextInput({
         input: {
             fontFamily: 'Tahoma',
             fontSize: '13pt',
@@ -216,7 +224,7 @@ function startPreLogin()
     SU_passwordTextBox.on("keydown",keyDown);
     signUp_UI.addChild(SU_passwordTextBox);
 
-    const SU_repasswordTextBox = new PIXI.TextInput({
+    SU_repasswordTextBox = new PIXI.TextInput({
         input: {
             fontFamily: 'Tahoma',
             fontSize: '13pt',
@@ -240,13 +248,13 @@ function startPreLogin()
     SU_repasswordTextBox.on("keydown",keyDown);
     signUp_UI.addChild(SU_repasswordTextBox);
 
-    const SU_signUpText = new PIXI.Text("Sign Up", login_style);
+    var SU_signUpText = new PIXI.Text("Sign Up", login_style);
     SU_signUpText.x = signup_hex.x - 45;
     SU_signUpText.y = signup_hex.y + 135;
     SU_signUpText.on("pointerdown",moveLogin);
     signUp_UI.addChild(SU_signUpText);
 
-    const SU_loginText = new PIXI.Text("Login", signUp_style);
+    var SU_loginText = new PIXI.Text("Login", signUp_style);
     SU_loginText.x = app.screen.width * (4/8) - signUpText.width/2;
     SU_loginText.y = app.screen.height + 50;
     //SU_loginText.on("pointerdown",moveLogin);
@@ -267,8 +275,8 @@ function startPreLogin()
 
 
 
-    const blurFilter1 = new PIXI.filters.BlurFilter();
-    const blurFilter2 = new PIXI.filters.BlurFilter();
+    var blurFilter1 = new PIXI.filters.BlurFilter();
+    var blurFilter2 = new PIXI.filters.BlurFilter();
 
     login_UI.filters = [blurFilter1];
     signUpContainer.filters = [blurFilter1];

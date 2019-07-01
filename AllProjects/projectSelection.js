@@ -12,7 +12,36 @@ var p1Hover;
 
 var a_settingsCC; // settings button counter (open/closed)
 
+// user settings variable(s)
+var userSettingsResponse; // valid uses of userSettingsResponse are: userSettingsResponse.legalName, userSettingsResponse.username, userSettingsResponse.passwordLength, userSettingsResponse.email, userSettingsResponse.profilePicture, userSettingsResponse.institution, and userSettingsResponse.id
+
 function startAllProjects()
+{
+    // This loads the information about the userSettings
+    var username = "jjk322"; // This will probably be global and accessable from the login screen files, but for now it is here
+    $.ajax({
+        method: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify({"username": username}),
+        url: 'http://localhost:4567/usersettings', // You can change the port to 8080 if this doesnt work
+        dataType: 'json',
+        crossDomain: 'true',
+        xhrFields: {
+            withCredentials: true
+        },
+        success: function(data) {
+            userSettingsResponse = data;
+            createUIProjects();
+        },
+        error: function(xhr, status, error) {
+            alert("Error loading user settings!");
+        }
+    });
+
+    // eventually create more functions that wait for database information and create the UI last
+}
+
+function createUIProjects()
 {
     // background from gradient texture
 
@@ -81,22 +110,22 @@ function startAllProjects()
     settTitle.position.y = 40;
     a_settingsContainer.addChild(settTitle);
 
-    let settUsername = new PIXI.Text("Username:             jjk322", {fill: "#ffffff", fontFamily: "Helvetica", fontSize: 18, letterSpacing: 3});
+    let settUsername = new PIXI.Text("Username:             " + userSettingsResponse.username, {fill: "#ffffff", fontFamily: "Helvetica", fontSize: 18, letterSpacing: 3});
     settUsername.position.x = (w/5)+35;
     settUsername.position.y = 140;
     a_settingsContainer.addChild(settUsername);
 
-    let settPassword = new PIXI.Text("Change Password:  ********", {fill: "#ffffff", fontFamily: "Helvetica", fontSize: 18, letterSpacing: 3});
+    let settPassword = new PIXI.Text("Change Password:  " + userSettingsResponse.passwordLength /* Maybe with the length create a for loop that creates that many '*'s in a string for this field */, {fill: "#ffffff", fontFamily: "Helvetica", fontSize: 18, letterSpacing: 3});
     settPassword.position.x = (w/5)+35;
     settPassword.position.y = 180;
     a_settingsContainer.addChild(settPassword);
 
-    let settInstitution = new PIXI.Text("Institution:             Lehigh University", {fill: "#ffffff", fontFamily: "Helvetica", fontSize: 18, letterSpacing: 3});
+    let settInstitution = new PIXI.Text("Institution:             " + userSettingsResponse.institution, {fill: "#ffffff", fontFamily: "Helvetica", fontSize: 18, letterSpacing: 3});
     settInstitution.position.x = (w/5)+35;
     settInstitution.position.y = 220;
     a_settingsContainer.addChild(settInstitution);
 
-    let settName = new PIXI.Text("Name:                   Jack Kellerk", {fill: "#ffffff", fontFamily: "Helvetica", fontSize: 18, letterSpacing: 3});
+    let settName = new PIXI.Text("Name:                   " + userSettingsResponse.legalName, {fill: "#ffffff", fontFamily: "Helvetica", fontSize: 18, letterSpacing: 3});
     settName.position.x = (w/5)+35;
     settName.position.y = 260;
     a_settingsContainer.addChild(settName);

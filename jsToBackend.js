@@ -16,6 +16,7 @@ function loginToBackend()
             withCredentials: true
         },
         success: function(data) {
+            toProjectSelection();
             currentActivity = "AllProjects";
         },
         error: function(xhr, status, error) {

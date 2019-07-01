@@ -15,7 +15,6 @@
 
         <!--Pre Login Dependencies-->
         <script src="PreLoginScreen/prelogin.js"></script>
-        <script src="PreLoginScreen/jsToBackend.js"></script>
         <script src="PreLoginScreen/dist/PIXI.TextInput.min.js"></script>
 
 
@@ -114,9 +113,6 @@
             // Initially call updateActivity to start application
             updateActivity();
 
-            // Initially draw the change activity button
-            changeActivityButton();
-
             // updates the current activity (this is called from the createButton file)
             function updateActivity()
             {
@@ -130,7 +126,6 @@
                 if(currentActivity == 'Welcome')
                 {
                     startPreLogin();
-                    changeActivityButton();
                 }
                 else if(currentActivity == 'AllProjects')
                 {

@@ -2,13 +2,11 @@
 var renderer;
 
 var w_menuCC; // main menu
-var w_settingsCC; // settings menu
 var w_hideCC;
 var w_popup1CC;
 var w_popup2CC;
 var w_popup3CC;
 var w_popup4CC;
-
 
 var bg = new PIXI.Graphics();
 
@@ -49,14 +47,7 @@ function startWindows(){
 
 
 
-  // for draggable windows
 
-  renderer = PIXI.autoDetectRenderer(app.screen.width, app.screen.height);
-	
-	// add the renderer view element to the DOM
-	document.body.appendChild(renderer.view);
-	//renderer.view.style.position = "absolute";
-	requestAnimationFrame( animate );
 
 
   
@@ -85,15 +76,13 @@ function startWindows(){
       menuButton.graphics.lineStyle(2, 0x7D7D7D, 3);
       menuButton.buttonMode = true;
       menuButton.graphics.interactive = true;
-      menuButton.graphics.on('mouseover', w_hexHoverOver);
-      menuButton.graphics.on('mouseout', w_hexHoverOff);
       menuButton.graphics.on('pointerdown', w_MenuSelect);
-      menuButton.graphics.alpha = 0.8;
   menuButton.draw(0xFFFFFF);
 
   let menuIcon = new PIXI.Sprite.fromImage("Images/menu.png");
       menuIcon.width = 45;
       menuIcon.height = 37;
+      menuIcon.buttonMode = true;
       menuIcon.position.x = 27.5;
       menuIcon.position.y = 38;
   app.stage.addChild(menuIcon);
@@ -105,11 +94,12 @@ function startWindows(){
 
   var w_saveButton = new Hexagon({x:menuButton.getCenterRight(0).x, y:menuButton.getCenterRight(0).y}, 0, 37);
       w_saveButton.graphics.lineStyle(2, 0x7D7D7D, 3);
+      w_saveButton.buttonMode = true;
       w_saveButton.graphics.interactive = true;
       w_saveButton.graphics.on('mouseover', w_hexHoverOver);
       w_saveButton.graphics.on('mouseout', w_hexHoverOff);
       w_saveButton.graphics.on('pointerdown', w_SaveSelect);
-      w_saveButton.graphics.alpha = 0.95;
+      w_saveButton.graphics.alpha = 0.80;
   w_saveButton.draw(0xFFFFFF);
   app.stage.removeChild(w_saveButton.container);
   w_menuContainer.addChild(w_saveButton.container);
@@ -125,15 +115,13 @@ function startWindows(){
 
   // settings button
 
-  w_settingsCC = 0;
-
   var settingsButton = new Hexagon({x:w_saveButton.getCenterRight(0).x, y:w_saveButton.getCenterRight(0).y}, 0, 37);
       settingsButton.graphics.lineStyle(2, 0x7D7D7D, 3);
       settingsButton.graphics.interactive = true;
       settingsButton.graphics.on('mouseover', w_hexHoverOver);
       settingsButton.graphics.on('mouseout', w_hexHoverOff);
       settingsButton.graphics.on('pointerdown', w_SettingsSelect);
-      settingsButton.graphics.alpha = 0.95;
+      settingsButton.graphics.alpha = 0.80;
   settingsButton.draw(0xFFFFFF);
   app.stage.removeChild(settingsButton.container);
   w_menuContainer.addChild(settingsButton.container);
@@ -207,7 +195,7 @@ function startWindows(){
       w_hideButton.graphics.on('mouseover', w_hexHoverOver);
       w_hideButton.graphics.on('mouseout', w_hexHoverOff);
       w_hideButton.graphics.on('pointerdown', w_HideSelect);
-      w_hideButton.graphics.alpha = 0.95;
+      w_hideButton.graphics.alpha = 0.80;
       w_hideButton.draw(0xFFFFFF);
   app.stage.removeChild(w_hideButton.container);
   w_menuContainer.addChild(w_hideButton.container);
@@ -250,6 +238,7 @@ function startWindows(){
       window2.graphics.on('mouseout', w_WindowHoverOff);
       window2.graphics.on('pointerdown', w_WindowSelect);
       window2.graphics.alpha = 0.85;
+      window2.cc = 0;
   window2.draw(0xFFFFFF);
   app.stage.removeChild(window2.container);
   
@@ -290,6 +279,9 @@ function startWindows(){
   window4Label.position.x = window4.x - 26;
   window4Label.position.y = window4.y - 15;
 
+
+  // add window icons in reverse order for descending overlapping
+
   w_windowContainer.addChild(window4.container);
   w_windowContainer.addChild(window4Label);
   w_windowContainer.addChild(window3.container);
@@ -298,6 +290,7 @@ function startWindows(){
   w_windowContainer.addChild(window2Label);
   w_windowContainer.addChild(window1.container);
   w_windowContainer.addChild(window1Label);
+
   app.stage.addChild(w_windowContainer);
 
 
@@ -305,8 +298,7 @@ function startWindows(){
   // Popup
 
   w_popupCC = 0;
-  
-  // recall: w = app.screen.width; h = app.screen.height
+
   w = app.screen.width;
   h = app.screen.height
 
@@ -339,14 +331,6 @@ function startWindows(){
       w1_menuLabel.position.x = w_workWindow.x + 10;
       w1_menuLabel.position.y = w_workWindow.y - 19;
   w_Popup1Container.addChild(w1_menuLabel);
-
-  let windowSettings = new PIXI.Sprite.fromImage('Images/window-settings.png');
-      windowSettings.width = 28;
-      windowSettings.height = 28;
-      windowSettings.position.x = w*0.74;
-      windowSettings.position.y = -3;
-  w_Popup1Container.addChild(windowSettings);
-
 
 
 
@@ -417,7 +401,7 @@ function startWindows(){
 
 
 
-  // POPUP WINDOW 
+
 
   // fade/darken background
 
@@ -427,26 +411,37 @@ function startWindows(){
   bg.endFill();
   bg.alpha = 0.7;
 
-  //w_Popup1Container.addChild(bg);
+
+
+  // POPUP WINDOW 
 
 
   // close button
 
   var closeTexture = PIXI.Texture.fromImage("Images/cancel_icon.png");
   var closeImage = new PIXI.Sprite(closeTexture);
-      closeImage.height = 30;
-      closeImage.width = 30;
-      closeImage.x = app.screen.width - 50;
-      closeImage.y = 30;
-      closeImage.buttonMode = true;
-      closeImage.interactive = true;
-      closeImage.on('mouseover', w_hoverCloseButton);
-      closeImage.on('mouseout', w_hoverCloseButtonOff);
-      closeImage.on('mousedown', w_disablePopup);
-      closeImage.alpha = 0.7;
-  //w_Popup1Container.addChild(closeImage);
+  closeImage.height = 30;
+  closeImage.width = 30;
+  closeImage.x = w-(w/5) - 40; //w_settingsMenu right side - 10
+  closeImage.y = 30;
+  closeImage.buttonMode = true;
+  closeImage.interactive = true;
+  closeImage.on('mouseover', w_hexHoverOver);
+  closeImage.on('mouseout', w_hexHoverOff);
+  closeImage.on('pointerdown', w_disablePopup);
+  closeImage.alpha = 0.85;
+  w_settingsContainer.addChild(closeImage);
 
 
+
+  // for draggable windows
+
+  renderer = PIXI.autoDetectRenderer(window.innerWidth, window.innerHeight);
+
+  // add the renderer view element to the DOM
+  //document.body.appendChild(renderer.view);
+  renderer.view.style.position = "absolute";
+  requestAnimationFrame( animate );
 
 
 }
@@ -454,13 +449,20 @@ function startWindows(){
 
 function w_hexHoverOver()
 {
-  this.alpha = 0.1;
+  this.alpha = 1;
 }
 
 function w_hexHoverOff()
 {
-  this.alpha = 1;
+  this.alpha = 0.85;
 }
+
+function w_disablePopup()
+{
+  app.stage.removeChild(bg);
+  app.stage.removeChild(w_settingsContainer);
+}
+
 
 
 function w_MenuSelect()
@@ -492,16 +494,8 @@ function w_SaveSelect()
 
 function w_SettingsSelect()
 {
-  if (w_settingsCC == 0)
-  {
-    app.stage.addChild(w_settingsContainer);
-    w_settingsCC = 1;
-  }
-  else if (w_settingsCC == 1)
-  {
-    app.stage.removeChild(w_settingsContainer);
-    w_settingsCC = 0;
-  }
+  app.stage.addChild(bg);
+  app.stage.addChild(w_settingsContainer);
 }
 
 function w_HideSelect()
@@ -522,26 +516,20 @@ function w_WindowHoverOver()
 
 function w_WindowHoverOff()
 {
-  if (this.cc == 0)
-  {
-    this.alpha = 0.85;
-  }
+  this.alpha = 0.85;
+
 }
 
 function w_WindowSelect()
 {
-  if (w_popupCC == 0) {
+  if (this.cc == 0) {
     app.stage.addChild(w_Popup1Container);
-    w_popupCC = 1;
     this.cc = 1;
-    this.alpha = 1;
   }
-  else if (w_popupCC == 1)
+  else if (this.cc == 1)
   {
     app.stage.removeChild(w_Popup1Container);
-    w_popupCC = 0;
     this.cc = 0;
-    //this.alpha = 0.85;
   }
 }
 
@@ -604,6 +592,7 @@ function animate() {
 
   // render the stage
   renderer.render(app.stage);
+
 }
 
 function onDragStart(event)
@@ -614,10 +603,6 @@ function onDragStart(event)
   this.data = event.data;
   this.alpha = 0.5;
   this.dragging = true;
-
-  this.sx = this.data.getLocalPosition(w_Popup1Container).x;
-  this.sy = this.data.getLocalPosition(w_Popup1Container).y;
-
 }
 
 function onDragEnd()
@@ -632,20 +617,11 @@ function onDragEnd()
 
 function onDragMove()
 {
-
   if (this.dragging)
   {
     var newPosition = this.data.getLocalPosition(this.parent);
-    w_Popup1Container.position.x = newPosition.x - this.sx;
-    w_Popup1Container.position.y = newPosition.y - this.sy;
+    this.parent.position.x = newPosition.x;
+    this.parent.position.y = newPosition.y;
   }
-/*
-  if (this.dragging)
-  {
-    var newPosition = this.data.getLocalPosition(this.parent);
-    w_Popup1Container.position.x = newPosition.x;
-    w_Popup1Container.position.y = newPosition.y;
-  }
-*/
 }
 

@@ -55,7 +55,7 @@ function createUIProjects()
 
     // hex background grid
 
-    drawHexGrid(false); // false -> without coordinates
+    a_drawHexGrid(false); // false -> without coordinates
 
 
     // Title

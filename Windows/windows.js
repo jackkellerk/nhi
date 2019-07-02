@@ -325,8 +325,8 @@ function startWindows(){
 
   // let w_workWindow = new PIXI.Graphics();
       w_workWindow.lineStyle(5, 0x707070, 3);
-      w_workWindow.beginFill(0x707070);
       w_workWindow.drawPolygon([0,-20, w*0.55,-20, w*0.55,w*0.3575, 0,w*0.3575]);
+      w_workWindow.beginFill(0x707070);
       w_workWindow.drawPolygon([0,0, w*0.55,0, w*0.55,w*0.3575, 0,w*0.3575]);
       w_workWindow.endFill();
       //w_workWindow.anchor.set(0.5);
@@ -346,8 +346,7 @@ function startWindows(){
       w_workWindow.on('touchmove', onDragMove);
   w_Popup1Container.addChild(w_workWindow);
 
-  startMultiblock();
-  MBContainer.mask = w_workWindow;
+  
 
 
 
@@ -541,12 +540,17 @@ function w_a2Select()
 
 function w_a3Select()
 {
+  startMultiblock();
+  MBContainer.mask = w_workWindow;
+
+  /*
   var PopupSprite = new PIXI.Sprite.from(images[2]);
       PopupSprite.width = app.screen.width * 0.545;
       PopupSprite.height = PopupSprite.width * 0.645;
       PopupSprite.x = app.screen.width/4 + 3;
       PopupSprite.y = 23;
   w_Popup1Container.addChild(PopupSprite);
+  */
 }
 
 function w_a4Select()

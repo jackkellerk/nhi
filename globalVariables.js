@@ -23,6 +23,8 @@ var runTimer = false;
 
 /* These are global variables for Multi-block */
 
+var MBContainer = new PIXI.Container();
+
 // Instantiate the PIXI JS Graphics Library (this is for the UI stuff)
 var graphics = new PIXI.Graphics();
 var additionalButtons = new PIXI.Graphics();

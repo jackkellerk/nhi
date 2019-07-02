@@ -53,6 +53,10 @@ function createUIProjects()
     app.stage.addChild(sprite);
 
 
+    // hex background grid
+
+    drawHexGrid(false); // false -> without coordinates
+
 
     // Title
 
@@ -220,7 +224,7 @@ function createUIProjects()
 
     // New Project
 
-    let newP = new Hexagon({x:p1A.getCenterUpperRight(315).x, y: p1A.getCenterUpperRight(0).y}, 0,80);
+    let newP = new Hexagon({x:p1A.getCenterUpperRight(279).x, y: p1A.getCenterUpperRight(0).y}, 0,80);
     newP.graphics.lineStyle(3, 0xA9A9A9, 3);
     newP.graphics.interactive = true;
     newP.graphics.on('mouseover', a_hexHoverOver);

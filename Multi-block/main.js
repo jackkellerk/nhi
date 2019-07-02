@@ -28,7 +28,7 @@
 				.on('pointermove', updateMousePosition);
             dragImage.x = 0;
             dragImage.y = 0;
-            app.stage.addChild(dragImage);
+            MBContainer.addChild(dragImage);
 
 
 
@@ -71,7 +71,7 @@
             instructionContainer.addChild(textGotIt);
 
             // Add the container to the stage
-            app.stage.addChild(instructionContainer);
+            MBContainer.addChild(instructionContainer);
 
 
 
@@ -84,15 +84,15 @@
             // Create the button functionality GUI
 
             // Create the button to drag
-		    var dragButton = new RectButton( 20, app.screen.height - 80, 60, 60, 'drag');
+		    var dragButton = new MB_RectButton( 20, app.screen.height - 80, 60, 60, 'drag');
             // Create the button to rotate
-            var rotateButton = new RectButton( 85, app.screen.height - 80, 60, 60, 'rotate');
+            var rotateButton = new MB_RectButton( 85, app.screen.height - 80, 60, 60, 'rotate');
             // Create the button to highlight
-            var highlightButton = new RectButton( 150, app.screen.height - 80, 60, 60, 'highlight');
+            var highlightButton = new MB_RectButton( 150, app.screen.height - 80, 60, 60, 'highlight');
             // Create the help button for assistance
-            var helpButton = new RectButton( app.screen.width - 80, 20, 60, 60, 'help');
+            var helpButton = new MB_RectButton( app.screen.width - 80, 20, 60, 60, 'help');
             // Create the annotation button to draw
-            var annotateButton = new RectButton( 215, app.screen.height - 80, 60, 60, 'annotate');
+            var annotateButton = new MB_RectButton( 215, app.screen.height - 80, 60, 60, 'annotate');
 
             // This creates the icons for each button
             var iconContainer = new PIXI.Container();
@@ -139,7 +139,12 @@
             iconContainer.addChild(highlightCursor);
 
             // Add the iconContainer to the stage
-            app.stage.addChild(iconContainer);
+            MBContainer.addChild(iconContainer);
+
+            MBContainer.width = 500;
+            MBContainer.height = 300;
+            app.stage.addChild(MBContainer);
+
         }
 
 
@@ -175,7 +180,7 @@
 			graphics.interactive = true;
 
             // draws it on the main stage, doesnt matter because it gets erased anyways
-			app.stage.addChild(graphics);
+			MBContainer.addChild(graphics);
         }
         
         // After the user finishes drawing their rectangle, redraw the last rectangle from highlight(); Also store the information in an array for later reference
@@ -199,7 +204,7 @@
             boxContainer.addChild(mainBoxGraphics);
 
 			boxArray[boxArray.length] = boxContainer;
-            app.stage.addChild(boxContainer);
+            MBContainer.addChild(boxContainer);
             
             // this adds the specific information for the box
             var newBox = new boxInformation(initialXMousePosition + xPosition, initialYMousePosition + yPosition, width, height);
@@ -233,7 +238,7 @@
             comparisonContainer.addChild(comparisonGraphics);
 
 			comparisonBoxArray[comparisonBoxArray.length] = comparisonContainer;
-			app.stage.addChild(comparisonContainer);
+			MBContainer.addChild(comparisonContainer);
 
 			height = null;
 			width = null;
@@ -311,7 +316,7 @@
 
             drawingContainer.addChild(drawingGraphics);
             drawingArray[drawingArray.length] = drawingContainer;
-            app.stage.addChild(drawingContainer);
+            MBContainer.addChild(drawingContainer);
         }
 
         function drawFinish()

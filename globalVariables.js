@@ -2,9 +2,26 @@
 var currentActivity = 'Welcome';
 var activityArray = ['Welcome', 'AllProjects', 'Windows', 'NewProject', 'Source', 'Zoom', 'Multispectrum', 'Line', 'Tilting', 'Multi-block'];
 
-/* These are global variables for Multi-block */
 
-var MBContainer = new PIXI.Container();
+/* Pre Login Screen gloval vars */
+
+var login_UI = new PIXI.Graphics();
+var signUp_UI = new PIXI.Graphics();
+
+var loginText = new PIXI.Text();
+var signUpText = new PIXI.Text();
+
+var count = 0;
+var timer = 0;
+var blurIn = false;
+var blurOut = false;
+var moveUp = false;
+var moveDown = false;
+var runTimer = false;
+
+
+
+/* These are global variables for Multi-block */
 
 // Instantiate the PIXI JS Graphics Library (this is for the UI stuff)
 var graphics = new PIXI.Graphics();
@@ -33,6 +50,8 @@ var clockwiseRotation = null;
 var instructionContainer = new PIXI.Container();
 
 /* End of Multi-block global variables */
+
+
 
 /* Start of global variables for Zoom (LMSI) */
 var richText;

@@ -141,9 +141,12 @@
             // Add the iconContainer to the stage
             MBContainer.addChild(iconContainer);
 
-            MBContainer.width = 500;
-            MBContainer.height = 300;
-            app.stage.addChild(MBContainer);
+            MBContainer.width = app.screen.width * 0.90;
+            MBContainer.height = (app.screen.width * 0.60);
+            MBContainer.position.x = app.screen.width/4;
+            MBContainer.position.y = 20;
+            w_Popup1Container.addChild(MBContainer);
+
 
         }
 

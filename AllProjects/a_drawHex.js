@@ -1,6 +1,6 @@
 
 
-function drawHexGrid(withCoordinates)
+function a_drawHexGrid(withCoordinates)
 {
   //const style = new PIXI.TextStyle({fill: "white", fontFamily: "Helvetica", fontSize: 10});
 

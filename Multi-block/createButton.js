@@ -34,6 +34,26 @@ function RectButton(x_position, y_position, height, width, action)
     app.stage.addChild(graphics);
 }
 
+function MB_RectButton(x_position, y_position, height, width, action)
+{
+    var graphics = new PIXI.Graphics();
+    graphics.beginFill(0xFFFFFF, 1); // Color and opacity
+    graphics.lineStyle(2, 0x414141, 1);
+    graphics.drawRect(x_position, y_position, width, height);
+    graphics.endFill();
+    graphics.interactive = true;
+    graphics.on('mouseover', onHoverOver) // When mouse hovers over the button, it calls onHoverOver() function
+    .on('mouseout', onHoverOff)
+    .on('pointerdown', onSelect)
+    .on('pointerdown', nextActivity)
+    .on('pointerdown', removeLastStroke)
+    .on('pointerdown', makeButtonAppear);
+    graphics.alpha = 0.5;
+    graphics.assignAction(action);
+    buttonArray[buttonArray.length] = graphics;
+    MBContainer.addChild(graphics);
+}
+
 function onHoverOver(event)
 {
     this.data = event.data;

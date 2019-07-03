@@ -42,7 +42,7 @@
         <script src="projectSource/projectSource.js"></script>
         
         <!--Spectrum Imaging Dependencies-->
-        <script src="Spectrum_Imaging/spectrum.js"></script>
+        <script src="Spectrum_Imaging/newSpectrum.js"></script>
         
         <!--Tilting Dependencies-->
         <script src="Tilting/tilting.js"></script>
@@ -131,7 +131,6 @@
                 else if(currentActivity == 'AllProjects')
                 {
                     startAllProjects();
-                    changeActivityButton();
                 }
                 else if(currentActivity == 'Windows')
                 {
@@ -158,7 +157,7 @@
                 }
                 else if(currentActivity == 'Multispectrum')
                 {
-                    Spectrum.startSpectrum();
+                    startSpectrum();
                     changeActivityButton();
                 }
                 else if(currentActivity == 'Tilting')

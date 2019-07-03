@@ -2,31 +2,22 @@
 var renderer;
 
 var w_workWindow = new PIXI.Graphics();
-var Popup1Sprite = new PIXI.Sprite();
-var Popup4Sprite = new PIXI.Sprite();
+var LISprite = new PIXI.Sprite();
 
 var Acc;
 var w_menuCC; // main menu
 var w_hideCC;
 
-var a1_tracker;
-var a2_tracker;
-var a3_tracker;
-var a4_tracker;
+var tintBg = new PIXI.Graphics();
 
-var bg = new PIXI.Graphics();
-
-var images = ["Images/LowMag.jpg", "Images/Multispectrum.jpg", "Images/Multiblock.jpg", "Images/LineIntegral.jpg"]; // array with images sources.. for now
-
-var w_hexGridContainer = new PIXI.Container(); 
 var w_titleContainer = new PIXI.Container(); // title container
 var w_menuContainer = new PIXI.Container(); // menu container
 var w_windowContainer = new PIXI.Container(); // for image selection
 var w_settingsContainer = new PIXI.Container(); // for settings menu
 var w_Popup1Container = new PIXI.Container(); // for popup window
-var w_Popup2Container = new PIXI.Container(); // for popup window
-var w_Popup3Container = new PIXI.Container(); // for popup window
-var w_Popup4Container = new PIXI.Container(); // for popup window
+//var w_Popup2Container = new PIXI.Container(); // for popup window
+//var w_Popup3Container = new PIXI.Container(); // for popup window
+//var w_Popup4Container = new PIXI.Container(); // for popup window
 
 // PIXI Text style
 var w_style = {fontFamily: 'Arial', fontSize: 15, fill: 0x000000};
@@ -53,14 +44,14 @@ function startWindows(){
 
 
   // for draggable windows
-/*
+
   renderer = PIXI.autoDetectRenderer(app.screen.width, app.screen.height);
 
   // add the renderer view element to the DOM
-  document.body.appendChild(renderer.view);
-  renderer.view.style.position = "absolute";
-  requestAnimationFrame( animate );
-*/
+  //document.body.appendChild(renderer.view);
+  //renderer.view.style.position = "absolute";
+  requestAnimationFrame( w_animate );
+
 
   
   // page title text
@@ -135,7 +126,7 @@ function startWindows(){
       settingsButton.graphics.on('mouseover', function(){ this.alpha = 1; });
       settingsButton.graphics.on('mouseout', w_HoverOff);
       settingsButton.graphics.on('pointerdown', function(){
-        app.stage.addChild(bg);
+        app.stage.addChild(tintBg);
         app.stage.addChild(w_settingsContainer);
       });
       settingsButton.graphics.alpha = 0.80;
@@ -326,34 +317,35 @@ function startWindows(){
   h = app.screen.height;
 
   let windowHeader = new PIXI.Graphics();
-  windowHeader.beginFill(0x707070);
-  windowHeader.drawPolygon([w*0.25-5,0, w*0.95+5,0, w*0.95+5,w*0.4+25, w*0.25-5,w*0.4+25]);
-  windowHeader.endFill();
+      windowHeader.beginFill(0x707070);
+      windowHeader.drawPolygon([w*0.25-5,0, w*0.95+5,0, w*0.95+5,w*0.4+25, w*0.25-5,w*0.4+25]);
+      windowHeader.endFill();
+      windowHeader.buttonMode = true;
+      windowHeader.interactive = true;
+      // events for drag start
+      windowHeader.on('mousedown', w_onDragStart);
+      windowHeader.on('touchstart', w_onDragStart)
+      // events for drag end
+      windowHeader.on('mouseup', w_onDragEnd);
+      windowHeader.on('mouseupoutside', w_onDragEnd);
+      windowHeader.on('touchend', w_onDragEnd);
+      windowHeader.on('touchendoutside', w_onDragEnd);
+      // events for drag move
+      windowHeader.on('mousemove', w_onDragMove);
+      windowHeader.on('touchmove', w_onDragMove);
   w_Popup1Container.addChild(windowHeader);
+
 
   // let w_workWindow = new PIXI.Graphics();
       //w_workWindow.lineStyle(5, 0x707070, 3);
       w_workWindow.beginFill(0x707070);
-      w_workWindow.drawPolygon([0,0, w*0.7,0, w*0.7,w*0.4, 0,w*0.4]);
+      w_workWindow.drawPolygon([3.5,0, w*0.7-2,0, w*0.7-2,w*0.4-2, 5,w*0.4-2]);
       w_workWindow.endFill();
       //w_workWindow.anchor.set(0.5);
       w_workWindow.position.x = w*0.25;
       w_workWindow.position.y = 20;
-      w_workWindow.interactive = true;
-      // events for drag start
-      w_workWindow.on('mousedown', onDragStart);
-      w_workWindow.on('touchstart', onDragStart)
-      // events for drag end
-      w_workWindow.on('mouseup', onDragEnd);
-      w_workWindow.on('mouseupoutside', onDragEnd);
-      w_workWindow.on('touchend', onDragEnd);
-      w_workWindow.on('touchendoutside', onDragEnd);
-      // events for drag move
-      w_workWindow.on('mousemove', onDragMove);
-      w_workWindow.on('touchmove', onDragMove);
   w_Popup1Container.addChild(w_workWindow);
 
-  
 
 
 
@@ -424,12 +416,9 @@ function startWindows(){
       w_label4.position.y = 245;
   w_Popup1Container.addChild(w_label4);
 
-  a1_tracker = 0;
-  a2_tracker = 0;
-  a3_tracker = 0;
-  a4_tracker = 0;
-
+  w_Popup1Container.x = -20;
   w_Popup1Container.y = 20;
+  //w_Popup1Container.scale.x = w_Popup1Container.scale.y = 1;
 
   app.stage.addChild(w_Popup1Container);
 
@@ -441,11 +430,11 @@ function startWindows(){
 
   // fade/darken background
 
-  //var bg = new PIXI.Graphics();
-  bg.beginFill(0x000000, 1); // Color and opacity
-  bg.drawRect(0, 0, app.screen.width, app.screen.height);
-  bg.endFill();
-  bg.alpha = 0.7;
+  //var tintBg = new PIXI.Graphics();
+  tintBg.beginFill(0x000000, 1); // Color and opacity
+  tintBg.drawRect(0, 0, app.screen.width, app.screen.height);
+  tintBg.endFill();
+  tintBg.alpha = 0.7;
 
 
 
@@ -464,9 +453,37 @@ function startWindows(){
   closeImage.interactive = true;
   closeImage.on('mouseover', w_HoverOver);
   closeImage.on('mouseout', w_HoverOff);
-  closeImage.on('pointerdown', w_disablePopup);
+  closeImage.on('pointerdown', w_disableSettings);
   closeImage.alpha = 0.85;
   w_settingsContainer.addChild(closeImage);
+
+
+
+
+
+
+
+
+  LSMI();
+  LSMIContainer.scale.x = LSMIContainer.scale.y = 0.7;
+  LSMIContainer.position.x = app.screen.width/4;
+  LSMIContainer.position.y = 20;
+
+  startSpectrum()
+  MSContainer.scale.x = MSContainer.scale.y = 0.9;
+  MSContainer.position.x = app.screen.width*0.25;
+  MSContainer.position.y = -93;
+
+  startMultiblock();
+  MBContainer.scale.x = MBContainer.scale.y = 0.7;
+  MBContainer.position.x = app.screen.width*0.25 - 5;
+  MBContainer.position.y = 30;
+
+  LISprite = new PIXI.Sprite.from("Images/LineIntensity.jpg");
+  LISprite.width = w_workWindow.width;
+  LISprite.height = w_workWindow.height;
+  LISprite.x = app.screen.width*0.25 + 3;
+  LISprite.y = 23;
 
 
 }
@@ -486,9 +503,9 @@ function w_HoverOff(event)
   this.alpha = 0.80;
 }
 
-function w_disablePopup()
+function w_disableSettings()
 {
-  app.stage.removeChild(bg);
+  app.stage.removeChild(tintBg);
   app.stage.removeChild(w_settingsContainer);
 }
 
@@ -535,32 +552,7 @@ function w_clearWindow()
   w_Popup1Container.removeChild(LSMIContainer);
   w_Popup1Container.removeChild(MSContainer);
   w_Popup1Container.removeChild(MBContainer);
-  w_Popup1Container.removeChild(Popup4Sprite);
-
-
-
-  /*
-  if (a1_tracker == 1) {
-    //w_Popup1Container.removeChild(LSMIContainer);
-    //throw Error('a1 tracker == 1 ');
-    a1_tracker = 0;
-  }
-  if (a2_tracker == 1) {
-    //w_Popup1Container.removeChild(MSContainer);
-    //throw Error('a2 tracker == 1 ');
-    a2_tracker = 0;
-  }
-  if (a3_tracker == 1) {
-    //w_Popup1Container.removeChild(MBContainer);
-    //throw Error('a3 tracker == 1 ');
-    a3_tracker = 0;
-  }
-  if (a4_tracker == 1) {
-    //w_Popup1Container.removeChild(Popup4Sprite);
-    //throw Error('a4 tracker == 1 ');
-    a4_tracker = 0;
-  }
-  */
+  w_Popup1Container.removeChild(LISprite);
 }
 
 
@@ -568,62 +560,39 @@ function w_clearWindow()
 function w_a1Select()
 {
   w_clearWindow();
-
-  LSMI();
-  LSMIContainer.width = app.screen.width * 0.7;
-  LSMIContainer.height = app.screen.height * 0.70;
-  LSMIContainer.position.x = app.screen.width/4;
-  LSMIContainer.position.y = 20;
   w_Popup1Container.addChild(LSMIContainer);
   LSMIContainer.mask = w_workWindow;
-
 }
 
 function w_a2Select()
 {
   w_clearWindow();
-
-  startSpectrum()
-  MSContainer.width = app.screen.width * 0.10;
-  MSContainer.height = app.screen.height * 0.8;
-  MSContainer.position.x = app.screen.width*0.25;
-  MSContainer.position.y = -50;
   w_Popup1Container.addChild(MSContainer);
   MSContainer.mask = w_workWindow;
-
 }
 
 function w_a3Select()
 {
   w_clearWindow();
-
-  startMultiblock();
-  MBContainer.width = app.screen.width * 1.3;
-  MBContainer.height = app.screen.height * 1.3;
-  MBContainer.position.x = app.screen.width*0.25 - 5;
-  MBContainer.position.y = 35;
-  app.stage.addChild(MBContainer);
+  w_Popup1Container.addChild(MBContainer);
   MBContainer.mask = w_workWindow;
-
 }
 
 function w_a4Select()
 {
   w_clearWindow();
-
-  Popup4Sprite = new PIXI.Sprite.from(images[3]);
-      Popup4Sprite.width = app.screen.width * 0.7;
-      Popup4Sprite.height = app.screen.width * 0.4 - 10;
-      Popup4Sprite.x = app.screen.width*0.25 + 3;
-      Popup4Sprite.y = 23;
-  w_Popup1Container.addChild(Popup4Sprite);
-
-  Popup4Sprite.mask = w_workWindow;
-
+  w_Popup1Container.addChild(LISprite);
+  LISprite.mask = w_workWindow;
 }
 
 
-function onDragStart(event)
+function w_animate()
+{
+  requestAnimationFrame(w_animate);
+  renderer.render(app.stage); // render the stage
+}
+
+function w_onDragStart(event)
 {
   // store a reference to the data
   // the reason for this is because of multitouch
@@ -633,17 +602,15 @@ function onDragStart(event)
   this.dragging = true;
 }
 
-function onDragEnd()
+function w_onDragEnd()
 {
   this.alpha = 1;
-
   this.dragging = false;
-
   // set the interaction data to null
   this.data = null;
 }
 
-function onDragMove()
+function w_onDragMove()
 {
   if (this.dragging)
   {

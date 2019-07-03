@@ -46,6 +46,12 @@ function createUIProjects()
     // background from gradient texture
 
     const gradTexture = createGradTexture();
+    
+    //Agustin: alpaha transform to 0.0 on the login background image. Setting stage to 0.0 alpha
+    app.stage.x = app.width;
+    positionTransform(0, app.stage.y, app.stage, 12)
+    alphaTransform(LI_backgroundImage, 0.0, 10);
+    app.stage.alpha = 0.0;
 
     const sprite = new PIXI.Sprite(gradTexture);
     sprite.width = app.screen.width;
@@ -253,6 +259,8 @@ function createUIProjects()
     app.stage.addChild(text);
     */
 
+    //Agustin: alpha transform on app.stage
+    alphaTransform(app.stage, 1.0, 20);
 }
 
 function a_hexHoverOver()
@@ -270,11 +278,19 @@ function a_SettingsSelect()
     if (a_settingsCC == 0)
     {
         app.stage.addChild(a_settingsContainer);
+        blurTransform(a_titleContainer,1.0, 10)
+        blurTransform(a_project1Container,1.0, 10)
+        blurTransform(maskContainer,1.0, 10)
+        blurTransform(p1_image,1.0, 10)
         a_settingsCC = 1;
     }
     else if (a_settingsCC == 1)
     {
         app.stage.removeChild(a_settingsContainer);
+        blurTransform(a_titleContainer, 0.5 , 10)
+        blurTransform(a_project1Container, 0.5, 10)
+        blurTransform(maskContainer, 0.5, 10)
+        blurTransform(p1_image, 0.5, 10)
         a_settingsCC = 0;
     }
 }
@@ -292,14 +308,28 @@ function a_projectHoverOff()
     app.stage.removeChild(a_project1Container);
 }
 
+//Agustin: edits to a_project1Select() and a_newPSelect() for small transformations
 function a_project1Select()
 {
     currentActivity = activityArray[2];
-    updateActivity();
+    moveLeftProjectSelection();
+    setTimeout('updateActivity()', 200); 
 }
 
 function a_newPSelect()
 {
     currentActivity = activityArray[3];
-    updateActivity();
+    moveLeftProjectSelection()
+    setTimeout('updateActivity()', 200); 
+}
+
+//Agustin: Edit to move some elements. Some hexagons are not being altered at the moment
+function moveLeftProjectSelection(){
+    positionTransform(-1000, a_titleContainer.y, a_titleContainer, 10)
+    positionTransform(-1000, a_settingsContainer.y, a_settingsContainer, 10)
+    positionTransform(-1000, a_project1Container.y, a_project1Container, 10)
+    positionTransform(-1000, maskContainer.y, maskContainer, 10)
+    positionTransform(-1000, p1Hex.y, p1Hex, 10)
+    positionTransform(-1000, p1_image.y, p1_image, 10)
+    blurTransform(app.stage, 1.0, 10)
 }

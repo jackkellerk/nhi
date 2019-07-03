@@ -33,7 +33,7 @@ function MB_createGraph() {
             const richText = new PIXI.Text('', style);
             richText.x = app.screen.width/2 - 250;
             richText.y = 0;
-            app.stage.addChild(richText);
+            MBContainer.addChild(richText);
             //Some constants initialized here to be used later
             //Slope text is used to show details about the line drawn
             const slopeText = new PIXI.Text('', lumStyle);
@@ -43,10 +43,10 @@ function MB_createGraph() {
             const graphs = new PIXI.Graphics();
             //This container will hold all the horizontal graph text
             const hTextContainer = new PIXI.Container(); 
-            app.stage.addChild(hTextContainer);
+            MBContainer.addChild(hTextContainer);
             //This container will hold all the vertical graph text
             const vTextContainer = new PIXI.Container();    
-            app.stage.addChild(vTextContainer);
+            MBContainer.addChild(vTextContainer);
 
 
                 //Resets graph related visuals
@@ -64,7 +64,7 @@ function MB_createGraph() {
                 graphs.beginFill(0xffffff);
                 graphs.drawRect(boundary_tlx, boundary_tly, boundaryWidth, boundaryHeight);
                 graphs.endFill();
-                app.stage.addChild(graphs);
+                MBContainer.addChild(graphs);
 
                 //Inner graph
                 var graph_tlx = boundary_tlx + 50;
@@ -75,7 +75,7 @@ function MB_createGraph() {
                 graphs.beginFill(0xffffff);
                 graphs.drawRect(graph_tlx, graph_tly, graphWidth, graphHeight);
                 graphs.endFill();
-                app.stage.addChild(graphs);
+                MBContainer.addChild(graphs);
 
                 //This takes care of the horizontal segements of the graph
                 var horizontalColumns = 10;
@@ -103,7 +103,7 @@ function MB_createGraph() {
                         .lineTo(currentX, horizontalDashY);
                     currentX += 2 * horizontalHalfSpacing;
                 }
-                app.stage.addChild(hTextContainer);
+                MBContainer..addChild(hTextContainer);
 
                 //This takes care of the vertical segements of the graph
                 var verticalRows = 15;
@@ -135,7 +135,7 @@ function MB_createGraph() {
                     vTextContainer.addChild(vText);
                     currentY -= verticalSpacing;
                 }
-                app.stage.addChild(vTextContainer);
+                MBContainer.addChild(vTextContainer);
 
 
                 //This plots the actual data of the graph 

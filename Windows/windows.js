@@ -8,6 +8,11 @@ var Acc;
 var w_menuCC; // main menu
 var w_hideCC;
 
+var window1Label = new PIXI.Text();
+var window2Label = new PIXI.Text();
+var window3Label = new PIXI.Text();
+var window4Label = new PIXI.Text();
+
 var tintBg = new PIXI.Graphics();
 
 var w_titleContainer = new PIXI.Container(); // title container
@@ -45,12 +50,12 @@ function startWindows(){
 
   // for draggable windows
 
-  renderer = PIXI.autoDetectRenderer(app.screen.width, app.screen.height);
+  //renderer = PIXI.autoDetectRenderer(app.screen.width, app.screen.height);
 
   // add the renderer view element to the DOM
   //document.body.appendChild(renderer.view);
   //renderer.view.style.position = "absolute";
-  requestAnimationFrame( w_animate );
+  //requestAnimationFrame( w_animate );
 
 
   
@@ -233,14 +238,14 @@ function startWindows(){
   var window1 = new Hexagon({x:50, y:200}, 0, 37);
       window1.graphics.lineStyle(2, 0x7D7D7D, 3);
       window1.graphics.interactive = true;
-      window1.graphics.on('mouseover', function(){ this.alpha = 1; })
-      window1.graphics.on('mouseout', w_HoverOff)
+      window1.graphics.on('mouseover', w_windowHoverOver);
+      window1.graphics.on('mouseout', w_windowHoverOff);
       window1.graphics.on('pointerdown', w_WindowSelect);
       window1.graphics.alpha = 0.80;
   window1.draw(0xFFFFFF);
   app.stage.removeChild(window1.container);
 
-  let window1Label = new PIXI.Text("Window\n     1", w_style);
+  window1Label = new PIXI.Text("Window\n     1", w_style);
   window1Label.position.x = window1.x - 26;
   window1Label.position.y = window1.y - 15;
 
@@ -248,14 +253,14 @@ function startWindows(){
   var window2 = new Hexagon({x:window1.x, y:window1.getCenterLowerRight(0).y}, 0, 37);
       window2.graphics.lineStyle(2, 0x7D7D7D, 3);
       window2.graphics.interactive = true;
-      window2.graphics.on('mouseover', function(){ this.alpha = 1; });
-      window2.graphics.on('mouseout', w_HoverOff);
+      window2.graphics.on('mouseover', w_windowHoverOver);
+      window2.graphics.on('mouseout', w_windowHoverOff);
       window2.graphics.on('pointerdown', w_WindowSelect);
       window2.graphics.alpha = 0.80;
   window2.draw(0xFFFFFF);
   app.stage.removeChild(window2.container);
   
-  let window2Label = new PIXI.Text("Window\n     2", w_style);
+  window2Label = new PIXI.Text("Window\n     2", w_style);
   window2Label.position.x = window2.x - 26;
   window2Label.position.y = window2.y - 15;
 
@@ -264,14 +269,14 @@ function startWindows(){
   var window3 = new Hexagon({x:window2.x, y:window2.getCenterLowerLeft(0).y}, 0, 37);
       window3.graphics.lineStyle(2, 0x7D7D7D, 3);
       window3.graphics.interactive = true;
-      window3.graphics.on('mouseover', function(){ this.alpha = 1; });
-      window3.graphics.on('mouseout', w_HoverOff);
+      window3.graphics.on('mouseover', w_windowHoverOver);
+      window3.graphics.on('mouseout', w_windowHoverOff);
       window3.graphics.on('pointerdown', w_WindowSelect);
       window3.graphics.alpha = 0.80;
   window3.draw(0xFFFFFF);
   app.stage.removeChild(window3.container);
 
-  let window3Label = new PIXI.Text("Window\n     3", w_style);
+  window3Label = new PIXI.Text("Window\n     3", w_style);
   window3Label.position.x = window3.x - 26;
   window3Label.position.y = window3.y - 15;
 
@@ -280,14 +285,15 @@ function startWindows(){
   var window4 = new Hexagon({x:window3.x, y:window3.getCenterLowerRight(0).y}, 0, 37);
       window4.graphics.lineStyle(2, 0x7D7D7D, 3);
       window4.graphics.interactive = true;
-      window4.graphics.on('mouseover', function(){ this.alpha = 1; });
-      window4.graphics.on('mouseout', w_HoverOff);
+      window4.graphics.on('mouseover', w_windowHoverOver);
+      window4.graphics.on('mouseout', w_windowHoverOff);
       window4.graphics.on('mousedown', w_WindowSelect);
       window4.graphics.alpha = 0.80;
+      window4.graphics.i = 4;
   window4.draw(0xFFFFFF);
   app.stage.removeChild(window4.container);
 
-  let window4Label = new PIXI.Text("Window\n     4", w_style);
+  window4Label = new PIXI.Text("Window\n     4", w_style);
   window4Label.position.x = window4.x - 26;
   window4Label.position.y = window4.y - 15;
 
@@ -317,8 +323,8 @@ function startWindows(){
   h = app.screen.height;
 
   let windowHeader = new PIXI.Graphics();
-      windowHeader.beginFill(0x707070);
-      windowHeader.drawPolygon([w*0.25-5,0, w*0.95+5,0, w*0.95+5,w*0.4+25, w*0.25-5,w*0.4+25]);
+      windowHeader.beginFill(0xdcdcdc);
+      windowHeader.drawRoundedRect(w*0.25-3, 0, w*0.70+10, w*0.4+25, 5);
       windowHeader.endFill();
       windowHeader.buttonMode = true;
       windowHeader.interactive = true;
@@ -337,19 +343,18 @@ function startWindows(){
 
 
   // let w_workWindow = new PIXI.Graphics();
-      //w_workWindow.lineStyle(5, 0x707070, 3);
-      w_workWindow.beginFill(0x707070);
-      w_workWindow.drawPolygon([3.5,0, w*0.7-2,0, w*0.7-2,w*0.4-2, 5,w*0.4-2]);
-      w_workWindow.endFill();
-      //w_workWindow.anchor.set(0.5);
-      w_workWindow.position.x = w*0.25;
-      w_workWindow.position.y = 20;
+  w_workWindow.beginFill(0x707070);
+  w_workWindow.drawPolygon([3.5,0, w*0.7-2,0, w*0.7-2,w*0.4-2, 5,w*0.4-2]);
+  w_workWindow.endFill();
+  //w_workWindow.anchor.set(0.5);
+  w_workWindow.position.x = w*0.25;
+  w_workWindow.position.y = 20;
   w_Popup1Container.addChild(w_workWindow);
 
 
 
 
-  let w1_menuLabel = new PIXI.Text("Window 1",{fontFamily: 'Arial', fontSize: 15, fill: 0xffffff});
+  let w1_menuLabel = new PIXI.Text("Window 1",{fontFamily: 'Arial', fontSize: 15, fontType: 'bold', fill: 0x000000});
       w1_menuLabel.position.x = w_workWindow.x + 10;
       w1_menuLabel.position.y = w_workWindow.y - 19;
   w_Popup1Container.addChild(w1_menuLabel);
@@ -357,64 +362,87 @@ function startWindows(){
 
 
   let w_activity1 = new PIXI.Graphics();
-      w_activity1.lineStyle(5, 0x707070, 3);
+      w_activity1.lineStyle(4, 0xffffff, 3);
       w_activity1.beginFill(0xdcdcdc);
-      w_activity1.drawPolygon([w/4-70,20, w/4,20, w/4,90, w/4-70,90]);
+      w_activity1.drawRoundedRect(w/4-50,20, 50,50, 3);
       w_activity1.endFill();
       w_activity1.interactive = true;
       w_activity1.on('pointerdown', w_a1Select);
       w_activity1.alpha = 0.8;
   w_Popup1Container.addChild(w_activity1);
 
-  let w_label1 = new PIXI.Text("Low\nMagnifi\ncation",{fontFamily: 'Arial', fontSize: 13, fill: 0x000000});
-      w_label1.position.x = w/4-55;
-      w_label1.position.y = 32;
-  w_Popup1Container.addChild(w_label1);
+  const zoomIcon = new PIXI.Sprite.from("Images/magnifying-glass.png");
+        zoomIcon.width = 35;
+        zoomIcon.height = 35;
+        zoomIcon.position.x = w/4-43;
+        zoomIcon.position.y = 28;
+  w_Popup1Container.addChild(zoomIcon);
+
 
   let w_activity2 = new PIXI.Graphics();
-      w_activity2.lineStyle(5, 0x707070, 3);
+      w_activity2.lineStyle(4, 0xffffff, 3);
       w_activity2.beginFill(0xdcdcdc);
-      w_activity2.drawPolygon([w/4-70,90, w/4,90, w/4,160, w/4-70,160]);
+      w_activity2.drawRoundedRect(w/4-50,70, 50,50, 3);
       w_activity2.endFill();
       w_activity2.interactive = true;
       w_activity2.on('pointerdown', w_a2Select);
       w_activity2.alpha = 0.8;
   w_Popup1Container.addChild(w_activity2);
 
-  let w_label2 = new PIXI.Text("Spectrum\n Imaging",{fontFamily: 'Arial', fontSize: 13, fill: 0x000000});
-      w_label2.position.x = w/4-63;
-      w_label2.position.y = 105;
-  w_Popup1Container.addChild(w_label2);
+  const spectrumIcon = new PIXI.Sprite.from("Images/color-wheel.png");
+        spectrumIcon.width = 35;
+        spectrumIcon.height = 35;
+        spectrumIcon.position.x = w/4-43;
+        spectrumIcon.position.y = 78;
+  w_Popup1Container.addChild(spectrumIcon);
 
   let w_activity3 = new PIXI.Graphics();
-      w_activity3.lineStyle(5, 0x707070, 3);
+      w_activity3.lineStyle(4, 0xffffff, 3);
       w_activity3.beginFill(0xdcdcdc);
-      w_activity3.drawPolygon([w/4-70,160, w/4,160, w/4,230, w/4-70,230]);
+      w_activity3.drawRoundedRect(w/4-50,120, 50,50, 3);
       w_activity3.endFill();
       w_activity3.interactive = true;
       w_activity3.on('pointerdown', w_a3Select);
       w_activity3.alpha = 0.8;
   w_Popup1Container.addChild(w_activity3);
 
+  /*
   let w_label3 = new PIXI.Text(" Grain\nBoundary",{fontFamily: 'Arial', fontSize: 13, fill: 0x000000});
       w_label3.position.x = w/4-63;
       w_label3.position.y = 175;
   w_Popup1Container.addChild(w_label3);
+  */
+  const multiblockIcon = new PIXI.Sprite.from("Images/multi-block-icon.png");
+        multiblockIcon.width = 40;
+        multiblockIcon.height = 40;
+        multiblockIcon.position.x = w/4-46;
+        multiblockIcon.position.y = 126;
+  w_Popup1Container.addChild(multiblockIcon);
+
+
 
   let w_activity4 = new PIXI.Graphics();
-      w_activity4.lineStyle(5, 0x707070, 3);
+      w_activity4.lineStyle(4, 0xffffff, 3);
       w_activity4.beginFill(0xdcdcdc);
-      w_activity4.drawPolygon([w/4-70,230, w/4,230, w/4,300, w/4-70,300]);
+      w_activity4.drawRoundedRect(w/4-50,170, 50,50, 3);
       w_activity4.endFill();
       w_activity4.interactive = true;
       w_activity4.on('pointerdown', w_a4Select);
       w_activity4.alpha = 0.8;
   w_Popup1Container.addChild(w_activity4);
 
+  /*
   let w_label4 = new PIXI.Text(" Line\nIntegral",{fontFamily: 'Arial', fontSize: 13, fill: 0x000000});
       w_label4.position.x = w/4-60;
       w_label4.position.y = 245;
   w_Popup1Container.addChild(w_label4);
+  */
+  const lineintensityIcon = new PIXI.Sprite.from("Images/line-intensity.png");
+        lineintensityIcon.width = 40;
+        lineintensityIcon.height = 40;
+        lineintensityIcon.position.x = w/4-44;
+        lineintensityIcon.position.y = 175;
+  w_Popup1Container.addChild(lineintensityIcon);
 
   w_Popup1Container.x = -20;
   w_Popup1Container.y = 20;
@@ -531,7 +559,30 @@ function w_MenuSelect()
   }
 }
 
+function w_windowHoverOver()
+{
+  this.alpha = 1;
+  this.x = this.x + 10;
 
+  let i = 1;
+  if (i == 1) { window1Label.position.x = window1Label.position.x + 10; }
+  else if (i == 2) { window2Label.position.x = window2Label.position.x + 10; }
+  else if (i == 3) { window3Label.position.x = window3Label.position.x + 10; }
+  else if (i == 4) { window4Label.position.x = window4Label.position.x + 10; }
+
+}
+
+function w_windowHoverOff()
+{
+  this.alpha = 0.80;
+  this.x = this.x - 10;
+  
+  var i = 1;
+  if (i == 1) { window1Label.position.x = window1Label.position.x - 10; }
+  else if (i == 2) { window2Label.position.x = window2Label.position.x - 10; }
+  else if (i == 3) { window3Label.position.x = window3Label.position.x - 10; }
+  else if (i == 4) { window4Label.position.x = window4Label.position.x - 10; }
+}
 
 function w_WindowSelect()
 {
@@ -585,12 +636,13 @@ function w_a4Select()
   LISprite.mask = w_workWindow;
 }
 
-
+/*
 function w_animate()
 {
   requestAnimationFrame(w_animate);
   renderer.render(app.stage); // render the stage
 }
+*/
 
 function w_onDragStart(event)
 {

@@ -47,6 +47,7 @@ function startPreLogin()
     LI_backgroundImage.interactive = true;
     LI_backgroundImage.buttonMode = true;
     LI_backgroundImage.on("pointerdown",showLogin);
+    LI_backgroundImage.alpha = 1.0
     
     
 
@@ -483,8 +484,11 @@ function changePassword(text){
     
 }
 
+//Agustin: edit
 function toProjectSelection()
 {
     currentActivity = activityArray[1];
+    alphaTransform(LI_backgroundImage,0.0, 10 )
+    positionTransform(-1000, app.stage.y, app.stage, 12)
     updateActivity();
 }

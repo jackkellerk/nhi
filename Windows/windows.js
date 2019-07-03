@@ -2,14 +2,17 @@
 var renderer;
 
 var w_workWindow = new PIXI.Graphics();
+var Popup1Sprite = new PIXI.Sprite();
+var Popup4Sprite = new PIXI.Sprite();
 
 var Acc;
 var w_menuCC; // main menu
 var w_hideCC;
-var w_popup1CC;
-var w_popup2CC;
-var w_popup3CC;
-var w_popup4CC;
+
+var a1_tracker;
+var a2_tracker;
+var a3_tracker;
+var a4_tracker;
 
 var bg = new PIXI.Graphics();
 
@@ -282,7 +285,6 @@ function startWindows(){
   window3Label.position.y = window3.y - 15;
 
 
-  w_popup4CC = 0;
 
   var window4 = new Hexagon({x:window3.x, y:window3.getCenterLowerRight(0).y}, 0, 37);
       window4.graphics.lineStyle(2, 0x7D7D7D, 3);
@@ -318,19 +320,24 @@ function startWindows(){
 
   // Popup
 
-  w_popupCC = 0;
+  w_popupCC = 1;
 
   w = app.screen.width;
   h = app.screen.height;
 
+  let windowHeader = new PIXI.Graphics();
+  windowHeader.beginFill(0x707070);
+  windowHeader.drawPolygon([w*0.25-5,0, w*0.95+5,0, w*0.95+5,w*0.4+25, w*0.25-5,w*0.4+25]);
+  windowHeader.endFill();
+  w_Popup1Container.addChild(windowHeader);
+
   // let w_workWindow = new PIXI.Graphics();
-      w_workWindow.lineStyle(5, 0x707070, 3);
-      w_workWindow.drawPolygon([0,-20, w*0.55,-20, w*0.55,w*0.3575, 0,w*0.3575]);
+      //w_workWindow.lineStyle(5, 0x707070, 3);
       w_workWindow.beginFill(0x707070);
-      w_workWindow.drawPolygon([0,0, w*0.55,0, w*0.55,w*0.3575, 0,w*0.3575]);
+      w_workWindow.drawPolygon([0,0, w*0.7,0, w*0.7,w*0.4, 0,w*0.4]);
       w_workWindow.endFill();
       //w_workWindow.anchor.set(0.5);
-      w_workWindow.position.x = w/4;
+      w_workWindow.position.x = w*0.25;
       w_workWindow.position.y = 20;
       w_workWindow.interactive = true;
       // events for drag start
@@ -417,9 +424,16 @@ function startWindows(){
       w_label4.position.y = 245;
   w_Popup1Container.addChild(w_label4);
 
-  //app.stage.addChild(w_Popup1Container);
+  a1_tracker = 0;
+  a2_tracker = 0;
+  a3_tracker = 0;
+  a4_tracker = 0;
 
-  
+  w_Popup1Container.y = 20;
+
+  app.stage.addChild(w_Popup1Container);
+
+
 
 
 
@@ -516,51 +530,96 @@ function w_WindowSelect()
 }
 
 
+function w_clearWindow()
+{
+  w_Popup1Container.removeChild(LSMIContainer);
+  w_Popup1Container.removeChild(MSContainer);
+  w_Popup1Container.removeChild(MBContainer);
+  w_Popup1Container.removeChild(Popup4Sprite);
+
+
+
+  /*
+  if (a1_tracker == 1) {
+    //w_Popup1Container.removeChild(LSMIContainer);
+    //throw Error('a1 tracker == 1 ');
+    a1_tracker = 0;
+  }
+  if (a2_tracker == 1) {
+    //w_Popup1Container.removeChild(MSContainer);
+    //throw Error('a2 tracker == 1 ');
+    a2_tracker = 0;
+  }
+  if (a3_tracker == 1) {
+    //w_Popup1Container.removeChild(MBContainer);
+    //throw Error('a3 tracker == 1 ');
+    a3_tracker = 0;
+  }
+  if (a4_tracker == 1) {
+    //w_Popup1Container.removeChild(Popup4Sprite);
+    //throw Error('a4 tracker == 1 ');
+    a4_tracker = 0;
+  }
+  */
+}
+
 
 
 function w_a1Select()
 {
-  var PopupSprite = new PIXI.Sprite.from(images[0]);
-      PopupSprite.width = app.screen.width * 0.545;
-      PopupSprite.height = PopupSprite.width * 0.645;
-      PopupSprite.x = app.screen.width/4 + 3;
-      PopupSprite.y = 23;
-  w_Popup1Container.addChild(PopupSprite);
+  w_clearWindow();
+
+  LSMI();
+  LSMIContainer.width = app.screen.width * 0.7;
+  LSMIContainer.height = app.screen.height * 0.70;
+  LSMIContainer.position.x = app.screen.width/4;
+  LSMIContainer.position.y = 20;
+  w_Popup1Container.addChild(LSMIContainer);
+  LSMIContainer.mask = w_workWindow;
+
 }
 
 function w_a2Select()
 {
-  var PopupSprite = new PIXI.Sprite.from(images[1]);
-      PopupSprite.width = app.screen.width * 0.545;
-      PopupSprite.height = PopupSprite.width * 0.645;
-      PopupSprite.x = app.screen.width/4 + 3;
-      PopupSprite.y = 23;
-  w_Popup1Container.addChild(PopupSprite);
+  w_clearWindow();
+
+  startSpectrum()
+  MSContainer.width = app.screen.width * 0.10;
+  MSContainer.height = app.screen.height * 0.8;
+  MSContainer.position.x = app.screen.width*0.25;
+  MSContainer.position.y = -50;
+  w_Popup1Container.addChild(MSContainer);
+  MSContainer.mask = w_workWindow;
+
 }
 
 function w_a3Select()
 {
+  w_clearWindow();
+
   startMultiblock();
+  MBContainer.width = app.screen.width * 1.3;
+  MBContainer.height = app.screen.height * 1.3;
+  MBContainer.position.x = app.screen.width*0.25 - 5;
+  MBContainer.position.y = 35;
+  app.stage.addChild(MBContainer);
   MBContainer.mask = w_workWindow;
 
-  /*
-  var PopupSprite = new PIXI.Sprite.from(images[2]);
-      PopupSprite.width = app.screen.width * 0.545;
-      PopupSprite.height = PopupSprite.width * 0.645;
-      PopupSprite.x = app.screen.width/4 + 3;
-      PopupSprite.y = 23;
-  w_Popup1Container.addChild(PopupSprite);
-  */
 }
 
 function w_a4Select()
 {
-  var PopupSprite = new PIXI.Sprite.from(images[3]);
-      PopupSprite.width = app.screen.width * 0.545;
-      PopupSprite.height = PopupSprite.width * 0.645;
-      PopupSprite.x = app.screen.width/4 + 3;
-      PopupSprite.y = 23;
-  w_Popup1Container.addChild(PopupSprite);
+  w_clearWindow();
+
+  Popup4Sprite = new PIXI.Sprite.from(images[3]);
+      Popup4Sprite.width = app.screen.width * 0.7;
+      Popup4Sprite.height = app.screen.width * 0.4 - 10;
+      Popup4Sprite.x = app.screen.width*0.25 + 3;
+      Popup4Sprite.y = 23;
+  w_Popup1Container.addChild(Popup4Sprite);
+
+  Popup4Sprite.mask = w_workWindow;
+
 }
 
 

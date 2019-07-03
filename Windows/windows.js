@@ -486,6 +486,9 @@ function startWindows(){
   w_settingsContainer.addChild(closeImage);
 
 
+  blurTransform(app.stage, 0.5, 10);
+
+
 
 
 
@@ -512,9 +515,7 @@ function startWindows(){
   LISprite.height = w_workWindow.height;
   LISprite.x = app.screen.width*0.25 + 3;
   LISprite.y = 23;
-  
-  //Agustin: Undo the blur from AllProjects page after all the elements get added to app.stage 
-  blurTransform(app.stage, 0.5, 10)
+
 
 }
 

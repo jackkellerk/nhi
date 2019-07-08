@@ -54,7 +54,18 @@ public class App {
                 System.err.println(js);
                 return new StructuredResponse(0, null, js).toJson().toString();
             } catch (Exception e) {
-                return e.toString();
+                return new StructuredResponse(100, e.toString(), null).toJson().toString();
+            }
+        });
+
+        Spark.get("/p/:pid", (request, response) -> {
+            int pid = Integer.parseInt(request.params("pid"));
+            response.status(200);
+            response.type("application/json");
+            try {
+                return new StructuredResponse(0, null, db.getProject(pid)).toJson().toString();
+            } catch (Exception e) {
+                return new StructuredResponse(100, e.toString(), null).toJson().toString();
             }
         });
     }

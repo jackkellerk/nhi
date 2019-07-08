@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
-
 
 class MySQLConnection {
     // Information of the SQL Server
@@ -75,23 +75,61 @@ class MySQLConnection {
         PreparedStatement stmt = connection.prepareStatement("select * from project_t where uid = ?");
         stmt.setInt(1, uid);
         ResultSet rs = stmt.executeQuery();
-        JSONArray retval = new JSONArray();
-        while (rs.next()) {
-            JSONObject project = new JSONObject();
-            project.put("date_creation", rs.getDate("date_creation"));
-            project.put("name", rs.getString("name"));
-            project.put("pid", rs.getInt("pid"));
-            project.put("thumbnail", rs.getString("thumbnail"));
-            retval.put(project.toString());
+        return convertToJSONArray(rs);
+        // JSONArray retval = new JSONArray();
+        // while (rs.next()) {
+        // JSONObject project = new JSONObject();
+        // project.put("date_creation", rs.getDate("date_creation"));
+        // project.put("name", rs.getString("name"));
+        // project.put("pid", rs.getInt("pid"));
+        // project.put("thumbnail", rs.getString("thumbnail"));
+        // retval.put(project.toString());
+        // }
+    }
+
+    public JSONObject getProject(int pid) throws SQLException {
+        PreparedStatement projectStmt = connection.prepareStatement("select * from project_t where pid = ?");
+        PreparedStatement windowStmt = connection.prepareStatement("select * from window_t where pid = ?");
+        projectStmt.setInt(1, pid);
+        windowStmt.setInt(1, pid);
+        ResultSet projectRS = projectStmt.executeQuery();
+        ResultSet windowRS = windowStmt.executeQuery();
+        JSONObject pjs = convertToJSONObject(projectRS);
+        pjs.put("window", convertToJSONArray(windowRS));
+        return pjs;
+    }
+
+    public static JSONArray convertToJSONArray(ResultSet resultSet) throws JSONException, SQLException {
+        JSONArray jsonArray = new JSONArray();
+        while (resultSet.next()) {
+            int total_rows = resultSet.getMetaData().getColumnCount();
+            JSONObject obj = new JSONObject();
+            for (int i = 0; i < total_rows; i++) {
+                obj.put(resultSet.getMetaData().getColumnLabel(i + 1).toLowerCase(), resultSet.getObject(i + 1));
+            }
+            jsonArray.put(obj);
+
         }
-        return retval;
+        return jsonArray;
+    }
+
+    public static JSONObject convertToJSONObject(ResultSet resultSet) throws JSONException, SQLException {
+        JSONObject obj = new JSONObject();
+        if (resultSet.next()) {
+            int total_rows = resultSet.getMetaData().getColumnCount();
+            for (int i = 0; i < total_rows; i++) {
+                obj.put(resultSet.getMetaData().getColumnLabel(i + 1).toLowerCase(), resultSet.getObject(i + 1));
+            }
+        }
+        return obj;
+
     }
 
     public static void main(String[] args) {
         MySQLConnection connection = MySQLConnection.getConnection();
         // System.out.println(connection.login("admin", "password"));
         try {
-            System.out.println(connection.getProjectListing(1));
+            System.out.println(connection.getProject(1));
         } catch (SQLException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

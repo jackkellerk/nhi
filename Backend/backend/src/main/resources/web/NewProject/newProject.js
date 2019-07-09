@@ -1,4 +1,10 @@
-
+/*
+TODO: Make textStyle in captionFactory customizable
+TODO: change fontSize according to hexagon size
+TODO: click on last hexagon to go back
+TODO: Text don't go off the hexagon
+TODO: Cancel
+ */
 class NewProject{
     
     static createWindowHexagons(){
@@ -29,107 +35,148 @@ class NewProject{
     
     static createNewProjectPrompt(){
         let h = app.screen.height;
-        let prompt = new Hexagon({x: app.screen.width/2, y: h/2}, 0.4 * h);
-        prompt.graphics.lineStyle(2, 0x414141, 3);
-        prompt.draw(Hexagon.getHexColor("transparent"), 0);
-    
-        let chooseProjectPage = new QuestionPage({
-            questionTitle: 'Choose your project:',
-            availableOptions: [{
-                content: 'new project..',
-                onClick: function () {
-                    chooseProjectPage.clear();
-                    proficiencyPage.display(prompt.container);
-                }
-            }],
-            fill: Hexagon.getHexColor("white"),
-            fontSize: 23
-        });
-    
-        let proficiencyPage = new QuestionPage({
+        let w = app.screen.width;
+        let numPrompts = 4;
+        let prompts = [];
+        let contents = [];
+        let returnIcons = [];
+        
+        contents.push(new QuestionPage({
             questionTitle: 'Choose your proficiency:',
             availableOptions: [{
                 content: 'Negligible',
-                onClick: function () {
-                    proficiencyPage.clear();
-                    materialTypePage.display(prompt.container);
-                }
+                onClick: shiftToNextPrompt
+            }, {
+                /*
+                TODO: Only the descendent QuestionPages of the first options are known. These are simply displaying the same things. The actual contents are to be designed.
+                */
+                content: 'Moderate',
+                onClick: shiftToNextPrompt
+            }, {
+                content: "Expert",
+                onClick: shiftToNextPrompt
             }],
-            unavailableOptions: ['Moderate', 'Expert'],
             fill: Hexagon.getHexColor("white"),
             fontSize: 23
-        });
-    
-        let materialTypePage = new QuestionPage({
-            questionTitle: 'What material(s) are you investigating',
+        }));
+        contents.push(new QuestionPage({
+            questionTitle: 'What material(s) are you \ninvestigating',
             availableOptions: [{
                 content: 'Generate bar code',
-                onClick: function () {
-                    materialTypePage.clear();
-                    scientificObjectivePage.display(prompt.container);
-                }
+                onClick: shiftToNextPrompt
             }],
             choices: ['Ceramics', 'Metals', 'Other'],
             fill: Hexagon.getHexColor("white"),
             fontSize: 23
-        });
-    
-        let scientificObjectivePage = new QuestionPage({
+        }));
+        contents.push(new QuestionPage({
             questionTitle: 'What is your scientific objective?',
             availableOptions: [{
                 content: 'Grain boundary structure/chemistry',
-                onClick: function () {
-                    scientificObjectivePage.clear();
-                    otherOptions.display(prompt.container);
-                }
+                onClick: shiftToNextPrompt
             }],
             unavailableOptions: ['identify second phases', 'search for rare events', 'Other'],
             fill: Hexagon.getHexColor("white"),
             fontSize: 23
-        });
-    
-        let otherOptions = new QuestionPage({
+        }));
+        contents.push(new QuestionPage({
             questionTitle: 'To optimize the data acquisition \nworkflow, you may want to ...',
             availableOptions: [{
                 content: 'confirm',
-                onClick: function () {
-                    currentActivity = activityArray[1];
-                    updateActivity();
-                }
+                onClick: returnToAllProjects
             }],
             choices: ['Operate microscope at 200 kV', 'Set probe current to 150 pA', 'Set detector collection angles', 'Etc.'],
             fill: Hexagon.getHexColor("white"),
             fontSize: 23
-        });
+        }));
     
-        chooseProjectPage.display(prompt.container);
-        // make the input scale with h
-        // let names = ["Project Name", "Proficiency", "Bar Code"];
-        // let inputs = [];
-        // let labels = [];
-        // let promptContainer = new PIXI.Container();
-        // for (let i = 0; i < 3; i++) {
-        //     inputs.push(new PIXI.TextInput({
-        //         input: {
-        //             fontSize: '14pt',
-        //             padding: '10px',
-        //             width: `${h * 0.5}px`,
-        //             color: '#26272E'
-        //         },
-        //         box: {
-        //             default: {fill: 0xE8E9F3,  stroke: {color: 0xCBCEE0, width: 1}},
-        //             focused: {fill: 0xE1E3EE,  stroke: {color: 0xABAFC6, width: 1}},
-        //             disabled: {fill: 0xDBDBDB}
-        //         }
-        //     }));
-        //     labels.push(new PIXI.Text());
-        // }
-        // prompt.container.addChild(promptContainer);
+        let hwidth = 0.4 * h;
+        let exposedWidth = 0.15 * h;
+        let gap = w / 2 - hwidth - exposedWidth;
+        let centerNext = {x: w / 2, y: h / 2};
+        
+        for (let i = 0; i < numPrompts; i++) {
+            prompts.push(new Hexagon(centerNext, hwidth));
+            centerNext = prompts[i].getCenterRight(gap);
+            prompts[i].graphics.lineStyle(2, 0x414141, 3);
+            prompts[i].draw(Hexagon.getHexColor("transparent"), 0);
+            
+            contents[i].display(prompts[i].container);
+            
+            returnIcons.push(makeReturnIcon(hwidth, exposedWidth));
+            returnIcons[i].interactive = true;
+            returnIcons[i].buttonMode = true;
+            returnIcons[i].on('pointerdown', function(){ shiftToLastPrompt(i); });
+            prompts[i].container.addChild(returnIcons[i]);
+        }
+        
+        function makeReturnIcon(hwidth, exposedWidth){
+            let g = new PIXI.Graphics();
+            g.beginFill(0x414141, 0.6);
+            g.lineStyle(2, 0x414141, 3);
+            g.drawPolygon([  // every two number represents a coordinate of a point on the path of this hexagon
+                hwidth * 2 - 0.85 * exposedWidth, hwidth / Hexagon.SQRT3 * 2,  // Left vertex
+                hwidth * 2 - 0.15 * exposedWidth, hwidth / Hexagon.SQRT3 + exposedWidth * 0.15,  // Upper right vertex
+                hwidth * 2 - 0.15 * exposedWidth, hwidth / Hexagon.SQRT3 * 3 - exposedWidth * 0.15// Lower right vertex
+                // hwidth * 2, radius / 2,
+                // hwidth * 2, radius * 3 / 2,
+                // hwidth, radius * 2,
+                // 0, radius * 3 / 2,
+                // 0, radius / 2
+            ]);
+            g.endFill();
+            g.visible = false;
+            return g;
+            
+        }
+    
+        function shiftToNextPrompt(){
+            for (let i = 0; i < numPrompts; i++) {
+                prompts[i].container.x -= (gap + hwidth * 2);  // Customize
+            }
+            returnIcons[NewProject.currentHexagon].visible = true;
+            NewProject.currentHexagon ++;
+        }
+    
+        function shiftToLastPrompt(clickedIndex){
+            console.log(clickedIndex + " " + NewProject.currentHexagon);
+            if(clickedIndex === NewProject.currentHexagon - 1){
+                for (let i = 0; i < numPrompts; i++) {
+                    prompts[i].container.x += (gap + hwidth * 2);  // Customize
+                }
+                NewProject.currentHexagon --;
+                returnIcons[NewProject.currentHexagon].visible = false;
+            }
+        }
+    }
+    
+    /*
+    Goes back to All Projects Page
+     */
+    static createCancelButton(){
+        // let h = app.screen.height;
+        let cancel = new PIXI.Text("Cancel", {fill: Hexagon.getHexColor("white")});
+        cancel.interactive = true;
+        cancel.onClick = returnToAllProjects;
+        cancel.on('pointerdown', onButtonDown)
+                .on('pointerup', onButtonUp)
+                .on('pointerupoutside', onButtonUp)
+                .on('pointerover', onButtonOver)
+                .on('pointerout', onButtonOut);
+        return cancel;
     }
     
     static startProjects(){
         NewProject.createBg();
         NewProject.createNewProjectPrompt();
+        blurTransform(app.stage, 0.5, 5)
         // NewProject.createWindowHexagons();
     }
+}
+
+NewProject.currentHexagon = 0;
+
+function returnToAllProjects(){
+    currentActivity = activityArray[1];
+    updateActivity();
 }

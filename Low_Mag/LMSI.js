@@ -14,6 +14,8 @@ const cancel_button =  PIXI.Sprite.from('./Images/cancel_icon.png');
 // create a new new texture from image
 var testimg = new PIXI.Sprite(zoom_background);
 
+var LSMIContainer = new PIXI.Container();
+
 //Cancel button is used to end line drawing process prematurely
 //Will appear once first point has been added
 //Clicking on it resets all values like starting point, text, etc....                
@@ -79,7 +81,7 @@ function LSMI() {
     .decelerate();
 
     // add the viewport to the stage
-    app.stage.addChild(Viewport);
+    LSMIContainer.addChild(Viewport);
 
     testimg.width = app.screen.width;
     testimg.height = app.screen.height;
@@ -93,14 +95,15 @@ function LSMI() {
     richText = new PIXI.Text('Select an rectangular area over image to crop.', style);
     richText.x = app.screen.width / 2 - 250;
     richText.y = 0;
-    app.stage.addChild(richText);
+    LSMIContainer.addChild(richText);
 
-    app.stage.on('pointerdown', drawPoint);
+    LSMIContainer.on('pointerdown', drawPoint);
     // sprite.on('pointerdown', drawPoint);
 
     // Sets the app to be interactable and allows drawPoint function to be called
     // When user clicks anywhere on screen
-    app.stage.interactive = true;
+    LSMIContainer.interactive = true;
+    
 }
 
 /**
@@ -122,7 +125,7 @@ function drawPoint(event) {
             graphics.beginFill(0xFFFFFF);
             graphics.drawRect(event.data.global.x - 5, event.data.global.y - 5, 10, 10);
             graphics.endFill();
-            app.stage.addChild(graphics);
+            LSMIContainer.addChild(graphics);
 
             //Changes drawing value 
             drawing = true;

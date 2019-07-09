@@ -47,8 +47,9 @@ function startPreLogin()
     LI_backgroundImage.interactive = true;
     LI_backgroundImage.buttonMode = true;
     LI_backgroundImage.on("pointerdown",showLogin);
+    LI_backgroundImage.alpha = 1.0
     
-    
+    login_UI.alpha = 0;
 
     var pl_radius = 0;
     if (app.screen.width >= app.screen.height) { pl_radius = app.screen.height/2.5;
@@ -333,8 +334,8 @@ function startPreLogin()
             blurFilter1.blur = 20 * count;
             blurFilter2.blur =  20 * (1 - count);
             login_UI.alpha = 1 - count;
-            login_hex.graphics.alpha = 1 - count;
-            userTextBox.alpha = 1 - count;
+           // login_hex.graphics.alpha = 1 - count;
+           // userTextBox.alpha = 1 - count;
             if(count >= 1){
                 blurOut = false;
                 count = 0;
@@ -352,13 +353,13 @@ function startPreLogin()
             signUp_UI.y -= movementSpeed;
             signUpContainer.y -= movementSpeed;
             signUpContainer.alpha = 1 - count;
-            if(login_UI.y <= ((-1) * (app.screen.height /** (6/8)*/))){
+            if(login_UI.y <= ((-1) * (app.screen.height * (6/8)))){
                 count = 0;
                 moveUp = false;
-                login_UI.y  = (-1) * (app.screen.height /** (6/8)*/);
+                login_UI.y  = (-1) * (app.screen.height * (6/8));
                 
-                login_UI.interactive = true;
-                login_UI.buttonMode = true;
+                login_hex.graphics.interactive = true;
+                login_hex.graphics.buttonMode = true;
                 //  signUp_UI.interactive = false;
                 signUp_UI.interactiveChildren = true;
                 SU_emailTextBox.interactiveChildren = true;
@@ -483,8 +484,11 @@ function changePassword(text){
     
 }
 
+//Agustin: edit
 function toProjectSelection()
 {
     currentActivity = activityArray[1];
+    alphaTransform(LI_backgroundImage,0.0, 10 )
+    positionTransform(-1000, app.stage.y, app.stage, 12)
     updateActivity();
 }

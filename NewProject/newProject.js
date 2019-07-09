@@ -129,10 +129,10 @@ class NewProject{
     static startProjects(){
         NewProject.createBg();
         NewProject.createNewProjectPrompt();
+        blurTransform(app.stage, 0.5, 5)
         // NewProject.createWindowHexagons();
     }
 }
-
 function returnToAllProjects(){
     currentActivity = activityArray[1];
     updateActivity();

@@ -1,5 +1,5 @@
-<!--Version: 11 // Please raise the number every time you make an edit-->
-<!--Last Edited By: Eddie Sohn // Change to your name after every edit-->
+<!--Version: 12 // Please raise the number every time you make an edit-->
+<!--Last Edited By: Anna Thomas // Change to your name after every edit-->
 <html>
     <head>
         <title>Unified Code</title>
@@ -13,17 +13,25 @@
         <script src="hexagon.js"></script>
         <script src="PIXI.TextInput.js"></script>
 
+        <!--Pre Login Dependencies-->
+        <script src="PreLoginScreen/prelogin.js"></script>
+        <script src="PreLoginScreen/dist/PIXI.TextInput.min.js"></script>
+
+
         <!--Login Dependencies-->
 <!--        <script src="Login/login.js"></script>-->
 <!--        <script src="Login/captionFactory.js"></script>-->
+        <script src="jsToBackend.js"></script>
         
         <!--Project Selection Dependencies-->
         <script src="AllProjects/projectSelection.js"></script>
+        <script src="AllProjects/a_drawHex.js"></script>
+
         
         <!--Windows Dependencies-->
         <script src="Windows/windows.js"></script>
         <script src="Windows/makeBg.js"></script>
-        <script src="Windows/drawHex.js"></script>
+        <script src="Windows/w_drawHex.js"></script>
         <script src="Windows/drawInfoBox.js"></script>
         
         <!--NewProject Page Dependencies-->
@@ -106,9 +114,6 @@
             // Initially call updateActivity to start application
             updateActivity();
 
-            // Initially draw the change activity button
-            changeActivityButton();
-
             // updates the current activity (this is called from the createButton file)
             function updateActivity()
             {
@@ -121,11 +126,12 @@
                 // Everyone please updates these according to your code! - Jack
                 if(currentActivity == 'Welcome')
                 {
-                    // startLoginPage();
+                    startPreLogin();
                 }
                 else if(currentActivity == 'AllProjects')
                 {
                     startAllProjects();
+                    changeActivityButton();
                 }
                 else if(currentActivity == 'Windows')
                 {
@@ -135,41 +141,43 @@
                 else if(currentActivity == 'NewProject')
                 {
                     NewProject.startProjects();
+                    changeActivityButton();
                     
                 }
                 else if(currentActivity == 'Source')
                 {
                     startSourcePage();
                     drawSourceInfo();
+                    changeActivityButton();
                 }
                 else if(currentActivity == 'Zoom')
                 {
                     // Low_Mag/LMSI.js
                     LSMI();
+                    changeActivityButton();
                 }
                 else if(currentActivity == 'Multispectrum')
                 {
                     Spectrum.startSpectrum();
+                    changeActivityButton();
                 }
                 else if(currentActivity == 'Tilting')
                 {
                     Tilting.startTilting();
+                    changeActivityButton();
                 }
                 else if(currentActivity == 'Multi-block')
                 {
                     // this function is in main.js in Multi-block folder. This function generates the UI for my activity
                     startMultiblock();
+                    changeActivityButton();
                 }
                 else if(currentActivity == 'Line')
                 {
                     LI_showAll();
-                }
-
-                // redraw the switch activity button when done drawing UI
-                if(currentActivity != activityArray[activityArray.length - 1])
-                {
                     changeActivityButton();
                 }
+
             }
 
             function changeActivityButton()

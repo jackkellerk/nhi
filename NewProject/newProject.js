@@ -1,5 +1,9 @@
 /*
 TODO: Make textStyle in captionFactory customizable
+TODO: change fontSize according to hexagon size
+TODO: click on last hexagon to go back
+TODO: Text don't go off the hexagon
+TODO: Cancel
  */
 class NewProject{
     
@@ -35,6 +39,7 @@ class NewProject{
         let numPrompts = 4;
         let prompts = [];
         let contents = [];
+        let returnIcons = [];
         
         contents.push(new QuestionPage({
             questionTitle: 'Choose your proficiency:',
@@ -84,30 +89,65 @@ class NewProject{
             fill: Hexagon.getHexColor("white"),
             fontSize: 23
         }));
-        
-        let gap = w / 2 - 0.4 * h - 0.1 * h;
-        let centerNext = {x: w / 2, y: h / 2};
+    
         let hwidth = 0.4 * h;
+        let exposedWidth = 0.15 * h;
+        let gap = w / 2 - hwidth - exposedWidth;
+        let centerNext = {x: w / 2, y: h / 2};
         
         for (let i = 0; i < numPrompts; i++) {
             prompts.push(new Hexagon(centerNext, hwidth));
             centerNext = prompts[i].getCenterRight(gap);
             prompts[i].graphics.lineStyle(2, 0x414141, 3);
             prompts[i].draw(Hexagon.getHexColor("transparent"), 0);
+            
             contents[i].display(prompts[i].container);
+            
+            returnIcons.push(makeReturnIcon(hwidth, exposedWidth));
+            returnIcons[i].interactive = true;
+            returnIcons[i].buttonMode = true;
+            returnIcons[i].on('pointerdown', function(){ shiftToLastPrompt(i); });
+            prompts[i].container.addChild(returnIcons[i]);
+        }
+        
+        function makeReturnIcon(hwidth, exposedWidth){
+            let g = new PIXI.Graphics();
+            g.beginFill(0x414141, 0.6);
+            g.lineStyle(2, 0x414141, 3);
+            g.drawPolygon([  // every two number represents a coordinate of a point on the path of this hexagon
+                hwidth * 2 - 0.85 * exposedWidth, hwidth / Hexagon.SQRT3 * 2,  // Left vertex
+                hwidth * 2 - 0.15 * exposedWidth, hwidth / Hexagon.SQRT3 + exposedWidth * 0.15,  // Upper right vertex
+                hwidth * 2 - 0.15 * exposedWidth, hwidth / Hexagon.SQRT3 * 3 - exposedWidth * 0.15// Lower right vertex
+                // hwidth * 2, radius / 2,
+                // hwidth * 2, radius * 3 / 2,
+                // hwidth, radius * 2,
+                // 0, radius * 3 / 2,
+                // 0, radius / 2
+            ]);
+            g.endFill();
+            g.visible = false;
+            return g;
+            
         }
     
         function shiftToNextPrompt(){
             for (let i = 0; i < numPrompts; i++) {
-                prompts[i].container.x -= (gap + hwidth * 2);
+                prompts[i].container.x -= (gap + hwidth * 2);  // Customize
             }
+            returnIcons[NewProject.currentHexagon].visible = true;
+            NewProject.currentHexagon ++;
         }
     
-        
-        // let cancel = NewProject.createCancelButton();
-        // prompt.container.addChild(cancel);
-        // cancel.x = prompt.container.width / 2 - cancel.width / 2;
-        // cancel.y = prompt.container.height * 0.8;
+        function shiftToLastPrompt(clickedIndex){
+            console.log(clickedIndex + " " + NewProject.currentHexagon);
+            if(clickedIndex === NewProject.currentHexagon - 1){
+                for (let i = 0; i < numPrompts; i++) {
+                    prompts[i].container.x += (gap + hwidth * 2);  // Customize
+                }
+                NewProject.currentHexagon --;
+                returnIcons[NewProject.currentHexagon].visible = false;
+            }
+        }
     }
     
     /*
@@ -133,6 +173,9 @@ class NewProject{
         // NewProject.createWindowHexagons();
     }
 }
+
+NewProject.currentHexagon = 0;
+
 function returnToAllProjects(){
     currentActivity = activityArray[1];
     updateActivity();

@@ -44,12 +44,12 @@ class Hexagon{
         this.graphics.beginFill(fill, alpha);
         // this.graphics.lineStyle(2, 0x414141, 3);
         this.graphics.drawPolygon([  // every two number represents a coordinate of a point on the path of this hexagon
-            this.hwidth, 0,
-            this.hwidth * 2, this.radius / 2,
-            this.hwidth * 2, this.radius * 3 / 2,
-            this.hwidth, this.radius * 2,
-            0, this.radius * 3 / 2,
-            0, this.radius / 2
+            this.hwidth, 0,  // Upper middle vertex
+            this.hwidth * 2, this.radius / 2,  // Upper right vertex
+            this.hwidth * 2, this.radius * 3 / 2,  // Lower right vertex
+            this.hwidth, this.radius * 2,  // lower middle vertex
+            0, this.radius * 3 / 2,  // lower left vertex
+            0, this.radius / 2  // upper left vertex
         ]);
         this.graphics.endFill();
         this.container.addChild(this.graphics);

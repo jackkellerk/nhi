@@ -1,16 +1,14 @@
+var initialHex;
 
-
-function a_drawHexGrid(withCoordinates)
+function a_drawHexGrid()
 {
-  //const style = new PIXI.TextStyle({fill: "white", fontFamily: "Helvetica", fontSize: 10});
+  max_x = app.screen.width/140 + 1;
+  max_y = app.screen.height/119 - 2;
 
-  var max_x = app.screen.width/140 - 2;
-  var max_y = app.screen.height/140 - 1;
+  hex_x = -10;
+  hex_y = (app.screen.height - (max_y*119))/2 + 60;
 
-
-  var hex_x = 200;
-  var hex_y = 101;
-
+  initialHex = new Hexagon({x:hex_x, y:hex_y}, 0, 80);
 
   for(i=0; i<max_y; i++)
   {
@@ -22,31 +20,15 @@ function a_drawHexGrid(withCoordinates)
       hex.graphics.alpha = 0.025;
       hex.draw();
 
-      //w_hexGridContainer.addChild(hex);
-
-      /*
-      if (withCoordinates)
-      {
-        var coorText1 = (hex_x+36.8) + ", " + hex_y;
-        let coordinate1 = new PIXI.Text(coorText1, style);
-        coordinate1.position.x = hex_x+20;
-        coordinate1.position.y = hex_y+15;
-        w_hexGridContainer.addChild(coordinate1);
-
-        var coorText2 = hex_x + ", " + (hex_y+72);
-        let coordinate2 = new PIXI.Text(coorText2, style);
-        coordinate2.position.x = hex_x-20;
-        coordinate2.position.y = hex_y+79;
-        w_hexGridContainer.addChild(coordinate2);
-      }
-      */
       hex_x = hex.getCenterRight(0).x;
     }
-    if (i%2 == 1){ hex_x = 200; }
-    else if (i%2 == 0) { hex_x = 130; }
+    if (i%2 == 1){ hex_x = -10; }
+    else if (i%2 == 0) { hex_x = 60; }
     hex_y = hex_y + 119;
   }
 
+  var hahaHex = new Hexagon({x:-10, y:(app.screen.height - (max_y*119))/2 + 60}, 0, 80);
+  //hahaHex.draw(0xffffff);
 }
 
 function removeHexGrid()

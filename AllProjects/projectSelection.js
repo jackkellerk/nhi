@@ -3,12 +3,9 @@ const a_style2 = new PIXI.TextStyle({fill: "#d3d3d3", fontFamily: "Helvetica", f
 
 var a_titleContainer = new PIXI.Container();
 var a_settingsContainer = new PIXI.Container();
-var a_project1Container = new PIXI.Container();
+let a_p1Container = new PIXI.Container();
+var a_p1InfoContainer = new PIXI.Container();
 let maskContainer = new PIXI.Container();
-
-var p1_image;
-var p1Hex;
-var p1Hover;
 
 var a_settingsCC; // settings button counter (open/closed)
 
@@ -18,7 +15,7 @@ var userSettingsResponse; // valid uses of userSettingsResponse are: userSetting
 function startAllProjects()
 {
     // This loads the information about the userSettings
-    var username = userTextBox.text;
+    var username = "jjk322"; // This will probably be global and accessable from the login screen files, but for now it is here
     $.ajax({
         method: 'POST',
         contentType: 'application/json',
@@ -61,7 +58,7 @@ function createUIProjects()
 
     // hex background grid
 
-    a_drawHexGrid(false); // false -> without coordinates
+    a_drawHexGrid(); // false -> without coordinates
 
 
     // Title
@@ -70,7 +67,7 @@ function createUIProjects()
     a_titleContainer.addChild(title);
   
     const subtitle = new PIXI.Text('or Create a New Project to Begin', a_style2);
-    subtitle.position.y = 45;
+    subtitle.position.y = 42;
     a_titleContainer.addChild(subtitle);
   
     a_titleContainer.x = app.screen.width/3.5;
@@ -80,25 +77,25 @@ function createUIProjects()
 
 
 
-    // Settings Hex
+    // User Settings
 
     a_settingsCC = 0;
 
-    let settings = new Hexagon({x:50, y:55}, 0, 37);
-    settings.graphics.lineStyle(2, 0x7D7D7D, 3);
-    settings.graphics.interactive = true;
-    settings.graphics.on('mouseover', a_hexHoverOver);
-    settings.graphics.on('mouseout', a_hexHoverOff);
-    settings.graphics.on('pointerdown', a_SettingsSelect);
-    settings.graphics.alpha = 0.7;
-    settings.draw(0xFFFFFF);
+    let userSettingsHex = new Hexagon({x:initialHex.x+68, y:initialHex.y-115}, 0, 37);
+    userSettingsHex.graphics.lineStyle(2, 0x7D7D7D, 3);
+    userSettingsHex.graphics.interactive = true;
+    userSettingsHex.graphics.on('mouseover', a_hexHoverOver);
+    userSettingsHex.graphics.on('mouseout', a_hexHoverOff);
+    userSettingsHex.graphics.on('pointerdown', a_SettingsSelect);
+    userSettingsHex.graphics.alpha = 0.7;
+    userSettingsHex.draw(0xFFFFFF);
 
-    let profilesettings = new PIXI.Sprite.fromImage("Images/profilesettings.png");
-        profilesettings.width = 65;
-        profilesettings.height = 60;
-        profilesettings.position.x = 17.5;
-        profilesettings.position.y = 26;
-    app.stage.addChild(profilesettings);
+    let userSettingsIcon = new PIXI.Sprite.fromImage("Images/profilesettings.png");
+        userSettingsIcon.width = 65;
+        userSettingsIcon.height = 60;
+        userSettingsIcon.position.x = userSettingsHex.x-32;
+        userSettingsIcon.position.y = userSettingsHex.y-29;
+    app.stage.addChild(userSettingsIcon);
 
 
 
@@ -125,13 +122,7 @@ function createUIProjects()
     settUsername.position.y = 140;
     a_settingsContainer.addChild(settUsername);
 
-    var passwordString = "";
-    for(var i = 0; i < userSettingsResponse.passwordLength; i++)
-    {
-        passwordString += "*";
-    }
-
-    let settPassword = new PIXI.Text("Change Password:  " +  passwordString, {fill: "#ffffff", fontFamily: "Helvetica", fontSize: 18, letterSpacing: 3});
+    let settPassword = new PIXI.Text("Change Password:  " + userSettingsResponse.passwordLength /* Maybe with the length create a for loop that creates that many '*'s in a string for this field */, {fill: "#ffffff", fontFamily: "Helvetica", fontSize: 18, letterSpacing: 3});
     settPassword.position.x = (w/5)+35;
     settPassword.position.y = 180;
     a_settingsContainer.addChild(settPassword);
@@ -145,6 +136,11 @@ function createUIProjects()
     settName.position.x = (w/5)+35;
     settName.position.y = 260;
     a_settingsContainer.addChild(settName);
+
+    let settEmail = new PIXI.Text("Email:                   jjk322@lehigh.edu", {fill: "#ffffff", fontFamily: "Helvetica", fontSize: 18, letterSpacing: 3});
+    settEmail.position.x = (w/5)+35;
+    settEmail.position.y = 300;
+    a_settingsContainer.addChild(settEmail);
 
     let signoutButton = new PIXI.Graphics();
     signoutButton.lineStyle(3, 0xA9A9A9, 3);
@@ -163,71 +159,73 @@ function createUIProjects()
 
     // Project 1
 
-    p1Hover = false;
-
-    p1_image = new PIXI.Sprite.fromImage("Images/LineIntegral.jpg");
+    var p1_image = new PIXI.Sprite.fromImage("Images/LineIntegral.jpg");
     p1_image.width = 700;
     p1_image.height = 500;
     p1_image.position.x = 90;
-    p1_image.position.y = 90;
-    app.stage.addChild(p1_image);
+    p1_image.position.y = 20;
+    a_p1Container.addChild(p1_image);
 
+    let p1A = new Hexagon({x: 476.12, y: initialHex.getCenterLowerRight(0).y}, 0,80);
+        p1A.graphics.alpha = 0.8;
+        p1A.draw(0x909090);
+    app.stage.removeChild(p1A.container);
+    a_p1Container.addChild(p1A.container);
 
-    p1Hex = new PIXI.Graphics();
+    var p1Hex = new PIXI.Graphics();
     p1Hex.beginFill(0x000000);
-    p1Hex.drawPolygon([339.282,140, 408.564,180, 477.846,140, 547.128,180, 547.128,260, 477.846,300, 477.846,380, 408.564,420, 339.282,380, 339.282,300, 270,260, 270,180]);
+    p1Hex.drawPolygon([69.282,0, 138.564,40, 207.846,0, 277.128,40, 277.128,120, 207.846,160, 207.846,240, 138.564,280, 69.282,240, 69.282,160, 0,120, 0,40]);
     p1Hex.endFill();
-    p1Hex.position.x = -71;
-    app.stage.addChild(p1Hex);
+    p1Hex.x = 198;
+    p1Hex.y = p1A.y - 200;
     p1_image.mask = p1Hex;
-
+    a_p1Container.addChild(p1Hex);
 
     let p1Info = new PIXI.Graphics();
         p1Info.beginFill(0x000000);
-        p1Info.drawPolygon([339.282,140, 408.564,180, 477.846,140, 547.128,180, 547.128,260, 477.846,300, 477.846,380, 408.564,420, 339.282,380, 339.282,300, 270,260, 270,180]);
+        p1Info.drawPolygon([69.282,0, 138.564,40, 207.846,0, 277.128,40, 277.128,120, 207.846,160, 207.846,240, 138.564,280, 69.282,240, 69.282,160, 0,120, 0,40]);
         p1Info.endFill();
+        p1Info.x = p1Hex.x;
+        p1Info.y = p1Hex.y;
         p1Info.alpha = 0.5;
-        p1Info.position.x = -71;
-    a_project1Container.addChild(p1Info);
+    a_p1InfoContainer.addChild(p1Info);
 
-
-    let p1A = new Hexagon({x: 476.12, y: 340}, 0,80);
-        p1A.graphics.interactive = true;
-        //p1A.graphics.on('mouseover', a_projectHoverOver);
-        //p1A.graphics.on('mouseout', a_projectHoverOff);
-        p1A.graphics.alpha = 0.8;
-    p1A.draw(0xf0f0f0);
-
+    var p1HexOutline = new PIXI.Graphics();
+        p1HexOutline.lineStyle(2, 0xf5f5f5, 2);
+        p1HexOutline.drawPolygon([69.282,0, 138.564,40, 207.846,0, 277.128,40, 277.128,120, 346.41,160, 346.41,240, 277.128,280, 207.846,240, 138.564,280, 69.282,240, 69.282,160, 0,120, 0,40]);
+        p1HexOutline.x = p1Hex.x;
+        p1HexOutline.y = p1Hex.y;
+    a_p1InfoContainer.addChild(p1HexOutline);
 
     let details = "Last Edited\n\n         Whitaker Laboratory\n         Lehigh University\n         06/25/19\n         13:23"
     let p1Details = new PIXI.Text(details, {fill: "#ffffff", fontFamily: "Arial", fontWeight: "bold", fontSize: 14, lineHeight: 20});
-        p1Details.position.x = 253;
-        p1Details.position.y = 193;
-    a_project1Container.addChild(p1Details);
+        p1Details.position.x = p1Hex.x + 50;
+        p1Details.position.y = p1Hex.y + 60;
+    a_p1InfoContainer.addChild(p1Details);
 
-
-
-    let p1Title = new PIXI.Text("Project 1", {fill: "#000000", fontFamily: "Helvetica", fontWeight: "bold", fontSize: 18, letterSpacing: 2, dropShadow: true, dropShadowAlpha: 0.2, dropShadowAngle: 0.05, dropShadowColor: "white",dropShadowDistance: 2});
+    let p1Title = new PIXI.Text("Project 1", {fill: "#f5f5f5", fontFamily: "Helvetica", fontSize: 18, letterSpacing: 2, dropShadow: true, dropShadowAlpha: 0.2, dropShadowAngle: 0.05, dropShadowColor: "white",dropShadowDistance: 2});
         p1Title.position.x = p1A.x - 46;
         p1Title.position.y = p1A.y - 35;
-    app.stage.addChild(p1Title);
+    a_p1Container.addChild(p1Title);
 
     let p1Select = new PIXI.Graphics();
         p1Select.lineStyle(3, 0xf5f5f5, 3);
         p1Select.beginFill(0xffffff);
         p1Select.drawPolygon([p1A.x-46,p1A.y+10, p1A.x+46,p1A.y+10, p1A.x+46,p1A.y+30, p1A.x-46,p1A.y+30]);
         p1Select.endFill();
-        p1Select.interactive = true;
-        p1Select.on('mouseover', a_projectHoverOver);
-        p1Select.on('mouseout', a_projectHoverOff);
-        p1Select.on('pointerdown', a_project1Select);
         p1Select.alpha = 0.8;
-    app.stage.addChild(p1Select);
+    a_p1Container.addChild(p1Select);
 
     let p1SelectTitle = new PIXI.Text("Open", {fill: "#606060", fontFamily: "Arial", fontWeight: "bold", fontSize: 14, letterSpacing:1.5});
     p1SelectTitle.position.x = p1A.x-22;
     p1SelectTitle.position.y = p1A.y+11;
-    app.stage.addChild(p1SelectTitle);
+    a_p1Container.addChild(p1SelectTitle);
+
+    app.stage.addChild(a_p1Container);
+    a_p1Container.alpha = 0.8;
+    a_p1Container.interactive = true;
+    a_p1Container.on('mouseover', a_projectHoverOver);
+    a_p1Container.on('mouseout', a_projectHoverOff);
 
 
 
@@ -245,10 +243,12 @@ function createUIProjects()
     newP.graphics.alpha = 0.8;
     newP.draw(0x909090);
 
-    let plus = new PIXI.Text("+", {fill: "#ffffff", fontFamily: "Helvetica", fontSize: 100});
-    plus.position.x = newP.x-30;
-    plus.position.y = newP.y-70;
-    app.stage.addChild(plus);
+    let plusIcon = new PIXI.Sprite.from("Images/plus-icon.png");
+    plusIcon.width = 65;
+    plusIcon.height = 65;
+    plusIcon.position.x = newP.x-33;
+    plusIcon.position.y = newP.y-33;
+    app.stage.addChild(plusIcon);
 
 
 
@@ -285,7 +285,7 @@ function a_SettingsSelect()
     {
         app.stage.addChild(a_settingsContainer);
         blurTransform(a_titleContainer,1.0, 10)
-        blurTransform(a_project1Container,1.0, 10)
+        blurTransform(a_p1InfoContainer,1.0, 10)
         blurTransform(maskContainer,1.0, 10)
         blurTransform(p1_image,1.0, 10)
         a_settingsCC = 1;
@@ -294,7 +294,7 @@ function a_SettingsSelect()
     {
         app.stage.removeChild(a_settingsContainer);
         blurTransform(a_titleContainer, 0.5 , 10)
-        blurTransform(a_project1Container, 0.5, 10)
+        blurTransform(a_p1InfoContainer, 0.5, 10)
         blurTransform(maskContainer, 0.5, 10)
         blurTransform(p1_image, 0.5, 10)
         a_settingsCC = 0;
@@ -303,15 +303,14 @@ function a_SettingsSelect()
 
 function a_projectHoverOver()
 {
-    //app.stage.removeChild(a_titleContainer);
-    this.alpha = 0.9;
-    app.stage.addChild(a_project1Container);
+    a_p1Container.alpha = 1;
+    app.stage.addChild(a_p1InfoContainer);
 }
 
 function a_projectHoverOff()
 {
-    this.alpha = 0.8;
-    app.stage.removeChild(a_project1Container);
+    a_p1Container.alpha = 0.8;
+    app.stage.removeChild(a_p1InfoContainer);
 }
 
 //Agustin: edits to a_project1Select() and a_newPSelect() for small transformations
@@ -333,9 +332,8 @@ function a_newPSelect()
 function moveLeftProjectSelection(){
     positionTransform(-1000, a_titleContainer.y, a_titleContainer, 10)
     positionTransform(-1000, a_settingsContainer.y, a_settingsContainer, 10)
-    positionTransform(-1000, a_project1Container.y, a_project1Container, 10)
+    positionTransform(-1000, a_p1InfoContainer.y, a_p1InfoContainer, 10)
     positionTransform(-1000, maskContainer.y, maskContainer, 10)
-    positionTransform(-1000, p1Hex.y, p1Hex, 10)
-    positionTransform(-1000, p1_image.y, p1_image, 10)
+    positionTransform(-1000, a_p1Container.y, a_p1Container, 10)
     blurTransform(app.stage, 1.0, 10)
 }

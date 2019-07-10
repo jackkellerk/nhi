@@ -9,6 +9,8 @@ let maskContainer = new PIXI.Container();
 
 var a_settingsCC; // settings button counter (open/closed)
 
+var p1_image;
+
 // user settings variable(s)
 var userSettingsResponse; // valid uses of userSettingsResponse are: userSettingsResponse.legalName, userSettingsResponse.username, userSettingsResponse.passwordLength, userSettingsResponse.email, userSettingsResponse.profilePicture, userSettingsResponse.institution, and userSettingsResponse.id
 
@@ -51,8 +53,8 @@ function createUIProjects()
     app.stage.alpha = 0.0;
 
     const sprite = new PIXI.Sprite(gradTexture);
-    sprite.width = app.screen.width;
-    sprite.height = app.screen.height;
+          sprite.width = app.screen.width;
+          sprite.height = app.screen.height;
     app.stage.addChild(sprite);
 
 
@@ -67,7 +69,7 @@ function createUIProjects()
     a_titleContainer.addChild(title);
   
     const subtitle = new PIXI.Text('or Create a New Project to Begin', a_style2);
-    subtitle.position.y = 42;
+          subtitle.position.y = 42;
     a_titleContainer.addChild(subtitle);
   
     a_titleContainer.x = app.screen.width/3.5;
@@ -82,12 +84,12 @@ function createUIProjects()
     a_settingsCC = 0;
 
     let userSettingsHex = new Hexagon({x:initialHex.x+68, y:initialHex.y-115}, 0, 37);
-    userSettingsHex.graphics.lineStyle(2, 0x7D7D7D, 3);
-    userSettingsHex.graphics.interactive = true;
-    userSettingsHex.graphics.on('mouseover', a_hexHoverOver);
-    userSettingsHex.graphics.on('mouseout', a_hexHoverOff);
-    userSettingsHex.graphics.on('pointerdown', a_SettingsSelect);
-    userSettingsHex.graphics.alpha = 0.7;
+        userSettingsHex.graphics.lineStyle(2, 0x7D7D7D, 3);
+        userSettingsHex.graphics.interactive = true;
+        userSettingsHex.graphics.on('mouseover', a_hexHoverOver);
+        userSettingsHex.graphics.on('mouseout', a_hexHoverOff);
+        userSettingsHex.graphics.on('pointerdown', a_SettingsSelect);
+        userSettingsHex.graphics.alpha = 0.7;
     userSettingsHex.draw(0xFFFFFF);
 
     let userSettingsIcon = new PIXI.Sprite.fromImage("Images/profilesettings.png");
@@ -113,45 +115,45 @@ function createUIProjects()
     a_settingsContainer.addChild(settingsMenu);
 
     let settTitle = new PIXI.Text("Profile Settings", {fill: "#ffffff", fontFamily: "Helvetica", fontSize: 32, letterSpacing: 3});
-    settTitle.position.x = (w/5)+35;
-    settTitle.position.y = 40;
+        settTitle.position.x = (w/5)+35;
+        settTitle.position.y = 40;
     a_settingsContainer.addChild(settTitle);
 
     let settUsername = new PIXI.Text("Username:             " + userSettingsResponse.username, {fill: "#ffffff", fontFamily: "Helvetica", fontSize: 18, letterSpacing: 3});
-    settUsername.position.x = (w/5)+35;
-    settUsername.position.y = 140;
+        settUsername.position.x = (w/5)+35;
+        settUsername.position.y = 140;
     a_settingsContainer.addChild(settUsername);
 
     let settPassword = new PIXI.Text("Change Password:  " + userSettingsResponse.passwordLength /* Maybe with the length create a for loop that creates that many '*'s in a string for this field */, {fill: "#ffffff", fontFamily: "Helvetica", fontSize: 18, letterSpacing: 3});
-    settPassword.position.x = (w/5)+35;
-    settPassword.position.y = 180;
+        settPassword.position.x = (w/5)+35;
+        settPassword.position.y = 180;
     a_settingsContainer.addChild(settPassword);
 
     let settInstitution = new PIXI.Text("Institution:             " + userSettingsResponse.institution, {fill: "#ffffff", fontFamily: "Helvetica", fontSize: 18, letterSpacing: 3});
-    settInstitution.position.x = (w/5)+35;
-    settInstitution.position.y = 220;
+        settInstitution.position.x = (w/5)+35;
+        settInstitution.position.y = 220;
     a_settingsContainer.addChild(settInstitution);
 
     let settName = new PIXI.Text("Name:                   " + userSettingsResponse.legalName, {fill: "#ffffff", fontFamily: "Helvetica", fontSize: 18, letterSpacing: 3});
-    settName.position.x = (w/5)+35;
-    settName.position.y = 260;
+        settName.position.x = (w/5)+35;
+        settName.position.y = 260;
     a_settingsContainer.addChild(settName);
 
     let settEmail = new PIXI.Text("Email:                   jjk322@lehigh.edu", {fill: "#ffffff", fontFamily: "Helvetica", fontSize: 18, letterSpacing: 3});
-    settEmail.position.x = (w/5)+35;
-    settEmail.position.y = 300;
+        settEmail.position.x = (w/5)+35;
+        settEmail.position.y = 300;
     a_settingsContainer.addChild(settEmail);
 
     let signoutButton = new PIXI.Graphics();
-    signoutButton.lineStyle(3, 0xA9A9A9, 3);
-    signoutButton.beginFill(0xffffff);
-    signoutButton.drawPolygon([(w/5)+35,h-100, w-(w/5+35),h-100, w-(w/5+35),h-70, (w/5)+35,h-70]);
-    signoutButton.endFill();
+        signoutButton.lineStyle(3, 0xA9A9A9, 3);
+        signoutButton.beginFill(0xffffff);
+        signoutButton.drawPolygon([(w/5)+35,h-100, w-(w/5+35),h-100, w-(w/5+35),h-70, (w/5)+35,h-70]);
+        signoutButton.endFill();
     a_settingsContainer.addChild(signoutButton);
 
     let settSignout = new PIXI.Text("SIGN OUT", {fill: "#000000", fontFamily: "Helvetica", fontSize: 18, letterSpacing: 4});
-    settSignout.position.x = w/2-60;
-    settSignout.position.y = h-96;
+        settSignout.position.x = w/2-60;
+        settSignout.position.y = h-96;
     a_settingsContainer.addChild(settSignout);
 
 
@@ -159,7 +161,7 @@ function createUIProjects()
 
     // Project 1
 
-    var p1_image = new PIXI.Sprite.fromImage("Images/LineIntegral.jpg");
+    p1_image = new PIXI.Sprite.fromImage("Images/LineIntegral.jpg");
     p1_image.width = 700;
     p1_image.height = 500;
     p1_image.position.x = 90;
@@ -173,11 +175,11 @@ function createUIProjects()
     a_p1Container.addChild(p1A.container);
 
     var p1Hex = new PIXI.Graphics();
-    p1Hex.beginFill(0x000000);
-    p1Hex.drawPolygon([69.282,0, 138.564,40, 207.846,0, 277.128,40, 277.128,120, 207.846,160, 207.846,240, 138.564,280, 69.282,240, 69.282,160, 0,120, 0,40]);
-    p1Hex.endFill();
-    p1Hex.x = 198;
-    p1Hex.y = p1A.y - 200;
+        p1Hex.beginFill(0x000000);
+        p1Hex.drawPolygon([69.282,0, 138.564,40, 207.846,0, 277.128,40, 277.128,120, 207.846,160, 207.846,240, 138.564,280, 69.282,240, 69.282,160, 0,120, 0,40]);
+        p1Hex.endFill();
+        p1Hex.x = 198;
+        p1Hex.y = p1A.y - 200;
     p1_image.mask = p1Hex;
     a_p1Container.addChild(p1Hex);
 
@@ -191,7 +193,7 @@ function createUIProjects()
     a_p1InfoContainer.addChild(p1Info);
 
     var p1HexOutline = new PIXI.Graphics();
-        p1HexOutline.lineStyle(2, 0xf5f5f5, 2);
+        p1HexOutline.lineStyle(1.5, 0x909090, 1.5);
         p1HexOutline.drawPolygon([69.282,0, 138.564,40, 207.846,0, 277.128,40, 277.128,120, 346.41,160, 346.41,240, 277.128,280, 207.846,240, 138.564,280, 69.282,240, 69.282,160, 0,120, 0,40]);
         p1HexOutline.x = p1Hex.x;
         p1HexOutline.y = p1Hex.y;
@@ -213,13 +215,17 @@ function createUIProjects()
         p1Select.beginFill(0xffffff);
         p1Select.drawPolygon([p1A.x-46,p1A.y+10, p1A.x+46,p1A.y+10, p1A.x+46,p1A.y+30, p1A.x-46,p1A.y+30]);
         p1Select.endFill();
-        p1Select.alpha = 0.8;
-    a_p1Container.addChild(p1Select);
+        p1Select.alpha = 0.7;
+        p1Select.interactive = true;
+        p1Select.on('mouseover', a_p1SelectHoverOver);
+        p1Select.on('mouseout', a_p1SelectHoverOff);
+        p1Select.on('pointerdown', a_project1Select);
+    //app.stage.addChild(p1Select);
 
     let p1SelectTitle = new PIXI.Text("Open", {fill: "#606060", fontFamily: "Arial", fontWeight: "bold", fontSize: 14, letterSpacing:1.5});
-    p1SelectTitle.position.x = p1A.x-22;
-    p1SelectTitle.position.y = p1A.y+11;
-    a_p1Container.addChild(p1SelectTitle);
+        p1SelectTitle.position.x = p1A.x-22;
+        p1SelectTitle.position.y = p1A.y+11;
+    p1Select.addChild(p1SelectTitle);
 
     app.stage.addChild(a_p1Container);
     a_p1Container.alpha = 0.8;
@@ -227,6 +233,7 @@ function createUIProjects()
     a_p1Container.on('mouseover', a_projectHoverOver);
     a_p1Container.on('mouseout', a_projectHoverOff);
 
+    a_p1Container.addChild(p1Select);
 
 
 
@@ -235,19 +242,19 @@ function createUIProjects()
     // New Project
 
     let newP = new Hexagon({x:p1A.getCenterUpperRight(279).x, y: p1A.getCenterUpperRight(0).y}, 0,80);
-    newP.graphics.lineStyle(3, 0xA9A9A9, 3);
-    newP.graphics.interactive = true;
-    newP.graphics.on('mouseover', a_hexHoverOver);
-    newP.graphics.on('mouseout', a_hexHoverOff);
-    newP.graphics.on('pointerdown', a_newPSelect);
-    newP.graphics.alpha = 0.8;
+        newP.graphics.lineStyle(3, 0xA9A9A9, 3);
+        newP.graphics.interactive = true;
+        newP.graphics.on('mouseover', a_hexHoverOver);
+        newP.graphics.on('mouseout', a_hexHoverOff);
+        newP.graphics.on('pointerdown', a_newPSelect);
+        newP.graphics.alpha = 0.8;
     newP.draw(0x909090);
 
     let plusIcon = new PIXI.Sprite.from("Images/plus-icon.png");
-    plusIcon.width = 65;
-    plusIcon.height = 65;
-    plusIcon.position.x = newP.x-33;
-    plusIcon.position.y = newP.y-33;
+        plusIcon.width = 65;
+        plusIcon.height = 65;
+        plusIcon.position.x = newP.x-33;
+        plusIcon.position.y = newP.y-33;
     app.stage.addChild(plusIcon);
 
 
@@ -301,15 +308,24 @@ function a_SettingsSelect()
     }
 }
 
+function a_p1SelectHoverOver()
+{
+    this.alpha = 1;
+    app.stage.addChild(a_p1InfoContainer);
+}
+
+function a_p1SelectHoverOff()
+{
+    this.alpha = 0.7;
+}
+
 function a_projectHoverOver()
 {
-    a_p1Container.alpha = 1;
     app.stage.addChild(a_p1InfoContainer);
 }
 
 function a_projectHoverOff()
 {
-    a_p1Container.alpha = 0.8;
     app.stage.removeChild(a_p1InfoContainer);
 }
 

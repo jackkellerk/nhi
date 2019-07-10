@@ -1,3 +1,5 @@
+var LIContainer = new PIXI.Container();
+
 var windowContainer;
 var LI_lineContainer = [];
 var LI_pointContainer = [];

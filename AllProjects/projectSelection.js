@@ -107,9 +107,9 @@ function createUIProjects()
     let w = window.innerWidth;
     let h = window.innerHeight;
     let settingsMenu = new PIXI.Graphics();
-        settingsMenu.lineStyle(5, 0x707070, 3);
+        settingsMenu.lineStyle(5, 0x787878, 3);
         settingsMenu.beginFill(0x7D7D7D);
-        settingsMenu.drawPolygon([w/5,20, w-(w/5),20, w-(w/5),h-20, w/5,h-20]);
+        settingsMenu.drawRoundedRect(w/5,20, w-(2*(w/5)),h-40, 2);
         settingsMenu.endFill();
         settingsMenu.interactive = true;
     a_settingsContainer.addChild(settingsMenu);
@@ -119,12 +119,12 @@ function createUIProjects()
         settTitle.position.y = 40;
     a_settingsContainer.addChild(settTitle);
 
-    let settUsername = new PIXI.Text("Username:             " + userSettingsResponse.username, {fill: "#ffffff", fontFamily: "Helvetica", fontSize: 18, letterSpacing: 3});
+    let settUsername = new PIXI.Text("Username:\t" + userSettingsResponse.username, {fill: "#ffffff", fontFamily: "Helvetica", fontSize: 18, letterSpacing: 3});
         settUsername.position.x = (w/5)+35;
         settUsername.position.y = 140;
     a_settingsContainer.addChild(settUsername);
 
-    let settPassword = new PIXI.Text("Change Password:  " + userSettingsResponse.passwordLength /* Maybe with the length create a for loop that creates that many '*'s in a string for this field */, {fill: "#ffffff", fontFamily: "Helvetica", fontSize: 18, letterSpacing: 3});
+    let settPassword = new PIXI.Text("Password:             " + userSettingsResponse.passwordLength /* Maybe with the length create a for loop that creates that many '*'s in a string for this field */, {fill: "#ffffff", fontFamily: "Helvetica", fontSize: 18, letterSpacing: 3});
         settPassword.position.x = (w/5)+35;
         settPassword.position.y = 180;
     a_settingsContainer.addChild(settPassword);
@@ -146,14 +146,19 @@ function createUIProjects()
 
     let signoutButton = new PIXI.Graphics();
         signoutButton.lineStyle(3, 0xA9A9A9, 3);
-        signoutButton.beginFill(0xffffff);
-        signoutButton.drawPolygon([(w/5)+35,h-100, w-(w/5+35),h-100, w-(w/5+35),h-70, (w/5)+35,h-70]);
+        signoutButton.beginFill(0xf0f0f0);
+        signoutButton.drawRoundedRect(w-(2*(w/5)),h-100, 150,30, 2);
         signoutButton.endFill();
+        signoutButton.interactive = true;
+        signoutButton.on('mouseover', a_SignOutHoverOver);
+        signoutButton.on('mouseout', a_SignOutHoverOff);
+        signoutButton.on('pointerdown', a_toLogin);
+        signoutButton.alpha = 0.8;
     a_settingsContainer.addChild(signoutButton);
 
-    let settSignout = new PIXI.Text("SIGN OUT", {fill: "#000000", fontFamily: "Helvetica", fontSize: 18, letterSpacing: 4});
-        settSignout.position.x = w/2-60;
-        settSignout.position.y = h-96;
+    let settSignout = new PIXI.Text("SIGN OUT", {fill: "#606060", fontFamily: "Helvetica", fontSize: 16, letterSpacing: 1.5});
+        settSignout.position.x = w-(2*(w/5)) + 30;
+        settSignout.position.y = h-95;
     a_settingsContainer.addChild(settSignout);
 
 
@@ -205,17 +210,16 @@ function createUIProjects()
         p1Details.position.y = p1Hex.y + 60;
     a_p1InfoContainer.addChild(p1Details);
 
-    let p1Title = new PIXI.Text("Project 1", {fill: "#f5f5f5", fontFamily: "Helvetica", fontSize: 18, letterSpacing: 2, dropShadow: true, dropShadowAlpha: 0.2, dropShadowAngle: 0.05, dropShadowColor: "white",dropShadowDistance: 2});
-        p1Title.position.x = p1A.x - 46;
-        p1Title.position.y = p1A.y - 35;
+    let p1Title = new PIXI.Text("Project 1", {fill: "#ffffff", fontFamily: "Helvetica", fontSize: 18, letterSpacing: 1.5});
+        p1Title.position.x = p1A.x - 42;
+        p1Title.position.y = p1A.y - 32;
     a_p1Container.addChild(p1Title);
 
     let p1Select = new PIXI.Graphics();
-        p1Select.lineStyle(3, 0xf5f5f5, 3);
         p1Select.beginFill(0xffffff);
-        p1Select.drawPolygon([p1A.x-46,p1A.y+10, p1A.x+46,p1A.y+10, p1A.x+46,p1A.y+30, p1A.x-46,p1A.y+30]);
+        p1Select.drawRoundedRect(p1A.x-46,p1A.y+10, 92,22, 2);
         p1Select.endFill();
-        p1Select.alpha = 0.7;
+        p1Select.alpha = 0.75;
         p1Select.interactive = true;
         p1Select.on('mouseover', a_p1SelectHoverOver);
         p1Select.on('mouseout', a_p1SelectHoverOff);
@@ -308,6 +312,23 @@ function a_SettingsSelect()
     }
 }
 
+function a_SignOutHoverOver()
+{
+    this.alpha = 1;
+}
+
+function a_SignOutHoverOff()
+{
+    this.alpha = 0.8;
+}
+
+function a_toLogin()
+{
+    currentActivity = activityArray[0];
+}
+
+
+
 function a_p1SelectHoverOver()
 {
     this.alpha = 1;
@@ -316,7 +337,7 @@ function a_p1SelectHoverOver()
 
 function a_p1SelectHoverOff()
 {
-    this.alpha = 0.7;
+    this.alpha = 0.75;
 }
 
 function a_projectHoverOver()

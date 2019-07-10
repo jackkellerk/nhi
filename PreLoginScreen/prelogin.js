@@ -10,7 +10,7 @@ const ui_style = new PIXI.TextStyle({
 
 const login_style = new PIXI.TextStyle({
     fontFamily: 'Tahoma',
-    fontSize: 23,
+    fontSize: 30,
     fill: ['#ffffff'], // gradient
     align: 'center',
     wordWrap: true,
@@ -20,11 +20,30 @@ const login_style = new PIXI.TextStyle({
 
 var signUp_style = new PIXI.TextStyle({ 
     fontFamily: 'Tahoma',
-    fontSize: 15,
+    fontSize: 18,
     fill: ['#ffffff'], // gradient
     align: 'center',
     wordWrap: true,
     wordWrapWidth: 500,
+});
+
+var preLogin_style = new PIXI.TextStyle({ 
+    fontFamily: 'Tahoma',
+    fontSize: 180,
+    fill: ['#ffffff'], // gradient
+    align: 'center',
+    wordWrap: true,
+    wordWrapWidth: 500,
+});
+
+const display_text1 = new PIXI.TextStyle({
+    fontFamily: 'Tahoma',
+    fontSize: 50,
+    fill: ['#ffffff'], // gradient
+    align: 'center',
+    wordWrap: true,
+    wordWrapWidth: 600,
+    letterSpacing: 2
 });
 
 var passwordTextBox;
@@ -38,33 +57,62 @@ var SU_repasswordTextBox;
 
 function startPreLogin()
 {
+    //Back drop for the pre/login screen and when clicked on will reveal the login screen
+    var login_backgroundImage = new PIXI.Sprite.from("Images/login_background.jpg");
     
-    var LI_backgroundImage = new PIXI.Sprite.from("Images/login_background.jpg");
-    
-    app.stage.addChild(LI_backgroundImage);
-    LI_backgroundImage.width = app.screen.width;
-    LI_backgroundImage.height = app.screen.height;
-    LI_backgroundImage.interactive = true;
-    LI_backgroundImage.buttonMode = true;
-    LI_backgroundImage.on("pointerdown",showLogin);
-    LI_backgroundImage.alpha = 1.0
-    
-    login_UI.alpha = 0;
+    app.stage.addChild(login_backgroundImage);
+    login_backgroundImage.width = app.screen.width;
+    login_backgroundImage.height = app.screen.height;
+    login_backgroundImage.interactive = true;
+    login_backgroundImage.buttonMode = true;
+    login_backgroundImage.on("pointerdown",showLogin);
+    login_backgroundImage.alpha = 1.0;
 
+    //For now these quotes are random ones found on the internet related to programming in general. 
+    //They will be replaced with descriptions of the background image shown.
+    var quoteArray = [" \'\' Always code as if the guy who ends up maintaining your code will be a violent psychopath who knows where you live \'\' ",
+    "\'\'There are two ways of constructing a software design. One way is to make it so simple that there are obviously no deficiencies." +
+     "And the other way is to make it so complicated that there are no obvious deficiencies.\'\'",
+     "To iterate is human, to recurse divine.",
+     "The trouble with programmers is that you can never tell what a programmer is doing until it\'s too late.",
+     "Most of you are familiar with the virtues of a programmer. There are three, of course: laziness, impatience, and hubris."];
+    var authorArray = ["- John Woods","- C.A.R. Hoare","- L. Peter Deutsch","- Seymour Cray","- Larry Wall"];
+    //This takes the length of the quote array and decides on a random entry to use and display to the user.
+    var arr_length = quoteArray.length;
+    var arr_index = Math.floor((Math.random() * arr_length));
+
+    preDisplayQuote = new PIXI.Text(quoteArray[arr_index],display_text1);
+    preDisplayAuthor = new PIXI.Text(authorArray[arr_index], login_style);
+
+    preDisplayQuote.x = app.screen.width/2 - preDisplayQuote.width/2;
+    preDisplayQuote.y = app.screen.height/2 - preDisplayQuote.height/2;
+
+    preDisplayAuthor.x = preDisplayQuote.x;
+    preDisplayAuthor.y = preDisplayQuote.y + preDisplayQuote.height + preDisplayAuthor.height;
+
+    app.stage.addChild(preDisplayQuote);
+    app.stage.addChild(preDisplayAuthor);
+    
+    //Login_UI - container for all UI elements concerning the login screen 
+    //The hexgon that surrounds all the other elements
     var pl_radius = 0;
     if (app.screen.width >= app.screen.height) { pl_radius = app.screen.height/2.5;
     } else { pl_radius = app.screen.width/2.5; }
     var login_hex = new Hexagon({x: app.screen.width/2, y:app.screen.height/2}, 0, pl_radius);
     login_hex.graphics.lineStyle(9, 0xFFFFFF);
-    //login_hex.graphics.hitArea = new PIXI.Polygon(polyPoints);
-    //login_hex.graphics.interactive = false;
-    //login_hex.graphics.interactiveChildren = false;
     login_hex.graphics.on("pointerdown",moveLogin);
     login_hex.draw(0xFFFFFF, 0);
     app.stage.removeChild(login_hex.container);
     login_UI.addChild(login_hex.container);
 
+    //Pre login text shows up when login hexagon is tiny
+    preLoginText = new PIXI.Text("Login", preLogin_style);
+
+
+
+    /** Inner elements of Login UI **/
     
+    //Area where user types in their username    
     userTextBox = new PIXI.TextInput({
         input: {
             fontFamily: 'Tahoma',
@@ -78,15 +126,11 @@ function startPreLogin()
     });
     userTextBox.x = login_hex.x-(pl_radius+50)/2 + 2;
     userTextBox.y = login_hex.y - 75;
-    userTextBox.interactiveChildren = false;
+    userTextBox.interactiveChildren = true;
     userTextBox.placeholder = "Username";
-    login_UI.addChild(userTextBox);
+    Inner_Login_UI.addChild(userTextBox);
 
-    var passwordText = new PIXI.Text("Password", ui_style);
-    passwordText.x = login_hex.x - 120;
-    passwordText.y = login_hex.y + 60;
-    //login_UI.addChild(passwordText);
-
+    //Area where user types in password
     passwordTextBox = new PIXI.TextInput({
         input: {
             fontFamily: 'Tahoma',
@@ -100,77 +144,82 @@ function startPreLogin()
     });
     passwordTextBox.x = login_hex.x-(pl_radius+50)/2 + 2;
     passwordTextBox.y = login_hex.y;
-    passwordTextBox.interactiveChildren = false;
+    passwordTextBox.interactiveChildren = true;
     passwordTextBox.placeholder = "Password";
-    passwordTextBox.on("input",changePassword);
-    passwordTextBox.on("keydown",keyDown);
-    login_UI.addChild(passwordTextBox);
+    Inner_Login_UI.addChild(passwordTextBox);
 
-    var password = "";
-
-    var passwordShow = new PIXI.Text(password, ui_style);
-    passwordShow.x = app.screen.width * (1/4) + 50;
-    passwordShow.y = passwordTextBox.y + passwordTextBox.height + 20;
-    login_UI.addChild(passwordShow);
-
+    //Interactable text used to move to project selection screen
     let loginText = new PIXI.Text("Login", login_style);
-    loginText.x = login_hex.x - 30;
+    loginText.x = login_hex.x - loginText.width/2;
     loginText.y = login_hex.y + 135;
     loginText.interactive = true;
     loginText.buttonMode = true;
     loginText.on("pointerdown", loginToBackend);
-    //loginText.on("pointerdown",toProjectSelection);
-    login_UI.addChild(loginText);
+    Inner_Login_UI.addChild(loginText);
 
-    var signUpContainer = new PIXI.Container();
-
-    
-
+    //Interactable text used to move to sign up screen
     let signUpText = new PIXI.Text("Sign Up", signUp_style);
-    signUpText.x = app.screen.width * (4/8) - signUpText.width/2;
-    signUpText.y = app.screen.height * (7/8) + 20;
+    signUpText.x = login_hex.x - signUpText.width/2;
+    signUpText.y = loginText.y + (signUpText.height * 3);
     signUpText.on("pointerdown",moveLogin);
     signUpText.interactive = true;
     signUpText.buttonMode = true;
-    signUpContainer.addChild(signUpText);
+    Inner_Login_UI.addChild(signUpText);
 
-    // underline
-    generateTextLine(signUpText.x, signUpText.y+signUpText.height, signUpText.width, 2, 1)
+    /** End of inner Login UI elements**/
+    Inner_Login_UI.alpha = 0;
+    Inner_Login_UI.interactiveChildren = false;
+    login_UI.addChild(Inner_Login_UI);
 
-    signUpContainer.alpha = 0;
-
-    signUpContainer.alpha = 0;
-    app.stage.addChild(signUpContainer);
+    //Adjusting Login Ui to its starting position
+    login_UI.alpha = 1;
+    scaleTransform(.1, .1, login_UI, 1);
+    positionTransform(app.screen.width - ((login_UI.width * .1) * 1.2), app.screen.height - ((login_UI.height * .1) * 1.2), login_UI, 1);
+    login_UI.addChild(preLoginText);
+    preLoginText.x = login_UI.x + login_UI.width - login_hex.width/2 - preLoginText.width/2;
+    preLoginText.y = login_UI.y + login_UI.height - login_hex.height/2 - preLoginText.height/2;
+    preLoginText.alpha = 1;
     app.stage.addChild(login_UI);
 
-    
 
-    var blurText = new PIXI.Text("Hello", login_style);
-    blurText.x = app.screen.width/2;
-    blurText.y = app.screen.height/2;
-    blurText.interactive = true;
-    blurText.on("keypress",showInput);
-    // app.stage.addChild(blurText);
-    
-
-
+    /**
+     *  Sign Up UI is similar to login as it is a hexagon will text boxes inside of it.
+     *  It starts off hidden a the bottle of the screen and is shown after the move Login
+     *  functino is used.
+     * **/
     signUp_UI.interactiveChildren = true;
     signUp_UI.on("pointerdown",moveLogin);
-    // signUp_UI.x = 0; //unneccesary
     signUp_UI.y = app.screen.height;
 
+    //The Hexagon acting as the boundary for the sign up screen
     var signup_hex = new Hexagon({x: app.screen.width/2, y:app.screen.height/2}, 0, pl_radius);
     signup_hex.graphics.lineStyle(9, 0xFFFFFF);
     signup_hex.graphics.alpha = 1;
-    //signup_hex.graphics.hitArea = new PIXI.Polygon(polyPoints);
-    //signup_hex.graphics.interactive = false;
-    //signup_hex.graphics.interactiveChildren = false;
     signup_hex.graphics.on("pointerdown",moveLogin);
     signup_hex.draw(0xFFFFFF, 0);
     app.stage.removeChild(signup_hex.container);
     signUp_UI.addChild(signup_hex.container);
 
-    
+    //This smaller hexagon will act as a button to move back to the login screen
+    var backToLogin_hex = new Hexagon({x: signup_hex.x + signup_hex.width/2, y:signup_hex.y + signup_hex.height/2}, 0, pl_radius/8);
+    backToLogin_hex.graphics.lineStyle(9, 0xFFFFFF);
+    backToLogin_hex.graphics.alpha = 1;
+    backToLogin_hex.graphics.on("pointerdown",moveSignUp);
+    backToLogin_hex.draw(0xFFFFFF, 0);
+    app.stage.removeChild(backToLogin_hex.container);
+    signUp_UI.addChild(backToLogin_hex.container);
+
+    //This text lies within the backtologin button and will be the interactive
+    //section users click on
+    var SU_loginText = new PIXI.Text("Login", signUp_style);
+    SU_loginText.x = backToLogin_hex.x - SU_loginText.width/2;
+    SU_loginText.y = backToLogin_hex.y - SU_loginText.height/2;
+    SU_loginText.interactive = true;
+    SU_loginText.buttonMode = true;
+    SU_loginText.on("pointerdown",moveSignUp);
+    signUp_UI.addChild(SU_loginText);
+
+    /** Here begins the many text boxes used in the sign up page **/
     SU_userTextBox = new PIXI.TextInput({
         input: {
             fontFamily: 'Tahoma',
@@ -184,7 +233,7 @@ function startPreLogin()
     });
     SU_userTextBox.x = signup_hex.x-(pl_radius+20)/2 + 2;
     SU_userTextBox.y = signup_hex.y - 122;
-    SU_userTextBox.interactiveChildren = false;
+    SU_userTextBox.interactiveChildren = true;
     SU_userTextBox.placeholder = "Enter Username";
     signUp_UI.addChild(SU_userTextBox);
 
@@ -201,7 +250,7 @@ function startPreLogin()
     });
     SU_emailTextBox.x = signup_hex.x-(pl_radius+20)/2 + 2;
     SU_emailTextBox.y = signup_hex.y - 62;
-    SU_emailTextBox.interactiveChildren = false;
+    SU_emailTextBox.interactiveChildren = true;
     SU_emailTextBox.placeholder = "Enter Email";
     signUp_UI.addChild(SU_emailTextBox);
 
@@ -219,10 +268,8 @@ function startPreLogin()
     });
     SU_passwordTextBox.x = signup_hex.x-(pl_radius+20)/2 + 2;
     SU_passwordTextBox.y = signup_hex.y + 0;
-    SU_passwordTextBox.interactiveChildren = false;
+    SU_passwordTextBox.interactiveChildren = true;
     SU_passwordTextBox.placeholder = "Password";
-    SU_passwordTextBox.on("input",changePassword);
-    SU_passwordTextBox.on("keydown",keyDown);
     signUp_UI.addChild(SU_passwordTextBox);
 
     SU_repasswordTextBox = new PIXI.TextInput({
@@ -235,163 +282,20 @@ function startPreLogin()
             letterSpacing: 2
         }, 
         box: generateTextLine(signup_hex.x-(pl_radius+20)/2, signup_hex.y + 101, pl_radius+20, 3, 2)
-        /*{
-            default: {fill: 0xFFFFFF, rounded: 10, stroke: {color: 0xCBCEE0, width: 2}},
-            focused: {fill: 0xE1E3EE, rounded: 10, stroke: {color: 0xABAFC6, width: 2}},
-            disabled: {fill: 0xDBDBDB, rounded: 16}
-        }*/
     });
     SU_repasswordTextBox.x = signup_hex.x-(pl_radius+20)/2 + 2;
     SU_repasswordTextBox.y = signup_hex.y + 60;
-    SU_repasswordTextBox.interactiveChildren = false;
+    SU_repasswordTextBox.interactiveChildren = true;
     SU_repasswordTextBox.placeholder = "Confirm Password";
-    SU_repasswordTextBox.on("input",changePassword);
-    SU_repasswordTextBox.on("keydown",keyDown);
     signUp_UI.addChild(SU_repasswordTextBox);
 
     var SU_signUpText = new PIXI.Text("Sign Up", login_style);
-    SU_signUpText.x = signup_hex.x - 45;
+    SU_signUpText.x = signup_hex.x - SU_signUpText.width/2;
     SU_signUpText.y = signup_hex.y + 135;
     SU_signUpText.on("pointerdown",moveLogin);
     signUp_UI.addChild(SU_signUpText);
-
-    var SU_loginText = new PIXI.Text("Login", signUp_style);
-    SU_loginText.x = app.screen.width * (4/8) - signUpText.width/2;
-    SU_loginText.y = app.screen.height + 50;
-    //SU_loginText.on("pointerdown",moveLogin);
-    SU_loginText.interactive = true;
-    SU_loginText.buttonMode = true;
-    app.stage.addChild(SU_loginText);
-
-    // underline
-    generateTextLine(SU_loginText.x, SU_loginText.y+SU_loginText.height, SU_loginText.width, 2, 2)
-
-
     
     app.stage.addChild(signUp_UI);
-    
-
-
-
-
-
-
-    var blurFilter1 = new PIXI.filters.BlurFilter();
-    var blurFilter2 = new PIXI.filters.BlurFilter();
-
-    login_UI.filters = [blurFilter1];
-    signUpContainer.filters = [blurFilter1];
-    LI_backgroundImage.filters = [blurFilter2];
-    blurFilter2.blur = 0;
-
-    count = 0;
-    timer = 0;
-    blurIn = false;
-    blurOut = false;
-    moveUp = false;
-    moveDown = false;
-    runTimer = false;
-    
-    app.ticker.add(() => {
-        //Blur animation
-        // blurText.text = timer;
-        if(runTimer){
-            timer += 0.01;
-        }
-
-        if(timer >= 30){
-            hideLogin();
-        }
-        
-        if(blurIn){
-            count += 0.04;
-            
-            blurFilter2.blur = 20 * count;
-            blurFilter1.blur =  20 * (1 - count);
-            login_UI.alpha = count;
-            //login_hex.graphics.alpha = count;
-            //userTextBox.alpha = count;
-            signUpContainer.alpha = count;
-
-
-            
-            blurText.text = "count: " + count;
-            if(count >= 1){
-                blurIn = false;
-                count = 0;
-                loginText.interactive = true;
-                loginText.buttonMode = true;
-                signUpText.interactive = true;
-                signUpText.buttonMode = true;
-                passwordTextBox.interactiveChildren = true;
-                userTextBox.interactiveChildren = true;
-                AFKtimerStart();
-            }
-        }
-        if(blurOut){
-            count += 0.04;
-
-            blurFilter1.blur = 20 * count;
-            blurFilter2.blur =  20 * (1 - count);
-            login_UI.alpha = 1 - count;
-           // login_hex.graphics.alpha = 1 - count;
-           // userTextBox.alpha = 1 - count;
-            if(count >= 1){
-                blurOut = false;
-                count = 0;
-                LI_backgroundImage.interactive = true;
-                LI_backgroundImage.buttonMode = true;
-                passwordTextBox.interactiveChildren = false;
-                userTextBox.interactiveChildren = false;
-            }
-        }
-
-        if(moveUp){
-            count += 0.08;
-            movementSpeed = 20;
-            login_UI.y -= movementSpeed;
-            signUp_UI.y -= movementSpeed;
-            signUpContainer.y -= movementSpeed;
-            signUpContainer.alpha = 1 - count;
-            if(login_UI.y <= ((-1) * (app.screen.height * (6/8)))){
-                count = 0;
-                moveUp = false;
-                login_UI.y  = (-1) * (app.screen.height * (6/8));
-                
-                login_hex.graphics.interactive = true;
-                login_hex.graphics.buttonMode = true;
-                //  signUp_UI.interactive = false;
-                signUp_UI.interactiveChildren = true;
-                SU_emailTextBox.interactiveChildren = true;
-                SU_userTextBox.interactiveChildren = true;
-                SU_passwordTextBox.interactiveChildren = true;
-                SU_repasswordTextBox.interactiveChildren = true;
-                // signUp_UI.buttonMode = false;
-
-            }
-            
-        }
-        if(moveDown){
-            count += 0.08;
-            movementSpeed = 20;
-            login_UI.y += movementSpeed;
-            signUp_UI.y += movementSpeed;
-            signUpContainer.y += movementSpeed;
-            signUpContainer.alpha = count;
-            if(login_UI.y >= 0){
-                count = 0;
-                moveDown = false;
-                login_UI.y  = 0;
-                loginText.interactive = true;
-                loginText.buttonMode = true;
-                signUpText.interactive = true;
-                signUpText.buttonMode = true;
-                
-                AFKtimerStart();
-            }
-            
-        }
-    });
 }
 
 
@@ -400,12 +304,21 @@ function generateTextLine(x, y, w, lineWidth, type){
     line.lineStyle(lineWidth, 0xFFFFFF)
         .moveTo(x, y)
         .lineTo(x+w, y);
-    if (type == 1) { login_UI.addChild(line); }
+    if (type == 1) { Inner_Login_UI.addChild(line); }
     else if (type ==2) { signUp_UI.addChild(line); }
 }
 
 function showLogin(event){
-    blurIn = true;
+
+    alphaTransform(preDisplayQuote, 0, 20);
+    alphaTransform(preDisplayAuthor, 0, 20);
+    alphaTransform(Inner_Login_UI, 1, 30);
+    scaleTransform(1, 1, login_UI, 30);
+    positionTransform(0, 0, login_UI, 30);
+    alphaTransform(preLoginText, 0, 5);
+    blurTransform(this, 1, 10);
+    Inner_Login_UI.interactiveChildren = true;
+
     this.interactive = false;
     this.buttonMode = false;
     
@@ -419,28 +332,18 @@ function hideLogin(event){
 }
 
 function moveLogin(event){
-    if(login_UI.y == 0 && !moveDown){
-        moveUp = true;
-        AFKtimerStop();
-        loginText.interactive = false;
-        loginText.buttonMode = false;
-        signUpText.interactive = false;
-        signUpText.buttonMode = false;
-    }
-    else if (!moveUp){
-        moveDown = true;
-        login_UI.interactive = false;
-        login_UI.buttonMode = false;
-    }
+    positionTransform(0, -login_UI.height, login_UI, 30);
+    positionTransform(0, 0, signUp_UI, 30);
+    Inner_Login_UI.interactiveChildren = false;
+    signUp_UI.interactiveChildren = true;
+
 }
 
-function AFKtimerStart(){
-    runTimer = true;
-}
-
-function AFKtimerStop(){
-    timer = 0;
-    runTimer = false;
+function moveSignUp(event){
+    positionTransform(0, 0, login_UI, 30);
+    positionTransform(0, app.screen.height, signUp_UI, 30);
+    Inner_Login_UI.interactiveChildren = true;
+    signUp_UI.interactiveChildren = false;
 }
 
 function showInput(event){
@@ -449,46 +352,11 @@ function showInput(event){
     blurText.text += x;
 }
 
-function keyDown(keycode){
-var valid = 
-    (keycode > 47 && keycode < 58)   || // number keys
-    keycode == 32 || keycode == 13   || // spacebar & return key(s) (if you want to allow carriage returns)
-    (keycode > 64 && keycode < 91)   || // letter keys
-    (keycode > 95 && keycode < 112)  || // numpad keys
-    (keycode > 185 && keycode < 193) || // ;=,-./` (in order)
-    (keycode > 218 && keycode < 223);   // [\]' (in order)
-    if(valid){
-        passwordTextBox.text = password;
-        console.log("Activated down function: " + password);
-    }
-}
-function changePassword(text){
-    password = text;
-    console.log("Activated function: " + text);
-    var length = password.length;
-    passwordTextBox.text = "";
-    for(var i = 0; i < length; i++){
-        passwordTextBox.text += "*";
-    }
-    
-    /*  .
-    if(text.length > password.length){
-        var char = passwordTextBox.text.slice(passwordTextBox.text.length() - 1);
-        passwordTextBox.text += "*";
-        password += char;
-    }
-    else if(){
-        var char = password.slice(password.length() - 1);
-
-    }*/
-    
-}
-
 //Agustin: edit
 function toProjectSelection()
 {
     currentActivity = activityArray[1];
-    alphaTransform(LI_backgroundImage,0.0, 10 )
+    alphaTransform(login_backgroundImage,0.0, 10 )
     positionTransform(-1000, app.stage.y, app.stage, 12)
     updateActivity();
 }

@@ -4,20 +4,18 @@ var activityArray = ['Welcome', 'AllProjects', 'Windows', 'NewProject', 'Source'
 
 
 /* Pre Login Screen gloval vars */
+//Edited by Travis
+var preDisplayQuote = new PIXI.Text();
+var preDisplayAuthor = new PIXI.Text();
 
 var login_UI = new PIXI.Graphics();
+var Inner_Login_UI = new PIXI.Graphics();
 var signUp_UI = new PIXI.Graphics();
 
+var preLoginText = new PIXI.Text();
 var loginText = new PIXI.Text();
 var signUpText = new PIXI.Text();
 
-var count = 0;
-var timer = 0;
-var blurIn = false;
-var blurOut = false;
-var moveUp = false;
-var moveDown = false;
-var runTimer = false;
 
 
 

@@ -1,4 +1,3 @@
-
 var renderer;
 
 var w_workWindow = new PIXI.Graphics();
@@ -297,7 +296,6 @@ function startWindows(){
   window4Label.position.x = window4.x - 26;
   window4Label.position.y = window4.y - 15;
 
-
   // add window icons in reverse order for descending overlapping
 
   w_windowContainer.addChild(window4.container);
@@ -322,24 +320,32 @@ function startWindows(){
   w = app.screen.width;
   h = app.screen.height;
 
+  var createPositionX = (w*0.25-3);
+  var createPositionY = 0;
+
+  // set the initial coords for this window; these variables are in moveWindowAroundScreen.js
+  xPositionWindow = createPositionX;
+  yPositionWindow = createPositionY;
+
+  // This is the thing we click on to drag the window around the screen
   let windowHeader = new PIXI.Graphics();
       windowHeader.beginFill(0xdcdcdc);
-      windowHeader.drawRoundedRect(w*0.25-3, 0, w*0.70+10, w*0.4+25, 5);
+      windowHeader.drawRoundedRect(createPositionX, createPositionY, w*0.70+10, w*0.4+25, 5);
       windowHeader.endFill();
+      windowHeader.pivot.set(0,0);
       windowHeader.buttonMode = true;
       windowHeader.interactive = true;
       // events for drag start
-      windowHeader.on('mousedown', w_onDragStart);
-      windowHeader.on('touchstart', w_onDragStart)
-      // events for drag end
-      windowHeader.on('mouseup', w_onDragEnd);
-      windowHeader.on('mouseupoutside', w_onDragEnd);
-      windowHeader.on('touchend', w_onDragEnd);
-      windowHeader.on('touchendoutside', w_onDragEnd);
-      // events for drag move
-      windowHeader.on('mousemove', w_onDragMove);
-      windowHeader.on('touchmove', w_onDragMove);
+      windowHeader.on('pointerdown', w_onDragStart)
+                  .on('pointerdown', getMousePositionBeforeWindow) // This is in Multi-block coord system
+                  .on('pointerup', w_onDragEnd)
+                  .on('pointerup', getMousePositionAfterWindow)
+                  .on('pointerupoutside', w_onDragEnd)
+                  .on('pointermove', w_onDragMove)
+                  .on('pointermove', updateMousePositionWindow);
   w_Popup1Container.addChild(windowHeader);
+
+  
 
 
   // let w_workWindow = new PIXI.Graphics();
@@ -516,6 +522,8 @@ function startWindows(){
   LISprite.x = app.screen.width*0.25 + 3;
   LISprite.y = 23;
 
+  // This is to set the position
+  w_Popup1Container.position.set(0 - xPositionWindow, 0 - yPositionWindow);
 
 }
 
@@ -653,25 +661,31 @@ function w_onDragStart(event)
   // the reason for this is because of multitouch
   // we want to track the movement of this particular touch
   this.data = event.data;
-  this.alpha = 0.5;
+  this.parent.pivot.set(0,0);
+  this.parent.position.set(0 - xPositionWindow, 0 - yPositionWindow);
   this.dragging = true;
 }
 
-function w_onDragEnd()
+function w_onDragEnd(event)
 {
-  this.alpha = 1;
   this.dragging = false;
   // set the interaction data to null
   this.data = null;
 }
 
-function w_onDragMove()
+function w_onDragMove(event)
 {
   if (this.dragging)
   {
-    var newPosition = this.data.getLocalPosition(this.parent);
+    /* var newPosition = this.data.getLocalPosition(this.parent);
     this.parent.x = newPosition.x;
-    this.parent.y = newPosition.y;
+    this.parent.y = newPosition.y; */
+
+    // This ensures the image does not clip
+
+    this.parent.x = 0 - xPositionWindow - deltaXWindow;
+
+    this.parent.y = 0 - yPositionWindow - deltaYWindow;
   }
 }
 

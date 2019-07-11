@@ -54,6 +54,79 @@ class MySQLConnection {
         return false;
     }
 
+    public JSONObject userSettings(String username)
+    {
+        // Stores the data to return
+        JSONObject response = new JSONObject();
+        String passwordLength, legalName, email, profilePicture, institution, id;
+        response.put("username", username);
+
+        try 
+        {
+            Statement stmt = connection.createStatement();
+
+            // Gathers passwordLength
+            ResultSet rs = stmt.executeQuery("SELECT password FROM `users` WHERE username = '" + username + "'");
+            while (rs.next()) 
+            {
+                response.put("passwordLength", rs.getString("password").length());
+            }
+            rs.close();
+
+            // Gathers legalName
+            rs = stmt.executeQuery("SELECT legalname FROM `users` WHERE username = '" + username + "'");
+            while (rs.next()) 
+            {
+                response.put("legalName", rs.getString("legalname"));
+            }
+            rs.close();
+
+            // Gathers email
+            rs = stmt.executeQuery("SELECT email FROM `users` WHERE username = '" + username + "'");
+            while (rs.next()) 
+            {
+                response.put("email", rs.getString("email"));
+            }
+            rs.close();
+
+            // Gathers profilepicture
+            rs = stmt.executeQuery("SELECT profilepicture FROM `users` WHERE username = '" + username + "'");
+            while (rs.next()) 
+            {
+                response.put("profilePicture", rs.getString("profilepicture"));
+            }
+            rs.close();
+
+            // Gathers institution
+            rs = stmt.executeQuery("SELECT institution FROM `users` WHERE username = '" + username + "'");
+            while (rs.next()) 
+            {
+                response.put("institution", rs.getString("institution"));
+            }
+            rs.close();
+
+            // Gathers id
+            rs = stmt.executeQuery("SELECT id FROM `users` WHERE username = '" + username + "'");
+            while (rs.next()) 
+            {
+                response.put("id", rs.getString("id"));
+            }
+            rs.close();
+
+            stmt.close();
+        } 
+        catch (SQLException e) 
+        {
+            e.printStackTrace();
+            JSONObject error = new JSONObject();
+            error.put("Error", "Error");
+            return error;
+        }
+
+        return response;
+    }
+
+
     // Returns true if it was successful, returns false otherwise // Ask if the
     // email must be an edu email specifically from one of the partnering
     // universities
@@ -70,6 +143,25 @@ class MySQLConnection {
             return false;
         }
     }
+
+     // Returns true if it was successful, returns false otherwise // Ask if the email must be an edu email specifically from one of the partnering universities
+     public boolean signup(String username, String password, String email, String legalName, String institution)
+     {
+         try
+         {
+             Statement stmt = connection.createStatement();
+             // perhaps i should check if the same username already exists, but it shouldnt interfere with the code as of right now
+             stmt.executeUpdate("INSERT INTO users (username, password, legalname, email, profilepicture, institution) VALUES ('" + username + "', '" + password + "', '" + legalName + "', '" + email + "', 'TODO', '" + institution + "')");
+             stmt.close();
+ 
+             return login(username, password);
+         }
+         catch(SQLException e)
+         {
+             System.out.println(e);
+             return false;
+         }
+     }
 
     public JSONArray getProjectListing(int uid) throws SQLException {
         PreparedStatement stmt = connection.prepareStatement("select * from project_t where uid = ?");
@@ -99,7 +191,7 @@ class MySQLConnection {
         return pjs;
     }
 
-    public static JSONArray convertToJSONArray(ResultSet resultSet) throws JSONException, SQLException {
+    private static JSONArray convertToJSONArray(ResultSet resultSet) throws JSONException, SQLException {
         JSONArray jsonArray = new JSONArray();
         while (resultSet.next()) {
             int total_rows = resultSet.getMetaData().getColumnCount();
@@ -113,7 +205,7 @@ class MySQLConnection {
         return jsonArray;
     }
 
-    public static JSONObject convertToJSONObject(ResultSet resultSet) throws JSONException, SQLException {
+    private static JSONObject convertToJSONObject(ResultSet resultSet) throws JSONException, SQLException {
         JSONObject obj = new JSONObject();
         if (resultSet.next()) {
             int total_rows = resultSet.getMetaData().getColumnCount();

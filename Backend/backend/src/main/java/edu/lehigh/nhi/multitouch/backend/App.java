@@ -44,6 +44,33 @@ public class App {
             return retval.toJson().toString();
         });
 
+        Spark.post("/signup", (request, response) -> {
+            // Gather incoming info (ignore profilepicture for now)
+            JSONObject jsRequest = new JSONObject(request.body());
+            String username = jsRequest.getString("username");
+            String password = jsRequest.getString("password");
+            String email = jsRequest.getString("email");
+            String institution = jsRequest.getString("institution");
+            String legalName = jsRequest.getString("legalname");
+            response.status(200);
+            if (db.signup(username, password, email, legalName, institution)) {
+                StructuredResponse retval = new StructuredResponse(0, null, null);
+                return retval.toJson().toString();
+            }
+            StructuredResponse retval = new StructuredResponse(100, "Signup failed", null);
+            return retval.toJson().toString();
+        });
+
+        
+        Spark.post("/usersettings", (request, response) -> {
+            // Gather information from request
+            JSONObject jsRequest = new JSONObject(request.body());
+            String username = jsRequest.getString("username");
+
+            // This grabs the informatin about the user settings
+            return db.userSettings(username);
+        });
+        
         Spark.get("/project", (request, response) -> {
             response.status(200);
             response.type("application/json");

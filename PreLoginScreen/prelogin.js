@@ -1,3 +1,5 @@
+var login_backgroundImage;
+
 const ui_style = new PIXI.TextStyle({
     fontFamily: 'Tahoma',
     fontSize: 16,
@@ -58,7 +60,7 @@ var SU_repasswordTextBox;
 function startPreLogin()
 {
     //Back drop for the pre/login screen and when clicked on will reveal the login screen
-    var login_backgroundImage = new PIXI.Sprite.from("Images/login_background.jpg");
+    login_backgroundImage = new PIXI.Sprite.from("Images/login_background.jpg");
     
     app.stage.addChild(login_backgroundImage);
     login_backgroundImage.width = app.screen.width;

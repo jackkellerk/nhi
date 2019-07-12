@@ -96,8 +96,33 @@ function createUIProjects()
   
     a_titleContainer.x = app.screen.width/2 - a_titleContainer.width/2;
     a_titleContainer.y = 15;
-  
     app.stage.addChild(a_titleContainer);
+
+
+
+    let w = window.innerWidth;
+    let h = window.innerHeight;
+
+
+    //Area where user types in their username    
+    a_searchTextBox = new PIXI.TextInput({
+        input: {
+            fontFamily: 'Tahoma',
+            fontSize: '13pt',
+            padding: '10px',
+            width: '250px',
+            color: '#FFFFFF',
+            letterSpacing: 2
+        }, 
+        box: a_generateTextLine(w-237, 58, 205, 2)
+    });
+    a_searchTextBox.x = w-240;
+    a_searchTextBox.y = 20;
+    a_searchTextBox.interactiveChildren = true;
+    a_searchTextBox.placeholder = "Search Projects";
+    app.stage.addChild(a_searchTextBox);
+
+
 
 
 
@@ -129,8 +154,6 @@ function createUIProjects()
 
     // Settings Menu
 
-    let w = window.innerWidth;
-    let h = window.innerHeight;
     let settingsMenu = new PIXI.Graphics();
         settingsMenu.lineStyle(5, 0x787878, 3);
         settingsMenu.beginFill(0x7D7D7D);
@@ -417,6 +440,15 @@ function a_newPSelect()
     moveLeftProjectSelection()
     setTimeout('updateActivity()', 200); 
 }
+
+function a_generateTextLine(x, y, w, lineWidth){
+    let line = new PIXI.Graphics();
+    line.lineStyle(lineWidth, 0xFFFFFF)
+        .moveTo(x, y)
+        .lineTo(x+w, y);
+    app.stage.addChild(line);
+}
+
 
 //Agustin: Edit to move some elements. Some hexagons are not being altered at the moment
 function moveLeftProjectSelection(){

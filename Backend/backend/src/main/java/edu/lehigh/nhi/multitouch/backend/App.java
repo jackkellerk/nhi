@@ -9,6 +9,8 @@ import org.json.*;
 public class App {
     public static void main(String[] args) {
 
+        // final Encryption encryption = Encryption.getEncryption();
+
         final MySQLConnection db = MySQLConnection.getConnection();
 
         Spark.staticFileLocation("/web");
@@ -61,7 +63,6 @@ public class App {
             return retval.toJson().toString();
         });
 
-        
         Spark.post("/usersettings", (request, response) -> {
             // Gather information from request
             JSONObject jsRequest = new JSONObject(request.body());
@@ -70,15 +71,15 @@ public class App {
             // This grabs the informatin about the user settings
             return db.userSettings(username);
         });
-        
+
         Spark.get("/project", (request, response) -> {
             response.status(200);
             response.type("application/json");
             try {
-                JSONArray projectList = db.getProjectListing(1);
+                JSONArray projectList = db.getProjectListing();
                 JSONObject js = new JSONObject();
                 js.put("projectList", projectList);
-                System.err.println(js);
+                // System.err.println(js);
                 return new StructuredResponse(0, null, js).toJson().toString();
             } catch (Exception e) {
                 return new StructuredResponse(100, e.toString(), null).toJson().toString();
@@ -91,6 +92,23 @@ public class App {
             response.type("application/json");
             try {
                 return new StructuredResponse(0, null, db.getProject(pid)).toJson().toString();
+            } catch (Exception e) {
+                return new StructuredResponse(100, e.toString(), null).toJson().toString();
+            }
+        });
+
+        Spark.post("/w/:wid/update_pos", (request, response) -> {
+            try {
+                JSONObject jsRequest = new JSONObject(request.body());
+                float pos_x = jsRequest.getFloat("pos_x");
+                float pos_y = jsRequest.getFloat("pos_y");
+                float width = jsRequest.getFloat("width");
+                float height = jsRequest.getFloat("height");
+                int wid = Integer.parseInt(request.params("wid"));
+                int num_rows_updated = db.updateWindowPosition(wid, pos_x, pos_y, width, height);
+                JSONObject retval = new JSONObject();
+                retval.put("num_rows_updated", num_rows_updated);
+                return new StructuredResponse(0, null, retval).toJson().toString();
             } catch (Exception e) {
                 return new StructuredResponse(100, e.toString(), null).toJson().toString();
             }

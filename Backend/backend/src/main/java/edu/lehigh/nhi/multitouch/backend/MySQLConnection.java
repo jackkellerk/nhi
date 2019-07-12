@@ -163,9 +163,8 @@ class MySQLConnection {
          }
      }
 
-    public JSONArray getProjectListing(int uid) throws SQLException {
-        PreparedStatement stmt = connection.prepareStatement("select * from project_t where uid = ?");
-        stmt.setInt(1, uid);
+    public JSONArray getProjectListing() throws SQLException {
+        PreparedStatement stmt = connection.prepareStatement("select * from project_t");
         ResultSet rs = stmt.executeQuery();
         return convertToJSONArray(rs);
         // JSONArray retval = new JSONArray();
@@ -190,6 +189,18 @@ class MySQLConnection {
         pjs.put("window", convertToJSONArray(windowRS));
         return pjs;
     }
+
+    public int updateWindowPosition(int wid, float pos_x, float pos_y, float width, float height) throws SQLException{
+        PreparedStatement stmt = connection.prepareStatement("update window_t set canvas_pos_x = ?, canvas_pos_y = ?, canvas_width = ?, canvas_height = ? where wid = ?");
+        stmt.setFloat(1, pos_x);
+        stmt.setFloat(2, pos_y);
+        stmt.setFloat(3, width);
+        stmt.setFloat(4, height);
+        stmt.setInt(5, wid);
+        return stmt.executeUpdate();
+    }
+
+    // public JSONObject addProject(String projectName, ) throws
 
     private static JSONArray convertToJSONArray(ResultSet resultSet) throws JSONException, SQLException {
         JSONArray jsonArray = new JSONArray();

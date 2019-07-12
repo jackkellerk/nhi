@@ -49,7 +49,7 @@ defaultSources.push(source2);
 var source3 = new Source("FEI Tecnai F20 Cryo EM ","Images/Sources/yale_microscope_003.jpg","Has a Schottky Field Emission source, operates at 200 kV and is equipped with a Gatan K2 Summit Direct Detector",
 "Is dedicated for high-resolution single particle imaging and cryo electron tomography");
 defaultSources.push(source3);
-console.log("Length: " + defaultSources.length);
+//console.log("Length: " + defaultSources.length);
 //Creates style used by text. It is currently unnecessary but more of an example
 const ps_title_style = new PIXI.TextStyle({
     fontFamily: 'Helvetica',
@@ -141,8 +141,8 @@ function drawInsInfo (numIns) {
     y = 100
     var temp = x;
     for (var i = 0; i < numIns; i++, y += 80 * 1.8) {
-        console.log("numSource: " + numIns + "\nx: " + x + "\ny: " + y);
-        console.log("i:" + i + "\ninsImage:" + " " + insImages[i]);
+        //console.log("numSource: " + numIns + "\nx: " + x + "\ny: " + y);
+        //console.log("i:" + i + "\ninsImage:" + " " + insImages[i]);
 
         //make the align zigzag
         if (i%2 != 0) {
@@ -181,7 +181,7 @@ function drawInsInfo (numIns) {
     }
 
     for( var i = 0; i < institutionArray.length; i++ ){
-        console.log(i)
+        //console.log(i)
         app.stage.addChild(institutionArray[i]);
         institutionArray[i].interactive = true;
         institutionArray[i].on('pointerdown', drawSourceInfo);
@@ -190,13 +190,17 @@ function drawInsInfo (numIns) {
 
 function drawSourceInfo() {
     for( var i = 0; i < institutionArray.length; i++ ){
-        console.log(i)
+        //console.log(i)
         positionTransform(-280, institutionArray[i].y, institutionArray[i], 30);
         alphaTransform(institutionArray[i], 0.0, 30)
+        //console.log("XPos: " + institutionArray[i].x);
         //positionTransform(-200,ps_title.y, ps_title, 30)
-        ps_title.text = "Sources";
     }
-
+    ps_title.text = "Sources";
+    ps_title.interactive = true;
+    ps_title.buttonMode = true;
+    positionTransform(0.0, source_infoContainer.y, source_infoContainer, 30);
+    alphaTransform(source_infoContainer, 1, 30)
     hex.clear();
 
     // set number of sources if numSource is null
@@ -255,7 +259,7 @@ function drawSourceInfo() {
             info1 = "Nothing much to say here";
             info2 = "Nothing much to say here again";
         }
-        console.log("y: " + y + "y_limit: " + y_limit);
+        //console.log("y: " + y + "y_limit: " + y_limit);
         // check if all sources are loaded
         // if lowest point of the new row is over y_limit, break;
         if (y + 80 * 2 > y_limit) {
@@ -396,6 +400,8 @@ function startSourcePage() {
 
     // set title
     ps_title = new PIXI.Text('Institutions', ps_title_style);
+    ps_title.on("pointerdown", moveSources);
+
     // ps_title = new PIXI.Text('Sources: Lehigh', ps_title_style);
     ps_title.x =  app.screen.width / 16;
     ps_title.y = app.screen.height / 16;
@@ -408,6 +414,28 @@ function startSourcePage() {
     app.stage.addChild(ps_sampleImage);
     
 }
+
+function moveSources(){
+    //console.log("Array Length: " + institutionArray.length);
+    for( var i = 0; i < institutionArray.length; i++ ){
+        console.log(i)
+        //console.log("XPos return 1: " + institutionArray[i].x);
+        positionTransform(0, institutionArray[i].y, institutionArray[i], 60);
+        alphaTransform(institutionArray[i], 1, 60)
+        //console.log("XPos return 2: " + institutionArray[i].x);
+
+    }
+    //console.log("Loop Finish");
+
+    ps_title.text = "Institutions";
+    ps_title.interactive = false;
+    ps_title.buttonMode = false;
+    //ps_title.on("pointerdown", moveSources);
+    positionTransform(app.screen.width + 200, source_infoContainer.y, source_infoContainer, 30);
+    alphaTransform(source_infoContainer, 0, 30)
+
+}
+
 
 /**
  * ps_prevUp() shows previous source page.

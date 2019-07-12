@@ -1,10 +1,9 @@
 // containers to hold image and information about microscopes in source page
 var source_infoContainer = new PIXI.Container();
-var ins_infoContainer = new PIXI.Container();
 
 // graphics for line and hexagon
 var line = new PIXI.Graphics();
-var hex = new PIXI.Graphics();
+//var hex = new PIXI.Graphics();
 var ins_mask = new PIXI.Graphics();
 var ps_title;
 
@@ -42,7 +41,7 @@ const ps_title_style = new PIXI.TextStyle({
 });
 
 // set background image
-var source_bg = new PIXI.Sprite.from('Images/projectSource_test.jpg');
+//var source_bg = new PIXI.Sprite.from('Images/projectSource_test.jpg');
 
 // variables to set border for hexagons
 // x_limit: x coordinates of the screen, set in startSourcePage()
@@ -90,11 +89,13 @@ ps_prevPage.on("pointerupoutside", ps_pointerOut);
 ps_buttonCommands.push(ps_prevPage);
 
 
+var institutionArray = new Array();
 /**
  * 
  * @param numSource 
  */
 function drawInsInfo (numIns) {
+    var ins_infoContainer = new PIXI.Container();
     // set number of sources if numSource is null
     if (numIns == null) {
         numIns = defaultIns;
@@ -103,191 +104,83 @@ function drawInsInfo (numIns) {
     else {
         totalIns = numSource;
     }
-    
-    // set color as white (0xffffff), line thickness as 3
-    hex.lineStyle(2, 0xffffff, 3);
-
-    // fill hexagon with grey (0x808080)
-    hex.beginFill(0x808080);
-    
     // Hexagon Info: (all numbers already scaled)
-    // a (side of hexagon) : sqrt((34.8 * 2)^2 + (20 * 2)^2) = 80.28
-    // 2R (circumcircle of hexagon) : 80 * 2 = 160
-    // gap bewteen hexagon: 4 * 2 = 8
-    // x difference: 34.6
-    // y difference: 20
-    // scale: *2
-    for (var i = 0; i < numIns; i++, y += 80 * 2 + 4 * 2) {
-        
-
+    x = 50
+    y = 100
+    var temp = x;
+    for (var i = 0; i < numIns; i++, y += 80 * 1.8) {
         console.log("numSource: " + numIns + "\nx: " + x + "\ny: " + y);
         console.log("i:" + i + "\ninsImage:" + " " + insImages[i]);
 
-        // 1st try
-        insArr[i] = new PIXI.Graphics();
-        insArr[i].lineStyle(2, 0xffffff, 3);
-        // insArr[i].beginFill(0x808080);
-		insArr[i].drawPolygon([x+(34.8 + 4)*2,y, x+(34.8*2 + 4)*2,y+20*2, x+(34.8*2 + 4)*2,y+60*2, x+(34.8 + 4)*2,y+80*2, x+4*2,y+60*2, x+4*2,y+20*2]);
-
-        app.stage.addChild(insArr[i]);
-
-        insHexArr[i] = PIXI.Sprite.from(insImages[i]);
-
-        // app.stage.addChild(insHexArr[i]);
-
-        //mask 1st thumbnail image
-        insHexArr[i].mask = insArr[i];
-
-        // end fill
-        // insArr[i].endFill();
-            
-        // ins_infoContainer.addChild(insHexArr[i]);
-
-
-        // 2nd try
-        
-        // draw hexagon for institution
-        // ins_mask.drawPolygon([x+(34.8 + 4)*2,y, x+(34.8*2 + 4)*2,y+20*2, x+(34.8*2 + 4)*2,y+60*2, x+(34.8 + 4)*2,y+80*2, x+4*2,y+60*2, x+4*2,y+20*2]);
-
-        // set image
-        // console.log("i:" + i + "\ninsImage:" + " " + insImages[i]);
-        // const insTile = PIXI.BaseTexture.from(insImages[i]);
-        // const insImage = new PIXI.Texture(insTile, hex.drawPolygon([x+(34.8 + 4)*2,y, x+(34.8*2 + 4)*2,y+20*2, x+(34.8*2 + 4)*2,y+60*2, x+(34.8 + 4)*2,y+80*2, x+4*2,y+60*2, x+4*2,y+20*2]));
-        // insTile = PIXI.Sprite.from(insImages[i]);
-        // app.stage.addChild(insTile);
-        // app.stage.addChild(hex);
-
-        //mask 1st thumbnail image
-        // insTile.mask = ins_mask;
-
-        x += (80 * 2 + 4 * 2) * 2;
-
-        // draw hexagon for institution
-        hex.drawPolygon([x+(34.8 + 4)*2,y, x+(34.8*2 + 4)*2,y+20*2, x+(34.8*2 + 4)*2,y+60*2, x+(34.8 + 4)*2,y+80*2, x+4*2,y+60*2, x+4*2,y+20*2]);
-        
-        // mask 2nd thumbnail
-        // const insTile = PIXI.Sprite.from(insImages[i]);
-        // app.stage.addChild(insTile);
-        // app.stage.addChild(hex);
-
-        //mask image
-        // insTile.mask = ins_mask;
-        
-        x += (80 * 2 + 4 * 2) * 2;
-
-        // draw hexagon for institution
-        hex.drawPolygon([x+(34.8 + 4)*2,y, x+(34.8*2 + 4)*2,y+20*2, x+(34.8*2 + 4)*2,y+60*2, x+(34.8 + 4)*2,y+80*2, x+4*2,y+60*2, x+4*2,y+20*2]);
-
-        x -= (80 * 2 + 4 * 2) * 3;
-
-        // make the align zigzag
+        //make the align zigzag
         if (i%2 != 0) {
-            x -= (80 * 2 + 4 * 2) * 2;
+            x += 80;
+        } else {
+            x = temp;
         }
+        
+        var newSprite = new PIXI.Sprite.from(insImages[i]);
+        newSprite.width = 100;
+        newSprite.height = 100;
+        newSprite.x = x + 30;
+        newSprite.y = y+ 30;
 
-    }
-
-    // end filling  
-    hex.endFill();
-
-    // add child to the container
-    ins_infoContainer.addChild(hex);
-
-    // stage the infroConatiner
-    app.stage.addChild(ins_infoContainer);
-
-}
-
-/**
- * drawSourceInfo() draws two polygon; one hexagon for the image of the electron microscope, one octagon with least 2 lines of explanation of microscope
- */
-function drawSourceInfo(numSource) {
-    
-    hex.clear();
-
-    // set number of sources if numSource is null
-    if (numSource == null) {
-        numSource = defaultLines;
-        totalSource = defaultLines;
-    }
-    else {
-        totalSource = numSource;
-    }
-
-    // set color as white (0xffffff), line thickness as 3
-    hex.lineStyle(2, 0xffffff, 3);
-
-    // calculate the screen_limit
-    x = app.screen.width / 8;
-    while (x < x_limit) {
-        screen_limit = x;
-        x += 71.6 * 2;
-    }
-
-    // reset x, y which shows (x,y) coordinates for hexagon containers in source page
-    x = app.screen.width / 8;
-    y = app.screen.height / 8;
-    
-    // fill hexagon with grey (0x808080)
-    hex.beginFill(0x808080);
-
-    // Hexagon Info: (all numbers already scaled)
-    // a (side of hexagon) : sqrt((34.8 * 2)^2 + (20 * 2)^2) = 80.28
-    // 2R (circumcircle of hexagon) : 80 * 2 = 160
-    // gap bewteen hexagon: 4 * 2 = 8
-    // x difference: 34.6
-    // y difference: 20
-    // scale: *2
-    
-    // make rows of hexagon, which depends on the number of sources and y_limit
-    for (var i = 0; i < numSource; i++, y += 80 * 2 + 4 * 2) {
-
-        console.log("y: " + y + "y_limit: " + y_limit);
-        // check if all sources are loaded
-        // if lowest point of the new row is over y_limit, break;
-        if (y + 80 * 2 > y_limit) {
-            nextpage = true;
-            reaminingSource = totalSource - i;
-            break;
-        }
-
-        // draw hexagon thumbnail
+        var hex = new PIXI.Graphics();
+        // set color as white (0xffffff), line thickness as 3
+        hex.lineStyle(2,0x808080, 3);
+        // fill hexagon with grey (0x808080)
+        hex.beginFill(0xffffff);
+        // draw hexagon for institution
         hex.drawPolygon([x+(34.8 + 4)*2,y, x+(34.8*2 + 4)*2,y+20*2, x+(34.8*2 + 4)*2,y+60*2, x+(34.8 + 4)*2,y+80*2, x+4*2,y+60*2, x+4*2,y+20*2]);
+        hex.endFill();
+        //newSprite.mask = hex;
 
-        // draw octagon infobox
-        x_infoends = x;
-        x += (34.8 + 34.8 + 4) * 2;
-        hex.drawPolygon([x+(34.8 + 4)*2,y,  screen_limit+(34.8 + 4)*2,y,  screen_limit+(34.8*2 + 4)*2,y+20*2,  screen_limit+(34.8*2 + 4)*2,y+(20*3)*2, screen_limit+(34.8 + 4)*2,y+(20*4)*2,  x+(34.8 + 4)*2,y+(20*4)*2,  x+4*2,y+(20*3)*2,  x+4*2,y+20*2]);
+        //Outline Hexegon
+        var hex1 = new PIXI.Graphics();
+        hex1.lineStyle(2, 0x808080, 4);
+        // draw hexagon for institution
+        hex1.drawPolygon([x+(34.8 + 4)*2,y, x+(34.8*2 + 4)*2,y+20*2, x+(34.8*2 + 4)*2,y+60*2, x+(34.8 + 4)*2,y+80*2, x+4*2,y+60*2, x+4*2,y+20*2]);
+       
+        ins_infoContainer.addChild(hex);
+        ins_infoContainer.addChild(hex1);
+        ins_infoContainer.addChild(newSprite);
 
-        x = app.screen.width / 8;
+        institutionArray.push(ins_infoContainer);
     }
 
-    // end filling
-    hex.endFill();
+    for( var i = 0; i < institutionArray.length; i++ ){
+        console.log(i)
+        app.stage.addChild(institutionArray[i]);
+        institutionArray[i].interactive = true;
+        institutionArray[i].on('pointerdown', drawSourceInfo);
+    }
+}
 
-    // stage the line 
-    // app.stage.addChild(line);
-
-    // add child to the container
-    source_infoContainer.addChild(hex);
-    // source_infoContainer.addChild(line);
-    // source_infoContainer.addChild(ps_title);
-    source_infoContainer.addChild(ps_prevPage);
-    source_infoContainer.addChild(ps_nextPage);
-
-    // stage the infroConatiner
-    app.stage.addChild(source_infoContainer);
+function drawSourceInfo() {
+    for( var i = 0; i < institutionArray.length; i++ ){
+        console.log(i)
+        positionTransform(-280, institutionArray[i].y, institutionArray[i], 30);
+        alphaTransform(institutionArray[i], 0.0, 30)
+        positionTransform(-200,ps_title.y, ps_title, 30)
+    }
 
 }
+
+
 
 /**
  * startSorucePage sets the background and stage containers required
  */
 function startSourcePage() {
-    
+    const gradTexture = createGradTexture();
+    const sprite = new PIXI.Sprite(gradTexture);
+    sprite.width = app.screen.width;
+    sprite.height = app.screen.height;
+    app.stage.addChild(sprite);
 
     insTile = PIXI.Sprite.from(insImages[0]);
-
+    drawInsInfo();
+    
     //
     x = app.screen.width / 8;
     y = app.screen.height / 8;
@@ -297,9 +190,9 @@ function startSourcePage() {
     y_limit = app.screen.height * 7 / 8;
 
     // set width and height of the backgrond sprite, stage it to the app
-    source_bg.width = app.screen.width;
-    source_bg.height = app.screen.height;
-    app.stage.addChild(source_bg);
+    //source_bg.width = app.screen.width;
+    //source_bg.height = app.screen.height;
+    //app.stage.addChild(source_bg);
 
     // set location of the next & prev buttons
     ps_prevPage.x = x_limit;
@@ -315,10 +208,10 @@ function startSourcePage() {
     app.stage.addChild(ps_title);
 
     // set example texts
-    ps_sampleImage = new PIXI.Text('1', ps_title_style);
-    ps_sampleImage.x = app.screen.width / 8 + 38.8;
-    ps_sampleImage.y = 117 + 40;
-    app.stage.addChild(ps_sampleImage);
+    // ps_sampleImage = new PIXI.Text('1', ps_title_style);
+    // ps_sampleImage.x = app.screen.width / 8 + 38.8;
+    // ps_sampleImage.y = 117 + 40;
+    // app.stage.addChild(ps_sampleImage);
     
 }
 

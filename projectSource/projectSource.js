@@ -1,9 +1,10 @@
 // containers to hold image and information about microscopes in source page
 var source_infoContainer = new PIXI.Container();
+var ins_infoContainer = new PIXI.Container();
 
 // graphics for line and hexagon
 var line = new PIXI.Graphics();
-//var hex = new PIXI.Graphics();
+var hex = new PIXI.Graphics();
 var ins_mask = new PIXI.Graphics();
 var ps_title;
 
@@ -27,7 +28,19 @@ var insNames = ['CMU', 'Drexel', 'Lehigh', 'Ohio', 'Penn State'];
 var sourceImages = [];
 var sourceTEMNames = ['JEOL JEM-1200EX', 'JEOL JEM-2000FX', 'JEOL JEM-2200FS', 'JEOL JEM-ARM200CF'];
 var sourceSEMNames = ['Hitachi 4300 SE/N', 'ZEISS 1550', 'FEI SCIOS FIB', 'FEI XL30 ESEM', 'JEOL JSM-840', 'JEOL JXA-8900'];
+var defaultSources = [];
+var source1 = new Source("FEI Tecnai G2 Spirit BioTWIN","Images/Sources/yale_microscope.jpg","80 kV microscope, optimized for examining biological specimen",
+"Equipped with a SIS Morada 11 megapixel CCD camera");
+defaultSources.push(source1);
 
+var source2 = new Source("FEI Tecnai G2 F20 XT (TF20 TOMO)","Images/Sources/yale_microscope_002.jpg","Contains a Schottky field emitter is designed to produce high resolution performance",
+"Features a 4k x 4k FEI Eagle CCD and an AMT NanoSprint1200 CMOS camera");
+defaultSources.push(source2);
+
+var source3 = new Source("FEI Tecnai F20 Cryo EM ","Images/Sources/yale_microscope_003.jpg","Has a Schottky Field Emission source, operates at 200 kV and is equipped with a Gatan K2 Summit Direct Detector",
+"Is dedicated for high-resolution single particle imaging and cryo electron tomography");
+defaultSources.push(source3);
+console.log("Length: " + defaultSources.length);
 //Creates style used by text. It is currently unnecessary but more of an example
 const ps_title_style = new PIXI.TextStyle({
     fontFamily: 'Helvetica',
@@ -37,11 +50,21 @@ const ps_title_style = new PIXI.TextStyle({
     align: 'center',
     strokeThickness: 4,
     wordWrap: true,
-    wordWrapWidth: 500,
+    wordWrapWidth: 800,
+});
+
+const ps_caption_style = new PIXI.TextStyle({
+    fontFamily: 'Helvetica',
+    fontSize: 20,
+    fill: '#FFFFFF', // gradient
+    align: 'center',
+    strokeThickness: 1,
+    wordWrap: true,
+    wordWrapWidth: 800,
 });
 
 // set background image
-//var source_bg = new PIXI.Sprite.from('Images/projectSource_test.jpg');
+var source_bg = new PIXI.Sprite.from('Images/projectSource_test.jpg');
 
 // variables to set border for hexagons
 // x_limit: x coordinates of the screen, set in startSourcePage()
@@ -161,26 +184,188 @@ function drawSourceInfo() {
         console.log(i)
         positionTransform(-280, institutionArray[i].y, institutionArray[i], 30);
         alphaTransform(institutionArray[i], 0.0, 30)
-        positionTransform(-200,ps_title.y, ps_title, 30)
+        //positionTransform(-200,ps_title.y, ps_title, 30)
+        ps_title.text = "Sources";
     }
 
+    hex.clear();
+
+    // set number of sources if numSource is null
+    //if (numSource == null) {
+      //  numSource = defaultLines;
+    //    totalSource = defaultLines;
+   // }
+   // else {
+    //    totalSource = numSource;
+  //  }
+
+    // set color as white (0xffffff), line thickness as 3
+    hex.lineStyle(9, 0xffffff, 9);
+
+    // calculate the screen_limit
+    x = app.screen.width / 8;
+    while (x < x_limit) {
+        screen_limit = x;
+        x += 71.6 * 2;
+    }
+
+    // reset x, y which shows (x,y) coordinates for hexagon containers in source page
+    x = app.screen.width / 8;
+    y = app.screen.height / 8;
+    
+    // fill hexagon with grey (0x808080)
+    hex.beginFill(0x808080);
+
+    var textContainer = new PIXI.Container();
+    var hexContainer = new PIXI.Container();
+
+    // Hexagon Info: (all numbers already scaled)
+    // a (side of hexagon) : sqrt((34.8 * 2)^2 + (20 * 2)^2) = 80.28
+    // 2R (circumcircle of hexagon) : 80 * 2 = 160
+    // gap bewteen hexagon: 4 * 2 = 8
+    // x difference: 34.6
+    // y difference: 20
+    // scale: *2
+    
+    // make rows of hexagon, which depends on the number of sources and y_limit
+    for (var i = 0; i < 3; i++, y += 80 * 2 + 4 * 2) {
+        var sourceName;
+        var imgPath;
+        var info1;
+        var info2;
+
+        if(i < defaultSources.length){
+            sourceName = defaultSources[i].name;
+            imgPath = defaultSources[i].image;
+            info1 = defaultSources[i].info1;
+            info2 = defaultSources[i].info2;
+        }
+        else{
+            sourceName = "Source " + (i + 1)
+            imgPath = "Images/Sources/electron_microscope_001.jpg";
+            info1 = "Nothing much to say here";
+            info2 = "Nothing much to say here again";
+        }
+        console.log("y: " + y + "y_limit: " + y_limit);
+        // check if all sources are loaded
+        // if lowest point of the new row is over y_limit, break;
+        if (y + 80 * 2 > y_limit) {
+            nextpage = true;
+            reaminingSource = totalSource - i;
+            break;
+        }
+        var pl_radius = 0;
+        if (app.screen.width >= app.screen.height) { pl_radius = app.screen.height/2.5;
+        } else { pl_radius = app.screen.width/2.5; }
+        pl_radius = app.screen.width * (1/20);
+        var mask_hex = new Hexagon({x: app.screen.width/8, y: 0 + app.screen.height * ((1 + i)/4)}, 0, pl_radius);
+        mask_hex.graphics.lineStyle(1, 0xFFFFFF);
+        mask_hex.draw(0xFFFFFF, 1);
+        app.stage.removeChild(mask_hex.container);
+        hexContainer.addChild(mask_hex.container);
+
+        var border_hex = new Hexagon({x: app.screen.width/8, y: 0 + app.screen.height * ((1 + i)/4)}, 0, pl_radius);
+        border_hex.graphics.lineStyle(9, 0xFFFFFF);
+        border_hex.draw(0xFFFFFF, 0);
+        app.stage.removeChild(border_hex.container);
+        hexContainer.addChild(border_hex.container);
+
+        const sourceImg = new PIXI.Sprite.from(imgPath);
+        source_infoContainer.addChild(sourceImg);
+        sourceImg.mask = mask_hex.graphics;
+        sourceImg.width = mask_hex.width;
+        sourceImg.height = mask_hex.height;
+        sourceImg.x = app.screen.width/8 - sourceImg.width/2;
+        sourceImg.y = 0 + app.screen.height * ((1 + i)/4) - sourceImg.height/2;
+
+        // draw hexagon thumbnail
+        hex.drawPolygon([mask_hex.x + pl_radius * 2 ,mask_hex.y - pl_radius, mask_hex.x + pl_radius * 2  + app.screen.width * (5/8),mask_hex.y - pl_radius, mask_hex.x + pl_radius * 2  + app.screen.width* (5/8),mask_hex.y + pl_radius,mask_hex.x + pl_radius * 2 ,mask_hex.y + pl_radius]);
+       
+        var sourceTitle = new PIXI.Text(sourceName, ps_title_style);
+        sourceTitle.x = mask_hex.x + pl_radius * 2;
+        sourceTitle.y = mask_hex.y - pl_radius;
+        textContainer.addChild(sourceTitle);
+
+
+        var indentSpace = mask_hex.x + pl_radius * 2 + hex.width/50;
+
+        var infoCaption = new PIXI.Text(info1, ps_caption_style);
+        infoCaption.x = indentSpace + hex.width/50;
+        infoCaption.y = sourceTitle.y + sourceTitle.height;
+        textContainer.addChild(infoCaption);
+
+        pl_radius = 0;
+        if (app.screen.width >= app.screen.height) { pl_radius = app.screen.height * (1/200);
+        } else { pl_radius = app.screen.width * (1/200); }
+        var tiny_hex = new Hexagon({x: indentSpace, y: infoCaption.y + infoCaption.height/2}, 0, pl_radius);
+        tiny_hex.graphics.lineStyle(9, 0xFFFFFF);
+
+      //  mask_hex.graphics.on("pointerdown",moveLogin);
+        tiny_hex.draw(0xFFFFFF, 0);
+        tiny_hex.graphics.beginFill(0xDE3249);
+        tiny_hex.graphics.endFill();
+        app.stage.removeChild(tiny_hex.container);
+        hexContainer.addChild(tiny_hex.container);
+
+        var infoCaption2 = new PIXI.Text(info2, ps_caption_style);
+        infoCaption2.x = indentSpace + hex.width/50;
+        infoCaption2.y = infoCaption.y + infoCaption.height;
+        textContainer.addChild(infoCaption2);
+
+        pl_radius = 0;
+        if (app.screen.width >= app.screen.height) { pl_radius = app.screen.height * (1/200);
+        } else { pl_radius = app.screen.width * (1/200); }
+        var tiny_hex2 = new Hexagon({x: indentSpace, y: infoCaption2.y + infoCaption2.height/2}, 0, pl_radius);
+        tiny_hex2.graphics.lineStyle(9, 0xFFFFFF);
+
+      //  mask_hex.graphics.on("pointerdown",moveLogin);
+        tiny_hex2.draw(0xFFFFFF, 0);
+        tiny_hex2.graphics.beginFill(0xDE3249);
+        tiny_hex2.graphics.endFill();
+        app.stage.removeChild(tiny_hex2.container);
+        hexContainer.addChild(tiny_hex2.container);
+
+
+
+        //        hex.drawPolygon([x+(34.8 + 4)*2,y, x+(34.8*2 + 4)*2,y+20*2, x+(34.8*2 + 4)*2,y+60*2, x+(34.8 + 4)*2,y+80*2, x+4*2,y+60*2, x+4*2,y+20*2]);
+
+        // draw octagon infobox
+        //x_infoends = x;
+        //x += (34.8 + 34.8 + 4) * 2;
+        // hex.drawPolygon([x+(34.8 + 4)*2,y,  screen_limit+(34.8 + 4)*2,y,  screen_limit+(34.8*2 + 4)*2,y+20*2,  screen_limit+(34.8*2 + 4)*2,y+(20*3)*2, screen_limit+(34.8 + 4)*2,y+(20*4)*2,  x+(34.8 + 4)*2,y+(20*4)*2,  x+4*2,y+(20*3)*2,  x+4*2,y+20*2]);
+
+//        x = app.screen.width / 8;
+    }
+
+    // end filling
+    hex.endFill();
+
+    // stage the line 
+    // app.stage.addChild(line);
+
+    // add child to the container
+    source_infoContainer.addChild(hex);
+    source_infoContainer.addChild(textContainer);
+    source_infoContainer.addChild(hexContainer);
+
+    // source_infoContainer.addChild(line);
+    // source_infoContainer.addChild(ps_title);
+    source_infoContainer.addChild(ps_prevPage);
+    source_infoContainer.addChild(ps_nextPage);
+
+    // stage the infroConatiner
+    app.stage.addChild(source_infoContainer);
+
 }
-
-
 
 /**
  * startSorucePage sets the background and stage containers required
  */
 function startSourcePage() {
-    const gradTexture = createGradTexture();
-    const sprite = new PIXI.Sprite(gradTexture);
-    sprite.width = app.screen.width;
-    sprite.height = app.screen.height;
-    app.stage.addChild(sprite);
+    
 
     insTile = PIXI.Sprite.from(insImages[0]);
-    drawInsInfo();
-    
+
     //
     x = app.screen.width / 8;
     y = app.screen.height / 8;
@@ -190,9 +375,9 @@ function startSourcePage() {
     y_limit = app.screen.height * 7 / 8;
 
     // set width and height of the backgrond sprite, stage it to the app
-    //source_bg.width = app.screen.width;
-    //source_bg.height = app.screen.height;
-    //app.stage.addChild(source_bg);
+    source_bg.width = app.screen.width;
+    source_bg.height = app.screen.height;
+    app.stage.addChild(source_bg);
 
     // set location of the next & prev buttons
     ps_prevPage.x = x_limit;
@@ -208,10 +393,10 @@ function startSourcePage() {
     app.stage.addChild(ps_title);
 
     // set example texts
-    // ps_sampleImage = new PIXI.Text('1', ps_title_style);
-    // ps_sampleImage.x = app.screen.width / 8 + 38.8;
-    // ps_sampleImage.y = 117 + 40;
-    // app.stage.addChild(ps_sampleImage);
+    ps_sampleImage = new PIXI.Text('1', ps_title_style);
+    ps_sampleImage.x = app.screen.width / 8 + 38.8;
+    ps_sampleImage.y = 117 + 40;
+    app.stage.addChild(ps_sampleImage);
     
 }
 

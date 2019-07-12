@@ -1,3 +1,12 @@
+
+class Source {
+    constructor(name, image, info1, info2) {
+        this.name = name;
+        this.image = image;
+        this.info1 = info1;
+        this.info2 = info2;
+    }
+}
 // containers to hold image and information about microscopes in source page
 var source_infoContainer = new PIXI.Container();
 var ins_infoContainer = new PIXI.Container();

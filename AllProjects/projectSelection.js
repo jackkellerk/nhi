@@ -3,12 +3,16 @@ const a_style2 = new PIXI.TextStyle({fill: "#d3d3d3", fontFamily: "Helvetica", f
 
 var a_titleContainer = new PIXI.Container();
 var a_settingsContainer = new PIXI.Container();
-let a_p1Container = new PIXI.Container();
+var a_settIconContainer = new PIXI.Container();
+var a_p1Container = new PIXI.Container();
 var a_p1InfoContainer = new PIXI.Container();
-let maskContainer = new PIXI.Container();
+var maskContainer = new PIXI.Container();
+var newProjectContainer = new PIXI.Container(); 
 
+// misc
+var hexSize;
+var screenScale;
 var a_settingsCC; // settings button counter (open/closed)
-
 var p1_image;
 
 // user settings variable(s)
@@ -42,6 +46,24 @@ function startAllProjects()
 
 function createUIProjects()
 {
+    if ((app.screen.width)/(app.screen.height) > 5) // in case of multi touch screen in CITL
+    {
+        screenScale = 0.5;
+
+        hexSize = (app.screen.height)/4; 
+        a_settIconHexSize = (app.screen.height)/4;
+        a_titleContainer.scale.x = a_titleContainer.scale.y = screenScale;
+        bgHexContainer.scale.x = bgHexContainer.scale.y = screenScale;
+        a_p1Container.scale.x = a_p1Container.scale.y = screenScale;
+        newProjectContainer.scale.x = newProjectContainer.scale.y = screenScale;
+    }
+    else
+    {
+        screenScale = 1;
+        hexSize = 80;
+        a_settIconHexSize = 37;
+    }
+
     // background from gradient texture
 
     const gradTexture = createGradTexture();
@@ -68,11 +90,11 @@ function createUIProjects()
     const title = new PIXI.Text('Select an Existing Project', a_style1);
     a_titleContainer.addChild(title);
   
-    const subtitle = new PIXI.Text('or Create a New Project to Begin', a_style2);
+    const subtitle = new PIXI.Text('or create a New Project to begin', a_style2);
           subtitle.position.y = 42;
     a_titleContainer.addChild(subtitle);
   
-    a_titleContainer.x = app.screen.width/3.5;
+    a_titleContainer.x = app.screen.width/2 - a_titleContainer.width/2;
     a_titleContainer.y = 15;
   
     app.stage.addChild(a_titleContainer);
@@ -83,8 +105,9 @@ function createUIProjects()
 
     a_settingsCC = 0;
 
-    let userSettingsHex = new Hexagon({x:initialHex.x+68, y:initialHex.y-115}, 0, 37);
+    let userSettingsHex = new Hexagon({x:57*screenScale, y:57*screenScale}, 0, a_settIconHexSize);
         userSettingsHex.graphics.lineStyle(2, 0x7D7D7D, 3);
+        userSettingsHex.graphics.buttonMode = true;
         userSettingsHex.graphics.interactive = true;
         userSettingsHex.graphics.on('mouseover', a_hexHoverOver);
         userSettingsHex.graphics.on('mouseout', a_hexHoverOff);
@@ -93,11 +116,13 @@ function createUIProjects()
     userSettingsHex.draw(0xFFFFFF);
 
     let userSettingsIcon = new PIXI.Sprite.fromImage("Images/profilesettings.png");
-        userSettingsIcon.width = 65;
-        userSettingsIcon.height = 60;
-        userSettingsIcon.position.x = userSettingsHex.x-32;
-        userSettingsIcon.position.y = userSettingsHex.y-29;
+        userSettingsIcon.width = 65*screenScale;
+        userSettingsIcon.height = 60*screenScale;
+        userSettingsIcon.position.x = (userSettingsHex.x-32)*screenScale;
+        userSettingsIcon.position.y = (userSettingsHex.y-29)*screenScale;
     app.stage.addChild(userSettingsIcon);
+
+    //app.stage.addChild(a_settIconContainer);
 
 
 
@@ -109,7 +134,7 @@ function createUIProjects()
     let settingsMenu = new PIXI.Graphics();
         settingsMenu.lineStyle(5, 0x787878, 3);
         settingsMenu.beginFill(0x7D7D7D);
-        settingsMenu.drawRoundedRect(w/5,20, w-(2*(w/5)),h-40, 2);
+        settingsMenu.drawRoundedRect(0.2*w,20, 0.6*w,h-40, 2);
         settingsMenu.endFill();
         settingsMenu.interactive = true;
     a_settingsContainer.addChild(settingsMenu);
@@ -119,7 +144,7 @@ function createUIProjects()
         settTitle.position.y = 40;
     a_settingsContainer.addChild(settTitle);
 
-    let settUsername = new PIXI.Text("Username:\t" + userSettingsResponse.username, {fill: "#ffffff", fontFamily: "Helvetica", fontSize: 18, letterSpacing: 3});
+    let settUsername = new PIXI.Text("Username:             " + userSettingsResponse.username, {fill: "#ffffff", fontFamily: "Helvetica", fontSize: 18, letterSpacing: 3});
         settUsername.position.x = (w/5)+35;
         settUsername.position.y = 140;
     a_settingsContainer.addChild(settUsername);
@@ -147,8 +172,9 @@ function createUIProjects()
     let signoutButton = new PIXI.Graphics();
         signoutButton.lineStyle(3, 0xA9A9A9, 3);
         signoutButton.beginFill(0xf0f0f0);
-        signoutButton.drawRoundedRect(w-(2*(w/5)),h-100, 150,30, 2);
+        signoutButton.drawRoundedRect(0.6*w,h-100, 0.15*w,30, 2);
         signoutButton.endFill();
+        signoutButton.buttonMode = true;
         signoutButton.interactive = true;
         signoutButton.on('mouseover', a_SignOutHoverOver);
         signoutButton.on('mouseout', a_SignOutHoverOff);
@@ -160,6 +186,22 @@ function createUIProjects()
         settSignout.position.x = w-(2*(w/5)) + 30;
         settSignout.position.y = h-95;
     a_settingsContainer.addChild(settSignout);
+
+      // close button
+
+    var closeTexture = PIXI.Texture.from("Images/cancel_icon.png");
+    var closeIcon = new PIXI.Sprite(closeTexture);
+        closeIcon.height = 30;
+        closeIcon.width = 30;
+        closeIcon.x = w-(w/5) - 40; //w_settingsMenu right side - 10
+        closeIcon.y = 30;
+        closeIcon.buttonMode = true;
+        closeIcon.interactive = true;
+        closeIcon.on('mouseover', a_hexHoverOver);
+        closeIcon.on('mouseout', a_hexHoverOff);
+        closeIcon.on('pointerdown', a_SettingsSelect);
+        closeIcon.alpha = 0.60;
+    a_settingsContainer.addChild(closeIcon);
 
 
 
@@ -173,7 +215,7 @@ function createUIProjects()
     p1_image.position.y = 20;
     a_p1Container.addChild(p1_image);
 
-    let p1A = new Hexagon({x: 476.12, y: initialHex.getCenterLowerRight(0).y}, 0,80);
+    let p1A = new Hexagon({x: 476.12, y: initialHex.getCenterLowerRight(0).y}, 0,hexSize);
         p1A.graphics.alpha = 0.8;
         p1A.draw(0x909090);
     app.stage.removeChild(p1A.container);
@@ -220,6 +262,7 @@ function createUIProjects()
         p1Select.drawRoundedRect(p1A.x-46,p1A.y+10, 92,22, 2);
         p1Select.endFill();
         p1Select.alpha = 0.75;
+        p1Select.buttonMode = true;
         p1Select.interactive = true;
         p1Select.on('mouseover', a_p1SelectHoverOver);
         p1Select.on('mouseout', a_p1SelectHoverOff);
@@ -245,21 +288,26 @@ function createUIProjects()
 
     // New Project
 
-    let newP = new Hexagon({x:p1A.getCenterUpperRight(279).x, y: p1A.getCenterUpperRight(0).y}, 0,80);
+    let newP = new Hexagon({x:p1A.getCenterUpperRight(279).x, y: p1A.getCenterUpperRight(0).y}, 0,hexSize);
         newP.graphics.lineStyle(3, 0xA9A9A9, 3);
+        newP.graphics.buttonMode = true;
         newP.graphics.interactive = true;
         newP.graphics.on('mouseover', a_hexHoverOver);
         newP.graphics.on('mouseout', a_hexHoverOff);
         newP.graphics.on('pointerdown', a_newPSelect);
         newP.graphics.alpha = 0.8;
     newP.draw(0x909090);
+    app.stage.removeChild(newP.container);
+    newProjectContainer.addChild(newP.container);
 
     let plusIcon = new PIXI.Sprite.from("Images/plus-icon.png");
         plusIcon.width = 65;
         plusIcon.height = 65;
         plusIcon.position.x = newP.x-33;
         plusIcon.position.y = newP.y-33;
-    app.stage.addChild(plusIcon);
+    newProjectContainer.addChild(plusIcon);
+
+    app.stage.addChild(newProjectContainer);
 
 
 
@@ -278,6 +326,9 @@ function createUIProjects()
 
     //Agustin: alpha transform on app.stage
     alphaTransform(app.stage, 1.0, 20);
+
+
+
 }
 
 function a_hexHoverOver()
@@ -299,6 +350,7 @@ function a_SettingsSelect()
         blurTransform(a_p1InfoContainer,1.0, 10)
         blurTransform(maskContainer,1.0, 10)
         blurTransform(p1_image,1.0, 10)
+        blurTransform(bgHexContainer, 1.0, 5)
         a_settingsCC = 1;
     }
     else if (a_settingsCC == 1)
@@ -308,6 +360,7 @@ function a_SettingsSelect()
         blurTransform(a_p1InfoContainer, 0.5, 10)
         blurTransform(maskContainer, 0.5, 10)
         blurTransform(p1_image, 0.5, 10)
+        blurTransform(bgHexContainer, 0.5, 10)
         a_settingsCC = 0;
     }
 }

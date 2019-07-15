@@ -59,6 +59,7 @@ function signUpBackend()
             withCredentials: true
         },
         success: function(data) {
+            userTextBox.text = username;
             toProjectSelection();
             currentActivity = "AllProjects";
         },

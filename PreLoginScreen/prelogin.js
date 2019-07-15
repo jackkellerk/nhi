@@ -294,7 +294,9 @@ function startPreLogin()
     var SU_signUpText = new PIXI.Text("Sign Up", login_style);
     SU_signUpText.x = signup_hex.x - SU_signUpText.width/2;
     SU_signUpText.y = signup_hex.y + 135;
-    SU_signUpText.on("pointerdown",moveLogin);
+    SU_signUpText.interactive = true;
+    SU_signUpText.buttonMode = true;
+    SU_signUpText.on("pointerdown", signUpBackend);
     signUp_UI.addChild(SU_signUpText);
     
     app.stage.addChild(signUp_UI);

@@ -20,7 +20,7 @@ function loginToBackend()
             currentActivity = "AllProjects";
         },
         error: function(xhr, status, error) {
-            alert("Internal Server Error: 500");
+            alert("Incorrect Username or Password");
         }
     });
 }
@@ -59,6 +59,7 @@ function signUpBackend()
             withCredentials: true
         },
         success: function(data) {
+            toProjectSelection();
             currentActivity = "AllProjects";
         },
         error: function(xhr, status, error) {

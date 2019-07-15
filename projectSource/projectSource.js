@@ -141,8 +141,7 @@ function drawInsInfo (numIns) {
     y = 100
     var temp = x;
     for (var i = 0; i < numIns; i++, y += 80 * 1.8) {
-        //console.log("numSource: " + numIns + "\nx: " + x + "\ny: " + y);
-        //console.log("i:" + i + "\ninsImage:" + " " + insImages[i]);
+        var ins_infoContainer = new PIXI.Container();
 
         //make the align zigzag
         if (i%2 != 0) {
@@ -181,26 +180,23 @@ function drawInsInfo (numIns) {
     }
 
     for( var i = 0; i < institutionArray.length; i++ ){
-        //console.log(i)
         app.stage.addChild(institutionArray[i]);
         institutionArray[i].interactive = true;
         institutionArray[i].on('pointerdown', drawSourceInfo);
     }
 }
 
+
+//lehigh, oakridge, john hopkins, ohio state
 function drawSourceInfo() {
     for( var i = 0; i < institutionArray.length; i++ ){
-        //console.log(i)
-        positionTransform(-280, institutionArray[i].y, institutionArray[i], 30);
-        alphaTransform(institutionArray[i], 0.0, 30)
-        //console.log("XPos: " + institutionArray[i].x);
-        //positionTransform(-200,ps_title.y, ps_title, 30)
+        positionTransform(institutionArray[i].x -300, institutionArray[i].y, institutionArray[i], 15);
     }
     ps_title.text = "Sources";
     ps_title.interactive = true;
     ps_title.buttonMode = true;
-    positionTransform(0.0, source_infoContainer.y, source_infoContainer, 30);
-    alphaTransform(source_infoContainer, 1, 30)
+    positionTransform(0.0, source_infoContainer.y, source_infoContainer, 10);
+    //alphaTransform(source_infoContainer, 1, 10)
     hex.clear();
 
     // set number of sources if numSource is null
@@ -392,6 +388,8 @@ function startSourcePage() {
     source_bg.height = app.screen.height;
     app.stage.addChild(source_bg);
 
+    drawInsInfo();
+
     // set location of the next & prev buttons
     ps_prevPage.x = x_limit;
     ps_prevPage.y = y_limit;
@@ -416,23 +414,18 @@ function startSourcePage() {
 }
 
 function moveSources(){
-    //console.log("Array Length: " + institutionArray.length);
+    console.log("Array Length: " + institutionArray.length);
     for( var i = 0; i < institutionArray.length; i++ ){
         console.log(i)
-        //console.log("XPos return 1: " + institutionArray[i].x);
-        positionTransform(0, institutionArray[i].y, institutionArray[i], 60);
-        alphaTransform(institutionArray[i], 1, 60)
-        //console.log("XPos return 2: " + institutionArray[i].x);
-
+        positionTransform(institutionArray[i].x + 300, institutionArray[i].y, institutionArray[i], 15);
     }
-    //console.log("Loop Finish");
 
     ps_title.text = "Institutions";
     ps_title.interactive = false;
     ps_title.buttonMode = false;
     //ps_title.on("pointerdown", moveSources);
     positionTransform(app.screen.width + 200, source_infoContainer.y, source_infoContainer, 30);
-    alphaTransform(source_infoContainer, 0, 30)
+    //alphaTransform(source_infoContainer, 0, 30)
 
 }
 

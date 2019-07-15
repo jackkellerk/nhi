@@ -21,7 +21,7 @@ var userSettingsResponse; // valid uses of userSettingsResponse are: userSetting
 function startAllProjects()
 {
     // This loads the information about the userSettings
-    var username = "jjk322"; // This will probably be global and accessable from the login screen files, but for now it is here
+    var username = userTextBox.text; // This will probably be global and accessable from the login screen files, but for now it is here
     $.ajax({
         method: 'POST',
         contentType: 'application/json',
@@ -172,7 +172,13 @@ function createUIProjects()
         settUsername.position.y = 140;
     a_settingsContainer.addChild(settUsername);
 
-    let settPassword = new PIXI.Text("Password:             " + userSettingsResponse.passwordLength /* Maybe with the length create a for loop that creates that many '*'s in a string for this field */, {fill: "#ffffff", fontFamily: "Helvetica", fontSize: 18, letterSpacing: 3});
+    var passwordString = "";
+    for(var i = 0; i < userSettingsResponse.passwordLength; i++)
+    {
+        passwordString += "*";
+    }
+
+    let settPassword = new PIXI.Text("Password:              " +  passwordString/* Maybe with the length create a for loop that creates that many '*'s in a string for this field */, {fill: "#ffffff", fontFamily: "Helvetica", fontSize: 18, letterSpacing: 3});
         settPassword.position.x = (w/5)+35;
         settPassword.position.y = 180;
     a_settingsContainer.addChild(settPassword);

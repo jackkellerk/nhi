@@ -4,12 +4,14 @@ import spark.Spark;
 
 import java.util.List;
 
+import org.eclipse.jetty.client.api.Request;
 import org.json.*;
 
 public class App {
+
     public static void main(String[] args) {
 
-        // final Encryption encryption = Encryption.getEncryption();
+        final Encryption encryption = Encryption.getEncryption();
 
         final MySQLConnection db = MySQLConnection.getConnection();
 
@@ -32,18 +34,27 @@ public class App {
 
         Spark.post("/login", (request, response) -> {
             // ensure status 200 OK, with a MIME type of JSON
-            JSONObject jsRequest = new JSONObject(request.body());
-            String username = jsRequest.getString("username");
-            String password = jsRequest.getString("password");
-            System.out.println(username + " , " + password);
             response.status(200);
             response.type("application/json");
-            if (db.login(username, password)) {
-                StructuredResponse retval = new StructuredResponse(0, null, null);
+            try {
+                JSONObject jsRequest = new JSONObject(request.body());
+                String username = jsRequest.getString("username");
+                String password = jsRequest.getString("password");
+                System.out.println(username + " , " + password);
+                if (db.login(username, password)) {
+                    int uid = db.getUidByUsername(username);
+                    String sessionKey = encryption.addSessionkey(uid);
+                    JSONObject dataJs = new JSONObject();
+                    dataJs.put("session_key", sessionKey);
+                    dataJs.put("uid", uid);
+                    StructuredResponse retval = new StructuredResponse(0, null, dataJs);
+                    return retval.toJson().toString();
+                }
+                StructuredResponse retval = new StructuredResponse(100, "Login failed", null);
                 return retval.toJson().toString();
+            } catch (Exception e) {
+                return new StructuredResponse(100, e.toString(), null).toJson().toString();
             }
-            StructuredResponse retval = new StructuredResponse(100, "Login failed", null);
-            return retval.toJson().toString();
         });
 
         Spark.post("/signup", (request, response) -> {
@@ -76,7 +87,16 @@ public class App {
             response.status(200);
             response.type("application/json");
             try {
-                JSONArray projectList = db.getProjectListing();
+                try {
+                    String uidStr = request.headers("uid");
+                    String sessionKey = request.headers("sessionKey");
+                    int uid = Integer.parseInt(uidStr);
+                    if (!encryption.checkSessionKey(uid, sessionKey))
+                        return new StructuredResponse(200, "username and sessionkey do not match", null).toJson().toString();
+                } catch (Exception e) {
+                    return new StructuredResponse(300, "header format fault: " + e.toString(), null).toJson().toString();
+                }
+               JSONArray projectList = db.getProjectListing();
                 JSONObject js = new JSONObject();
                 js.put("projectList", projectList);
                 // System.err.println(js);

@@ -41,7 +41,6 @@ class MySQLConnection {
             }
             rs.close();
             stmt.close();
-            connection.close();
         } catch (SQLException e) {
             System.err.println("Login error occured.");
             return false;
@@ -52,6 +51,17 @@ class MySQLConnection {
         }
 
         return false;
+    }
+
+    public int getUidByUsername(String username) throws SQLException {
+        PreparedStatement stmt = connection.prepareStatement("select id from users where username = ?");
+        stmt.setString(1, username);
+        ResultSet rs = stmt.executeQuery();
+        rs.next();
+        int retval = rs.getInt("id");
+        rs.close();
+        stmt.close();
+        return retval;
     }
 
     public JSONObject userSettings(String username)
@@ -166,7 +176,10 @@ class MySQLConnection {
     public JSONArray getProjectListing() throws SQLException {
         PreparedStatement stmt = connection.prepareStatement("select * from project_t");
         ResultSet rs = stmt.executeQuery();
-        return convertToJSONArray(rs);
+        JSONArray retval = convertToJSONArray(rs);
+        rs.close();
+        stmt.close();
+        return retval;
         // JSONArray retval = new JSONArray();
         // while (rs.next()) {
         // JSONObject project = new JSONObject();
@@ -187,6 +200,10 @@ class MySQLConnection {
         ResultSet windowRS = windowStmt.executeQuery();
         JSONObject pjs = convertToJSONObject(projectRS);
         pjs.put("window", convertToJSONArray(windowRS));
+        projectStmt.close();
+        windowStmt.close();
+        projectRS.close();
+        windowRS.close();
         return pjs;
     }
 
@@ -197,7 +214,9 @@ class MySQLConnection {
         stmt.setFloat(3, width);
         stmt.setFloat(4, height);
         stmt.setInt(5, wid);
-        return stmt.executeUpdate();
+        int retval = stmt.executeUpdate();
+        stmt.close();
+        return retval;
     }
 
     // public JSONObject addProject(String projectName, ) throws

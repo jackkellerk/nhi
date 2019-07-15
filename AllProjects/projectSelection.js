@@ -8,12 +8,13 @@ var a_p1Container = new PIXI.Container();
 var a_p1InfoContainer = new PIXI.Container();
 var maskContainer = new PIXI.Container();
 var newProjectContainer = new PIXI.Container(); 
+var a_searchContainer = new PIXI.Container();
 
 // misc
 var hexSize;
-var screenScale;
 var a_settingsCC; // settings button counter (open/closed)
 var p1_image;
+var isTouch;
 
 // user settings variable(s)
 var userSettingsResponse; // valid uses of userSettingsResponse are: userSettingsResponse.legalName, userSettingsResponse.username, userSettingsResponse.passwordLength, userSettingsResponse.email, userSettingsResponse.profilePicture, userSettingsResponse.institution, and userSettingsResponse.id
@@ -46,23 +47,6 @@ function startAllProjects()
 
 function createUIProjects()
 {
-    if ((app.screen.width)/(app.screen.height) > 5) // in case of multi touch screen in CITL
-    {
-        screenScale = 0.5;
-
-        hexSize = (app.screen.height)/4; 
-        a_settIconHexSize = (app.screen.height)/4;
-        a_titleContainer.scale.x = a_titleContainer.scale.y = screenScale;
-        bgHexContainer.scale.x = bgHexContainer.scale.y = screenScale;
-        a_p1Container.scale.x = a_p1Container.scale.y = screenScale;
-        newProjectContainer.scale.x = newProjectContainer.scale.y = screenScale;
-    }
-    else
-    {
-        screenScale = 1;
-        hexSize = 80;
-        a_settIconHexSize = 37;
-    }
 
     // background from gradient texture
 
@@ -80,9 +64,25 @@ function createUIProjects()
     app.stage.addChild(sprite);
 
 
-    // hex background grid
 
-    a_drawHexGrid(); // false -> without coordinates
+    if ((app.screen.width)/(app.screen.height) > 5) // in case of multi touch screen in CITL
+    {
+        isTouch = true;
+        a_drawHexGridTouch();
+        hexSize = 27;
+
+        a_titleContainer.scale.x = a_titleContainer.scale.y = 0.5;
+        a_p1Container.scale.x = a_p1Container.scale.y = 0.5;
+        newProjectContainer.scale.x = newProjectContainer.scale.y = 0.5;
+    }
+    else
+    {
+        isTouch = false;
+        a_drawHexGrid();
+        hexSize = 80;
+    }
+
+
 
 
     // Title
@@ -104,23 +104,29 @@ function createUIProjects()
     let h = window.innerHeight;
 
 
+
     //Area where user types in their username    
     a_searchTextBox = new PIXI.TextInput({
         input: {
             fontFamily: 'Tahoma',
             fontSize: '13pt',
             padding: '10px',
-            width: '250px',
+            width: '220px',
             color: '#FFFFFF',
-            letterSpacing: 2
+            letterSpacing: 3
         }, 
-        box: a_generateTextLine(w-237, 58, 205, 2)
+        box: a_generateTextLine(w-240, 57, 208, 1)
     });
-    a_searchTextBox.x = w-240;
+    a_searchTextBox.x = w-243;
     a_searchTextBox.y = 20;
     a_searchTextBox.interactiveChildren = true;
     a_searchTextBox.placeholder = "Search Projects";
-    app.stage.addChild(a_searchTextBox);
+    a_searchContainer.addChild(a_searchTextBox);
+    if (isTouch) {
+        a_searchContainer.scale.x = a_searchContainer.scale.y = 0.7;
+        a_searchContainer.x = a_searchContainer.x + 350;
+    }
+    app.stage.addChild(a_searchContainer);
 
 
 
@@ -130,7 +136,7 @@ function createUIProjects()
 
     a_settingsCC = 0;
 
-    let userSettingsHex = new Hexagon({x:57*screenScale, y:57*screenScale}, 0, a_settIconHexSize);
+    let userSettingsHex = new Hexagon({x:57, y:57}, 0, 37);
         userSettingsHex.graphics.lineStyle(2, 0x7D7D7D, 3);
         userSettingsHex.graphics.buttonMode = true;
         userSettingsHex.graphics.interactive = true;
@@ -139,15 +145,20 @@ function createUIProjects()
         userSettingsHex.graphics.on('pointerdown', a_SettingsSelect);
         userSettingsHex.graphics.alpha = 0.7;
     userSettingsHex.draw(0xFFFFFF);
+    app.stage.removeChild(userSettingsHex.container);
+    a_settIconContainer.addChild(userSettingsHex.container);
 
     let userSettingsIcon = new PIXI.Sprite.fromImage("Images/profilesettings.png");
-        userSettingsIcon.width = 65*screenScale;
-        userSettingsIcon.height = 60*screenScale;
-        userSettingsIcon.position.x = (userSettingsHex.x-32)*screenScale;
-        userSettingsIcon.position.y = (userSettingsHex.y-29)*screenScale;
-    app.stage.addChild(userSettingsIcon);
+        userSettingsIcon.width = 65;
+        userSettingsIcon.height = 60;
+        userSettingsIcon.position.x = userSettingsHex.x-32;
+        userSettingsIcon.position.y = userSettingsHex.y-29;
+    a_settIconContainer.addChild(userSettingsIcon);
 
-    //app.stage.addChild(a_settIconContainer);
+    if (isTouch) {
+        a_settIconContainer.scale.x = a_settIconContainer.scale.y = 0.5;
+    }
+    app.stage.addChild(a_settIconContainer);
 
 
 
@@ -178,8 +189,7 @@ function createUIProjects()
         passwordString += "*";
     }
 
-    let settPassword = new PIXI.Text("Password:              " +  passwordString/* Maybe with the length create a for loop that creates that many '*'s in a string for this field */, {fill: "#ffffff", fontFamily: "Helvetica", fontSize: 18, letterSpacing: 3});
-        settPassword.position.x = (w/5)+35;
+    let settPassword = new PIXI.Text("Password:              " +  passwordString/* Maybe with the length create a for loop that creates that many '*'s in a string for this field */, {fill: "#ffffff", fontFamily: "Helvetica", fontSize: 18, letterSpacing: 3});        settPassword.position.x = (w/5)+35;
         settPassword.position.y = 180;
     a_settingsContainer.addChild(settPassword);
 
@@ -237,18 +247,18 @@ function createUIProjects()
 
     // Project 1
 
-    p1_image = new PIXI.Sprite.fromImage("Images/LineIntegral.jpg");
-    p1_image.width = 700;
-    p1_image.height = 500;
-    p1_image.position.x = 90;
-    p1_image.position.y = 20;
-    a_p1Container.addChild(p1_image);
-
-    let p1A = new Hexagon({x: 476.12, y: initialHex.getCenterLowerRight(0).y}, 0,hexSize);
+    let p1A = new Hexagon({x: 476.12, y: initialHex.getCenterLowerRight(0).y}, 0, 80);
         p1A.graphics.alpha = 0.8;
         p1A.draw(0x909090);
     app.stage.removeChild(p1A.container);
     a_p1Container.addChild(p1A.container);
+
+    p1_image = new PIXI.Sprite.fromImage("Images/LineIntegral.jpg");
+        p1_image.width = 700;
+        p1_image.height = 500;
+        p1_image.position.x = p1A.x - 400;
+        p1_image.position.y = p1A.y - 300;
+    a_p1Container.addChild(p1_image);
 
     var p1Hex = new PIXI.Graphics();
         p1Hex.beginFill(0x000000);
@@ -309,6 +319,15 @@ function createUIProjects()
     a_p1Container.on('mouseover', a_projectHoverOver);
     a_p1Container.on('mouseout', a_projectHoverOff);
 
+    if (isTouch) {
+        a_p1InfoContainer.scale.x = a_p1InfoContainer.scale.y = 0.3375;
+        a_p1InfoContainer.x = a_p1InfoContainer.x + 508;
+        a_p1InfoContainer.y = a_p1InfoContainer.y + 86;
+
+        a_p1Container.scale.x = a_p1Container.scale.y = 0.3375;
+        a_p1Container.x = a_p1Container.x + 508;
+        a_p1Container.y = a_p1Container.y + 86;
+    }
     a_p1Container.addChild(p1Select);
 
 
@@ -317,8 +336,8 @@ function createUIProjects()
 
     // New Project
 
-    let newP = new Hexagon({x:p1A.getCenterUpperRight(279).x, y: p1A.getCenterUpperRight(0).y}, 0,hexSize);
-        newP.graphics.lineStyle(3, 0xA9A9A9, 3);
+    let newP = new Hexagon({x:p1A.getCenterUpperRight(279).x, y: p1A.getCenterUpperRight(0).y}, 0, 80);
+        newP.graphics.lineStyle(3, 0x909090, 3);
         newP.graphics.buttonMode = true;
         newP.graphics.interactive = true;
         newP.graphics.on('mouseover', a_hexHoverOver);
@@ -336,6 +355,11 @@ function createUIProjects()
         plusIcon.position.y = newP.y-33;
     newProjectContainer.addChild(plusIcon);
 
+    if (isTouch) {
+        newProjectContainer.scale.x = newProjectContainer.scale.y = 0.3375;
+        newProjectContainer.x = newProjectContainer.x + 508;
+        newProjectContainer.y = newProjectContainer.y + 86;
+    }
     app.stage.addChild(newProjectContainer);
 
 
@@ -452,7 +476,7 @@ function a_generateTextLine(x, y, w, lineWidth){
     line.lineStyle(lineWidth, 0xFFFFFF)
         .moveTo(x, y)
         .lineTo(x+w, y);
-    app.stage.addChild(line);
+    a_searchContainer.addChild(line);
 }
 
 

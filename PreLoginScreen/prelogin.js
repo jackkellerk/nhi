@@ -49,15 +49,24 @@ const display_text1 = new PIXI.TextStyle({
 });
 var userTextBox;
 var passwordTextBox;
-var legalTextBox;
-var institutionTextBox;
+
 
 
 var SU_userTextBox;
 var SU_emailTextBox;
 var SU_passwordTextBox;
 var SU_repasswordTextBox;
-    
+var SU_legalTextBox;
+var SU_institutionTextBox;
+
+var timerCheck = false;
+var counter = 0;
+
+//600(10 sec) for demonstration purposes
+//1800(30 sec) for normal
+var limit = 1800;
+
+var password = "";
 
 function startPreLogin()
 {
@@ -147,6 +156,7 @@ function startPreLogin()
     userTextBox.y = login_hex.y - 75;
     userTextBox.interactiveChildren = true;
     userTextBox.placeholder = "Username";
+    userTextBox.on("keydown",keyDown);
     Inner_Login_UI.addChild(userTextBox);
 
     //Area where user types in password
@@ -165,6 +175,7 @@ function startPreLogin()
     passwordTextBox.y = login_hex.y;
     passwordTextBox.interactiveChildren = true;
     passwordTextBox.placeholder = "Password";
+    passwordTextBox.on("keydown",keyDown);
     Inner_Login_UI.addChild(passwordTextBox);
 
     
@@ -349,6 +360,19 @@ function startPreLogin()
     signUp_UI.addChild(SU_loginText);
 
     app.stage.addChild(signUp_UI);
+
+    app.ticker.add(() => {
+        if(timerCheck){
+            if(counter >= limit){
+                hideLogin();
+                timerCheck = false;
+                counter = 0;
+            }
+            else{
+                counter++
+            }
+        }
+    });
 }
 
 
@@ -384,13 +408,16 @@ function showLogin(event){
     this.buttonMode = false;
 
     login_backgroundImage.interactive = true;
-    login_backgroundImage.buttonMode = true;
 
     
     //CheckAFK(0);
+    timerCheck = true;
+    counter = 0;
 }
 
 function hideLogin(event){
+    console.log("Count: " + counter);
+   // if(count >= limit){
     //Make quote and login button fade
     alphaTransform(preDisplayQuote, 1, 30);
     alphaTransform(preDisplayAuthor, 1, 30);
@@ -413,9 +440,9 @@ function hideLogin(event){
     loginButtonImage.buttonMode = true;
 
     login_backgroundImage.interactive = false;
-    login_backgroundImage.buttonMode = false;
 
     //CheckAFK(2);
+    timerCheck = false
 }
 
 function moveLogin(event){
@@ -423,7 +450,7 @@ function moveLogin(event){
     positionTransform(0, 0, signUp_UI, 20);
     Inner_Login_UI.interactiveChildren = false;
     signUp_UI.interactiveChildren = true;
-    //CheckAFK(2);
+    timerCheck = false;
 }
 
 function moveSignUp(event){
@@ -431,7 +458,8 @@ function moveSignUp(event){
     positionTransform(0, app.screen.height, signUp_UI, 20);
     Inner_Login_UI.interactiveChildren = true;
     signUp_UI.interactiveChildren = false;
-    //CheckAFK(0);
+    timerCheck = true;
+    counter = 0;
 }
 
 function showInput(event){
@@ -476,6 +504,12 @@ function CheckAFK(flag){
 
 }
 
+//Since the screen will time out to to inactivity 
+//These functions will restart the timer
 function touchScreen(){
-    //CheckAFK(1);
+    counter = 0;
+}
+
+function keyDown(){
+    counter = 0;
 }

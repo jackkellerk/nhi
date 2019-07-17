@@ -16,11 +16,16 @@ function loginToBackend()
             withCredentials: true
         },
         success: function(data) {
+            if(data.errorCode == 100)
+            {
+                alert("Incorrect Username or Password");
+                return;
+            }
             toProjectSelection();
             currentActivity = "AllProjects";
         },
         error: function(xhr, status, error) {
-            alert("Incorrect Username or Password");
+            alert("Internal Server Error: 500");
         }
     });
 }

@@ -2,10 +2,9 @@ package edu.lehigh.nhi.multitouch.backend;
 
 import spark.Spark;
 
-import java.util.List;
-
-import org.eclipse.jetty.client.api.Request;
 import org.json.*;
+
+import edu.lehigh.nhi.multitouch.backend.database.MySQLConnection;
 
 public class App {
 
@@ -41,8 +40,8 @@ public class App {
                 String username = jsRequest.getString("username");
                 String password = jsRequest.getString("password");
                 System.out.println(username + " , " + password);
-                if (db.login(username, password)) {
-                    int uid = db.getUidByUsername(username);
+                if (db.user.login(username, password)) {
+                    int uid = db.user.getUidByUsername(username);
                     String sessionKey = encryption.addSessionkey(uid);
                     JSONObject dataJs = new JSONObject();
                     dataJs.put("session_key", sessionKey);
@@ -66,7 +65,7 @@ public class App {
             String institution = jsRequest.getString("institution");
             String legalName = jsRequest.getString("legalname");
             response.status(200);
-            if (db.signup(username, password, email, legalName, institution)) {
+            if (db.user.signup(username, password, email, legalName, institution)) {
                 StructuredResponse retval = new StructuredResponse(0, null, null);
                 return retval.toJson().toString();
             }
@@ -80,7 +79,7 @@ public class App {
             String username = jsRequest.getString("username");
 
             // This grabs the informatin about the user settings
-            return db.userSettings(username);
+            return db.user.userSettings(username);
         });
 
         Spark.get("/project", (request, response) -> {
@@ -92,11 +91,13 @@ public class App {
                     String sessionKey = request.headers("sessionKey");
                     int uid = Integer.parseInt(uidStr);
                     if (!encryption.checkSessionKey(uid, sessionKey))
-                        return new StructuredResponse(200, "username and sessionkey do not match", null).toJson().toString();
+                        return new StructuredResponse(200, "username and sessionkey do not match", null).toJson()
+                                .toString();
                 } catch (Exception e) {
-                    return new StructuredResponse(300, "header format fault: " + e.toString(), null).toJson().toString();
+                    return new StructuredResponse(300, "header format fault: " + e.toString(), null).toJson()
+                            .toString();
                 }
-               JSONArray projectList = db.getProjectListing();
+                JSONArray projectList = db.project.getProjectListing();
                 JSONObject js = new JSONObject();
                 js.put("projectList", projectList);
                 // System.err.println(js);

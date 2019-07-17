@@ -1,4 +1,3 @@
-
 class Source {
     constructor(name, image, info1, info2) {
         this.name = name;
@@ -7,6 +6,15 @@ class Source {
         this.info2 = info2;
     }
 }
+
+class Institution{
+    constructor(institution, index, container){
+        this.institution = institution;
+        this.index = index;
+        this.container = container;
+    }
+}
+
 // containers to hold image and information about microscopes in source page
 var source_infoContainer = new PIXI.Container();
 var ins_infoContainer = new PIXI.Container();
@@ -32,7 +40,7 @@ var defaultLines = 6; // default number of lines to display
 var insArr = new Array (10);
 var insHexArr = new Array (10);
 var insTile = "Images/institution/cmu.png";
-var insImages = ['Images/institution/cmu.png', 'Images/institution/drexel.png', 'Images/institution/lehigh.png', 'Images/institution/ohio.png', 'Images/institution/pennstate.png',];
+var insImages = ['Images/institution/cmu.png', 'Images/institution/drexel.png', 'Images/institution/lehigh.png', 'Images/institution/ohio.png', 'Images/institution/pennstate.jpg',];
 var insNames = ['CMU', 'Drexel', 'Lehigh', 'Ohio', 'Penn State'];
 var sourceImages = [];
 var sourceTEMNames = ['JEOL JEM-1200EX', 'JEOL JEM-2000FX', 'JEOL JEM-2200FS', 'JEOL JEM-ARM200CF'];
@@ -140,7 +148,7 @@ function drawInsInfo (numIns) {
     x = 50
     y = 100
     var temp = x;
-    for (var i = 0; i < numIns; i++, y += 80 * 1.8) {
+    for (var i = 0; i < insImages.length; i++, y += 80 * 1.3) {
         var ins_infoContainer = new PIXI.Container();
 
         //make the align zigzag
@@ -176,13 +184,17 @@ function drawInsInfo (numIns) {
         ins_infoContainer.addChild(hex1);
         ins_infoContainer.addChild(newSprite);
 
-        institutionArray.push(ins_infoContainer);
+        let newInstitution = new Institution(insImages[i], i, ins_infoContainer);
+        institutionArray.push(newInstitution);
+        
     }
 
     for( var i = 0; i < institutionArray.length; i++ ){
-        app.stage.addChild(institutionArray[i]);
-        institutionArray[i].interactive = true;
-        institutionArray[i].on('pointerdown', drawSourceInfo);
+        app.stage.addChild(institutionArray[i].container);
+        institutionArray[i].container.interactive = true;
+        institutionArray[i].container.on('pointerdown', drawSourceInfo);
+        institutionArray[i].container.on('mouseover', ins_HoverOver);
+        institutionArray[i].container.on('mouseout', ins_HoverOff);
     }
 }
 
@@ -190,7 +202,7 @@ function drawInsInfo (numIns) {
 //lehigh, oakridge, john hopkins, ohio state
 function drawSourceInfo() {
     for( var i = 0; i < institutionArray.length; i++ ){
-        positionTransform(institutionArray[i].x -300, institutionArray[i].y, institutionArray[i], 15);
+        positionTransform(institutionArray[i].container.x -300, institutionArray[i].container.y, institutionArray[i].container, 15);
     }
     ps_title.text = "Sources";
     ps_title.interactive = true;
@@ -409,7 +421,7 @@ function startSourcePage() {
     ps_sampleImage = new PIXI.Text('1', ps_title_style);
     ps_sampleImage.x = app.screen.width / 8 + 38.8;
     ps_sampleImage.y = 117 + 40;
-    app.stage.addChild(ps_sampleImage);
+    //app.stage.addChild(ps_sampleImage);
     
 }
 
@@ -417,7 +429,7 @@ function moveSources(){
     console.log("Array Length: " + institutionArray.length);
     for( var i = 0; i < institutionArray.length; i++ ){
         console.log(i)
-        positionTransform(institutionArray[i].x + 300, institutionArray[i].y, institutionArray[i], 15);
+        positionTransform(institutionArray[i].container.x + 300, institutionArray[i].container.y, institutionArray[i].container, 15);
     }
 
     ps_title.text = "Institutions";

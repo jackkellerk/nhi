@@ -47,10 +47,12 @@ const display_text1 = new PIXI.TextStyle({
     wordWrapWidth: 600,
     letterSpacing: 2
 });
-
-var passwordTextBox;
-var password = "";
 var userTextBox;
+var passwordTextBox;
+var legalTextBox;
+var institutionTextBox;
+
+
 var SU_userTextBox;
 var SU_emailTextBox;
 var SU_passwordTextBox;
@@ -60,7 +62,7 @@ var SU_repasswordTextBox;
 function startPreLogin()
 {
     //Back drop for the pre/login screen and when clicked on will reveal the login screen
-    login_backgroundImage = new PIXI.Sprite.from("Images/login_background.jpg");
+    login_backgroundImage = new PIXI.Sprite.from("Images/login_background2.jpg");
     
     app.stage.addChild(login_backgroundImage);
     login_backgroundImage.width = app.screen.width;
@@ -111,6 +113,22 @@ function startPreLogin()
     preLoginText = new PIXI.Text("Login", preLogin_style);
 
 
+    var mask_hex = new Hexagon({x: app.screen.width/2, y:app.screen.height/2}, 0, pl_radius);
+    mask_hex.graphics.lineStyle(9, 0xFFFFFF);
+    mask_hex.draw(0xFFFFFF, 1);
+    app.stage.removeChild(mask_hex.container);
+   // app.stage.addChild(mask_hex.container);
+
+    const textImg = new PIXI.Sprite.from("Images/Sources/Lehigh/2200_large.jpg");
+    app.stage.addChild(textImg);
+    //textImg.mask = mask_hex.graphics;
+    textImg.width = mask_hex.width;
+    textImg.height = mask_hex.height;
+    textImg.x = app.screen.width/2 - textImg.width/2;
+    textImg.y = app.screen.height/2 - textImg.height/2;
+  // textImg.x = app.screen.width/4;
+  // textImg.y = app.screen.height/4;
+
 
     /** Inner elements of Login UI **/
     
@@ -124,10 +142,10 @@ function startPreLogin()
             color: '#FFFFFF',
             letterSpacing: 2
         }, 
-        box: generateTextLine(login_hex.x-(pl_radius+50)/2, login_hex.y-31, pl_radius+50, 3, 1)
+        box: generateTextLine(login_hex.x-(pl_radius+50)/2, login_hex.y-81, pl_radius+50, 3, 1)
     });
     userTextBox.x = login_hex.x-(pl_radius+50)/2 + 2;
-    userTextBox.y = login_hex.y - 75;
+    userTextBox.y = login_hex.y - 122;
     userTextBox.interactiveChildren = true;
     userTextBox.placeholder = "Username";
     Inner_Login_UI.addChild(userTextBox);
@@ -142,13 +160,48 @@ function startPreLogin()
             color: '#FFFFFF',
             letterSpacing: 2
         }, 
-        box: generateTextLine(login_hex.x-(pl_radius+50)/2, login_hex.y+44, pl_radius+50, 3, 1)
+        box: generateTextLine(login_hex.x-(pl_radius+50)/2, login_hex.y-21, pl_radius+50, 3, 1)
     });
     passwordTextBox.x = login_hex.x-(pl_radius+50)/2 + 2;
-    passwordTextBox.y = login_hex.y;
+    passwordTextBox.y = login_hex.y - 62;
     passwordTextBox.interactiveChildren = true;
     passwordTextBox.placeholder = "Password";
     Inner_Login_UI.addChild(passwordTextBox);
+
+    legalTextBox = new PIXI.TextInput({
+        input: {
+            fontFamily: 'Tahoma',
+            fontSize: '14pt',
+            padding: '10px',
+            width: '250px',
+            color: '#FFFFFF',
+            letterSpacing: 2
+        }, 
+        box: generateTextLine(login_hex.x-(pl_radius+50)/2, login_hex.y+41, pl_radius+50, 3, 1)
+    });
+    legalTextBox.x = login_hex.x-(pl_radius+50)/2 + 2;
+    legalTextBox.y = login_hex.y;
+    legalTextBox.interactiveChildren = true;
+    legalTextBox.placeholder = "Legal Name";
+    Inner_Login_UI.addChild(legalTextBox);
+
+    //Area where user types in password
+    institutionTextBox = new PIXI.TextInput({
+        input: {
+            fontFamily: 'Tahoma',
+            fontSize: '14pt',
+            padding: '10px',
+            width: '250px',
+            color: '#FFFFFF',
+            letterSpacing: 2
+        }, 
+        box: generateTextLine(login_hex.x-(pl_radius+50)/2, login_hex.y+101, pl_radius+50, 3, 1)
+    });
+    institutionTextBox.x = login_hex.x-(pl_radius+50)/2 + 2;
+    institutionTextBox.y = login_hex.y + 60;
+    institutionTextBox.interactiveChildren = true;
+    institutionTextBox.placeholder = "Institution";
+    Inner_Login_UI.addChild(institutionTextBox);
 
     //Interactable text used to move to project selection screen
     let loginText = new PIXI.Text("Login", login_style);
@@ -202,24 +255,7 @@ function startPreLogin()
     app.stage.removeChild(signup_hex.container);
     signUp_UI.addChild(signup_hex.container);
 
-    //This smaller hexagon will act as a button to move back to the login screen
-    var backToLogin_hex = new Hexagon({x: signup_hex.x + signup_hex.width/2, y:signup_hex.y + signup_hex.height/2}, 0, pl_radius/8);
-    backToLogin_hex.graphics.lineStyle(9, 0xFFFFFF);
-    backToLogin_hex.graphics.alpha = 1;
-    backToLogin_hex.graphics.on("pointerdown",moveSignUp);
-    backToLogin_hex.draw(0xFFFFFF, 0);
-    app.stage.removeChild(backToLogin_hex.container);
-    signUp_UI.addChild(backToLogin_hex.container);
-
-    //This text lies within the backtologin button and will be the interactive
-    //section users click on
-    var SU_loginText = new PIXI.Text("Login", signUp_style);
-    SU_loginText.x = backToLogin_hex.x - SU_loginText.width/2;
-    SU_loginText.y = backToLogin_hex.y - SU_loginText.height/2;
-    SU_loginText.interactive = true;
-    SU_loginText.buttonMode = true;
-    SU_loginText.on("pointerdown",moveSignUp);
-    signUp_UI.addChild(SU_loginText);
+    
 
     /** Here begins the many text boxes used in the sign up page **/
     SU_userTextBox = new PIXI.TextInput({
@@ -299,6 +335,18 @@ function startPreLogin()
     SU_signUpText.on("pointerdown", signUpBackend);
     signUp_UI.addChild(SU_signUpText);
     
+    //This text lies within the backtologin button and will be the interactive
+    //section users click on
+    var SU_loginText = new PIXI.Text("Back", signUp_style);
+    SU_loginText.x = signup_hex.x - SU_loginText.width/2;
+    SU_loginText.y = SU_signUpText.y + SU_loginText.height * 3;
+    //signUpText.x = login_hex.x - signUpText.width/2;
+    //signUpText.y = loginText.y + (signUpText.height * 3);
+    SU_loginText.interactive = true;
+    SU_loginText.buttonMode = true;
+    SU_loginText.on("pointerdown",moveSignUp);
+    signUp_UI.addChild(SU_loginText);
+
     app.stage.addChild(signUp_UI);
 }
 

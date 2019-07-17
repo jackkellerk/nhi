@@ -457,3 +457,11 @@ function ps_pointerDown() {
 function ps_pointerOut() {
     this.alpha = 1;
 }
+
+function ins_HoverOver(){
+    scaleTransform(1.05, 1.05, this, 5)
+}
+
+function ins_HoverOff(){
+    scaleTransform(1.0, 1.0, this, 5)
+}

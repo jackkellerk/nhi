@@ -5,7 +5,6 @@ import org.json.JSONObject;
 import edu.lehigh.nhi.multitouch.backend.Encryption;
 import edu.lehigh.nhi.multitouch.backend.StructuredResponse;
 import edu.lehigh.nhi.multitouch.backend.database.DatabaseManager;
-import spark.Spark;
 
 /**
  * Static class for creating routes related to user. Routes include login,

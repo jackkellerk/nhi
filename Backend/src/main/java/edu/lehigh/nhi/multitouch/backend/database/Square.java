@@ -1,6 +1,5 @@
 package edu.lehigh.nhi.multitouch.backend.database;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 public class Square {

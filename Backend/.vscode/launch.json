@@ -2,9 +2,23 @@
     "configurations": [
         {
             "type": "java",
+            "name": "CodeLens (Launch) - InterfaceTest",
+            "request": "launch",
+            "mainClass": "edu.lehigh.nhi.multitouch.backend.route.InterfaceTest",
+            "projectName": "backend"
+        },
+        {
+            "type": "java",
             "name": "CodeLens (Launch) - App",
             "request": "launch",
             "mainClass": "edu.lehigh.nhi.multitouch.backend.App",
+            "projectName": "backend"
+        },
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - ProjectManager",
+            "request": "launch",
+            "mainClass": "edu.lehigh.nhi.multitouch.backend.database.ProjectManager",
             "projectName": "backend"
         },
         {

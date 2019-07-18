@@ -1,4 +1,0 @@
-200, Invalid Json format.
-201, HTTP request contains invalid Json format.
-300, Missing crucial key-value pair in Json object.
-301, Missing crucial key-value pair to create Square Object. Field must be included: pos_x, pos_y, width, height.

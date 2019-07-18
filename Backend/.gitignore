@@ -1,0 +1,7 @@
+target/
+.classpath
+.vscode/
+src/main/resources/web/
+.project
+.settings/
+target/

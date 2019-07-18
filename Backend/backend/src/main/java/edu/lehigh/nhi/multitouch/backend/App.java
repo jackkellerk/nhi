@@ -1,168 +1,43 @@
 package edu.lehigh.nhi.multitouch.backend;
 
+import java.sql.SQLException;
+
+import edu.lehigh.nhi.multitouch.backend.database.DatabaseManager;
+import edu.lehigh.nhi.multitouch.backend.route.ProjectRouteSetter;
+import edu.lehigh.nhi.multitouch.backend.route.UserRouteSetter;
+import edu.lehigh.nhi.multitouch.backend.route.WindowRouteSetter;
 import spark.Spark;
 
-import org.json.*;
-
-import edu.lehigh.nhi.multitouch.backend.database.MySQLConnection;
-
+/**
+ * Main class of the multi-touch project backend. The backend hosts HTTP REST
+ * Protocol routes, and communicates with the database. Routes form APIs for the
+ * frontend to query data from database, and to inquire the backend to perform
+ * procedures and calculations.
+ */
 public class App {
 
     public static void main(String[] args) {
 
         final Encryption encryption = Encryption.getEncryption();
 
-        final MySQLConnection db = MySQLConnection.getConnection();
-
         Spark.staticFileLocation("/web");
-        // The first column needs to be the address we are attempting to access the
-        // information from
-        // enableCORS("http://localhost:8080", "*", "*");
-
-        // Get the port on which to listen for requests
-        // Spark.port(getIntFromEnv("PORT", 4567));
-
-        // Set up the location for serving static files
-        // Spark.staticFileLocation("/web");
-
-        // Set up a route for serving the main page
         Spark.get("/", (req, res) -> {
             res.redirect("/master.html");
             return "";
         });
 
-        Spark.post("/login", (request, response) -> {
-            // ensure status 200 OK, with a MIME type of JSON
-            response.status(200);
-            response.type("application/json");
-            try {
-                JSONObject jsRequest = new JSONObject(request.body());
-                String username = jsRequest.getString("username");
-                String password = jsRequest.getString("password");
-                System.out.println(username + " , " + password);
-                if (db.user.login(username, password)) {
-                    int uid = db.user.getUidByUsername(username);
-                    String sessionKey = encryption.addSessionkey(uid);
-                    JSONObject dataJs = new JSONObject();
-                    dataJs.put("session_key", sessionKey);
-                    dataJs.put("uid", uid);
-                    StructuredResponse retval = new StructuredResponse(0, null, dataJs);
-                    return retval.toJson().toString();
-                }
-                StructuredResponse retval = new StructuredResponse(100, "Login failed", null);
-                return retval.toJson().toString();
-            } catch (Exception e) {
-                return new StructuredResponse(100, e.toString(), null).toJson().toString();
-            }
-        });
-
-        Spark.post("/signup", (request, response) -> {
-            // Gather incoming info (ignore profilepicture for now)
-            JSONObject jsRequest = new JSONObject(request.body());
-            String username = jsRequest.getString("username");
-            String password = jsRequest.getString("password");
-            String email = jsRequest.getString("email");
-            String institution = jsRequest.getString("institution");
-            String legalName = jsRequest.getString("legalname");
-            response.status(200);
-            if (db.user.signup(username, password, email, legalName, institution)) {
-                StructuredResponse retval = new StructuredResponse(0, null, null);
-                return retval.toJson().toString();
-            }
-            StructuredResponse retval = new StructuredResponse(100, "Signup failed", null);
-            return retval.toJson().toString();
-        });
-
-        Spark.post("/usersettings", (request, response) -> {
-            // Gather information from request
-            JSONObject jsRequest = new JSONObject(request.body());
-            String username = jsRequest.getString("username");
-
-            // This grabs the informatin about the user settings
-            return db.user.userSettings(username);
-        });
-
-        Spark.get("/project", (request, response) -> {
-            response.status(200);
-            response.type("application/json");
-            try {
-                try {
-                    String uidStr = request.headers("uid");
-                    String sessionKey = request.headers("sessionKey");
-                    int uid = Integer.parseInt(uidStr);
-                    if (!encryption.checkSessionKey(uid, sessionKey))
-                        return new StructuredResponse(200, "username and sessionkey do not match", null).toJson()
-                                .toString();
-                } catch (Exception e) {
-                    return new StructuredResponse(300, "header format fault: " + e.toString(), null).toJson()
-                            .toString();
-                }
-                JSONArray projectList = db.project.getProjectListing();
-                JSONObject js = new JSONObject();
-                js.put("projectList", projectList);
-                // System.err.println(js);
-                return new StructuredResponse(0, null, js).toJson().toString();
-            } catch (Exception e) {
-                return new StructuredResponse(100, e.toString(), null).toJson().toString();
-            }
-        });
-
-        Spark.get("/p/:pid", (request, response) -> {
-            int pid = Integer.parseInt(request.params("pid"));
-            response.status(200);
-            response.type("application/json");
-            try {
-                return new StructuredResponse(0, null, db.getProject(pid)).toJson().toString();
-            } catch (Exception e) {
-                return new StructuredResponse(100, e.toString(), null).toJson().toString();
-            }
-        });
-
-        Spark.post("/w/:wid/update_pos", (request, response) -> {
-            try {
-                JSONObject jsRequest = new JSONObject(request.body());
-                float pos_x = jsRequest.getFloat("pos_x");
-                float pos_y = jsRequest.getFloat("pos_y");
-                float width = jsRequest.getFloat("width");
-                float height = jsRequest.getFloat("height");
-                int wid = Integer.parseInt(request.params("wid"));
-                int num_rows_updated = db.updateWindowPosition(wid, pos_x, pos_y, width, height);
-                JSONObject retval = new JSONObject();
-                retval.put("num_rows_updated", num_rows_updated);
-                return new StructuredResponse(0, null, retval).toJson().toString();
-            } catch (Exception e) {
-                return new StructuredResponse(100, e.toString(), null).toJson().toString();
-            }
-        });
+        DatabaseManager db;
+        try {
+            db = new DatabaseManager();
+            ProjectRouteSetter.setRoutes(db, encryption);
+            UserRouteSetter.setRoutes(db, encryption);
+            WindowRouteSetter.setRoutes(db, encryption);
+       
+        } catch (SQLException e) {
+            System.err.println("Unexpected Error Occured During Setup.");
+            e.printStackTrace();
+            System.err.println("quiting...");
+            System.exit(1);
+        }
     }
-
-    // private static void enableCORS(final String origin, final String methods,
-    // final String headers) {
-
-    // Spark.options("/*", (request, response) -> {
-
-    // String accessControlRequestHeaders =
-    // request.headers("Access-Control-Request-Headers");
-    // if (accessControlRequestHeaders != null) {
-    // response.header("Access-Control-Allow-Headers", accessControlRequestHeaders);
-    // }
-
-    // String accessControlRequestMethod =
-    // request.headers("Access-Control-Request-Method");
-    // if (accessControlRequestMethod != null) {
-    // response.header("Access-Control-Allow-Methods", accessControlRequestMethod);
-    // }
-
-    // return "OK";
-    // });
-
-    // Spark.before((request, response) -> {
-    // response.header("Access-Control-Allow-Origin", origin);
-    // response.header("Access-Control-Allow-Credentials", "true");
-    // //response.header("Access-Control-Request-Method", methods);
-    // //response.header("Access-Control-Allow-Headers", headers);
-    // // Note: this may or may not be necessary in your particular application
-    // response.type("application/json");
-    // });
-    // }
 }

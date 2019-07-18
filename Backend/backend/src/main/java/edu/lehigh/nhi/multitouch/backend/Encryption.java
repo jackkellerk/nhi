@@ -3,11 +3,11 @@ package edu.lehigh.nhi.multitouch.backend;
 import java.math.BigInteger;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
-import java.security.spec.InvalidKeySpecException;
+// import java.security.spec.InvalidKeySpecException;
 import java.util.Hashtable;
 
-import javax.crypto.SecretKeyFactory;
-import javax.crypto.spec.PBEKeySpec;
+// import javax.crypto.SecretKeyFactory;
+// import javax.crypto.spec.PBEKeySpec;
 
 public class Encryption {
     // // Interations of SHA1 hasing.
@@ -18,23 +18,24 @@ public class Encryption {
     public static final int SESSION_KEY_LENGTH = 128;
 
     // static class EncryptResult {
-    //     private byte[] mHashedPassword;
-    //     private byte[] mSalt;
+    // private byte[] mHashedPassword;
+    // private byte[] mSalt;
 
-    //     // Methods in this class are the only place to generate an EncryptResult, so the
-    //     // constructor is private.
-    //     private EncryptResult(byte[] hashedPassword, byte[] salt) {
-    //         mHashedPassword = hashedPassword;
-    //         mSalt = salt;
-    //     }
+    // // Methods in this class are the only place to generate an EncryptResult, so
+    // the
+    // // constructor is private.
+    // private EncryptResult(byte[] hashedPassword, byte[] salt) {
+    // mHashedPassword = hashedPassword;
+    // mSalt = salt;
+    // }
 
-    //     public byte[] getHashedPassword() {
-    //         return mHashedPassword;
-    //     }
+    // public byte[] getHashedPassword() {
+    // return mHashedPassword;
+    // }
 
-    //     public byte[] getSalt() {
-    //         return mSalt;
-    //     }
+    // public byte[] getSalt() {
+    // return mSalt;
+    // }
     // }
 
     private Hashtable<Integer, String> sessionKeyTable;
@@ -43,7 +44,6 @@ public class Encryption {
 
     private Encryption() {
         sessionKeyTable = new Hashtable<>();
-        //TODO: remove this in the final production
         sessionKeyTable.put(8, "test_session_key");
     }
 
@@ -54,7 +54,7 @@ public class Encryption {
         return INSTANCE;
     }
 
-    synchronized boolean checkSessionKey(Integer uid, String sessionKey) {
+    public synchronized boolean checkSessionKey(Integer uid, String sessionKey) {
         if (sessionKey == null) {
             return false;
         }
@@ -67,7 +67,7 @@ public class Encryption {
         return true;
     }
 
-    synchronized String addSessionkey(Integer uid) throws NoSuchAlgorithmException {
+    public synchronized String addSessionkey(Integer uid) throws NoSuchAlgorithmException {
         if (uid == null) {
             return null;
         }
@@ -78,7 +78,7 @@ public class Encryption {
         return sessionKey;
     }
 
-    synchronized boolean removeSessionKey(Integer uid) {
+    public synchronized boolean removeSessionKey(Integer uid) {
         if (uid == null) {
             return false;
         }
@@ -90,13 +90,13 @@ public class Encryption {
     }
 
     // static EncryptResult generateStorngPasswordHash(String password)
-    //         throws NoSuchAlgorithmException, InvalidKeySpecException {
-    //     char[] chars = password.toCharArray();
-    //     byte[] salt = getSafeRandom(SALT_LENGTH);
-    //     PBEKeySpec spec = new PBEKeySpec(chars, salt, ITERATIONS, HASH_LENGTH);
-    //     SecretKeyFactory skf = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
-    //     byte[] hash = skf.generateSecret(spec).getEncoded();
-    //     return new EncryptResult(hash, salt);
+    // throws NoSuchAlgorithmException, InvalidKeySpecException {
+    // char[] chars = password.toCharArray();
+    // byte[] salt = getSafeRandom(SALT_LENGTH);
+    // PBEKeySpec spec = new PBEKeySpec(chars, salt, ITERATIONS, HASH_LENGTH);
+    // SecretKeyFactory skf = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
+    // byte[] hash = skf.generateSecret(spec).getEncoded();
+    // return new EncryptResult(hash, salt);
     // }
 
     private static String getRandomSessionKey() throws NoSuchAlgorithmException {

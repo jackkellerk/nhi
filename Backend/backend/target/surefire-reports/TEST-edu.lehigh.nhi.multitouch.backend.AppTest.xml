@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite tests="1" failures="0" name="edu.lehigh.nhi.multitouch.backend.AppTest" time="0.003" errors="0" skipped="0">
+<testsuite tests="1" failures="0" name="edu.lehigh.nhi.multitouch.backend.AppTest" time="0.004" errors="0" skipped="0">
   <properties>
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
     <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk1.8.0_144\jre\bin"/>
@@ -29,7 +29,7 @@
     <property name="os.name" value="Windows 10"/>
     <property name="classworlds.conf" value="C:\Program Files\apache-maven-3.5.4\bin\..\bin\m2.conf"/>
     <property name="sun.jnu.encoding" value="GBK"/>
-    <property name="java.library.path" value="C:\Program Files\Java\jdk1.8.0_144\bin;C:\WINDOWS\Sun\Java\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\ProgramData\DockerDesktop\version-bin;C:\Program Files\Docker\Docker\Resources\bin;C:\ProgramData\Oracle\Java\javapath;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;&quot;C:\MicGW\bin;C:\MinGW\MSYS\1.0\bin&quot;;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\dotnet\;C:\Program Files\Microsoft SQL Server\130\Tools\Binn\;C:\Program Files\Git\cmd;C:\Program Files\apache-maven-3.5.4\bin;C:\Program Files (x86)\sbt\bin;C:\ProgramData\Anaconda3;C:\Program Files\MATLAB\R2018b\bin;C:\Program Files\nodejs\;C:\Program Files\Intel\WiFi\bin\;C:\Program Files\Common Files\Intel\WirelessCommon\;C:\Users\xuw22\OneDrive - Lehigh University\project-jeff\apache-maven-3.5.3-bin\apache-maven-3.5.3\bin;C:\Program Files\Java\jdk1.8.0_144\bin;C:\Program Files\Microsoft VS Code Insiders\bin;C:\Users\xuw22\AppData\Roaming\Dashlane\6.1.0.11480\bin\Firefox_Extension\{442718d9-475e-452a-b3e1-fb1ee16b8e9f}\components;C:\Users\xuw22\AppData\Roaming\Dashlane\6.1.0.11480\ucrt;C:\Users\xuw22\AppData\Roaming\Dashlane\6.1.0.11480\bin\Qt;C:\Users\xuw22\AppData\Roaming\Dashlane\6.1.0.11480\ucrt;C:\Users\xuw22\AppData\Roaming\Dashlane\6.1.0.11480\bin\Ssl;C:\Users\xuw22\AppData\Local\Programs\Microsoft VS Code Insiders\bin;C:\Users\xuw22\AppData\Local\Microsoft\WindowsApps;C:\Program Files\Git;C:\Program Files\heroku\bin;C:\Users\xuw22\AppData\Local\Programs\Microsoft VS Code\bin;C:\ProgramData\Anaconda3\Scripts;C:\Program Files\swipl\bin;C:\bazel;C:\msys32\usr\bin;C:\Users\xuw22\AppData\Roaming\npm;."/>
+    <property name="java.library.path" value="C:\Program Files\Java\jdk1.8.0_144\bin;C:\WINDOWS\Sun\Java\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\ProgramData\DockerDesktop\version-bin;C:\Program Files\Docker\Docker\Resources\bin;C:\ProgramData\Oracle\Java\javapath;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;&quot;C:\MicGW\bin;C:\MinGW\MSYS\1.0\bin&quot;;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\dotnet\;C:\Program Files\Microsoft SQL Server\130\Tools\Binn\;C:\Program Files\Git\cmd;C:\Program Files\apache-maven-3.5.4\bin;C:\Program Files (x86)\sbt\bin;C:\ProgramData\Anaconda3;C:\Program Files\MATLAB\R2018b\bin;C:\Program Files\nodejs\;C:\Program Files\Intel\WiFi\bin\;C:\Program Files\Common Files\Intel\WirelessCommon\;C:\Program Files\MySQL\MySQL Shell 8.0\bin\;."/>
     <property name="maven.conf" value="C:\Program Files\apache-maven-3.5.4\bin\../conf"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
     <property name="java.class.version" value="52.0"/>
@@ -65,5 +65,5 @@
     <property name="sun.desktop" value="windows"/>
     <property name="sun.cpu.isalist" value="amd64"/>
   </properties>
-  <testcase classname="edu.lehigh.nhi.multitouch.backend.AppTest" name="testApp" time="0.003"/>
+  <testcase classname="edu.lehigh.nhi.multitouch.backend.AppTest" name="testApp" time="0.004"/>
 </testsuite>

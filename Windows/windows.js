@@ -110,7 +110,7 @@ function startWindows(){
 
   let w_saveMenu = new PopupRect("Would you like to Save & Exit this Project? Would you? Would you?", "Save & Exit");
   w_saveMenu.graphics.lineStyle(5, 0xdddddd, 3);
-  w_saveMenu.drawPopup(0x7f7f7f, 2);
+  w_saveMenu.drawPopup();
 
   w_saveMenu.close.interactive = true;
   w_saveMenu.close.on('mouseover', function(){ w_saveMenu.close.alpha = 1; });
@@ -126,6 +126,8 @@ function startWindows(){
   w_saveMenu.leftButton.on('mouseout', function(){ w_saveMenu.leftButton.alpha = 0.7; });
   w_saveMenu.leftButton.on('pointerdown', function(){
     currentActivity = activityArray[1];
+    alphaTransform(sprite, 0.0, 10);
+    positionTransform(1000, -app.stage.y, app.stage, 12);
     updateActivity();
   });
 
@@ -557,7 +559,7 @@ function startWindows(){
 
   // w_workWindow is a PIXI Graphic
   w_workWindow.beginFill(0x000000);
-  w_workWindow.drawPolygon([3.5,0, w*0.7-2,0, w*0.7-2,w*0.4-2, 5,w*0.4-2]);
+  w_workWindow.drawPolygon([0,0, w*0.7-2,0, w*0.7-2,w*0.4-2, 0,w*0.4-2]);
   w_workWindow.endFill();
   //w_workWindow.anchor.set(0.5);
   w_workWindow.position.x = w*0.25;
@@ -613,9 +615,9 @@ function startWindows(){
 
   // Multi-Block Analysis
   startMultiblock();
-  MBContainer.scale.x = MBContainer.scale.y = 0.72;
-  MBContainer.position.x = app.screen.width*0.25 - 5;
-  MBContainer.position.y = 20;
+  //MBContainer.scale.x = MBContainer.scale.y = 0.72;
+  //MBContainer.position.x = app.screen.width*0.25 - 5;
+  //MBContainer.position.y = 20;
 
   // Line-Intensity Analysis
   LI_showAll(LIContainer);

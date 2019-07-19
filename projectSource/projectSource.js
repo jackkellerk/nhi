@@ -13,6 +13,10 @@ class Institution{
         this.index = index;
         this.container = container;
     }
+
+    getIns(){
+        return this.institution;
+    }
 }
 
 // containers to hold image and information about microscopes in source page
@@ -21,7 +25,6 @@ var ins_infoContainer = new PIXI.Container();
 
 // graphics for line and hexagon
 var line = new PIXI.Graphics();
-var hex = new PIXI.Graphics();
 var ins_mask = new PIXI.Graphics();
 var ps_title;
 
@@ -40,7 +43,8 @@ var defaultLines = 6; // default number of lines to display
 var insArr = new Array (10);
 var insHexArr = new Array (10);
 var insTile = "Images/institution/cmu.png";
-var insImages = ['Images/institution/cmu.png', 'Images/institution/drexel.png', 'Images/institution/lehigh.png', 'Images/institution/ohio.png', 'Images/institution/pennstate.jpg',];
+var insImages = ['Images/institution/cmu.png', 'Images/institution/drexel.png', 'Images/institution/lehigh.png', 'Images/institution/ohio.png',
+            'Images/institution/pennstate.jpg', 'Images/institution/TempleUniversity.png', 'Images/institution/StonyBrook.png','Images/institution/JohnHopkins.jpg'];
 var insNames = ['CMU', 'Drexel', 'Lehigh', 'Ohio', 'Penn State'];
 var sourceImages = [];
 var sourceTEMNames = ['JEOL JEM-1200EX', 'JEOL JEM-2000FX', 'JEOL JEM-2200FS', 'JEOL JEM-ARM200CF'];
@@ -129,13 +133,13 @@ ps_prevPage.on("pointerupoutside", ps_pointerOut);
 ps_buttonCommands.push(ps_prevPage);
 
 
-var institutionArray = new Array();
+var institutionArray = [];
 /**
  * 
  * @param numSource 
  */
 function drawInsInfo (numIns) {
-    var ins_infoContainer = new PIXI.Container();
+    
     // set number of sources if numSource is null
     if (numIns == null) {
         numIns = defaultIns;
@@ -145,83 +149,56 @@ function drawInsInfo (numIns) {
         totalIns = numSource;
     }
     // Hexagon Info: (all numbers already scaled)
-    x = 50
-    y = 100
-    var temp = x;
-    for (var i = 0; i < insImages.length; i++, y += 80 * 1.3) {
-        var ins_infoContainer = new PIXI.Container();
-
-        //make the align zigzag
-        if (i%2 != 0) {
-            x += 80;
-        } else {
-            x = temp;
-        }
-        
-        var newSprite = new PIXI.Sprite.from(insImages[i]);
-        newSprite.width = 100;
-        newSprite.height = 100;
-        newSprite.x = x + 30;
-        newSprite.y = y+ 30;
-
-        var hex = new PIXI.Graphics();
-        // set color as white (0xffffff), line thickness as 3
-        hex.lineStyle(2,0x808080, 3);
-        // fill hexagon with grey (0x808080)
-        hex.beginFill(0xffffff);
-        // draw hexagon for institution
-        hex.drawPolygon([x+(34.8 + 4)*2,y, x+(34.8*2 + 4)*2,y+20*2, x+(34.8*2 + 4)*2,y+60*2, x+(34.8 + 4)*2,y+80*2, x+4*2,y+60*2, x+4*2,y+20*2]);
-        hex.endFill();
-        //newSprite.mask = hex;
-
-        //Outline Hexegon
-        var hex1 = new PIXI.Graphics();
-        hex1.lineStyle(2, 0x808080, 4);
-        // draw hexagon for institution
-        hex1.drawPolygon([x+(34.8 + 4)*2,y, x+(34.8*2 + 4)*2,y+20*2, x+(34.8*2 + 4)*2,y+60*2, x+(34.8 + 4)*2,y+80*2, x+4*2,y+60*2, x+4*2,y+20*2]);
-       
-        ins_infoContainer.addChild(hex);
-        ins_infoContainer.addChild(hex1);
-        ins_infoContainer.addChild(newSprite);
-
-        let newInstitution = new Institution(insImages[i], i, ins_infoContainer);
-        institutionArray.push(newInstitution);
-        
-    }
-
-    for( var i = 0; i < institutionArray.length; i++ ){
-        app.stage.addChild(institutionArray[i].container);
-        institutionArray[i].container.interactive = true;
-        institutionArray[i].container.on('pointerdown', drawSourceInfo);
-        institutionArray[i].container.on('mouseover', ins_HoverOver);
-        institutionArray[i].container.on('mouseout', ins_HoverOff);
-    }
+    x = app.screen.width/6;
+    y = app.screen.height/5;
+    var scale = 2.2
+    xChange = 100 * ((scale -2.3) + 1.0);
+    showInstitutions(x,y, 2.2);
+    showInstitutions(x + (xChange*4), y, 2.2)
+    showInstitutions(x + (xChange*8), y, 2.2)
+    var count = 0;
+    institutionArray.forEach( function(element) {
+        console.log(count);
+        app.stage.addChild(element.container);
+        var text = element.institution
+        var res = text.replace("Images/institution/", "");
+        res = res.replace(".png", "")
+        res = res.replace(".jpg", "")
+        console.log(res)
+        element.container.interactive = true;
+        element.container.on('pointerdown', drawSourceInfo);
+        element.container.on('mouseout', ins_HoverOff);
+        element.container.on('mouseover', ins_HoverOver1);
+        element.container.on('mouseover', function(){
+            ins_HoverOver(res);
+        });
+        count++;
+    });
 }
 
 
 //lehigh, oakridge, john hopkins, ohio state
 function drawSourceInfo() {
+    var count = 1;
+    var change = true;
     for( var i = 0; i < institutionArray.length; i++ ){
-        positionTransform(institutionArray[i].container.x -300, institutionArray[i].container.y, institutionArray[i].container, 15);
+        count++
+        if (count == 3){
+            count = 0
+            change ^= true;
+        }if ( change == true){
+            positionTransform(institutionArray[i].container.x -1000, institutionArray[i].container.y -1000, institutionArray[i].container, 30);
+            alphaTransform(institutionArray[i].container, 0.0, Math.floor(Math.random() * 100) + 1)
+        }else{
+            alphaTransform(institutionArray[i].container, 0.0, Math.floor(Math.random() * 100) + 1)
+            positionTransform(institutionArray[i].container.x +1000, institutionArray[i].container.y + 1000, institutionArray[i].container, 30);
+        }
     }
     ps_title.text = "Sources";
     ps_title.interactive = true;
     ps_title.buttonMode = true;
-    positionTransform(0.0, source_infoContainer.y, source_infoContainer, 10);
+    //positionTransform(0.0, source_infoContainer.y, source_infoContainer, 10);
     //alphaTransform(source_infoContainer, 1, 10)
-    hex.clear();
-
-    // set number of sources if numSource is null
-    //if (numSource == null) {
-      //  numSource = defaultLines;
-    //    totalSource = defaultLines;
-   // }
-   // else {
-    //    totalSource = numSource;
-  //  }
-
-    // set color as white (0xffffff), line thickness as 3
-    hex.lineStyle(9, 0xffffff, 9);
 
     // calculate the screen_limit
     x = app.screen.width / 8;
@@ -233,28 +210,24 @@ function drawSourceInfo() {
     // reset x, y which shows (x,y) coordinates for hexagon containers in source page
     x = app.screen.width / 8;
     y = app.screen.height / 8;
-    
-    // fill hexagon with grey (0x808080)
-    hex.beginFill(0x808080);
 
     var textContainer = new PIXI.Container();
     var hexContainer = new PIXI.Container();
-
-    // Hexagon Info: (all numbers already scaled)
-    // a (side of hexagon) : sqrt((34.8 * 2)^2 + (20 * 2)^2) = 80.28
-    // 2R (circumcircle of hexagon) : 80 * 2 = 160
-    // gap bewteen hexagon: 4 * 2 = 8
-    // x difference: 34.6
-    // y difference: 20
-    // scale: *2
     
     // make rows of hexagon, which depends on the number of sources and y_limit
     for (var i = 0; i < 3; i++, y += 80 * 2 + 4 * 2) {
+        var hex = new PIXI.Graphics();
+        hex.clear();
+        // set color as white (0xffffff), line thickness as 3
+        hex.lineStyle(6, 0xffffff, 9);
+        // fill hexagon with grey (0x808080)
+        hex.beginFill(0x808080);
+
+
         var sourceName;
         var imgPath;
         var info1;
         var info2;
-
         if(i < defaultSources.length){
             sourceName = defaultSources[i].name;
             imgPath = defaultSources[i].image;
@@ -286,7 +259,7 @@ function drawSourceInfo() {
         hexContainer.addChild(mask_hex.container);
 
         var border_hex = new Hexagon({x: app.screen.width/8, y: 0 + app.screen.height * ((1 + i)/4)}, 0, pl_radius);
-        border_hex.graphics.lineStyle(9, 0xFFFFFF);
+        border_hex.graphics.lineStyle(6, 0xFFFFFF);
         border_hex.draw(0xFFFFFF, 0);
         app.stage.removeChild(border_hex.container);
         hexContainer.addChild(border_hex.container);
@@ -345,37 +318,28 @@ function drawSourceInfo() {
         tiny_hex2.graphics.endFill();
         app.stage.removeChild(tiny_hex2.container);
         hexContainer.addChild(tiny_hex2.container);
+        // end filling
+        hex.endFill();
 
+        hex.interactive = true;
+        hex.buttonMode = true;
+        hex.on('pointerdown', clickSource);
 
-
-        //        hex.drawPolygon([x+(34.8 + 4)*2,y, x+(34.8*2 + 4)*2,y+20*2, x+(34.8*2 + 4)*2,y+60*2, x+(34.8 + 4)*2,y+80*2, x+4*2,y+60*2, x+4*2,y+20*2]);
-
-        // draw octagon infobox
-        //x_infoends = x;
-        //x += (34.8 + 34.8 + 4) * 2;
-        // hex.drawPolygon([x+(34.8 + 4)*2,y,  screen_limit+(34.8 + 4)*2,y,  screen_limit+(34.8*2 + 4)*2,y+20*2,  screen_limit+(34.8*2 + 4)*2,y+(20*3)*2, screen_limit+(34.8 + 4)*2,y+(20*4)*2,  x+(34.8 + 4)*2,y+(20*4)*2,  x+4*2,y+(20*3)*2,  x+4*2,y+20*2]);
-
-//        x = app.screen.width / 8;
+        // add child to the container
+        source_infoContainer.addChild(hex);
     }
 
-    // end filling
-    hex.endFill();
-
-    // stage the line 
-    // app.stage.addChild(line);
-
-    // add child to the container
-    source_infoContainer.addChild(hex);
     source_infoContainer.addChild(textContainer);
     source_infoContainer.addChild(hexContainer);
 
-    // source_infoContainer.addChild(line);
-    // source_infoContainer.addChild(ps_title);
     source_infoContainer.addChild(ps_prevPage);
     source_infoContainer.addChild(ps_nextPage);
 
+    source_infoContainer.x = app.stage.width + 10;
     // stage the infroConatiner
     app.stage.addChild(source_infoContainer);
+
+    positionTransform(0, 0, source_infoContainer, 30)
 
 }
 
@@ -414,22 +378,34 @@ function startSourcePage() {
 
     // ps_title = new PIXI.Text('Sources: Lehigh', ps_title_style);
     ps_title.x =  app.screen.width / 16;
-    ps_title.y = app.screen.height / 16;
+    ps_title.y = app.screen.height / 25;
     app.stage.addChild(ps_title);
 
     // set example texts
-    ps_sampleImage = new PIXI.Text('1', ps_title_style);
-    ps_sampleImage.x = app.screen.width / 8 + 38.8;
-    ps_sampleImage.y = 117 + 40;
-    //app.stage.addChild(ps_sampleImage);
+    ps_sampleImage = new PIXI.Text(' ', ps_title_style);
+    ps_sampleImage.x = app.screen.width * (6/8);
+    ps_sampleImage.y = app.screen.height / 25;
+    app.stage.addChild(ps_sampleImage);
     
 }
 
 function moveSources(){
     console.log("Array Length: " + institutionArray.length);
+    var count = 1;
+    var change = true;
     for( var i = 0; i < institutionArray.length; i++ ){
-        console.log(i)
-        positionTransform(institutionArray[i].container.x + 300, institutionArray[i].container.y, institutionArray[i].container, 15);
+        count++
+        if (count == 3){
+            count = 0
+            change ^= true;
+        }if ( change == true){
+            positionTransform(institutionArray[i].container.x +1000, institutionArray[i].container.y + 1000, institutionArray[i].container, 30);
+            alphaTransform(institutionArray[i].container, 1.0, 10)
+        }else{
+            alphaTransform(institutionArray[i].container, 1.0, 10)
+            positionTransform(institutionArray[i].container.x - 1000, institutionArray[i].container.y - 1000, institutionArray[i].container, 30);
+        }
+        
     }
 
     ps_title.text = "Institutions";
@@ -439,6 +415,11 @@ function moveSources(){
     positionTransform(app.screen.width + 200, source_infoContainer.y, source_infoContainer, 30);
     //alphaTransform(source_infoContainer, 0, 30)
 
+}
+
+function clickSource(){
+    console.log("hi")
+    this.lineStyle(6, 0x808080, 9);
 }
 
 
@@ -470,10 +451,70 @@ function ps_pointerOut() {
     this.alpha = 1;
 }
 
-function ins_HoverOver(){
-    scaleTransform(1.05, 1.05, this, 5)
+function ins_HoverOver(input){
+    ps_sampleImage.text = input;
+}
+
+function ins_HoverOver1(){
+    scaleTransform(1.02, 1.02, this, 5)
 }
 
 function ins_HoverOff(){
     scaleTransform(1.0, 1.0, this, 5)
+    ps_sampleImage.text = " ";
+}
+
+function showInstitutions(startX, startY, inScale){
+    var x = startX
+    var y = startY
+    var scale = inScale;
+    var temp = x;
+    var incX = 100 * ((scale -2.3) + 1.0);
+    var incY = 120 * ((scale -2.0) + 1.0);
+    for (var i = 0; i < insImages.length; i++, x += incX *2 ) {
+        var ins_infoContainer = new PIXI.Container();
+        
+        var newSprite = new PIXI.Sprite.from(insImages[i]);
+        newSprite.width = 100 * (((scale-2.1) * 0.5) + 1.0);
+        newSprite.height = 100 * (((scale-2.1) * 0.5) + 1.0);
+        newSprite.x = x + 30 * ((scale-2.0) + 1.0);
+        newSprite.y = y + 30 * ((scale-2.0) + 1.0);
+
+        var hex = new PIXI.Graphics();
+        // set color as white (0xffffff), line thickness as 3
+        hex.lineStyle(2,0x808080, 3);
+        // fill hexagon with grey (0x808080)
+        hex.beginFill(0xffffff);
+        // draw hexagon for institution
+        hex.drawPolygon([x+(34.8 + 4)*scale, y, x+(34.8*2 + 4)*scale, y+20*scale, x+(34.8*2 + 4)*scale, y+60*scale, x+(34.8 + 4)*scale, y+80*scale, x+4*scale ,y+60*scale, x+4*scale, y+20*scale]);
+        hex.endFill();
+        //newSprite.mask = hex;
+
+        //Outline Hexegon
+        var hex1 = new PIXI.Graphics();
+        hex1.lineStyle(2, 0x808080, 4);
+        // draw hexagon for institution
+        hex1.drawPolygon([x+(34.8 + 4)*scale, y, x+(34.8*2 + 4)*scale, y+20*scale, x+(34.8*2 + 4)*scale, y+60*scale, x+(34.8 + 4)*scale, y+80*scale, x+4*scale ,y+60*scale, x+4*scale, y+20*scale]);
+       
+        ins_infoContainer.addChild(hex);
+        ins_infoContainer.addChild(hex1);
+        ins_infoContainer.addChild(newSprite);
+        ins_infoContainer.pivot.x = (ins_infoContainer.width/2)
+        ins_infoContainer.pivot.y = (ins_infoContainer.height/2)
+
+        var newInstitution = new Institution(insImages[i], i, ins_infoContainer);
+        institutionArray.push(newInstitution);
+
+        //make the align zigzag
+        var compare = i % 4;
+        if ( compare == 1 && i != 0 ){
+            x -= incX*3
+            y += incY;
+        } else if ( compare == 3){
+            x = temp - incX * 2;
+            y += incY;
+        }
+        
+    }
+    
 }

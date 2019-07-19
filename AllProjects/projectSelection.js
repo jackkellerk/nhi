@@ -1,5 +1,7 @@
-const a_style1 = new PIXI.TextStyle({fill: "#d3d3d3", fontFamily: "Helvetica", fontSize: 32, letterSpacing: 3});
-const a_style2 = new PIXI.TextStyle({fill: "#d3d3d3", fontFamily: "Helvetica", fontSize: 24, letterSpacing: 3});
+const a_titlestyle = new PIXI.TextStyle({fill: "#d3d3d3", fontFamily: "Helvetica", fontSize: 32, letterSpacing: 3});
+const a_subtitlestyle = new PIXI.TextStyle({fill: "#d3d3d3", fontFamily: "Helvetica", fontSize: 24, letterSpacing: 3});
+const a_projecttitlestyle = new PIXI.TextStyle({fill: "#ffffff", fontFamily: "Helvetica", fontSize: 18, letterSpacing: 1.5});
+const a_projectselectstyle = new PIXI.TextStyle({fill: "#606060", fontFamily: "Arial", fontWeight: "bold", fontSize: 14, letterSpacing:1.5});
 
 var a_titleContainer = new PIXI.Container();
 var a_settingsContainer = new PIXI.Container();
@@ -22,7 +24,7 @@ var userSettingsResponse; // valid uses of userSettingsResponse are: userSetting
 function startAllProjects()
 {
     // This loads the information about the userSettings
-    var username = userTextBox.text; // This will probably be global and accessable from the login screen files, but for now it is here
+    var username = "jkk322"; //userTextBox.text; // This will probably be global and accessable from the login screen files, but for now it is here
     $.ajax({
         method: 'POST',
         contentType: 'application/json',
@@ -71,7 +73,7 @@ function createUIProjects()
         a_drawHexGridTouch();
         hexSize = 27;
 
-        a_titleContainer.scale.x = a_titleContainer.scale.y = 0.5;
+
         a_p1Container.scale.x = a_p1Container.scale.y = 0.5;
         newProjectContainer.scale.x = newProjectContainer.scale.y = 0.5;
     }
@@ -87,16 +89,25 @@ function createUIProjects()
 
     // Title
 
-    const title = new PIXI.Text('Select an Existing Project', a_style1);
+    let titletxt = "Select an Existing Project";
+    let titleMetrics = PIXI.TextMetrics.measureText(titletxt, a_titlestyle);
+    const title = new PIXI.Text(titletxt, a_titlestyle);
+    title.position.x = (app.screen.width - titleMetrics.width)/2;
+    title.position.y = app.screen.height/25;
     a_titleContainer.addChild(title);
   
-    const subtitle = new PIXI.Text('or create a New Project to begin', a_style2);
-          subtitle.position.y = 42;
+    let subtitletxt = "or create a New Project to begin";
+    let subtitleMetrics = PIXI.TextMetrics.measureText(subtitletxt, a_subtitlestyle);
+    const subtitle = new PIXI.Text(subtitletxt, a_subtitlestyle);
+          subtitle.position.x = (app.screen.width - subtitleMetrics.width)/2;
+          subtitle.position.y = app.screen.height/25 + 35;
     a_titleContainer.addChild(subtitle);
   
-    a_titleContainer.x = app.screen.width/2 - a_titleContainer.width/2;
-    a_titleContainer.y = 15;
+    if (isTouch) {
+        a_titleContainer.scale.x = a_titleContainer.scale.y = 0.5;
+    }
     app.stage.addChild(a_titleContainer);
+
 
 
 
@@ -291,8 +302,10 @@ function createUIProjects()
         p1Details.position.y = p1Hex.y + 60;
     a_p1InfoContainer.addChild(p1Details);
 
-    let p1Title = new PIXI.Text("Project 1", {fill: "#ffffff", fontFamily: "Helvetica", fontSize: 18, letterSpacing: 1.5});
-        p1Title.position.x = p1A.x - 42;
+    let p1Titletxt = "Project 1";
+    let p1TitleMetrics = PIXI.TextMetrics.measureText(p1Titletxt, a_projecttitlestyle);
+    let p1Title = new PIXI.Text(p1Titletxt, a_projecttitlestyle);
+        p1Title.position.x = p1A.x - p1TitleMetrics.width/2;
         p1Title.position.y = p1A.y - 32;
     a_p1Container.addChild(p1Title);
 
@@ -308,8 +321,10 @@ function createUIProjects()
         p1Select.on('pointerdown', a_project1Select);
     //app.stage.addChild(p1Select);
 
-    let p1SelectTitle = new PIXI.Text("Open", {fill: "#606060", fontFamily: "Arial", fontWeight: "bold", fontSize: 14, letterSpacing:1.5});
-        p1SelectTitle.position.x = p1A.x-22;
+    let projectSelecttxt = "Open";
+    let projectSelectMetrics = PIXI.TextMetrics.measureText(projectSelecttxt, a_projectselectstyle);
+    let p1SelectTitle = new PIXI.Text(projectSelecttxt, a_projectselectstyle);
+        p1SelectTitle.position.x = p1A.x - projectSelectMetrics.width/2;
         p1SelectTitle.position.y = p1A.y+11;
     p1Select.addChild(p1SelectTitle);
 

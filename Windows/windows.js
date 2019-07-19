@@ -519,8 +519,14 @@ function startWindows(){
   w_closeWindowMenu.rightButton.on('pointerdown', function(){
     app.stage.removeChild(w_closeWindowMenu.container);
   });
- 
 
+  if (isTouch) {
+    w_menuCloseContainer.scale.x = w_menuCloseContainer.scale.y = 0.5;
+    w_menuCloseContainer.x = w_menuCloseContainer.x + 300;
+    w_menuCloseContainer.y = w_menuCloseContainer.y + 100;
+  }
+
+   
   let w1_closeIcon = new PIXI.Sprite.from("Images/cancel-icon.png");
     w1_closeIcon.width = 24;
     w1_closeIcon.height = 24;
@@ -535,14 +541,7 @@ function startWindows(){
     });
     w1_closeIcon.alpha = 0.8;
   w_Popup1Container.addChild(w1_closeIcon);
-
-  if (isTouch) {
-    w_menuCloseContainer.scale.x = w_menuCloseContainer.scale.y = 0.5;
-    w_menuCloseContainer.x = w_menuCloseContainer.x + 300;
-    w_menuCloseContainer.y = w_menuCloseContainer.y + 100;
-  }
   
-
   let w1_minIcon = new PIXI.Sprite.from("Images/minimize-icon.png");
       w1_minIcon.width = 22;
       w1_minIcon.height = 20;
@@ -568,7 +567,7 @@ function startWindows(){
 
 
   let w1_menuLabel = new PIXI.Text("Window 1",{fontFamily: 'Arial', fontSize: 15, fontType: 'bold', fill: 0x000000});
-      w1_menuLabel.position.x = w_workWindow.x + 10;
+      w1_menuLabel.position.x = w_workWindow.x + 12;
       w1_menuLabel.position.y = w_workWindow.y - 19;
   w_Popup1Container.addChild(w1_menuLabel);
 
@@ -577,7 +576,6 @@ function startWindows(){
   }
 
   app.stage.addChild(w_Popup1Container);
-
 
 
 
@@ -628,6 +626,12 @@ function startWindows(){
 
   // This is to set the position
   w_Popup1Container.position.set(0 - xPositionWindow, 0 - yPositionWindow);
+
+
+
+  //manually triggers tool1 to be displayed from the start
+  w_tool1.emit('pointerdown');
+
 }
 
 

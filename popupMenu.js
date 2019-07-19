@@ -42,7 +42,7 @@ class PopupRect{
     Customize , i.e. lineStyle, before call this function.
     fill: color used in Graphics.beginFill(fill)
      */
-    drawPopup(fill=0x7F7F7F, roundedness=0){
+    drawPopup(fill=0x7F7F7F, roundedness=2){
         this.graphics.beginFill(fill);
         // this.graphics.lineStyle(2, 0x414141, 3);
         this.graphics.drawRoundedRect(

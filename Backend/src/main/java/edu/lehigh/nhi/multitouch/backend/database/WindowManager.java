@@ -19,8 +19,8 @@ public class WindowManager {
 
     private final Gson mGson;
     private final DatabaseManager mManager;
-    private final StatementLoader mLoader;
-    private final PreparedStatement mWindowByProjectPS, mWindowByWidPS, mCreateWindowPS, mUpdateWindowPosition;
+    private final Statements mStatements;
+    private final PreparedStatement mSelectWindowByWidPS, mInsertWindowPS, mUpdateWindowPositionPS;
 
     /** Window structure class being traslated into Json by Gson. */
     private class Window {
@@ -49,16 +49,15 @@ public class WindowManager {
     protected WindowManager(DatabaseManager manager) throws SQLException {
         mManager = manager;
         mGson = new Gson();
-        mLoader = StatementLoader.getInstance();
-        mWindowByProjectPS = mLoader.mWindowByProjectPS;
-        mWindowByWidPS = mLoader.mWindowByWidPS;
-        mCreateWindowPS = mLoader.mCreateWindowPS;
-        mUpdateWindowPosition = mLoader.mUpdateWindowPosition;
+        mStatements = Statements.getInstance();
+        mSelectWindowByWidPS = mStatements.window.selectWindowByWid;
+        mInsertWindowPS = mStatements.window.insertWindow;
+        mUpdateWindowPositionPS = mStatements.window.updateWindowPosition;
     }
 
     public JSONObject getWindow(int wid) throws JSONException, SQLException {
-        mWindowByWidPS.setInt(1, wid);
-        ResultSet rs = mWindowByWidPS.executeQuery();
+        mSelectWindowByWidPS.setInt(1, wid);
+        ResultSet rs = mSelectWindowByWidPS.executeQuery();
         JSONObject retval = new JSONObject();
         if (rs.next()) {
             Window window = new Window(rs.getInt("wid"), rs.getInt("iid"), rs.getInt("pid"), rs.getString("thumbnail"),
@@ -73,13 +72,13 @@ public class WindowManager {
     }
 
     public int updateWindowPosition(int wid, float pos_x, float pos_y, float width, float height) throws SQLException {
-        mUpdateWindowPosition.setFloat(1, pos_x);
-        mUpdateWindowPosition.setFloat(2, pos_y);
-        mUpdateWindowPosition.setFloat(3, width);
-        mUpdateWindowPosition.setFloat(4, height);
-        mUpdateWindowPosition.setInt(5, wid);
-        int retval = mUpdateWindowPosition.executeUpdate();
-        mUpdateWindowPosition.close();
+        mUpdateWindowPositionPS.setFloat(1, pos_x);
+        mUpdateWindowPositionPS.setFloat(2, pos_y);
+        mUpdateWindowPositionPS.setFloat(3, width);
+        mUpdateWindowPositionPS.setFloat(4, height);
+        mUpdateWindowPositionPS.setInt(5, wid);
+        int retval = mUpdateWindowPositionPS.executeUpdate();
+        mUpdateWindowPositionPS.close();
         return retval;
     }
 
@@ -94,18 +93,18 @@ public class WindowManager {
         // window_t(iid, pid, img_pos_x, img_pos_y,img_width, img_height, "+
         // "canvas_pos_x, canvas_pos_y, canvas_width, canvas_height, date_creation)" +
         // "values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-        mCreateWindowPS.setInt(1, iid);
-        mCreateWindowPS.setInt(2, pid);
-        mCreateWindowPS.setFloat(3, image_box.pos_x);
-        mCreateWindowPS.setFloat(4, image_box.pos_y);
-        mCreateWindowPS.setFloat(5, image_box.width);
-        mCreateWindowPS.setFloat(6, image_box.height);
-        mCreateWindowPS.setFloat(7, window_box.pos_x);
-        mCreateWindowPS.setFloat(8, window_box.pos_y);
-        mCreateWindowPS.setFloat(9, window_box.width);
-        mCreateWindowPS.setFloat(10, window_box.height);
-        mCreateWindowPS.setTimestamp(11, DatabaseManager.convertDateToTimestamp(new Date()));
-        if (mCreateWindowPS.executeUpdate() > 0) {
+        mInsertWindowPS.setInt(1, iid);
+        mInsertWindowPS.setInt(2, pid);
+        mInsertWindowPS.setFloat(3, image_box.pos_x);
+        mInsertWindowPS.setFloat(4, image_box.pos_y);
+        mInsertWindowPS.setFloat(5, image_box.width);
+        mInsertWindowPS.setFloat(6, image_box.height);
+        mInsertWindowPS.setFloat(7, window_box.pos_x);
+        mInsertWindowPS.setFloat(8, window_box.pos_y);
+        mInsertWindowPS.setFloat(9, window_box.width);
+        mInsertWindowPS.setFloat(10, window_box.height);
+        mInsertWindowPS.setTimestamp(11, DatabaseManager.convertDateToTimestamp(new Date()));
+        if (mInsertWindowPS.executeUpdate() > 0) {
             int wid;
             if ((wid = mManager.getLastInsertedId()) > 0)
                 return getWindow(wid);

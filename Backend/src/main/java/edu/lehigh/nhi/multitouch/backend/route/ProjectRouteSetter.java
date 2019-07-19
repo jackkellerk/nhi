@@ -4,6 +4,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import edu.lehigh.nhi.multitouch.backend.Encryption;
+import edu.lehigh.nhi.multitouch.backend.ErrorHandler;
 import edu.lehigh.nhi.multitouch.backend.StructuredResponse;
 import edu.lehigh.nhi.multitouch.backend.database.DatabaseManager;
 
@@ -26,40 +27,35 @@ public final class ProjectRouteSetter {
          */
 
         // get the listing of all projects.
-        RouteSetter.setRoute(RequestType.GET, "/project", (request, response) -> {
-            try {
-                String uidStr = request.headers("uid");
-                String sessionKey = request.headers("sessionKey");
-                int uid = Integer.parseInt(uidStr);
-                if (!encryption.checkSessionKey(uid, sessionKey))
-                    return new StructuredResponse(200, "username and sessionkey do not match", null).toJson()
-                            .toString();
-            } catch (Exception e) {
-                return new StructuredResponse(300, "header format fault: " + e.toString(), null).toJson().toString();
-            }
-            JSONArray projectList = db.project.getProjectListing();
-            JSONObject js = new JSONObject();
-            js.put("projectList", projectList);
-            // System.err.println(js);
-            return StructuredResponse.getStringifiedResponse(0, null, js);
-        });
+        RouteSetter.setRoutePreprocessSessionCheck(RequestType.GET, "/project", encryption,
+                (request, response, uid, sessionKey) -> {
+                    JSONArray projectList = db.project.getProjectList(uid);
+                    return StructuredResponse.getResponse(projectList);
+                });
 
         // get a specific project. The response is more detailed with information of all
         // the windows this project contains.
-        RouteSetter.setRoute(RequestType.GET, "/p/:pid", (request, response) -> {
-            int pid = Integer.parseInt(request.params("pid"));
-            response.status(200);
-            response.type("application/json");
-            return StructuredResponse.getStringifiedResponse(0, null, db.project.getProject(pid));
-        });
+        RouteSetter.setRoutePreprocessSessionCheck(RequestType.GET, "/p/:pid", encryption,
+                (request, response, uid, sessionkey) -> {
+                    int pid = -1;
+                    try {
+                        pid = Integer.parseInt(request.params("pid"));
+                    } catch (NumberFormatException e) {
+                        return ErrorHandler.processError(ErrorHandler.PATH.PATH_NUM_FORMAT, e);
+                    }
+                    return StructuredResponse.getResponse(db.project.getProject(uid, pid));
+                });
 
         // create a project.
-        RouteSetter.setRoute(RequestType.POST, "/project/create", (request, response, jsBody) -> {
-            String name = jsBody.getString("name");
-            float canvas_width = jsBody.getFloat("canvas_width");
-            float canvas_height = jsBody.getFloat("canvas_height");
-            return StructuredResponse.getStringifiedResponse(0, null,
-                    db.project.createProject(name, canvas_width, canvas_height));
-        });
+        RouteSetter.setRoutePreprocessJSONRequestBodyAndSessionCheck(RequestType.POST, "/project/create", encryption,
+                (request, response, jsBody, uid, sessionkey) -> {
+                    String name = jsBody.getString("name");
+                    float canvas_width = jsBody.getFloat("canvas_width");
+                    float canvas_height = jsBody.getFloat("canvas_height");
+                    JSONObject retval = db.project.createProject(uid, name, canvas_width, canvas_height);
+                    if (retval == null)
+                        ErrorHandler.processError(ErrorHandler.OTHER.INSERTION_FAILED_UNKNOWN);
+                    return StructuredResponse.getResponse(retval);
+                });
     }
 }

@@ -18,9 +18,9 @@ import org.json.JSONObject;
 public class ProjectManager{
 
     private final Gson gson;
-    private final StatementLoader mLoader;
+    private final Statements mStatements;
     private final DatabaseManager mManager;
-    protected final PreparedStatement mSelectAllProjects, mProjectByPidPS, mCreateProjectPS;
+    protected final PreparedStatement mSelectProjectsByUidPS, mProjectByPidPS, mInsertProjectPS;
     
     /** Project structure class being traslated into Json by Gson. */
     private class Project {
@@ -34,26 +34,28 @@ public class ProjectManager{
 
     protected ProjectManager(DatabaseManager manager) throws SQLException {
         gson = new Gson();
-        mLoader = StatementLoader.getInstance();
+        mStatements = Statements.getInstance();
         mManager = manager;
-        mSelectAllProjects = mLoader.mSelectAllProjects;
-        mProjectByPidPS = mLoader.mProjectByPidPS;
-        mCreateProjectPS = mLoader.mCreateProjectPS;
+        mSelectProjectsByUidPS = mStatements.project.selectProjectsByUid;
+        mProjectByPidPS = mStatements.project.selectProjectByPid;
+        mInsertProjectPS = mStatements.project.insertProject;
     }
 
-    public JSONArray getProjectListing() throws SQLException {
-        ResultSet rs = mLoader.mSelectAllProjects.executeQuery();
+    public JSONArray getProjectList(int uid) throws SQLException {
+        mSelectProjectsByUidPS.setInt(1, uid);
+        ResultSet rs = mSelectProjectsByUidPS.executeQuery();
         JSONArray retval = DatabaseManager.convertToJSONArray(rs);
         rs.close();
         return retval;
     }
 
-    public JSONObject getProject(int pid) throws SQLException {
-        mLoader.mProjectByPidPS.setInt(1, pid);
-        mLoader.mWindowByProjectPS.setInt(1, pid);
-        ResultSet projectRS = mLoader.mProjectByPidPS.executeQuery();
-        ResultSet windowRS = mLoader.mWindowByProjectPS.executeQuery();
-        JSONObject retval = new JSONObject();
+    public JSONObject getProject(int uid, int pid) throws SQLException {
+        mStatements.project.selectProjectByPid.setInt(1, pid);
+        mStatements.project.selectProjectByPid.setInt(2, uid);
+        mStatements.window.selectWindowByPid.setInt(1, pid);
+        ResultSet projectRS = mStatements.project.selectProjectByPid.executeQuery();
+        ResultSet windowRS = mStatements.window.selectWindowByPid.executeQuery();
+        JSONObject retval = null;
         if (projectRS.next()) {
             Project project = new Project();
             project.pid = projectRS.getInt("pid");
@@ -76,16 +78,16 @@ public class ProjectManager{
     }
 
 
-    public JSONObject createProject(String name, float canvas_width, float canvas_height) throws SQLException {
-        mCreateProjectPS.setString(1, name);
-        mCreateProjectPS.setTimestamp(2, DatabaseManager.convertDateToTimestamp(new Date()));
-        mCreateProjectPS.setFloat(3, canvas_width);
-        mCreateProjectPS.setFloat(4, canvas_height);
-        if (mCreateProjectPS.executeUpdate() > 0) {
+    public JSONObject createProject(int uid, String name, float canvas_width, float canvas_height) throws SQLException {
+        mInsertProjectPS.setString(1, name);
+        mInsertProjectPS.setTimestamp(2, DatabaseManager.convertDateToTimestamp(new Date()));
+        mInsertProjectPS.setFloat(3, canvas_width);
+        mInsertProjectPS.setFloat(4, canvas_height);
+        if (mInsertProjectPS.executeUpdate() > 0) {
             int pid;
             if ((pid = mManager.getLastInsertedId()) > 0)
-                return getProject(pid);
+                return getProject(uid, pid);
         }
-        return new JSONObject();
+        return null;
     }
 }

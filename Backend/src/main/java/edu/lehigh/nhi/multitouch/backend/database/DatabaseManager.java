@@ -23,7 +23,7 @@ public class DatabaseManager {
      * @throws SQLException
      */
 
-    private final StatementLoader mLoader;
+    private final Statements mStatements;
     
     //provides access point for relavent methods.
     public final UserManager user;
@@ -31,14 +31,14 @@ public class DatabaseManager {
     public final ProjectManager project;
 
     public DatabaseManager() throws SQLException {
-        mLoader = StatementLoader.getInstance();
+        mStatements = Statements.getInstance();
         user = new UserManager(this);
         window = new WindowManager(this);
         project = new ProjectManager(this);
     }
 
     protected int getLastInsertedId() throws SQLException {
-        ResultSet rs = mLoader.mLastInsertionPS.executeQuery();
+        ResultSet rs = mStatements.common.selectLastInsertion.executeQuery();
         if (rs.next()) {
             int index = rs.getInt("last_insert_id()");
             return index;

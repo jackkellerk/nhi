@@ -49,8 +49,7 @@ public final class WindowRouteSetter {
             } catch (JSONException e) {
                 System.err.println("Missing field(s) in 'image_box'.");
                 e.printStackTrace();
-                return new StructuredResponse(ErrorHandler.MISSING_FIELD_IMAGE_BOX,
-                        "Missing field(s) in 'image_box'.", null).toJson().toString();
+                return ErrorHandler.processError(ErrorHandler.MISSING_FIELD_JSON.MISSING_FIELD_IMAGE_BOX, e);
             }
 
             try {
@@ -58,10 +57,10 @@ public final class WindowRouteSetter {
             } catch (JSONException e) {
                 System.err.println("Missing field(s) in 'window_box'.");
                 e.printStackTrace();
-                return new StructuredResponse(ErrorHandler.MISSING_FIELD_IMAGE_BOX,
-                        "Missing field(s) in 'window_box'.", null).toJson().toString();
+                return new StructuredResponse(ErrorHandler.MISSING_FIELD_JSON.MISSING_FIELD_WINDOW_BOX,
+                        "Missing field(s) in 'window_box'.").toJson().toString();
             }
-            return new StructuredResponse(0, null, db.window.createWindow(pid, iid, imageBox, windowBox)).toJson()
+            return new StructuredResponse(db.window.createWindow(pid, iid, imageBox, windowBox)).toJson()
                     .toString();
         });
 
@@ -76,7 +75,7 @@ public final class WindowRouteSetter {
             int num_rows_updated = db.window.updateWindowPosition(wid, pos_x, pos_y, width, height);
             JSONObject retval = new JSONObject();
             retval.put("num_rows_updated", num_rows_updated);
-            return new StructuredResponse(0, null, retval).toJson().toString();
+            return new StructuredResponse(retval).toJson().toString();
         });
     }
 }

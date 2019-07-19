@@ -3,6 +3,7 @@ package edu.lehigh.nhi.multitouch.backend.route;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import edu.lehigh.nhi.multitouch.backend.Encryption;
 import edu.lehigh.nhi.multitouch.backend.ErrorHandler;
 import spark.Request;
 import spark.Response;
@@ -24,7 +25,7 @@ final class RouteSetter {
      * with header containing login information.
      */
     public interface RouteWithUid {
-        Object processRequest(Request request, Response response, int uid) throws Exception;
+        Object processRequest(Request request, Response response, int uid, String sessionKey) throws Exception;
     }
 
     /**
@@ -40,67 +41,170 @@ final class RouteSetter {
      * with body and sessionKey.
      */
     public interface RouteWithRequestBodyAndUid {
-        Object processRequest(Request request, Response response, JSONObject jsBody, int uid) throws Exception;
+        Object processRequest(Request request, Response response, JSONObject jsBody, int uid, String sessionKey)
+                throws Exception;
     }
 
     private RouteSetter() {
     }
 
     /**
-     * Use Spark to set route specified with default actions. Default actions: 1.
-     * catch all Exceptions (error code 100), print to error console, and send it as
-     * response; 2. set the response status to 200 (success by REST definition), and
-     * set the response type to JSON. 3: print relavent information to the console.
-     * Additional action with type BODY: check if request body is a valid Json
-     * object.
+     * Set route specified with default actions. Actions: 1. catch all Exceptions
+     * (error code 100), print to error console, and send it as response; 2. set the
+     * response status to 200 (success by REST definition), and set the response
+     * type to JSON. 3: print relavent information to the console. Additional action
+     * with type BODY: check if request body is a valid Json object.
      * 
      * 
      * @param requestType    one of the following: GET, POST, PUT, DELETE.
      * @param path           the path of the route. Omit the root url, and always
      *                       start with "/".
-     * @param routeProcedure check parameters of different procedures before use.
-     * @param type           one of the following: SIMPLE, BODY.
+     * @param routeProcedure best practice would pass this interface in by a lambda
+     *                       expression. signiture: (Request request, Response
+     *                       response) -> Object
      * 
      */
     public static void setRoute(RequestType requestType, String path, SimpleRoute routeProcedure) {
         final Route route = (request, response) -> {
             printRequest(request);
             setResponseToSuccess(response);
-            Object retval = executeRouteProcedure(routeProcedure, request, response);
+            Object retval = executeSimpleRoute(routeProcedure, request, response);
             System.out.print("RESPONSE: " + retval);
             return retval;
         };
         hostRoute(requestType, path, route);
     }
 
-    public static void setRoute(RequestType requestType, String path, RouteWithRequestBody routeProcedure) {
+    /**
+     * Set route specified with default actions. Actions: 1. catch all Exceptions
+     * (error code 100), print to error console, and send it as response; 2. set the
+     * response status to 200 (success by REST definition), and set the response
+     * type to JSON. 3: print relavent information to the console. Additional: 4.
+     * parse request body into json object and catch error if failed.
+     * 
+     * 
+     * @param requestType    one of the following: GET, POST, PUT, DELETE.
+     * @param path           the path of the route. Omit the root url, and always
+     *                       start with "/".
+     * @param routeProcedure best practice would pass this interface in by a lambda
+     *                       expression. signiture: (Request request, Response
+     *                       response, JsonObject requestBody) -> Object
+     * 
+     */
+    public static void setRoutePreprocessJSONRequestBody(RequestType requestType, String path, RouteWithRequestBody routeProcedure) {
         final Route route = (request, response) -> {
             printRequest(request);
             setResponseToSuccess(response);
-            Object retval = executeRouteProcedure(routeProcedure, request, response);
+            Object retval = executeJSBodyRoute(routeProcedure, request, response);
             System.out.print("RESPONSE: " + retval);
             return retval;
         };
         hostRoute(requestType, path, route);
     }
 
-    static Object executeRouteProcedure(SimpleRoute routeProcedure, Request request, Response response) {
+    /**
+     * Set route specified with default actions. Actions: 1. catch all Exceptions
+     * (error code 100), print to error console, and send it as response; 2. set the
+     * response status to 200 (success by REST definition), and set the response
+     * type to JSON. 3: print relavent information to the console. Additional: 5.
+     * parse the request header, and check if the uid and sessionkey matches.
+     * 
+     * 
+     * @param requestType    one of the following: GET, POST, PUT, DELETE.
+     * @param path           the path of the route. Omit the root url, and always
+     *                       start with "/".
+     * @param routeProcedure best practice would pass this interface in by a lambda
+     *                       expression. signiture: (Request request, Response
+     *                       response, JsonObject requestBody) -> Object
+     * 
+     */
+    public static void setRoutePreprocessSessionCheck(RequestType requestType, String path, Encryption encryption,
+            RouteWithUid routeProcedure) {
+        final Route route = (request, response) -> {
+            printRequest(request);
+            setResponseToSuccess(response);
+            Object retval = executeUIDRoute(routeProcedure, request, response, encryption);
+            System.out.print("RESPONSE: " + retval);
+            return retval;
+        };
+        hostRoute(requestType, path, route);
+    }
+
+    /**
+     * Set route specified with default actions. Actions: 1. catch all Exceptions
+     * (error code 100), print to error console, and send it as response; 2. set the
+     * response status to 200 (success by REST definition), and set the response
+     * type to JSON. 3: print relavent information to the console. Additional: 4.
+     * parse request body into json object and catch error if failed. 5. parse the
+     * request header, and check if the uid and sessionkey matches.
+     * 
+     * 
+     * @param requestType    one of the following: GET, POST, PUT, DELETE.
+     * @param path           the path of the route. Omit the root url, and always
+     *                       start with "/".
+     * @param routeProcedure best practice would pass this interface in by a lambda
+     *                       expression. signiture: (Request request, Response
+     *                       response, JsonObject requestBody) -> Object
+     * 
+     */
+    public static void setRoutePreprocessJSONRequestBodyAndSessionCheck(RequestType requestType, String path, Encryption encryption,
+            RouteWithRequestBodyAndUid routeProcedure) {
+        final Route route = (request, response) -> {
+            printRequest(request);
+            setResponseToSuccess(response);
+            Object retval = executeJSBodyAndUIDRoute(routeProcedure, request, response, encryption);
+            System.out.print("RESPONSE: " + retval);
+            return retval;
+        };
+        hostRoute(requestType, path, route);
+    }
+
+    private static Object executeSimpleRoute(SimpleRoute routeProcedure, Request request, Response response) {
         try {
             return routeProcedure.processRequest(request, response);
         } catch (Exception e) {
-            return ErrorHandler.processError(ErrorHandler.UNSPECIFIED_ERROR, e);
+            return ErrorHandler.processError(ErrorHandler.OTHER.UNSPECIFIED_ERROR, e);
         }
     }
 
-    static Object executeRouteProcedure(RouteWithRequestBody routeProcedure, Request request, Response response) {
-        return executeRouteProcedure((newRequest, newResponse) -> {
+    private static Object executeJSBodyRoute(RouteWithRequestBody routeProcedure, Request request, Response response) {
+        return executeSimpleRoute((newRequest, newResponse) -> {
             try {
                 JSONObject jsBody = new JSONObject(newRequest.body());
                 return routeProcedure.processRequest(newRequest, newResponse, jsBody);
             } catch (JSONException e) {
-                return ErrorHandler.processError(ErrorHandler.INVALID_JSON, e);
+                return ErrorHandler.processError(ErrorHandler.INVALID_JSON.INVALID_JSON, e);
             }
         }, request, response);
+    }
+
+    private static Object executeUIDRoute(RouteWithUid routeProcedure, Request request, Response response,
+            Encryption encryption) {
+        return executeSimpleRoute((newRequest, newResponse) -> {
+            int uid = -1;
+            String sessionKey = null;
+            try {
+                String uidStr = request.headers("uid");
+                sessionKey = request.headers("session_key");
+                if(uidStr == null || sessionKey == null)
+                    return ErrorHandler.processError(ErrorHandler.HEADER.MISSING_HEADER_FOR_SESSION_CHECK);
+                uid = Integer.parseInt(uidStr);
+                if (!encryption.checkSessionKey(uid, sessionKey))
+                    return ErrorHandler.processError(ErrorHandler.OTHER.INVALID_SESSION_KEY);
+            } catch (NumberFormatException e1) {
+                return ErrorHandler.processError(ErrorHandler.HEADER.UID_NOT_INT, e1);
+            }
+            return routeProcedure.processRequest(newRequest, newResponse, uid, sessionKey);
+        }, request, response);
+    }
+
+    private static Object executeJSBodyAndUIDRoute(RouteWithRequestBodyAndUid routeProcedure, Request request,
+            Response response, Encryption encryption) {
+        return executeUIDRoute((requestA, responseA, uid, sessionkey) -> {
+            return executeJSBodyRoute((requestB, responseB, jsBody) -> {
+                return routeProcedure.processRequest(requestB, responseB, jsBody, uid, sessionkey);
+            }, request, response);
+        }, request, response, encryption);
     }
 
     private static void setResponseToSuccess(Response response) {

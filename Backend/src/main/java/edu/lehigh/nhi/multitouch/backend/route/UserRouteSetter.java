@@ -1,5 +1,8 @@
 package edu.lehigh.nhi.multitouch.backend.route;
 
+import java.util.List;
+
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import edu.lehigh.nhi.multitouch.backend.Encryption;
@@ -35,14 +38,14 @@ public final class UserRouteSetter {
                 JSONObject dataJs = new JSONObject();
                 dataJs.put("session_key", sessionKey);
                 dataJs.put("uid", uid);
-                return StructuredResponse.getStringifiedResponse(0, null, dataJs);
+                return StructuredResponse.getResponse(dataJs);
             }
-            StructuredResponse retval = new StructuredResponse(100, "Login failed", null);
+            StructuredResponse retval = new StructuredResponse(100, "Login failed");
             return retval.toJson().toString();
         });
 
         // sign up
-        RouteSetter.setRoute(RequestType.POST, "signup", (request, response, jsBody) -> {
+        RouteSetter.setRoutePreprocessJSONRequestBody(RequestType.POST, "signup", (request, response, jsBody) -> {
             // Gather incoming info (ignore profilepicture for now)
             String username = jsBody.getString("username");
             String password = jsBody.getString("password");
@@ -51,9 +54,9 @@ public final class UserRouteSetter {
             String legalName = jsBody.getString("legalname");
             response.status(200);
             if (db.user.signup(username, password, email, legalName, institution)) {
-                return StructuredResponse.getStringifiedResponse(0, null, null);
+                return StructuredResponse.getResponse(new JSONObject());
             }
-            return StructuredResponse.getStringifiedResponse(100, "signup failed", null);
+            return StructuredResponse.getErrorResponse(100, "signup failed");
         });
 
         // get user settings
@@ -65,5 +68,6 @@ public final class UserRouteSetter {
             // This grabs the informatin about the user settings
             return db.user.userSettings(username);
         });
+
     }
 }

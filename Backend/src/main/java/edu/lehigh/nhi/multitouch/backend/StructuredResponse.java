@@ -1,18 +1,27 @@
 package edu.lehigh.nhi.multitouch.backend;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class StructuredResponse {
-    public int mErrorCode;
+    private int mErrorCode = 0;
 
-    public String mMessage;
+    private String mMessage;
 
-    public JSONObject mData;
+    private JSONObject mData;
 
-    public StructuredResponse(int errorCode, String message, JSONObject data) {
+    public StructuredResponse(int errorCode, String message) {
         mErrorCode = errorCode;
         mMessage = message;
+    }
+
+    public StructuredResponse(JSONObject data) {
         mData = data;
+    }
+
+    public StructuredResponse(JSONArray data) {
+        mData = new JSONObject();
+        mData.put("array", data);
     }
 
     public JSONObject toJson() {
@@ -29,7 +38,15 @@ public class StructuredResponse {
         return toJson().toString();
     }
 
-    public static String getStringifiedResponse(int errorCode, String message, JSONObject data){
-        return new StructuredResponse(errorCode, message, data).toString();
+    public static String getErrorResponse(int errorCode, String message) {
+        return new StructuredResponse(errorCode, message).toString();
+    }
+
+    public static String getResponse(JSONObject data) {
+        return new StructuredResponse(data).toString();
+    }
+
+    public static String getResponse(JSONArray data) {
+        return new StructuredResponse(data).toString();
     }
 }

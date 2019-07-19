@@ -44,6 +44,7 @@ public class Encryption {
 
     private Encryption() {
         sessionKeyTable = new Hashtable<>();
+        //TODO: remove in final production verison.
         sessionKeyTable.put(8, "test_session_key");
     }
 

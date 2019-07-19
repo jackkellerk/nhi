@@ -14,12 +14,12 @@ Feel free to add/delete categories. This is just a rough outline. -A.T.
 
 
 ###Pre+Login Page
-(A. Thomas)
+- (A. Thomas)
 - implementation of hexagon.js class (rather than manually drawn hexagons) + adjustability to multitouch screen ratio
 
 
 ###Project Selection Page
-A. Thomas:
+- A. Thomas:
 - project selection page excl. connection to backend
 - background gradient + hex grid + adjusting to screen height & width
 - automatic adjustment to multitouch screen ratio (5:1 width to height)
@@ -38,7 +38,7 @@ A. Thomas:
 
 
 ###Project 1 Page
-A. Thomas:
+- A. Thomas:
 - project 1 page excl. connection to backend & window mobility
 - Windowing system: transformed individual tool pages to be displayed in a window one at a time
 

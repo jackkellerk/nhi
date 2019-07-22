@@ -86,6 +86,7 @@ const ps_caption_style = new PIXI.TextStyle({
 
 // set background image
 var source_bg = new PIXI.Sprite.from('Images/projectSource_test.jpg');
+var selected_Icon = new PIXI.Sprite.from('Images/selected_icon.jpg')
 
 // variables to set border for hexagons
 // x_limit: x coordinates of the screen, set in startSourcePage()
@@ -134,6 +135,7 @@ ps_buttonCommands.push(ps_prevPage);
 
 
 var institutionArray = [];
+var sourceDescriptionBoxes = [];
 /**
  * 
  * @param numSource 
@@ -188,9 +190,9 @@ function drawSourceInfo() {
             change ^= true;
         }if ( change == true){
             positionTransform(institutionArray[i].container.x -1000, institutionArray[i].container.y -1000, institutionArray[i].container, 30);
-            alphaTransform(institutionArray[i].container, 0.0, Math.floor(Math.random() * 100) + 1)
+            alphaTransform(institutionArray[i].container, 0.0, (Math.floor(Math.random() * 10) + 1) * (Math.floor(Math.random() * 4) + 1))
         }else{
-            alphaTransform(institutionArray[i].container, 0.0, Math.floor(Math.random() * 100) + 1)
+            alphaTransform(institutionArray[i].container, 0.0, (Math.floor(Math.random() * 10) + 1) * (Math.floor(Math.random() * 4) + 1))
             positionTransform(institutionArray[i].container.x +1000, institutionArray[i].container.y + 1000, institutionArray[i].container, 30);
         }
     }
@@ -325,9 +327,28 @@ function drawSourceInfo() {
         hex.buttonMode = true;
         hex.on('pointerdown', clickSource);
 
+        var selected_Icon = new PIXI.Sprite.from('Images/selected_icon2.png')
+        selected_Icon.width = 50;
+        selected_Icon.height = 50;
+        selected_Icon.x = hex.width-10
+        selected_Icon.y= hex.height - hex.height-10;
+        source_infoContainer.addChild(selected_Icon)
+        console.log(selected_Icon.x + "     " +selected_Icon.y);
+
         // add child to the container
+        sourceDescriptionBoxes.push(hex);
         source_infoContainer.addChild(hex);
     }
+    sourceDescriptionBoxes.forEach( function(element) {
+        
+        // element.container.interactive = true;
+        // element.container.on('pointerdown', drawSourceInfo);
+        // element.container.on('mouseout', ins_HoverOff);
+        // element.container.on('mouseover', ins_HoverOver1);
+        // element.container.on('mouseover', function(){
+        //     ins_HoverOver(res);
+        // });
+    });
 
     source_infoContainer.addChild(textContainer);
     source_infoContainer.addChild(hexContainer);
@@ -419,7 +440,7 @@ function moveSources(){
 
 function clickSource(){
     console.log("hi")
-    this.lineStyle(6, 0x808080, 9);
+    
 }
 
 

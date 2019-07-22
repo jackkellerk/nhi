@@ -1,12 +1,3 @@
-class Source {
-    constructor(name, image, info1, info2) {
-        this.name = name;
-        this.image = image;
-        this.info1 = info1;
-        this.info2 = info2;
-    }
-}
-
 class Institution{
     constructor(institution, index, container){
         this.institution = institution;
@@ -20,7 +11,6 @@ class Institution{
 }
 
 // containers to hold image and information about microscopes in source page
-var source_infoContainer = new PIXI.Container();
 var ins_infoContainer = new PIXI.Container();
 
 // graphics for line and hexagon
@@ -42,25 +32,7 @@ var defaultLines = 6; // default number of lines to display
 // names and images for institution & sources
 var insArr = new Array (10);
 var insHexArr = new Array (10);
-var insTile = "Images/institution/cmu.png";
-var insImages = ['Images/institution/cmu.png', 'Images/institution/drexel.png', 'Images/institution/lehigh.png', 'Images/institution/ohio.png',
-            'Images/institution/pennstate.jpg', 'Images/institution/TempleUniversity.png', 'Images/institution/StonyBrook.png','Images/institution/JohnHopkins.jpg'];
-var insNames = ['CMU', 'Drexel', 'Lehigh', 'Ohio', 'Penn State'];
-var sourceImages = [];
-var sourceTEMNames = ['JEOL JEM-1200EX', 'JEOL JEM-2000FX', 'JEOL JEM-2200FS', 'JEOL JEM-ARM200CF'];
-var sourceSEMNames = ['Hitachi 4300 SE/N', 'ZEISS 1550', 'FEI SCIOS FIB', 'FEI XL30 ESEM', 'JEOL JSM-840', 'JEOL JXA-8900'];
-var defaultSources = [];
-var source1 = new Source("FEI Tecnai G2 Spirit BioTWIN","Images/Sources/yale_microscope.jpg","80 kV microscope, optimized for examining biological specimen",
-"Equipped with a SIS Morada 11 megapixel CCD camera");
-defaultSources.push(source1);
 
-var source2 = new Source("FEI Tecnai G2 F20 XT (TF20 TOMO)","Images/Sources/yale_microscope_002.jpg","Contains a Schottky field emitter is designed to produce high resolution performance",
-"Features a 4k x 4k FEI Eagle CCD and an AMT NanoSprint1200 CMOS camera");
-defaultSources.push(source2);
-
-var source3 = new Source("FEI Tecnai F20 Cryo EM ","Images/Sources/yale_microscope_003.jpg","Has a Schottky Field Emission source, operates at 200 kV and is equipped with a Gatan K2 Summit Direct Detector",
-"Is dedicated for high-resolution single particle imaging and cryo electron tomography");
-defaultSources.push(source3);
 //console.log("Length: " + defaultSources.length);
 //Creates style used by text. It is currently unnecessary but more of an example
 const ps_title_style = new PIXI.TextStyle({
@@ -102,38 +74,10 @@ var y_infostarts;
 var ps_sampleText;
 var ps_sampleImage;
 
-// screen_limit is the x coordinate of hexagon right before it go gover x_limit
-var screen_limit;
-
 // array for commands
-var ps_buttonCommands = [];
+//var ps_buttonCommands = [];
 
-// next & previous button for sources
-const ps_nextPage = new PIXI.Sprite.from("Images/next_arrow.png");
-ps_nextPage.width = 50;
-ps_nextPage.height = 50;
-ps_nextPage.x = 0;
-ps_nextPage.y = 0;
-ps_nextPage.interactive = true;
-ps_nextPage.buttonMode = true;
-ps_nextPage.on("pointerdown", ps_pointerDown);
-ps_nextPage.on("pointerup", ps_pointerOut);
-ps_nextPage.on("pointerupoutside", ps_pointerOut);
-ps_buttonCommands.push(ps_nextPage);
-
-const ps_prevPage = new PIXI.Sprite.from("Images/prev_arrow.png");
-ps_prevPage.width = 50;
-ps_prevPage.height = 50;
-ps_prevPage.x = 0;
-ps_prevPage.y = 0;
-ps_prevPage.interactive = true;
-ps_prevPage.buttonMode = true;
-ps_prevPage.on("pointerdown", ps_pointerDown);
-ps_prevPage.on("pointerup", ps_pointerOut);
-ps_prevPage.on("pointerupoutside", ps_pointerOut);
-ps_buttonCommands.push(ps_prevPage);
-
-
+var sourcesArray = [];
 var institutionArray = [];
 var sourceDescriptionBoxes = [];
 /**
@@ -141,7 +85,6 @@ var sourceDescriptionBoxes = [];
  * @param numSource 
  */
 function drawInsInfo (numIns) {
-    
     // set number of sources if numSource is null
     if (numIns == null) {
         numIns = defaultIns;
@@ -199,32 +142,140 @@ function drawSourceInfo() {
     ps_title.text = "Sources";
     ps_title.interactive = true;
     ps_title.buttonMode = true;
-    //positionTransform(0.0, source_infoContainer.y, source_infoContainer, 10);
-    //alphaTransform(source_infoContainer, 1, 10)
+    
+    // stage the infroConatiner
+    sourcesArray.forEach(element => {
+        console.log("ellloooo")
+        positionTransform(0, 0, element, 30)
+    });
+}
 
-    // calculate the screen_limit
-    x = app.screen.width / 8;
-    while (x < x_limit) {
-        screen_limit = x;
-        x += 71.6 * 2;
-    }
-
-    // reset x, y which shows (x,y) coordinates for hexagon containers in source page
+/**
+ * startSorucePage sets the background and stage containers required
+ */
+function startSourcePage() {
     x = app.screen.width / 8;
     y = app.screen.height / 8;
+    // variables to set border for hexagons
+    x_limit = app.screen.width * 7 / 8;
+    y_limit = app.screen.height * 7 / 8;
+    // set width and height of the backgrond sprite, stage it to the app
+    source_bg.width = app.screen.width;
+    source_bg.height = app.screen.height;
+    app.stage.addChild(source_bg);
+    drawInsInfo();
 
-    var textContainer = new PIXI.Container();
-    var hexContainer = new PIXI.Container();
-    
-    // make rows of hexagon, which depends on the number of sources and y_limit
-    for (var i = 0; i < 3; i++, y += 80 * 2 + 4 * 2) {
+    // set title
+    ps_title = new PIXI.Text('Institutions', ps_title_style);
+    ps_title.on("pointerdown", moveSources);
+
+    // ps_title = new PIXI.Text('Sources: Lehigh', ps_title_style);
+    ps_title.x =  app.screen.width / 16;
+    ps_title.y = app.screen.height / 25;
+    app.stage.addChild(ps_title);
+
+    // set example texts
+    ps_sampleImage = new PIXI.Text(' ', ps_title_style);
+    ps_sampleImage.x = app.screen.width * (6/8);
+    ps_sampleImage.y = app.screen.height / 25;
+    app.stage.addChild(ps_sampleImage);
+
+    populateSourceArray();
+}
+
+
+function moveSources(){
+    console.log("Array Length: " + institutionArray.length);
+    var count = 1;
+    var change = true;
+    for( var i = 0; i < institutionArray.length; i++ ){
+        count++
+        if (count == 3){
+            count = 0
+            change ^= true;
+        }if ( change == true){
+            positionTransform(institutionArray[i].container.x +1000, institutionArray[i].container.y + 1000, institutionArray[i].container, 30);
+            alphaTransform(institutionArray[i].container, 1.0, 10)
+        }else{
+            alphaTransform(institutionArray[i].container, 1.0, 10)
+            positionTransform(institutionArray[i].container.x - 1000, institutionArray[i].container.y - 1000, institutionArray[i].container, 30);
+        } 
+    }
+    ps_title.text = "Institutions";
+    ps_title.interactive = false;
+    ps_title.buttonMode = false;
+    //ps_title.on("pointerdown", moveSources);
+    sourcesArray.forEach(element => {
+        positionTransform(app.screen.width + 200, element.y, element, 30);
+    });
+    //alphaTransform(source_infoContainer, 0, 30)
+
+}
+
+
+function clickSource(){
+    console.log("hi") 
+}
+
+
+/**
+ * ps_prevUp() shows previous source page.
+ */
+function ps_prevUp() {
+
+}
+
+
+/**
+ * ps_nextUp() shows next source page.
+ */
+function ps_nextUp() {
+
+}
+
+
+/**
+ * ps_pointerDown make pressed button visually more focused
+ */
+function ps_pointerDown() {
+    this.alpha = 0.5;
+}
+
+
+/**
+ * ps_pointerOut make button lighter when not pressed (outside)
+ */
+function ps_pointerOut() {
+    this.alpha = 1;
+}
+
+
+function ins_HoverOver(input){
+    ps_sampleImage.text = input;
+}
+
+
+function ins_HoverOver1(){
+    scaleTransform(1.02, 1.02, this, 5)
+}
+
+
+function ins_HoverOff(){
+    scaleTransform(1.0, 1.0, this, 5)
+    ps_sampleImage.text = " ";
+}
+
+function populateSourceArray() {
+    for (var i = 0; i < defaultSources.length; i++, y += 80 * 2 + 4 * 2) {
+        var source_infoContainer = new PIXI.Container();
+        var textContainer = new PIXI.Container();
+        var hexContainer = new PIXI.Container();
         var hex = new PIXI.Graphics();
         hex.clear();
         // set color as white (0xffffff), line thickness as 3
         hex.lineStyle(6, 0xffffff, 9);
         // fill hexagon with grey (0x808080)
         hex.beginFill(0x808080);
-
 
         var sourceName;
         var imgPath;
@@ -242,17 +293,16 @@ function drawSourceInfo() {
             info1 = "Nothing much to say here";
             info2 = "Nothing much to say here again";
         }
-        //console.log("y: " + y + "y_limit: " + y_limit);
         // check if all sources are loaded
         // if lowest point of the new row is over y_limit, break;
-        if (y + 80 * 2 > y_limit) {
-            nextpage = true;
-            reaminingSource = totalSource - i;
-            break;
-        }
+
         var pl_radius = 0;
-        if (app.screen.width >= app.screen.height) { pl_radius = app.screen.height/2.5;
-        } else { pl_radius = app.screen.width/2.5; }
+        if(app.screen.width >= app.screen.height) {
+            pl_radius = app.screen.height/2.5;
+        }
+        else { 
+            pl_radius = app.screen.width/2.5; 
+        }
         pl_radius = app.screen.width * (1/20);
         var mask_hex = new Hexagon({x: app.screen.width/8, y: 0 + app.screen.height * ((1 + i)/4)}, 0, pl_radius);
         mask_hex.graphics.lineStyle(1, 0xFFFFFF);
@@ -291,12 +341,15 @@ function drawSourceInfo() {
         textContainer.addChild(infoCaption);
 
         pl_radius = 0;
-        if (app.screen.width >= app.screen.height) { pl_radius = app.screen.height * (1/200);
-        } else { pl_radius = app.screen.width * (1/200); }
+        if (app.screen.width >= app.screen.height) { 
+            pl_radius = app.screen.height * (1/200);
+        } else { 
+            pl_radius = app.screen.width * (1/200); 
+        }
         var tiny_hex = new Hexagon({x: indentSpace, y: infoCaption.y + infoCaption.height/2}, 0, pl_radius);
         tiny_hex.graphics.lineStyle(9, 0xFFFFFF);
 
-      //  mask_hex.graphics.on("pointerdown",moveLogin);
+        //  mask_hex.graphics.on("pointerdown",moveLogin);
         tiny_hex.draw(0xFFFFFF, 0);
         tiny_hex.graphics.beginFill(0xDE3249);
         tiny_hex.graphics.endFill();
@@ -309,12 +362,15 @@ function drawSourceInfo() {
         textContainer.addChild(infoCaption2);
 
         pl_radius = 0;
-        if (app.screen.width >= app.screen.height) { pl_radius = app.screen.height * (1/200);
-        } else { pl_radius = app.screen.width * (1/200); }
+        if (app.screen.width >= app.screen.height){ 
+            pl_radius = app.screen.height * (1/200);
+        }else{ 
+            pl_radius = app.screen.width * (1/200); 
+        }
         var tiny_hex2 = new Hexagon({x: indentSpace, y: infoCaption2.y + infoCaption2.height/2}, 0, pl_radius);
         tiny_hex2.graphics.lineStyle(9, 0xFFFFFF);
 
-      //  mask_hex.graphics.on("pointerdown",moveLogin);
+        //  mask_hex.graphics.on("pointerdown",moveLogin);
         tiny_hex2.draw(0xFFFFFF, 0);
         tiny_hex2.graphics.beginFill(0xDE3249);
         tiny_hex2.graphics.endFill();
@@ -327,163 +383,25 @@ function drawSourceInfo() {
         hex.buttonMode = true;
         hex.on('pointerdown', clickSource);
 
-        var selected_Icon = new PIXI.Sprite.from('Images/selected_icon2.png')
-        selected_Icon.width = 50;
-        selected_Icon.height = 50;
-        selected_Icon.x = hex.width-10
-        selected_Icon.y= hex.height - hex.height-10;
-        source_infoContainer.addChild(selected_Icon)
-        console.log(selected_Icon.x + "     " +selected_Icon.y);
+        // var selected_Icon = new PIXI.Sprite.from('Images/selected_icon2.png')
+        // selected_Icon.width = 50;
+        // selected_Icon.height = 50;
+        // selected_Icon.x = hex.width-10
+        // selected_Icon.y= hex.height - hex.height-10;
+        // source_infoContainer.addChild(selected_Icon)
+        // console.log(selected_Icon.x + "     " +selected_Icon.y);
 
         // add child to the container
         sourceDescriptionBoxes.push(hex);
         source_infoContainer.addChild(hex);
+        source_infoContainer.addChild(textContainer);
+        source_infoContainer.addChild(hexContainer);
+        source_infoContainer.x = app.stage.width + 10;
+        sourcesArray.push(source_infoContainer);
+        app.stage.addChild(source_infoContainer);
     }
-    sourceDescriptionBoxes.forEach( function(element) {
-        
-        // element.container.interactive = true;
-        // element.container.on('pointerdown', drawSourceInfo);
-        // element.container.on('mouseout', ins_HoverOff);
-        // element.container.on('mouseover', ins_HoverOver1);
-        // element.container.on('mouseover', function(){
-        //     ins_HoverOver(res);
-        // });
-    });
-
-    source_infoContainer.addChild(textContainer);
-    source_infoContainer.addChild(hexContainer);
-
-    source_infoContainer.addChild(ps_prevPage);
-    source_infoContainer.addChild(ps_nextPage);
-
-    source_infoContainer.x = app.stage.width + 10;
-    // stage the infroConatiner
-    app.stage.addChild(source_infoContainer);
-
-    positionTransform(0, 0, source_infoContainer, 30)
-
 }
 
-/**
- * startSorucePage sets the background and stage containers required
- */
-function startSourcePage() {
-    
-
-    insTile = PIXI.Sprite.from(insImages[0]);
-
-    //
-    x = app.screen.width / 8;
-    y = app.screen.height / 8;
-
-    // variables to set border for hexagons
-    x_limit = app.screen.width * 7 / 8;
-    y_limit = app.screen.height * 7 / 8;
-
-    // set width and height of the backgrond sprite, stage it to the app
-    source_bg.width = app.screen.width;
-    source_bg.height = app.screen.height;
-    app.stage.addChild(source_bg);
-
-    drawInsInfo();
-
-    // set location of the next & prev buttons
-    ps_prevPage.x = x_limit;
-    ps_prevPage.y = y_limit;
-    ps_nextPage.x = x_limit + 50 + 10;
-    ps_nextPage.y = y_limit;
-
-    // set title
-    ps_title = new PIXI.Text('Institutions', ps_title_style);
-    ps_title.on("pointerdown", moveSources);
-
-    // ps_title = new PIXI.Text('Sources: Lehigh', ps_title_style);
-    ps_title.x =  app.screen.width / 16;
-    ps_title.y = app.screen.height / 25;
-    app.stage.addChild(ps_title);
-
-    // set example texts
-    ps_sampleImage = new PIXI.Text(' ', ps_title_style);
-    ps_sampleImage.x = app.screen.width * (6/8);
-    ps_sampleImage.y = app.screen.height / 25;
-    app.stage.addChild(ps_sampleImage);
-    
-}
-
-function moveSources(){
-    console.log("Array Length: " + institutionArray.length);
-    var count = 1;
-    var change = true;
-    for( var i = 0; i < institutionArray.length; i++ ){
-        count++
-        if (count == 3){
-            count = 0
-            change ^= true;
-        }if ( change == true){
-            positionTransform(institutionArray[i].container.x +1000, institutionArray[i].container.y + 1000, institutionArray[i].container, 30);
-            alphaTransform(institutionArray[i].container, 1.0, 10)
-        }else{
-            alphaTransform(institutionArray[i].container, 1.0, 10)
-            positionTransform(institutionArray[i].container.x - 1000, institutionArray[i].container.y - 1000, institutionArray[i].container, 30);
-        }
-        
-    }
-
-    ps_title.text = "Institutions";
-    ps_title.interactive = false;
-    ps_title.buttonMode = false;
-    //ps_title.on("pointerdown", moveSources);
-    positionTransform(app.screen.width + 200, source_infoContainer.y, source_infoContainer, 30);
-    //alphaTransform(source_infoContainer, 0, 30)
-
-}
-
-function clickSource(){
-    console.log("hi")
-    
-}
-
-
-/**
- * ps_prevUp() shows previous source page.
- */
-function ps_prevUp() {
-
-}
-
-/**
- * ps_nextUp() shows next source page.
- */
-function ps_nextUp() {
-
-}
-
-/**
- * ps_pointerDown make pressed button visually more focused
- */
-function ps_pointerDown() {
-    this.alpha = 0.5;
-}
-
-/**
- * ps_pointerOut make button lighter when not pressed (outside)
- */
-function ps_pointerOut() {
-    this.alpha = 1;
-}
-
-function ins_HoverOver(input){
-    ps_sampleImage.text = input;
-}
-
-function ins_HoverOver1(){
-    scaleTransform(1.02, 1.02, this, 5)
-}
-
-function ins_HoverOff(){
-    scaleTransform(1.0, 1.0, this, 5)
-    ps_sampleImage.text = " ";
-}
 
 function showInstitutions(startX, startY, inScale){
     var x = startX
@@ -534,8 +452,6 @@ function showInstitutions(startX, startY, inScale){
         } else if ( compare == 3){
             x = temp - incX * 2;
             y += incY;
-        }
-        
-    }
-    
+        } 
+    } 
 }

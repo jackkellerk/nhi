@@ -11,10 +11,12 @@ class Statements {
     protected User user;
 
     protected class Common {
-        protected final PreparedStatement selectLastInsertion;
+        protected final PreparedStatement selectLastInsertion, checkProjectOwnership;
 
         private Common() throws SQLException {
             selectLastInsertion = mMySQLConnection.prepareStatement("select last_insert_id()");
+            checkProjectOwnership = mMySQLConnection
+                    .prepareStatement("select uid from user_project where uid = ? and pid = ?");
         }
     }
 
@@ -22,7 +24,7 @@ class Statements {
         protected final PreparedStatement selectProjectByPid, insertProject, selectProjectsByUid;
 
         private Project() throws SQLException {
-            selectProjectByPid = mMySQLConnection.prepareStatement("select * from project_t natural join user_project where pid = ? and uid = ?");
+            selectProjectByPid = mMySQLConnection.prepareStatement("select * from project_t where pid = ?");
             insertProject = mMySQLConnection.prepareStatement(
                     "insert into project_t(name, date_creation, canvas_width, canvas_height) values(?, ?, ?, ?)");
             selectProjectsByUid = mMySQLConnection.prepareStatement("select * from user_project natural join project_t where uid = ?");
@@ -45,18 +47,16 @@ class Statements {
     }
 
     protected class User {
-        protected final PreparedStatement selectUserByUsername, insertUserSimple, insertUserFull, selectPidByUid,
-                checkProjectOwnership;
+        protected final PreparedStatement selectUserByUsername, selectUserByUid, insertUserSimple, insertUserFull, selectPidByUid;
 
         private User() throws SQLException {
             selectUserByUsername = mMySQLConnection.prepareStatement("select * from users where username = ?");
+            selectUserByUid = mMySQLConnection.prepareStatement("select * from users where id = ?");
             insertUserSimple = mMySQLConnection
                     .prepareStatement("INSERT INTO users (username, password, email) VALUES (?, ?, ?)");
             insertUserFull = mMySQLConnection.prepareStatement(
                     "INSERT INTO users (username, password, legalname, email, profilepicture, institution) VALUES (?, ?, ?,?,?,?)");
             selectPidByUid = mMySQLConnection.prepareStatement("select pid from user_project where uid = ?");
-            checkProjectOwnership = mMySQLConnection
-                    .prepareStatement("select uid from user_project where uid = ? and pid = ?");
         }
     }
 

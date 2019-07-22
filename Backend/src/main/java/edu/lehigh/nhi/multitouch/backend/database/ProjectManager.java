@@ -15,14 +15,14 @@ import org.json.JSONObject;
  * the project_t table. Update of windows, and user ownership of projects should
  * be in WindowManager and UserManager respectfully.
  */
-public class ProjectManager{
+public class ProjectManager {
 
     private final Gson gson;
     private final Statements mStatements;
     private final DatabaseManager mManager;
-    protected final PreparedStatement mSelectProjectsByUidPS, mProjectByPidPS, mInsertProjectPS;
-    
+
     /** Project structure class being traslated into Json by Gson. */
+    @SuppressWarnings("unused")
     private class Project {
         int pid;
         String name;
@@ -36,22 +36,19 @@ public class ProjectManager{
         gson = new Gson();
         mStatements = Statements.getInstance();
         mManager = manager;
-        mSelectProjectsByUidPS = mStatements.project.selectProjectsByUid;
-        mProjectByPidPS = mStatements.project.selectProjectByPid;
-        mInsertProjectPS = mStatements.project.insertProject;
     }
 
     public JSONArray getProjectList(int uid) throws SQLException {
-        mSelectProjectsByUidPS.setInt(1, uid);
-        ResultSet rs = mSelectProjectsByUidPS.executeQuery();
+        PreparedStatement statement = mStatements.project.selectProjectsByUid;
+        statement.setInt(1, uid);
+        ResultSet rs = statement.executeQuery();
         JSONArray retval = DatabaseManager.convertToJSONArray(rs);
         rs.close();
         return retval;
     }
 
-    public JSONObject getProject(int uid, int pid) throws SQLException {
+    public JSONObject getProject(int pid) throws SQLException {
         mStatements.project.selectProjectByPid.setInt(1, pid);
-        mStatements.project.selectProjectByPid.setInt(2, uid);
         mStatements.window.selectWindowByPid.setInt(1, pid);
         ResultSet projectRS = mStatements.project.selectProjectByPid.executeQuery();
         ResultSet windowRS = mStatements.window.selectWindowByPid.executeQuery();
@@ -77,16 +74,16 @@ public class ProjectManager{
         return retval;
     }
 
-
     public JSONObject createProject(int uid, String name, float canvas_width, float canvas_height) throws SQLException {
-        mInsertProjectPS.setString(1, name);
-        mInsertProjectPS.setTimestamp(2, DatabaseManager.convertDateToTimestamp(new Date()));
-        mInsertProjectPS.setFloat(3, canvas_width);
-        mInsertProjectPS.setFloat(4, canvas_height);
-        if (mInsertProjectPS.executeUpdate() > 0) {
+        PreparedStatement statement = mStatements.project.insertProject;
+        statement.setString(1, name);
+        statement.setTimestamp(2, DatabaseManager.convertDateToTimestamp(new Date()));
+        statement.setFloat(3, canvas_width);
+        statement.setFloat(4, canvas_height);
+        if (statement.executeUpdate() > 0) {
             int pid;
             if ((pid = mManager.getLastInsertedId()) > 0)
-                return getProject(uid, pid);
+                return getProject(pid);
         }
         return null;
     }

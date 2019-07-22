@@ -23,6 +23,7 @@ public class WindowManager {
     private final PreparedStatement mSelectWindowByWidPS, mInsertWindowPS, mUpdateWindowPositionPS;
 
     /** Window structure class being traslated into Json by Gson. */
+    @SuppressWarnings("unused")
     private class Window {
         int wid;
         int iid;
@@ -82,7 +83,7 @@ public class WindowManager {
         return retval;
     }
 
-    public JSONObject createWindow(int pid, int iid, Square image_box, Square window_box) throws SQLException {
+    public int insertWindow(int pid, int iid, Square image_box, Square window_box) throws SQLException {
         Window window = new Window();
         window.pid = pid;
         window.iid = iid;
@@ -104,11 +105,6 @@ public class WindowManager {
         mInsertWindowPS.setFloat(9, window_box.width);
         mInsertWindowPS.setFloat(10, window_box.height);
         mInsertWindowPS.setTimestamp(11, DatabaseManager.convertDateToTimestamp(new Date()));
-        if (mInsertWindowPS.executeUpdate() > 0) {
-            int wid;
-            if ((wid = mManager.getLastInsertedId()) > 0)
-                return getWindow(wid);
-        }
-        return new JSONObject();
+        return mInsertWindowPS.executeUpdate();
     }
 }

@@ -1,13 +1,16 @@
-100,Unspecified Error. Check error log in the backend.
+100,Unspecified Error.
+101,Unspecified SQLException occurs. Could be caused by downtime of database.
+102,Insertion failed to update the database for unknown reason. Could be caused by a duplication that exists in the database.
+103,Failed to fetch data from database for unknown reason. Could caused by changes made by other users during the session. Try to refresh.
 200,Invalid Json format.
 201,HTTP request contains invalid Json format.
-300,Missing crucial key-value pair(s) in Json object.
-301,"Missing crucial key-value pair(s) to create Square Object. Request body must include: pos_x, pos_y, width, height."
-302,"Missing crucial key-value pair(s) in json object 'image_box' to create the image box. Request body must include: pos_x, pos_y, width, height."
-302,"Missing crucial key-value pair(s) in json object 'window_box' to create the window box. Request body must include: pos_x, pos_y, width, height."
-401,Missing crucial header pair(s).
+300,Missing/invalid crucial key-value pair(s) in Json object.
+301,"Missing/invalid crucial key-value pair(s) to create Square Object. Request body must include: pos_x, pos_y, width, height."
+401,Missing crucial header pair(s). Check API.
 402,"Missing crucial header pair(s) to check session availability. Header must include: uid, session_key."
 403,Cannot parse int 'uid' in header should be a integer.
-501,Cannot parse number(s) that are used in your url path. Check API.
+501,Cannot parse number(s) that are used in your url path.
 601,Session key does not exist or uid and session key do not match. Possible cause: session expired. Try to login again.
-602,insertion failed for unkown reason.
+602,Access Denied. You have no right to access others' projects. 
+603,Login failed.
+701,The project you look for does not exist.

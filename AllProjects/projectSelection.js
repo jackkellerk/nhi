@@ -1,7 +1,7 @@
-const a_titlestyle = new PIXI.TextStyle({fill: "#d3d3d3", fontFamily: "Helvetica", fontSize: 32, letterSpacing: 3});
-const a_subtitlestyle = new PIXI.TextStyle({fill: "#d3d3d3", fontFamily: "Helvetica", fontSize: 24, letterSpacing: 3});
+let a_titlestyle = new PIXI.TextStyle({fill: "#d3d3d3", fontFamily: "Helvetica", fontSize: 32, letterSpacing: 3});
+let a_subtitlestyle = new PIXI.TextStyle({fill: "#d3d3d3", fontFamily: "Helvetica", fontSize: 24, letterSpacing: 3});
 const a_projecttitlestyle = new PIXI.TextStyle({fill: "#ffffff", fontFamily: "Helvetica", fontSize: 18, letterSpacing: 1.5});
-const a_projectselectstyle = new PIXI.TextStyle({fill: "#606060", fontFamily: "Arial", fontWeight: "bold", fontSize: 14, letterSpacing:1.5});
+const a_projectselectstyle = new PIXI.TextStyle({fill: "#000000", fontFamily: "Arial", fontWeight: "bold", fontSize: 14, letterSpacing:1.5});
 
 var a_titleContainer = new PIXI.Container();
 var a_settingsContainer = new PIXI.Container();
@@ -12,9 +12,10 @@ var maskContainer = new PIXI.Container();
 var newProjectContainer = new PIXI.Container(); 
 var a_searchContainer = new PIXI.Container();
 
+var a_tintBg = new PIXI.Graphics();
+
 // misc
 var hexSize;
-var a_settingsCC; // settings button counter (open/closed)
 var p1_image;
 var isTouch;
 
@@ -89,6 +90,13 @@ function createUIProjects()
 
     // Title
 
+    var spacing = 35;
+    if (isTouch) {
+        a_titlestyle = new PIXI.TextStyle({fill: "#d3d3d3", fontFamily: "Helvetica", fontSize: 16, letterSpacing: 2});
+        a_subtitlestyle = new PIXI.TextStyle({fill: "#d3d3d3", fontFamily: "Helvetica", fontSize: 12, letterSpacing: 2});
+        spacing = 19;
+    }
+
     let titletxt = "Select an Existing Project";
     let titleMetrics = PIXI.TextMetrics.measureText(titletxt, a_titlestyle);
     const title = new PIXI.Text(titletxt, a_titlestyle);
@@ -100,12 +108,9 @@ function createUIProjects()
     let subtitleMetrics = PIXI.TextMetrics.measureText(subtitletxt, a_subtitlestyle);
     const subtitle = new PIXI.Text(subtitletxt, a_subtitlestyle);
           subtitle.position.x = (app.screen.width - subtitleMetrics.width)/2;
-          subtitle.position.y = app.screen.height/25 + 35;
+          subtitle.position.y = app.screen.height/25 + spacing;
     a_titleContainer.addChild(subtitle);
   
-    if (isTouch) {
-        a_titleContainer.scale.x = a_titleContainer.scale.y = 0.5;
-    }
     app.stage.addChild(a_titleContainer);
 
 
@@ -120,16 +125,16 @@ function createUIProjects()
     a_searchTextBox = new PIXI.TextInput({
         input: {
             fontFamily: 'Tahoma',
-            fontSize: '13pt',
+            fontSize: '11pt',
             padding: '10px',
-            width: '220px',
+            width: '200px',
             color: '#FFFFFF',
-            letterSpacing: 3
+            letterSpacing: 2
         }, 
-        box: a_generateTextLine(w-240, 57, 208, 1)
+        box: a_generateTextBox(w-250, 30, 220)
     });
-    a_searchTextBox.x = w-243;
-    a_searchTextBox.y = 20;
+    a_searchTextBox.x = w-250;
+    a_searchTextBox.y = 27;
     a_searchTextBox.interactiveChildren = true;
     a_searchTextBox.placeholder = "Search Projects";
     a_searchContainer.addChild(a_searchTextBox);
@@ -144,8 +149,6 @@ function createUIProjects()
 
 
     // User Settings
-
-    a_settingsCC = 0;
 
     let userSettingsHex = new Hexagon({x:57, y:57}, 0, 37);
         userSettingsHex.graphics.lineStyle(2, 0x7D7D7D, 3);
@@ -173,86 +176,17 @@ function createUIProjects()
 
 
 
+    // a_tintBg is a PIXI Graphic
+    a_tintBg.beginFill(0x000000, 1); // Color and opacity
+    a_tintBg.drawRect(0, 0, app.screen.width, app.screen.height);
+    a_tintBg.endFill();
+    a_tintBg.alpha = 0.7;
+    a_tintBg.interactive = true;
+    a_settingsContainer.addChild(a_tintBg);
 
-    // Settings Menu
+    createUserSettings();
 
-    let settingsMenu = new PIXI.Graphics();
-        settingsMenu.lineStyle(5, 0x787878, 3);
-        settingsMenu.beginFill(0x7D7D7D);
-        settingsMenu.drawRoundedRect(0.2*w,20, 0.6*w,h-40, 2);
-        settingsMenu.endFill();
-        settingsMenu.interactive = true;
-    a_settingsContainer.addChild(settingsMenu);
-
-    let settTitle = new PIXI.Text("Profile Settings", {fill: "#ffffff", fontFamily: "Helvetica", fontSize: 32, letterSpacing: 3});
-        settTitle.position.x = (w/5)+35;
-        settTitle.position.y = 40;
-    a_settingsContainer.addChild(settTitle);
-
-    let settUsername = new PIXI.Text("Username:             " + userSettingsResponse.username, {fill: "#ffffff", fontFamily: "Helvetica", fontSize: 18, letterSpacing: 3});
-        settUsername.position.x = (w/5)+35;
-        settUsername.position.y = 140;
-    a_settingsContainer.addChild(settUsername);
-
-    var passwordString = "";
-    for(var i = 0; i < userSettingsResponse.passwordLength; i++)
-    {
-        passwordString += "*";
-    }
-
-    let settPassword = new PIXI.Text("Password:              " +  passwordString/* Maybe with the length create a for loop that creates that many '*'s in a string for this field */, {fill: "#ffffff", fontFamily: "Helvetica", fontSize: 18, letterSpacing: 3});        settPassword.position.x = (w/5)+35;
-        settPassword.position.y = 180;
-    a_settingsContainer.addChild(settPassword);
-
-    let settInstitution = new PIXI.Text("Institution:             " + userSettingsResponse.institution, {fill: "#ffffff", fontFamily: "Helvetica", fontSize: 18, letterSpacing: 3});
-        settInstitution.position.x = (w/5)+35;
-        settInstitution.position.y = 220;
-    a_settingsContainer.addChild(settInstitution);
-
-    let settName = new PIXI.Text("Name:                   " + userSettingsResponse.legalName, {fill: "#ffffff", fontFamily: "Helvetica", fontSize: 18, letterSpacing: 3});
-        settName.position.x = (w/5)+35;
-        settName.position.y = 260;
-    a_settingsContainer.addChild(settName);
-
-    let settEmail = new PIXI.Text("Email:                   jjk322@lehigh.edu", {fill: "#ffffff", fontFamily: "Helvetica", fontSize: 18, letterSpacing: 3});
-        settEmail.position.x = (w/5)+35;
-        settEmail.position.y = 300;
-    a_settingsContainer.addChild(settEmail);
-
-    let signoutButton = new PIXI.Graphics();
-        signoutButton.lineStyle(3, 0xA9A9A9, 3);
-        signoutButton.beginFill(0xf0f0f0);
-        signoutButton.drawRoundedRect(0.6*w,h-100, 0.15*w,30, 2);
-        signoutButton.endFill();
-        signoutButton.buttonMode = true;
-        signoutButton.interactive = true;
-        signoutButton.on('mouseover', a_SignOutHoverOver);
-        signoutButton.on('mouseout', a_SignOutHoverOff);
-        signoutButton.on('pointerdown', a_toLogin);
-        signoutButton.alpha = 0.8;
-    a_settingsContainer.addChild(signoutButton);
-
-    let settSignout = new PIXI.Text("SIGN OUT", {fill: "#606060", fontFamily: "Helvetica", fontSize: 16, letterSpacing: 1.5});
-        settSignout.position.x = w-(2*(w/5)) + 30;
-        settSignout.position.y = h-95;
-    a_settingsContainer.addChild(settSignout);
-
-      // close button
-
-    var closeTexture = PIXI.Texture.from("Images/cancel_icon.png");
-    var closeIcon = new PIXI.Sprite(closeTexture);
-        closeIcon.height = 30;
-        closeIcon.width = 30;
-        closeIcon.x = w-(w/5) - 40; //w_settingsMenu right side - 10
-        closeIcon.y = 30;
-        closeIcon.buttonMode = true;
-        closeIcon.interactive = true;
-        closeIcon.on('mouseover', a_hexHoverOver);
-        closeIcon.on('mouseout', a_hexHoverOff);
-        closeIcon.on('pointerdown', a_SettingsSelect);
-        closeIcon.alpha = 0.60;
-    a_settingsContainer.addChild(closeIcon);
-
+    
 
 
 
@@ -310,15 +244,21 @@ function createUIProjects()
     a_p1Container.addChild(p1Title);
 
     let p1Select = new PIXI.Graphics();
-        p1Select.beginFill(0xffffff);
+        p1Select.beginFill(0xFFFFFF);
         p1Select.drawRoundedRect(p1A.x-46,p1A.y+10, 92,22, 2);
         p1Select.endFill();
         p1Select.alpha = 0.75;
         p1Select.buttonMode = true;
         p1Select.interactive = true;
-        p1Select.on('mouseover', a_p1SelectHoverOver);
-        p1Select.on('mouseout', a_p1SelectHoverOff);
+        p1Select.on('mouseover', function(){
+            p1Select.alpha = 1;
+            app.stage.addChild(a_p1InfoContainer);
+        });
+        p1Select.on('mouseout', function(){
+            p1Select.alpha = 0.75;
+        });
         p1Select.on('pointerdown', a_project1Select);
+    a_p1Container.addChild(p1Select);
     //app.stage.addChild(p1Select);
 
     let projectSelecttxt = "Open";
@@ -326,13 +266,13 @@ function createUIProjects()
     let p1SelectTitle = new PIXI.Text(projectSelecttxt, a_projectselectstyle);
         p1SelectTitle.position.x = p1A.x - projectSelectMetrics.width/2;
         p1SelectTitle.position.y = p1A.y+11;
-    p1Select.addChild(p1SelectTitle);
+    a_p1Container.addChild(p1SelectTitle);
 
     app.stage.addChild(a_p1Container);
     a_p1Container.alpha = 0.8;
     a_p1Container.interactive = true;
-    a_p1Container.on('mouseover', a_projectHoverOver);
-    a_p1Container.on('mouseout', a_projectHoverOff);
+    a_p1Container.on('mouseover', function(){ app.stage.addChild(a_p1InfoContainer); });
+    a_p1Container.on('mouseout', function(){ app.stage.removeChild(a_p1InfoContainer); });
 
     if (isTouch) {
         a_p1InfoContainer.scale.x = a_p1InfoContainer.scale.y = 0.3375;
@@ -343,7 +283,6 @@ function createUIProjects()
         a_p1Container.x = a_p1Container.x + 508;
         a_p1Container.y = a_p1Container.y + 86;
     }
-    a_p1Container.addChild(p1Select);
 
 
 
@@ -397,6 +336,7 @@ function createUIProjects()
 
 
 
+
 }
 
 function a_hexHoverOver()
@@ -411,65 +351,14 @@ function a_hexHoverOff()
 
 function a_SettingsSelect()
 {
-    if (a_settingsCC == 0)
-    {
-        app.stage.addChild(a_settingsContainer);
-        blurTransform(a_titleContainer,1.0, 10)
-        blurTransform(a_p1InfoContainer,1.0, 10)
-        blurTransform(maskContainer,1.0, 10)
-        blurTransform(p1_image,1.0, 10)
-        blurTransform(bgHexContainer, 1.0, 5)
-        a_settingsCC = 1;
-    }
-    else if (a_settingsCC == 1)
-    {
-        app.stage.removeChild(a_settingsContainer);
-        blurTransform(a_titleContainer, 0.5 , 10)
-        blurTransform(a_p1InfoContainer, 0.5, 10)
-        blurTransform(maskContainer, 0.5, 10)
-        blurTransform(p1_image, 0.5, 10)
-        blurTransform(bgHexContainer, 0.5, 10)
-        a_settingsCC = 0;
-    }
-}
-
-function a_SignOutHoverOver()
-{
-    this.alpha = 1;
-}
-
-function a_SignOutHoverOff()
-{
-    this.alpha = 0.8;
-}
-
-function a_toLogin()
-{
-    currentActivity = activityArray[0];
+    app.stage.addChild(a_settingsContainer);
+    blurTransform(a_titleContainer,1.0, 10)
+    blurTransform(a_p1InfoContainer,1.0, 10)
+    blurTransform(maskContainer,1.0, 10)
+    blurTransform(p1_image,1.0, 10)
 }
 
 
-
-function a_p1SelectHoverOver()
-{
-    this.alpha = 1;
-    app.stage.addChild(a_p1InfoContainer);
-}
-
-function a_p1SelectHoverOff()
-{
-    this.alpha = 0.75;
-}
-
-function a_projectHoverOver()
-{
-    app.stage.addChild(a_p1InfoContainer);
-}
-
-function a_projectHoverOff()
-{
-    app.stage.removeChild(a_p1InfoContainer);
-}
 
 //Agustin: edits to a_project1Select() and a_newPSelect() for small transformations
 function a_project1Select()
@@ -492,6 +381,23 @@ function a_generateTextLine(x, y, w, lineWidth){
         .moveTo(x, y)
         .lineTo(x+w, y);
     a_searchContainer.addChild(line);
+}
+
+function a_generateTextBox(x, y, w)
+{
+    let box = new PIXI.Graphics();
+    box.beginFill(0xFFFFFF);
+    box.drawRoundedRect(x,y, w,34, 3);
+    box.alpha = 0.2;
+
+    let searchIcon = new PIXI.Sprite.from("Images/search-icon.png");
+    searchIcon.height = 28;
+    searchIcon.width = 28;
+    searchIcon.x = x + w - 31;
+    searchIcon.y = y + 2;
+    box.addChild(searchIcon);
+
+    a_searchContainer.addChild(box);
 }
 
 

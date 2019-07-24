@@ -29,12 +29,14 @@ public class DatabaseManager {
     public final UserManager user;
     public final WindowManager window;
     public final ProjectManager project;
+    public final SourceManager source;
 
     public DatabaseManager() throws SQLException {
         mStatements = Statements.getInstance();
         user = new UserManager(this);
         window = new WindowManager(this);
         project = new ProjectManager(this);
+        source = new SourceManager(this);
     }
 
     public int getLastInsertedId() throws SQLException {

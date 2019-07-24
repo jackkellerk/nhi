@@ -9,6 +9,7 @@ class Statements {
     protected Project project;
     protected Window window;
     protected User user;
+    protected Source source;
 
     protected class Common {
         protected final PreparedStatement selectLastInsertion, checkProjectOwnership;
@@ -60,6 +61,15 @@ class Statements {
         }
     }
 
+    //put request to institution/source/object/image table here.
+    protected class Source{
+        protected final PreparedStatement selectObjectListBySid;
+
+        private Source() throws SQLException{
+            selectObjectListBySid = mMySQLConnection.prepareStatement("select * from object where sid = ?");
+        }
+    }
+
     private static Statements INSTANCE;
 
     private Statements() throws SQLException {
@@ -70,6 +80,7 @@ class Statements {
         project = new Project();
         user = new User();
         window = new Window();
+        source = new Source();
     }
 
     protected synchronized static Statements getInstance() throws SQLException {

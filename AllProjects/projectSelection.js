@@ -74,7 +74,6 @@ function createUIProjects()
         a_drawHexGridTouch();
         hexSize = 27;
 
-
         a_p1Container.scale.x = a_p1Container.scale.y = 0.5;
         newProjectContainer.scale.x = newProjectContainer.scale.y = 0.5;
     }
@@ -154,19 +153,20 @@ function createUIProjects()
         userSettingsHex.graphics.lineStyle(2, 0x7D7D7D, 3);
         userSettingsHex.graphics.buttonMode = true;
         userSettingsHex.graphics.interactive = true;
-        userSettingsHex.graphics.on('mouseover', a_hexHoverOver);
-        userSettingsHex.graphics.on('mouseout', a_hexHoverOff);
+        userSettingsHex.graphics.on('mouseover', function(){ userSettingsIcon.alpha = 1; });
+        userSettingsHex.graphics.on('mouseout', function(){ userSettingsIcon.alpha = 0.8; });
         userSettingsHex.graphics.on('pointerdown', a_SettingsSelect);
-        userSettingsHex.graphics.alpha = 0.7;
+        userSettingsHex.graphics.alpha = 0.8;
     userSettingsHex.draw(0xFFFFFF);
     app.stage.removeChild(userSettingsHex.container);
     a_settIconContainer.addChild(userSettingsHex.container);
 
     let userSettingsIcon = new PIXI.Sprite.fromImage("Images/profilesettings.png");
-        userSettingsIcon.width = 65;
-        userSettingsIcon.height = 60;
-        userSettingsIcon.position.x = userSettingsHex.x-32;
-        userSettingsIcon.position.y = userSettingsHex.y-29;
+        userSettingsIcon.width = 55;
+        userSettingsIcon.height = 50;
+        userSettingsIcon.position.x = userSettingsHex.x-27;
+        userSettingsIcon.position.y = userSettingsHex.y-24;
+        userSettingsIcon.alpha = 0.8;
     a_settIconContainer.addChild(userSettingsIcon);
 
     if (isTouch) {
@@ -184,7 +184,19 @@ function createUIProjects()
     a_tintBg.interactive = true;
     a_settingsContainer.addChild(a_tintBg);
 
-    createUserSettings();
+    var passwordString = "";
+    for(var i = 0; i < userSettingsResponse.passwordLength; i++)
+    {
+        passwordString += "*";
+    }
+
+    createSettings("User Settings", a_settingsContainer, 5);
+    s_addField("Name", userSettingsResponse.legalName, 1);
+    s_addField("Institution", userSettingsResponse.institution, 2, true);
+    s_addField("Username", userSettingsResponse.username, 3);
+    s_addField("Password", passwordString, 4);
+    s_addField("Email", userSettingsResponse.email, 5);
+    s_addLogoutButton();
 
     
 
@@ -294,19 +306,19 @@ function createUIProjects()
         newP.graphics.lineStyle(3, 0x909090, 3);
         newP.graphics.buttonMode = true;
         newP.graphics.interactive = true;
-        newP.graphics.on('mouseover', a_hexHoverOver);
-        newP.graphics.on('mouseout', a_hexHoverOff);
+        newP.graphics.on('mouseover', function(){ plusIcon.alpha = 0.8; });
+        newP.graphics.on('mouseout', function(){ plusIcon.alpha = 0.6; });
         newP.graphics.on('pointerdown', a_newPSelect);
-        newP.graphics.alpha = 0.8;
-    newP.draw(0x909090);
+    newP.draw(0x909090, 0.8); // fill color + opacity/alpha
     app.stage.removeChild(newP.container);
     newProjectContainer.addChild(newP.container);
 
     let plusIcon = new PIXI.Sprite.from("Images/plus-icon.png");
-        plusIcon.width = 65;
-        plusIcon.height = 65;
-        plusIcon.position.x = newP.x-33;
-        plusIcon.position.y = newP.y-33;
+    plusIcon.width = 65;
+    plusIcon.height = 65;
+    plusIcon.position.x = newP.x-33;
+    plusIcon.position.y = newP.y-33;
+    plusIcon.alpha = 0.6;
     newProjectContainer.addChild(plusIcon);
 
     if (isTouch) {
@@ -337,16 +349,6 @@ function createUIProjects()
 
 
 
-}
-
-function a_hexHoverOver()
-{
-    this.alpha = 1;
-}
-
-function a_hexHoverOff()
-{
-    this.alpha = 0.8;
 }
 
 function a_SettingsSelect()

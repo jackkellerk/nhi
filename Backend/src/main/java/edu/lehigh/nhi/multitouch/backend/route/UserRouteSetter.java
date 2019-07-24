@@ -71,7 +71,7 @@ public final class UserRouteSetter {
         });
 
         // get user settings
-        RouteSetter.setRoute(RequestType.GET, "/usersettings", (request, response) -> {
+        RouteSetter.setRoute(RequestType.GET, "/user", (request, response) -> {
             return RouteSetter.preprocessSessionCheck(request, response, encryption, (uid, sessionKey) -> {
                 JSONObject retval = db.user.userSettings(uid);
                 if (retval == null)

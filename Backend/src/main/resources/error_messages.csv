@@ -5,7 +5,7 @@
 200,Invalid Json format.
 201,HTTP request contains invalid Json format.
 300,Missing/invalid crucial key-value pair(s) in Json object.
-301,"Missing/invalid crucial key-value pair(s) to create Square Object. Request body must include: pos_x, pos_y, width, height."
+301,"Missing/invalid crucial key-value pair(s) to create Square Object. JSONObject for Square must include fields: pos_x FLOAT, pos_y FLOAT, width FLOAT, height FLOAT."
 401,Missing crucial header pair(s). Check API.
 402,"Missing crucial header pair(s) to check session availability. Header must include: uid, session_key."
 403,Cannot parse int 'uid' in header should be a integer.

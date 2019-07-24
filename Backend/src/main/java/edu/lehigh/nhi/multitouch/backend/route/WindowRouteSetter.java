@@ -28,63 +28,75 @@ public final class WindowRouteSetter {
          */
 
         // create new window of a porject.
-        RouteSetter.setRoute(RequestType.POST, "/window/create", (request, response) -> {
+        RouteSetter.setRoute(RequestType.POST, "/p/:pid/new_window", (request, response) -> {
             return RouteSetter.preprocessSessionCheck(request, response, encryption, (uid, sessionKey) -> {
-                return RouteSetter.preprocessJSONCheck(request, response, (jsBody) -> {
-                    int pid, iid;
-                    try {
-                        jsBody = new JSONObject(request.body());
-                        pid = jsBody.getInt("pid");
-                        iid = jsBody.getInt("iid");
-                    } catch (JSONException e) {
-                        return StructuredResponse.getErrorResponseJSONMissingFields(new String[] { "pid", "iid" },
-                                new Type[] { Type.INT, Type.INT }, e);
+                return RouteSetter.preprocessPathParam(request, response, new String[] { "pid" }, (params) -> {
+                    int pid = params[0];
+                    if (!db.checkProjectOwnership(uid, pid)) {
+                        return StructuredResponse.getErrorResponse(ErrorHandler.PRIVILAGE.NO_RIGHT_TO_ACCESS_PROJECT);
                     }
-                    JSONObject imageBoxJS = null, windowBoxJS = null;
+                    return RouteSetter.preprocessJSONValueGet(request, response,
+                            new String[] { "iid", "image_box", "window_box" },
+                            new Type[] { Type.INT, Type.JSONOBJ, Type.JSONOBJ }, (vals) -> {
+                                int iid = (int) vals[0];
+                                JSONObject imageBoxJS = (JSONObject) vals[1];
+                                JSONObject windowBoxJS = (JSONObject) vals[2];
+                                Square imageBox, windowBox;
+                                try {
+                                    imageBox = Square.getFromJson(imageBoxJS);
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                    return StructuredResponse.getErrorResponse(
+                                            ErrorHandler.MISSING_FIELD_JSON.MISSING_FIELD_IN_SQUARE,
+                                            "Failed parsing 'image_box'.");
+                                }
 
-                    try {
-                        imageBoxJS = jsBody.getJSONObject("image_box");
-                    } catch (JSONException e) {
-                        System.out.println("'image_box' not specified/not a Json ojbect. Using default values.");
-                    }
+                                try {
+                                    windowBox = Square.getFromJson(windowBoxJS);
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                    return StructuredResponse.getErrorResponse(
+                                            ErrorHandler.MISSING_FIELD_JSON.MISSING_FIELD_IN_SQUARE,
+                                            "Failed parsing 'window_box'.");
+                                }
 
-                    try {
-                        windowBoxJS = jsBody.getJSONObject("window_box");
-                    } catch (JSONException e) {
-                        System.out.println("'window_box' not specified/not a Json object. Using default values.");
-                    }
+                                if (db.window.insertWindow(pid, iid, imageBox, windowBox) < 1)
+                                    return StructuredResponse.getErrorResponse(
+                                            ErrorHandler.UNKOWN.INSERTION_NO_UPDATE_UNKNOWN,
+                                            "Failed insert into table window_t. ");
 
-                    Square imageBox = Square.DEFAULT_IMAGE, windowBox = Square.DEFAULT_WINDOW;
+                                JSONObject retval = db.window.getWindow(db.getLastInsertedId());
+                                if (retval == null)
+                                    return StructuredResponse.getErrorResponse(
+                                            ErrorHandler.UNKOWN.FAILED_TO_FETCH_DATA_UNKNOWN,
+                                            "Failed to fatch the newly created window. ");
+                                return StructuredResponse.getResponse(retval);
+                            });
+                });
+            });
+        });
 
-                    if (imageBoxJS != null) {
-                        try {
-                            imageBox = Square.getFromJson(imageBoxJS);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                            return StructuredResponse.getErrorResponse(
-                                    ErrorHandler.MISSING_FIELD_JSON.MISSING_FIELD_IN_SQUARE,
-                                    "Failed parsing 'image_box'.");
-                        }
+        // create new window with default values.
+        RouteSetter.setRoute(RequestType.POST, "/p/:pid/new_window_default", (request, response) -> {
+            return RouteSetter.preprocessSessionCheck(request, response, encryption, (uid, sessionKey) -> {
+                return RouteSetter.preprocessPathParam(request, response, new String[] { "pid" }, (params) -> {
+                    int pid = params[0];
+                    return RouteSetter.preprocessJSONValueGet(request, response, new String[] { "iid" },
+                            new Type[] { Type.INT }, (vals) -> {
+                                int iid = (int) vals[0];
+                                Square imageBox = Square.DEFAULT_IMAGE, windowBox = Square.DEFAULT_WINDOW;
+                                if (db.window.insertWindow(pid, iid, imageBox, windowBox) < 1)
+                                    return StructuredResponse.getErrorResponse(
+                                            ErrorHandler.UNKOWN.INSERTION_NO_UPDATE_UNKNOWN,
+                                            "Failed insert into table window_t. ");
 
-                        try {
-                            windowBox = Square.getFromJson(windowBoxJS);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                            return StructuredResponse.getErrorResponse(
-                                    ErrorHandler.MISSING_FIELD_JSON.MISSING_FIELD_IN_SQUARE,
-                                    "Failed parsing 'window_box'.");
-                        }
-                    }
-
-                    if (db.window.insertWindow(pid, iid, imageBox, windowBox) < 1)
-                        return StructuredResponse.getErrorResponse(ErrorHandler.UNKOWN.INSERTION_NO_UPDATE_UNKNOWN,
-                                "Failed insert into table window_t. ");
-
-                    JSONObject retval = db.window.getWindow(db.getLastInsertedId());
-                    if (retval == null)
-                        return StructuredResponse.getErrorResponse(ErrorHandler.UNKOWN.FAILED_TO_FETCH_DATA_UNKNOWN,
-                                "Failed to fatch the newly created window. ");
-                    return StructuredResponse.getResponse(retval);
+                                JSONObject retval = db.window.getWindow(db.getLastInsertedId());
+                                if (retval == null)
+                                    return StructuredResponse.getErrorResponse(
+                                            ErrorHandler.UNKOWN.FAILED_TO_FETCH_DATA_UNKNOWN,
+                                            "Failed to fatch the newly created window. ");
+                                return StructuredResponse.getResponse(retval);
+                            });
                 });
             });
         });

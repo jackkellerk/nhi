@@ -17,7 +17,7 @@ public class Square {
     }
 
     public static Square getFromJson(JSONObject jsObject) {
-        return new Square(jsObject.getFloat("img_pos_x"), jsObject.getFloat("img_pos_y"),
-                jsObject.getFloat("img_width"), jsObject.getFloat("img_height"));
+        return new Square(jsObject.getFloat("pos_x"), jsObject.getFloat("pos_y"),
+                jsObject.getFloat("width"), jsObject.getFloat("height"));
     }
 }

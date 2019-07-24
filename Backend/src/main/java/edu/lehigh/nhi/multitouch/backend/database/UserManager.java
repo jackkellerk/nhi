@@ -46,9 +46,9 @@ public class UserManager {
     }
 
     public JSONObject userSettings(int uid) throws JSONException, SQLException {
-        PreparedStatement statetment = mStatements.user.selectUserByUid;
-        mSelectUserByUsernamePS.setInt(1, uid);
-        ResultSet rs = mSelectUserByUsernamePS.executeQuery();
+        PreparedStatement statement = mStatements.user.selectUserByUid;
+        statement.setInt(1, uid);
+        ResultSet rs = statement.executeQuery();
         JSONObject retval = DatabaseManager.convertToJSONObject(rs);
         rs.close();
         return retval;

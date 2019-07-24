@@ -33,6 +33,10 @@ final class RouteSetter {
         Object processRequest(int uid, String sessionKey) throws Exception;
     }
 
+    public interface PathParamCheckRoute {
+        Object processRequest(int[] params) throws Exception;
+    }
+
     /**
      * interface used to pass method as parameter. Method for processing request
      * with json request body.
@@ -67,14 +71,14 @@ final class RouteSetter {
         final Route route = (request, response) -> {
             printRequest(request);
             setResponseToSuccess(response);
-            Object retval = executeSimpleRoute(request, response, routeProcedure);
+            Object retval = checkExceptions(request, response, routeProcedure);
             System.out.print("RESPONSE: " + retval);
             return retval;
         };
         hostRoute(requestType, path, route);
     }
 
-    private static Object executeSimpleRoute(Request request, Response response, SimpleRoute routeProcedure) {
+    private static Object checkExceptions(Request request, Response response, SimpleRoute routeProcedure) {
         try {
 
             return routeProcedure.processRequest(request, response);
@@ -87,6 +91,23 @@ final class RouteSetter {
             e.printStackTrace();
             return StructuredResponse.getErrorResponse(ErrorHandler.UNKOWN.UNSPECIFIED_ERROR, e.getMessage() + ". ");
         }
+    }
+
+    public static Object preprocessPathParam(Request request, Response response, String[] paramNames, PathParamCheckRoute routeProcedure) {
+        return checkExceptions(request, response, (newRequest, newResponse) -> {
+
+            int[] retval = new int[paramNames.length];
+            for (int i = 0; i < paramNames.length; i++) {
+    
+                try {
+                    retval[i] = Integer.parseInt(request.params(paramNames[i]));
+                } catch (NumberFormatException e) {
+                    return StructuredResponse.getErrorResponse(ErrorHandler.PATH.PATH_NUM_FORMAT);
+                }
+            }
+            
+            return routeProcedure.processRequest(retval);
+        });
     }
 
     /**
@@ -102,7 +123,7 @@ final class RouteSetter {
      * 
      */
     public static Object preprocessJSONCheck(Request request, Response response, RequestBodyCheckRoute routeProcedure) {
-        return executeSimpleRoute(request, response, (newRequest, newResponse) -> {
+        return checkExceptions(request, response, (newRequest, newResponse) -> {
 
             JSONObject jsBody = null;
             try {
@@ -164,7 +185,7 @@ final class RouteSetter {
      */
     public static Object preprocessSessionCheck(Request request, Response response, Encryption encryption,
             SessionKeyCheckRoute routeProcedure) {
-        return executeSimpleRoute(request, response, (newRequest, newResponse) -> {
+        return checkExceptions(request, response, (newRequest, newResponse) -> {
             int uid = -1;
             String sessionKey = null;
             try {

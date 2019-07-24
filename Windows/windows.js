@@ -202,7 +202,11 @@ function startWindows(){
   settingsButton.graphics.addChild(settingsIcon);
   w_menuContainer.addChild(settingsButton.container);
 
-  createProjectSettings(4);
+  createSettings("Project Settings", w_settingsContainer, 4);
+  s_addField("Project Name", "Ceramics 48032-23441", 1);
+  s_addField("Microscope(s)", "JEOL JEM-ARM200CF", 2, true);
+  s_addField("Institution(s)", "Lehigh University", 3, true);
+  s_addField("Last Edited", "06/25/19  at  13:23", 4);
 
 
 

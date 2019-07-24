@@ -24,5 +24,20 @@ public final class SourceRouteSetter {
                 return StructuredResponse.getResponse(db.source.getObjectList(sid));
             });
         });
+
+        //get detailed info of a single object
+        RouteSetter.setRoute(RequestType.GET, "/o/:oid", (request, response) -> {
+            return RouteSetter.preprocessSessionCheck(request, response, encryption, (uid, sessionkey) -> {
+                int oid = -1;
+                try {
+                    oid = Integer.parseInt(request.params("oid"));
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                    return StructuredResponse.getErrorResponse(ErrorHandler.PATH.PATH_NUM_FORMAT);
+                }
+                return StructuredResponse.getResponse(db.source.getDetailedObject(oid));
+                
+            });
+        });
     }
 }

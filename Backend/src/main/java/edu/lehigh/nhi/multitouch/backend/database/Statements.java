@@ -28,7 +28,8 @@ class Statements {
             selectProjectByPid = mMySQLConnection.prepareStatement("select * from project_t where pid = ?");
             insertProject = mMySQLConnection.prepareStatement(
                     "insert into project_t(name, date_creation, canvas_width, canvas_height) values(?, ?, ?, ?)");
-            selectProjectsByUid = mMySQLConnection.prepareStatement("select * from user_project natural join project_t where uid = ?");
+            selectProjectsByUid = mMySQLConnection
+                    .prepareStatement("select * from user_project natural join project_t where uid = ?");
         }
     }
 
@@ -48,7 +49,8 @@ class Statements {
     }
 
     protected class User {
-        protected final PreparedStatement selectUserByUsername, selectUserByUid, insertUserSimple, insertUserFull, selectPidByUid;
+        protected final PreparedStatement selectUserByUsername, selectUserByUid, insertUserSimple, insertUserFull,
+                selectPidByUid;
 
         private User() throws SQLException {
             selectUserByUsername = mMySQLConnection.prepareStatement("select * from users where username = ?");
@@ -61,12 +63,16 @@ class Statements {
         }
     }
 
-    //put request to institution/source/object/image table here.
-    protected class Source{
-        protected final PreparedStatement selectObjectListBySid;
+    // put request to institution/source/object/image table here.
+    protected class Source {
+        protected final PreparedStatement selectObjectListBySid, selectHitBoxesByOid, selectImageByIid,
+                selectObjectByOid;
 
         private Source() throws SQLException{
             selectObjectListBySid = mMySQLConnection.prepareStatement("select * from object where sid = ?");
+            selectHitBoxesByOid = mMySQLConnection.prepareStatement("select * from object_hit_box where oid = ?");
+            selectImageByIid = mMySQLConnection.prepareStatement("select * from image where iid = ?");
+            selectObjectByOid = mMySQLConnection.prepareStatement("select * from object where oid = ?");
         }
     }
 

@@ -7,39 +7,60 @@
 // pixi-viewport: 3.4.1 (local - modified by Eddie Sohn)
 
 // initialize images need to be used
+// Icons made by Cursor Creative from https://www.flaticon.com/
 var zoom_background = PIXI.Texture.from('./Images/lowmag_test.jpg');
-const cancel_button =  PIXI.Sprite.from('./Images/cancel_icon.png');
+const cancel_button = PIXI.Sprite.from('./Images/cancel_icon.png');
+const mode_button = PIXI.Sprite.from('./Images/mode_change.png');
 
 // call the image and added to Viewport
 // create a new new texture from image
 var testimg = new PIXI.Sprite(zoom_background);
 
-var LSMIContainer = new PIXI.Container();
+var LMSIContainer = new PIXI.Container();
 
-//Cancel button is used to end line drawing process prematurely
-//Will appear once first point has been added
-//Clicking on it resets all values like starting point, text, etc....                
+// set buttons requried
+// cancel button
 cancel_button.width = 50;
 cancel_button.height = 50;
-cancel_button.x = 0;
-cancel_button.y = 0;
+cancel_button.x = 10;
+cancel_button.y = 10;
 cancel_button.alpha = 0;
 cancel_button.interactive = true;
 cancel_button.buttonMode = true;
-
 cancel_button
     .on('pointerdown', cancelDraw)
     .on('pointerover', cancelDraw)
     .on('pointerup', cancelUp)
     .on('pointeroutside', cancelUp);
 
-//Value used to determine if user clicked on cancel button
-let cancel = false;
+// mode change button
+mode_button.width = 50;
+mode_button.height = 50;
+mode_button.x = 10;
+mode_button.y = 70;
+mode_button.alpha = 0;
+mode_button.interactive = true;
+mode_button.buttonMode = true;
+mode_button
+    .on('pointerdown', changeMode);
+    // .on('pointeroutside', cancelUp);
 
-//Creates style used by text. It is currently unnecessary but more of an example
+// variable to determine if user clicked on cancel button
+var cancel_draw = false;
+
+// varaible to determine current mode
+var dragMode = true;
+
+// variable to determine if user is in the middle of drawing
+var drawing = false;
+
+// varible to save points user clicked for rectangle
+var points = [0, 0];
+
+//Creates style used by text
 const style = new PIXI.TextStyle({
     fontFamily: 'Helvetica',
-    fontSize: 30,
+    fontSize: 25,
     fontWeight: 'bold',
     fill: '#FFFFFF', // gradient
     align: 'center',
@@ -48,84 +69,69 @@ const style = new PIXI.TextStyle({
     wordWrapWidth: 500,
 });
 
-//This determines whether a line is currently being drawn
-//is used in the draw point function
-let drawing = false;
-//Variable used to hold starting point for the line
-var points = [0, 0];
-//Variable used to hold data entries along the drawn line
-var lineDataPoints = [];
-var minValue = 0;
-var maxValue = 255;
-var valueDifference = maxValue - minValue;
-
-/**
- * 
- * fucntion called from master.html for 'Zoom' (Low Magnification Screening / Imaging) to show Low Magnification Screening / Imaging
- */
-function LSMI() {
+function LMSI() {
     // calls pixi-viewport
     var Viewport = new PIXI.extras.Viewport({
         screenWidth: window.innerWidth,
         screenHeight: window.innerHeight,
-        worldWidth: 1000,
-        worldHeight: 1000,
+        worldWidth: 2000,
+        worldHeight: 2000,
         interaction: app.renderer.plugins.interaction // the interaction module is important for wheel() to work properly when renderer.view is placed or scaled
     });
-    
-    // activate mouse/touch gestures
+
+    // activate mouse/touch gestures for viewport
     Viewport
-    .drag()
-    .pinch()
-    .wheel()
-    .decelerate();
+        .drag()
+        .pinch()
+        .wheel()
+        .decelerate();
 
-    // add the viewport to the stage
-    LSMIContainer.addChild(Viewport);
-
-    testimg.width = app.screen.width;
-    testimg.height = app.screen.height;
+    testimg.width = window.innerWidth;
+    testimg.height = window.innerWidth;
 
     // add background image and cancel button to viewport
-    var sprite = Viewport.addChild(testimg);
-    var button = Viewport.addChild(cancel_button);
+    Viewport.addChild(testimg);
+    Viewport.addChild(cancel_button);
+    Viewport.addChild(mode_button);
 
-    //Tells user how to use application
-    //Text will change along with process
-    richText = new PIXI.Text('Select an rectangular area over image to crop.', style);
-    richText.x = app.screen.width / 2 - 250;
-    richText.y = 0;
-    LSMIContainer.addChild(richText);
+    // Text to guide users
+    guideText = new PIXI.Text('Select two points on a image to select an area.', style);
+    guideText.x = window.innerWidth / 2 - 250;
+    guideText.y = 50;
+    Viewport.addChild(guideText);
 
-    LSMIContainer.on('pointerdown', drawPoint);
-    // sprite.on('pointerdown', drawPoint);
+    // add the viewport to the container
+    LMSIContainer.addChild(Viewport);
+
+    // // activate click & cancel
+    // Viewport.on('pointerdown', drawPoint);
+    // Viewport.on('rightclick', cancelDraw);
+    // Viewport.on('rightdown', cancelDraw);
 
     // Sets the app to be interactable and allows drawPoint function to be called
-    // When user clicks anywhere on screen
-    LSMIContainer.interactive = true;
-    
+    LMSIContainer.interactive = true;
+
+    app.stage.addChild(LMSIContainer);
+    app.renderer.render(LMSIContainer);
+
 }
 
-/**
-* Draw point allows the user to place a point on the image
-* The first time the user does this the line drawing process will begin and drawing switches to true
-* The starting point will be displayed by a small square and the app will wait for the user to
-* click on the screen again
-* Once activated again the app will denonte the end point of the user's line and create a straight
-* line inbetween both points. This will then call the line detail and create graph functions and the drawing
-* value will switch to end signaling the end of the drawing process
-*/
 function drawPoint(event) {
-    if (!cancel) { //Checks if user clicked on cancel button
+    if (!cancel_draw) { //Checks if user clicked on cancel button
+        
+        // alpha of cancle button
+        cancel_button.alpha = 0.5;
+
         if (!drawing) { //Checks what phase of line create user is in
 
-            graphics.clear(); //Clears current graphics on screen
+            //Clears current graphics on screen
+            graphics.clear();
 
             //Constructs starting point
             graphics.beginFill(0xFFFFFF);
             graphics.drawRect(event.data.global.x - 5, event.data.global.y - 5, 10, 10);
             graphics.endFill();
-            LSMIContainer.addChild(graphics);
+            Viewport.addChild(graphics);
 
             //Changes drawing value 
             drawing = true;
@@ -134,11 +140,7 @@ function drawPoint(event) {
             points = [event.data.global.x, event.data.global.y];
 
             //Updates text and cancel button
-            richText.text = 'Select the ending point to crop the area. (Touch cancel to stop)';
-
-            // Alpha of cancle button
-            cancel_button.alpha = 1;
-
+            guideText.text = 'Select the ending point of rectangle. (Touch cancel / right click to stop)';
         } //end drawing if
         else {
             //Draws end point
@@ -160,69 +162,76 @@ function drawPoint(event) {
             console.log("start: " + points[0] + " " + points[1] + ",\nend: " + event.data.global.x + " " +
                 event.data.global.y);
 
-            // get selected screen as image
-            // select 'pixiCanvas' to display cropped Image
-            // var myCanvas = document.getElementById('pixiCanvas');
-            
-            // CROP - commented
-            // TODO: save cropped image
-            // // TODO: use 't1' instead 'test_image', to make it compatiable
-            // var ctx = myCanvas.getContext('2d');
-            // var img = new Image();
-            // img.onload = function(){
-            //     // points[]: starting point (x, y) of rectangle drawn
-            //     // event.data.global: ending point (x, y) of rectangle drawn
-            //     // event.data.global - points[]: width & height of rectangle drawn
-
-            //     // draw new image using points selected by user
-            //     ctx.drawImage(img, points[0], points[1], event.data.global.x - points[0], event.data.global.y - points[1], 0, 0, 2 * (event.data.global.x - points[0]), 2 * (event.data.global.y - points[1]));
-
-            // };
-
-            // document.body.appendChild(myCanvas);
-
-            // // set the image source
-            // img.src = './Images/lowmag_test.jpg';
-
             //Changes draw value and updates other information
             drawing = false;
-            richText.text = 'Done: Select another point to crop other areas.';
-            cancel_button.alpha = 0;
-
-            // Calls data functions to show user the results on the line they drew
-            // lineDetails(points[0], points[1], event.data.global.x, event.data.global.y);
-
-            // createGraph(event);
+            guideText.text = 'Copy of the selected area is added.';
         } //end else
     } //end cancel if
 } // end draw point
 
 /**
-* This function is called when the user clicks on the cancel button.
-* The contents of this function won't run unless the button is clearly visible to the user
-* Once clicked on all contents created by the user will be removed and reset. The cancel value
-* is switched to true. This is because the draw point function is also activated but is stopped if
-* the value of cancel is true.
-* @param event the action of clicking on the cancel button sprite
-*/
+ *  called when cancel_button is fired.
+ *  modify alpha value of the image, resets points[], cancel_draw, drawing
+ */
 function cancelDraw(event) {
-    console.log("cancel button alpha:" + cancel_button.alpha);
+    console.log("cancel_button alpha:" + cancel_button.alpha);
     if (cancel_button.alpha == 1) {
         //Resets all line UI components
         graphics.clear();
         cancel_button.alpha = 0;
         points = [0, 0];
-        cancel = true;
+        cancel_draw = true;
         drawing = false;
-        richText.text = 'Make a starting point for your line by clicking on the screen.';
+        guideText.text = 'Select two points on a image to select.';
     }
 } // end cancel draw
 
 /**
-* This changes the value of cancel so that draw point can work normaly again
-* 
-*/
+ *  Resets cancel_draw after canelDraw() is called.
+ */
 function cancelUp(event) {
-    //Resets cancel value
-    cancel = false;
-} //end cancel up
+    // Resets cancel value
+    cancel_draw = false;
+} // end cancel up
+
+/**
+ *  Change mode between 'drag' and 'screenshot'
+ */
+function changeMode(event) {
+    // Resets all line UI components
+    graphics.clear();
+
+    mode_button.alpha = 0.5;
+
+    // if mode is 'drag', pan & pinch zoom: change to 'screenshot'
+    if (dragMode == true) {
+
+        // disable gestures for 'drag'
+        Viewport.pausePlugin('drag');
+        Viewport.pausePlugin('pinch');
+        Viewport.pausePlugin('wheel');
+        Viewport.pausePlugin('decelerate');
+    
+        // activate click & cancel
+        Viewport.on('pointerdown', drawPoint);
+        Viewport.on('rightclick', cancelDraw);
+        Viewport.on('rightdown', cancelDraw);
+
+        // change guideText to 'screenshot' mode
+        dragMode = false;
+        guideText.text = 'Select two points on a image to select.';
+    }
+    // if mode is 'screenshot', getting part of the image and save it as child image of current image: change to 'drag'
+    else {
+
+        // resume gestures for 'drag'
+        Viewport.resumePlugin('drag');
+        Viewport.resumePlugin('pinch');
+        Viewport.resumePlugin('wheel');
+        Viewport.resumePlugin('decelerate');
+
+        // change guideText to 'drag' mode
+        dragMode = true;
+        guideText.text = 'Drag and scroll the image to explore.';
+    }
+} // end changeMode

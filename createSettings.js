@@ -113,7 +113,7 @@ function s_editMode(myX, myY, myText)
     fieldTextbox.y = myY;
     fieldTextbox.interactiveChildren = true;
     fieldTextbox.placeholder = myText;
-    //fieldTextbox.on("keydown",keyDown);
+    fieldTextbox.text = myText;
     s_container.addChild(fieldTextbox);
 }
 

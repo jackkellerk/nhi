@@ -5,6 +5,7 @@ import org.json.JSONObject;
 
 import edu.lehigh.nhi.multitouch.backend.Encryption;
 import edu.lehigh.nhi.multitouch.backend.ErrorHandler;
+import edu.lehigh.nhi.multitouch.backend.JSONValueGetter.Type;
 import edu.lehigh.nhi.multitouch.backend.StructuredResponse;
 import edu.lehigh.nhi.multitouch.backend.database.DatabaseManager;
 
@@ -27,35 +28,59 @@ public final class ProjectRouteSetter {
          */
 
         // get the listing of all projects.
-        RouteSetter.setRoutePreprocessSessionCheck(RequestType.GET, "/project", encryption,
-                (request, response, uid, sessionKey) -> {
-                    JSONArray projectList = db.project.getProjectList(uid);
-                    return StructuredResponse.getResponse(projectList);
-                });
+        RouteSetter.setRoute(RequestType.GET, "/project", (request, response) -> {
+            return RouteSetter.preprocessSessionCheck(request, response, encryption, (uid, sessionkey) -> {
+                JSONArray projectList = db.project.getProjectList(uid);
+                return StructuredResponse.getResponse(projectList);
+            });
+        });
 
         // get a specific project. The response is more detailed with information of all
         // the windows this project contains.
-        RouteSetter.setRoutePreprocessSessionCheck(RequestType.GET, "/p/:pid", encryption,
-                (request, response, uid, sessionkey) -> {
-                    int pid = -1;
-                    try {
-                        pid = Integer.parseInt(request.params("pid"));
-                    } catch (NumberFormatException e) {
-                        return ErrorHandler.processError(ErrorHandler.PATH.PATH_NUM_FORMAT, e);
-                    }
-                    return StructuredResponse.getResponse(db.project.getProject(uid, pid));
-                });
+        RouteSetter.setRoute(RequestType.GET, "/p/:pid", (request, response) -> {
+            return RouteSetter.preprocessSessionCheck(request, response, encryption, (uid, sessionKey) -> {
+                int pid = -1;
+                try {
+                    pid = Integer.parseInt(request.params("pid"));
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                    return StructuredResponse.getErrorResponse(ErrorHandler.PATH.PATH_NUM_FORMAT);
+                }
+
+                JSONObject retval = db.project.getProject(pid);
+                if (retval == null)
+                    return StructuredResponse.getErrorResponse(ErrorHandler.EXISTANSE.PROJECT_EXISTNACE);
+
+                if (!db.checkProjectOwnership(uid, pid))
+                    return StructuredResponse.getErrorResponse(ErrorHandler.PRIVILAGE.NO_RIGHT_TO_ACCESS_PROJECT);
+
+                return StructuredResponse.getResponse(retval);
+            });
+        });
 
         // create a project.
-        RouteSetter.setRoutePreprocessJSONRequestBodyAndSessionCheck(RequestType.POST, "/project/create", encryption,
-                (request, response, jsBody, uid, sessionkey) -> {
-                    String name = jsBody.getString("name");
-                    float canvas_width = jsBody.getFloat("canvas_width");
-                    float canvas_height = jsBody.getFloat("canvas_height");
-                    JSONObject retval = db.project.createProject(uid, name, canvas_width, canvas_height);
-                    if (retval == null)
-                        ErrorHandler.processError(ErrorHandler.OTHER.INSERTION_FAILED_UNKNOWN);
-                    return StructuredResponse.getResponse(retval);
-                });
+        // TODO: Not available now. update the statement to be a procedure call after
+        // procedure privilage is granted.
+        RouteSetter.setRoute(RequestType.POST, "/project/create", (request, response) -> {
+
+            return RouteSetter.preprocessSessionCheck(request, response, encryption, (uid, sessionkey) -> {
+                return RouteSetter.preprocessJSONValueGet(request, response,
+                        new String[] { "name", "canvas_width", "canvas_height" },
+                        new Type[] { Type.STRING, Type.FLOAT, Type.FLOAT, Type.FLOAT }, (vals) -> {
+
+                            String name = (String) vals[0];
+                            float canvas_width = (float) vals[1];
+                            float canvas_height = (float) vals[2];
+                            JSONObject retval = db.project.createProject(uid, name, canvas_width, canvas_height);
+
+                            if (retval == null)
+                                return StructuredResponse
+                                        .getErrorResponse(ErrorHandler.UNKOWN.INSERTION_NO_UPDATE_UNKNOWN);
+
+                            return StructuredResponse.getResponse(retval);
+                        });
+
+            });
+        });
     }
 }

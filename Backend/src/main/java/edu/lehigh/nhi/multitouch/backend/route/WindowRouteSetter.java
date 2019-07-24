@@ -6,6 +6,7 @@ import org.json.JSONObject;
 import edu.lehigh.nhi.multitouch.backend.Encryption;
 import edu.lehigh.nhi.multitouch.backend.ErrorHandler;
 import edu.lehigh.nhi.multitouch.backend.StructuredResponse;
+import edu.lehigh.nhi.multitouch.backend.JSONValueGetter.Type;
 import edu.lehigh.nhi.multitouch.backend.database.DatabaseManager;
 import edu.lehigh.nhi.multitouch.backend.database.Square;
 
@@ -28,54 +29,64 @@ public final class WindowRouteSetter {
 
         // create new window of a porject.
         RouteSetter.setRoute(RequestType.POST, "/window/create", (request, response) -> {
-            JSONObject jsRequest = new JSONObject(request.body());
-            int pid = jsRequest.getInt("pid");
-            int iid = jsRequest.getInt("iid");
-            JSONObject imageBoxJS = null, windowBoxJS = null;
-            try {
-                imageBoxJS = jsRequest.getJSONObject("image_box");
-            } catch (JSONException e) {
-                System.out.println("'image_box' not specified. Using default settings.");
-            }
-            try {
-                windowBoxJS = jsRequest.getJSONObject("window_box");
-            } catch (JSONException e) {
-                System.out.println("'window_box' not specified. Using default settings.");
-            }
+            return RouteSetter.preprocessSessionCheck(request, response, encryption, (uid, sessionKey) -> {
+                return RouteSetter.preprocessJSONCheck(request, response, (jsBody) -> {
+                    int pid, iid;
+                    try {
+                        jsBody = new JSONObject(request.body());
+                        pid = jsBody.getInt("pid");
+                        iid = jsBody.getInt("iid");
+                    } catch (JSONException e) {
+                        return StructuredResponse.getErrorResponseJSONMissingFields(new String[] { "pid", "iid" },
+                                new Type[] { Type.INT, Type.INT }, e);
+                    }
+                    JSONObject imageBoxJS = null, windowBoxJS = null;
 
-            Square imageBox, windowBox = null;
-            try {
-                imageBox = Square.getFromJson(imageBoxJS, Square.Type.image);
-            } catch (JSONException e) {
-                System.err.println("Missing field(s) in 'image_box'.");
-                e.printStackTrace();
-                return ErrorHandler.processError(ErrorHandler.MISSING_FIELD_JSON.MISSING_FIELD_IMAGE_BOX, e);
-            }
+                    try {
+                        imageBoxJS = jsBody.getJSONObject("image_box");
+                    } catch (JSONException e) {
+                        System.out.println("'image_box' not specified/not a Json ojbect. Using default values.");
+                    }
 
-            try {
-                windowBox = Square.getFromJson(windowBoxJS, Square.Type.window);
-            } catch (JSONException e) {
-                System.err.println("Missing field(s) in 'window_box'.");
-                e.printStackTrace();
-                return new StructuredResponse(ErrorHandler.MISSING_FIELD_JSON.MISSING_FIELD_WINDOW_BOX,
-                        "Missing field(s) in 'window_box'.").toJson().toString();
-            }
-            return new StructuredResponse(db.window.createWindow(pid, iid, imageBox, windowBox)).toJson()
-                    .toString();
-        });
+                    try {
+                        windowBoxJS = jsBody.getJSONObject("window_box");
+                    } catch (JSONException e) {
+                        System.out.println("'window_box' not specified/not a Json object. Using default values.");
+                    }
 
-        // update the posion of the window.
-        RouteSetter.setRoute(RequestType.POST, "/w/:wid/update_pos", (request, response) -> {
-            JSONObject jsRequest = new JSONObject(request.body());
-            float pos_x = jsRequest.getFloat("pos_x");
-            float pos_y = jsRequest.getFloat("pos_y");
-            float width = jsRequest.getFloat("width");
-            float height = jsRequest.getFloat("height");
-            int wid = Integer.parseInt(request.params("wid"));
-            int num_rows_updated = db.window.updateWindowPosition(wid, pos_x, pos_y, width, height);
-            JSONObject retval = new JSONObject();
-            retval.put("num_rows_updated", num_rows_updated);
-            return new StructuredResponse(retval).toJson().toString();
+                    Square imageBox = Square.DEFAULT_IMAGE, windowBox = Square.DEFAULT_WINDOW;
+
+                    if (imageBoxJS != null) {
+                        try {
+                            imageBox = Square.getFromJson(imageBoxJS);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            return StructuredResponse.getErrorResponse(
+                                    ErrorHandler.MISSING_FIELD_JSON.MISSING_FIELD_IN_SQUARE,
+                                    "Failed parsing 'image_box'.");
+                        }
+
+                        try {
+                            windowBox = Square.getFromJson(windowBoxJS);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            return StructuredResponse.getErrorResponse(
+                                    ErrorHandler.MISSING_FIELD_JSON.MISSING_FIELD_IN_SQUARE,
+                                    "Failed parsing 'window_box'.");
+                        }
+                    }
+
+                    if (db.window.insertWindow(pid, iid, imageBox, windowBox) < 1)
+                        return StructuredResponse.getErrorResponse(ErrorHandler.UNKOWN.INSERTION_NO_UPDATE_UNKNOWN,
+                                "Failed insert into table window_t. ");
+
+                    JSONObject retval = db.window.getWindow(db.getLastInsertedId());
+                    if (retval == null)
+                        return StructuredResponse.getErrorResponse(ErrorHandler.UNKOWN.FAILED_TO_FETCH_DATA_UNKNOWN,
+                                "Failed to fatch the newly created window. ");
+                    return StructuredResponse.getResponse(retval);
+                });
+            });
         });
     }
 }

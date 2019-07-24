@@ -6,81 +6,65 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.json.JSONArray;
+import org.eclipse.jetty.util.security.Password;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 public class UserManager {
-
+    @SuppressWarnings("unused")
     private final DatabaseManager mManager;
-    private final PreparedStatement mSelectUserByUsernamePS, mInsertUserSimplePS, mInsertUserFullPS, mSelectPidByUidPS,
-            mCheckProjectOwnershipPS;
+    private final Statements mStatements;
+    private final PreparedStatement mSelectUserByUsernamePS, mInsertUserSimplePS, mInsertUserFullPS, mSelectPidByUidPS;
 
     protected UserManager(DatabaseManager manager) throws SQLException {
         mManager = manager;
-        Statements loader = Statements.getInstance();
-        mSelectUserByUsernamePS = loader.user.selectUserByUsername;
-        mInsertUserSimplePS = loader.user.insertUserSimple;
-        mInsertUserFullPS = loader.user.insertUserFull;
-        mSelectPidByUidPS = loader.user.selectPidByUid;
-        mCheckProjectOwnershipPS = loader.user.checkProjectOwnership;
+        mStatements = Statements.getInstance();
+        mSelectUserByUsernamePS = mStatements.user.selectUserByUsername;
+        mInsertUserSimplePS = mStatements.user.insertUserSimple;
+        mInsertUserFullPS = mStatements.user.insertUserFull;
+        mSelectPidByUidPS = mStatements.user.selectPidByUid;
     }
 
-    public boolean login(String username, String password) {
+    public String getPassword(String username) throws SQLException {
         // TODO: use hashed password
-        // TODO: check error for non-existing user
         String actualPassword = null;
-        try {
-            mSelectUserByUsernamePS.setString(1, username);
-            ResultSet rs = mSelectUserByUsernamePS.executeQuery();
-            if (rs.next()) {
-                actualPassword = rs.getString("password");
-            }
-            rs.close();
-        } catch (SQLException e) {
-            System.err.println("Login error occured.");
-            return false;
-        }
-
-        if (actualPassword.equals(password)) {
-            return true;
-        }
-
-        return false;
+        mSelectUserByUsernamePS.setString(1, username);
+        ResultSet rs = mSelectUserByUsernamePS.executeQuery();
+        if (rs.next())
+            actualPassword = rs.getString("password");
+        rs.close();
+        return actualPassword;
     }
 
     public int getUidByUsername(String username) throws SQLException {
         mSelectUserByUsernamePS.setString(1, username);
         ResultSet rs = mSelectUserByUsernamePS.executeQuery();
-        rs.next();
-        int retval = rs.getInt("id");
+        int retval = -1;
+        if (rs.next())
+            retval = rs.getInt("id");
         rs.close();
         return retval;
     }
 
-    public JSONObject userSettings(String username) throws JSONException, SQLException {
-        mSelectUserByUsernamePS.setString(1, username);
+    public JSONObject userSettings(int uid) throws JSONException, SQLException {
+        PreparedStatement statetment = mStatements.user.selectUserByUid;
+        mSelectUserByUsernamePS.setInt(1, uid);
         ResultSet rs = mSelectUserByUsernamePS.executeQuery();
         JSONObject retval = DatabaseManager.convertToJSONObject(rs);
         rs.close();
         return retval;
     }
 
-    // Returns true if it was successful, returns false otherwise // Ask if the
-    // email must be an edu email specifically from one of the partnering
-    // universities
-    public boolean signup(String username, String password, String email) throws SQLException {
+    // Returns user info
+    public int insertUser(String username, String password, String email) throws SQLException {
         mInsertUserSimplePS.setString(1, username);
         mInsertUserSimplePS.setString(2, password);
         mInsertUserSimplePS.setString(3, email);
-        mInsertUserSimplePS.executeUpdate();
-        return login(username, password);
+        return mInsertUserSimplePS.executeUpdate();
     }
 
-    // Returns true if it was successful, returns false otherwise // Ask if the
-    // email must be an edu email specifically from one of the partnering
-    // universities
-    public boolean signup(String username, String password, String email, String legalName, String institution)
+    // Returns user info
+    public int insertUser(String username, String password, String email, String legalName, String institution)
             throws SQLException {
         mInsertUserFullPS.setString(1, username);
         mInsertUserFullPS.setString(2, password);
@@ -90,8 +74,7 @@ public class UserManager {
         mInsertUserFullPS.setString(5, "TODO");
         mInsertUserFullPS.setString(6, institution);
         mInsertUserFullPS.executeUpdate();
-
-        return login(username, password);
+        return mInsertUserFullPS.executeUpdate();
     }
 
     public List<Integer> getPidList(int uid) throws SQLException {
@@ -103,13 +86,5 @@ public class UserManager {
         }
         rs.close();
         return retval;
-    }
-
-    public boolean checkProjectOwnership(int uid) throws SQLException {
-        mCheckProjectOwnershipPS.setInt(1, uid);
-        ResultSet rs = mCheckProjectOwnershipPS.executeQuery();
-        if(rs.next())
-            return true;
-        return false;
     }
 }

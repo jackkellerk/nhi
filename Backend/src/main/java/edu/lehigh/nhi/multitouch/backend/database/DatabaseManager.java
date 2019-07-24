@@ -37,7 +37,7 @@ public class DatabaseManager {
         project = new ProjectManager(this);
     }
 
-    protected int getLastInsertedId() throws SQLException {
+    public int getLastInsertedId() throws SQLException {
         ResultSet rs = mStatements.common.selectLastInsertion.executeQuery();
         if (rs.next()) {
             int index = rs.getInt("last_insert_id()");
@@ -46,6 +46,15 @@ public class DatabaseManager {
         return -1;
     }
 
+    public boolean checkProjectOwnership(int uid, int pid) throws SQLException {
+        mStatements.common.checkProjectOwnership.setInt(1, uid);
+        mStatements.common.checkProjectOwnership.setInt(2, pid);
+        ResultSet rs = mStatements.common.checkProjectOwnership.executeQuery();
+        if(rs.next())
+            return true;
+        return false;
+    }
+    
     protected static JSONArray convertToJSONArray(ResultSet resultSet) throws JSONException, SQLException {
         JSONArray jsonArray = new JSONArray();
         while (resultSet.next()) {

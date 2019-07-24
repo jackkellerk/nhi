@@ -13,8 +13,9 @@ public class ErrorHandler {
     // TODO: Create/paste error code used here. Make the name specific. This would
     // be a great reference.
 
-    public static final class OTHER {
-        public static final int UNSPECIFIED_ERROR = 100, INVALID_SESSION_KEY = 601, INSERTION_FAILED_UNKNOWN = 602;
+    public static final class UNKOWN {
+        public static final int UNSPECIFIED_ERROR = 100, SQL_ERROR_UNKOWN = 101, INSERTION_NO_UPDATE_UNKNOWN = 102,
+                FAILED_TO_FETCH_DATA_UNKNOWN = 103;
     }
 
     public static final class INVALID_JSON {
@@ -22,8 +23,7 @@ public class ErrorHandler {
     }
 
     public static final class MISSING_FIELD_JSON {
-        public static final int MISSING_FIELD = 300, MISSING_FIELD_IN_SQUARE = 301, MISSING_FIELD_IMAGE_BOX = 302,
-                MISSING_FIELD_WINDOW_BOX = 303;
+        public static final int DEFAULT = 300, MISSING_FIELD_IN_SQUARE = 301;
     }
 
     public static final class HEADER {
@@ -34,25 +34,18 @@ public class ErrorHandler {
         public static final int PATH_NUM_FORMAT = 501;
     }
 
+    public static final class PRIVILAGE {
+        public static final int INVALID_SESSION_KEY = 601, NO_RIGHT_TO_ACCESS_PROJECT = 602,
+                LOGIN_FAILED = 603;
+    }
+
+    public static final class EXISTANSE {
+        public static final int PROJECT_EXISTNACE = 701;
+    }
+
     // TODO: Create/paste your error code and massage to "error_message.csv" under
     // "backend/src/resources".
     private static final HashMap<Integer, String> MESSAGE_MAP = loadCSVFileToMap("error_messages.csv");
-
-    public static String processError(int errno) {
-        printMessage(errno);
-        return StructuredResponse.getErrorResponse(errno, getMessage(errno));
-    }
-
-    public static String processError(int errno, Exception e) {
-        printMessage(errno);
-        e.printStackTrace();
-        return StructuredResponse.getErrorResponse(errno, getMessage(errno));
-    }
-
-
-    public static void printMessage(int errno) {
-        System.err.println(errno + ": " + getMessage(errno));
-    }
 
     public static String getMessage(int errno) {
         String message = MESSAGE_MAP.get(errno);

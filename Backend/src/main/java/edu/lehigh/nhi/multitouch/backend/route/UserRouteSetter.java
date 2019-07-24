@@ -1,11 +1,11 @@
 package edu.lehigh.nhi.multitouch.backend.route;
 
-import java.util.List;
-
-import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import edu.lehigh.nhi.multitouch.backend.Encryption;
+import edu.lehigh.nhi.multitouch.backend.ErrorHandler;
+import edu.lehigh.nhi.multitouch.backend.JSONValueGetter.Type;
 import edu.lehigh.nhi.multitouch.backend.StructuredResponse;
 import edu.lehigh.nhi.multitouch.backend.database.DatabaseManager;
 
@@ -28,45 +28,56 @@ public final class UserRouteSetter {
 
         // log in
         RouteSetter.setRoute(RequestType.POST, "/login", (request, response) -> {
-            JSONObject jsRequest = new JSONObject(request.body());
-            String username = jsRequest.getString("username");
-            String password = jsRequest.getString("password");
-            System.out.println(username + " , " + password);
-            if (db.user.login(username, password)) {
-                int uid = db.user.getUidByUsername(username);
-                String sessionKey = encryption.addSessionkey(uid);
-                JSONObject dataJs = new JSONObject();
-                dataJs.put("session_key", sessionKey);
-                dataJs.put("uid", uid);
-                return StructuredResponse.getResponse(dataJs);
-            }
-            StructuredResponse retval = new StructuredResponse(100, "Login failed");
-            return retval.toJson().toString();
+            return RouteSetter.preprocessJSONValueGet(request, response, new String[] { "username", "password" },
+                    new Type[] { Type.STRING, Type.STRING }, (vals) -> {
+                        String username = (String) vals[0];
+                        String password = (String) vals[1];
+                        String actualPassword = db.user.getPassword(username);
+
+                        if (actualPassword == null) {
+                            return StructuredResponse.getErrorResponse(ErrorHandler.PRIVILAGE.LOGIN_FAILED,
+                                    "User does not exist. ");
+                        }
+
+                        if (!(actualPassword.equals(password))) {
+                            return StructuredResponse.getErrorResponse(ErrorHandler.PRIVILAGE.LOGIN_FAILED,
+                                    "Password invalid. ");
+                        }
+
+                        int uid = db.user.getUidByUsername(username);
+                        String sessionKey = encryption.addSessionkey(uid);
+                        JSONObject dataJs = new JSONObject();
+                        dataJs.put("session_key", sessionKey);
+                        dataJs.put("uid", uid);
+                        return StructuredResponse.getResponse(dataJs);
+
+                    });
         });
 
         // sign up
-        RouteSetter.setRoutePreprocessJSONRequestBody(RequestType.POST, "signup", (request, response, jsBody) -> {
-            // Gather incoming info (ignore profilepicture for now)
-            String username = jsBody.getString("username");
-            String password = jsBody.getString("password");
-            String email = jsBody.getString("email");
-            String institution = jsBody.getString("institution");
-            String legalName = jsBody.getString("legalname");
-            response.status(200);
-            if (db.user.signup(username, password, email, legalName, institution)) {
-                return StructuredResponse.getResponse(new JSONObject());
-            }
-            return StructuredResponse.getErrorResponse(100, "signup failed");
+        RouteSetter.setRoute(RequestType.POST, "/signup", (request, response) -> {
+
+            return RouteSetter.preprocessJSONValueGet(request, response,
+                    new String[] { "username", "password", "email", "legal_name", "institution" },
+                    new Type[] { Type.STRING, Type.STRING, Type.STRING, Type.STRING, Type.STRING }, (vals) -> {
+                        String username = (String) vals[0], password = (String) vals[1], email = (String) vals[2],
+                                legalName = (String) vals[3], institution = (String) vals[4];
+                        if (db.user.insertUser(username, password, email, legalName, institution) < 1) {
+                            return StructuredResponse.getErrorResponse(ErrorHandler.UNKOWN.INSERTION_NO_UPDATE_UNKNOWN);
+                        }
+
+                        return db.user.userSettings(db.getLastInsertedId());
+                    });
         });
 
         // get user settings
-        RouteSetter.setRoute(RequestType.POST, "/usersettings", (request, response) -> {
-            // Gather information from request
-            JSONObject jsRequest = new JSONObject(request.body());
-            String username = jsRequest.getString("username");
-
-            // This grabs the informatin about the user settings
-            return db.user.userSettings(username);
+        RouteSetter.setRoute(RequestType.GET, "/usersettings", (request, response) -> {
+            return RouteSetter.preprocessSessionCheck(request, response, encryption, (uid, sessionKey) -> {
+                JSONObject retval = db.user.userSettings(uid);
+                if (retval == null)
+                    return StructuredResponse.getErrorResponse(ErrorHandler.UNKOWN.FAILED_TO_FETCH_DATA_UNKNOWN);
+                return StructuredResponse.getResponse(retval);
+            });
         });
 
     }

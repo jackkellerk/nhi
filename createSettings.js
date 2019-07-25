@@ -22,7 +22,7 @@ function createSettings(title="Settings", container, fieldCount)
     let settingsMenu = new PIXI.Graphics();
         settingsMenu.lineStyle(5, 0x787878, 3);
         settingsMenu.beginFill(0x7D7D7D);
-        settingsMenu.drawRoundedRect(corner_x,corner_y, 0.9*h,150+fieldCount*40, 2);
+        settingsMenu.drawRoundedRect(corner_x,corner_y, 0.9*h,160+fieldCount*40, 2);
         settingsMenu.endFill();
         settingsMenu.interactive = true;
     container.addChild(settingsMenu);
@@ -134,7 +134,7 @@ function s_addLogoutButton()
     let signoutMetrics = PIXI.TextMetrics.measureText("Log Out", signoutStyle);
     let settSignout = new PIXI.Text("Log Out", signoutStyle);
     settSignout.position.x = corner_x + 0.9*h - signoutMetrics.width - 40;
-    settSignout.position.y = corner_y + 100 + this.fieldCount*40;
+    settSignout.position.y = corner_y + 115 + this.fieldCount*40;
 
     let signoutButton = new PIXI.Graphics();
         signoutButton.beginFill(0xFFFFFF);
@@ -142,7 +142,7 @@ function s_addLogoutButton()
         signoutButton.endFill();
         signoutButton.buttonMode = true;
         signoutButton.interactive = true;
-        signoutButton.on('mouseover', function(){ signoutButton.alpha = 0.3; });
+        signoutButton.on('mouseover', function(){ signoutButton.alpha = 0.5; });
         signoutButton.on('mouseout', function(){ signoutButton.alpha = 0; });
         signoutButton.on('pointerdown', function(){
             currentActivity = activityArray[0];

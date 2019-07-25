@@ -29,7 +29,7 @@ var w_Popup1Container = new PIXI.Container(); // for popup window
 //var w_Popup4Container = new PIXI.Container(); // for popup window
 
 // PIXI Text style
-var w_style = {fontFamily: 'Arial', fontSize: 15, fill: 0x000000};
+var w_style = {fontFamily: 'Arial', fontSize: 15, fill: 0xFFFFFF};
 
 
 function startWindows(){
@@ -67,6 +67,10 @@ function startWindows(){
   tintBg.endFill();
   tintBg.alpha = 0.7;
   tintBg.interactive = true;
+  tintBg.on('pointerdown', function(){
+    w_menuCC = 1;
+    w_MenuSelect();
+  });
 
 
 
@@ -78,22 +82,20 @@ function startWindows(){
   w_menuCC = 0;
 
   menuButton = new Hexagon({x:55, y:55}, 0, 37);
+      menuButton.graphics.lineStyle(1, 0xFFFFFF, 1);
       menuButton.graphics.buttonMode = true;
       menuButton.graphics.interactive = true;
-      menuButton.graphics.on('mouseover', function(){ menuButton.graphics.alpha = 0.2; });
-      menuButton.graphics.on('mouseout', function(){ menuButton.graphics.alpha = 0; });
       menuButton.graphics.on('pointerdown', w_MenuSelect);
-      menuButton.graphics.alpha = 0;
-  menuButton.draw(0xFFFFFF);
-
-  tintBg.on('pointerdown', w_MenuSelect);
+  menuButton.draw(0x00000);
 
   menuIcon = new PIXI.Sprite.from("Images/menu.png");
-      menuIcon.width = 50;
-      menuIcon.height = 50;
-      menuIcon.position.x = 30;
-      menuIcon.position.y = 30;
-  app.stage.addChild(menuIcon);
+  menuIcon.width = 48;
+  menuIcon.height = 47;
+  menuIcon.position.x = 8;
+  menuIcon.position.y = 14;
+  menuButton.container.addChild(menuIcon);
+
+  app.stage.removeChild(menuButton.container); // add to stage after window container
 
 
 
@@ -117,7 +119,6 @@ function startWindows(){
     app.stage.removeChild(w_saveMenu.container);
     w_menuCC = 1;
     w_MenuSelect();
-    unblurBg();
   });
 
   w_saveMenu.leftButton.interactive = true;
@@ -136,7 +137,6 @@ function startWindows(){
   w_saveMenu.rightButton.on('pointerdown', function(){
     app.stage.removeChild(w_saveMenu.container);
     app.stage.removeChild(tintBg);
-    unblurBg();
   });
 
   w_saveMenu.container.cacheAsBitmap = true;
@@ -156,7 +156,6 @@ function startWindows(){
       w_saveButton.graphics.on('pointerdown', function(){
         w_menuCC = 1;
         w_MenuSelect();
-        blurBg();
         app.stage.addChild(tintBg);
         app.stage.addChild(w_saveMenu.container);
       });
@@ -226,6 +225,8 @@ function startWindows(){
         app.stage.removeChild(w_menuContainer);
         app.stage.removeChild(tintBg);
         w_hideCC = 1;
+        menuButton.container.y = -52;
+        unblurBg();
       });
       w_hideButton.draw(0xFFFFFF, 0.8);
   app.stage.removeChild(w_hideButton.container);
@@ -248,66 +249,66 @@ function startWindows(){
 
   // Image Menu (Container)
 
-  window1Hex = new Hexagon({x:50, y:200}, 0, 37);
-      window1Hex.graphics.lineStyle(2, 0x7D7D7D, 3);
+  window1Hex = new Hexagon({x:menuButton.x, y:85}, 0, 37);
+      window1Hex.graphics.lineStyle(1, 0xFFFFFF, 1);
       window1Hex.graphics.buttonMode = true;
       window1Hex.graphics.interactive = true;
       window1Hex.graphics.on('mouseover', function(){ this.x = this.x + 10; });
       window1Hex.graphics.on('mouseout', function(){ this.x = this.x - 10; });
       window1Hex.graphics.on('pointerdown', w_WindowSelect);
-      window1Hex.draw(0xFFFFFF);
+      window1Hex.draw(0x000000);
   app.stage.removeChild(window1Hex.container);
 
   window1Label = new PIXI.Text("Window\n     1", w_style);
   window1Label.position.x = 6;
-  window1Label.position.y = 22;
+  window1Label.position.y = 27;
   window1Hex.graphics.addChild(window1Label);
 
-  window2Hex = new Hexagon({x:window1Hex.x, y:window1Hex.getCenterLowerRight(0).y}, 0, 37);
-    window2Hex.graphics.lineStyle(2, 0x7D7D7D, 3);
+  window2Hex = new Hexagon({x:menuButton.x, y:window1Hex.y+20}, 0, 37);
+    window2Hex.graphics.lineStyle(1, 0xFFFFFF, 1);
     window2Hex.graphics.buttonMode = true;
     window2Hex.graphics.interactive = true;
     window2Hex.graphics.on('mouseover', function(){ this.x = this.x + 10; });
     window2Hex.graphics.on('mouseout', function(){ this.x = this.x - 10; });
     window2Hex.graphics.on('pointerdown', w_WindowSelect);
-  window2Hex.draw(0xFFFFFF);
+  window2Hex.draw(0x000000);
   app.stage.removeChild(window2Hex.container);
   
   window2Label = new PIXI.Text("Window\n     2", w_style);
   window2Label.position.x = 6;
-  window2Label.position.y = 22;
+  window2Label.position.y = 27;
   window2Hex.graphics.addChild(window2Label);
 
 
-  window3Hex = new Hexagon({x:window2Hex.x, y:window2Hex.getCenterLowerLeft(0).y}, 0, 37);
-    window3Hex.graphics.lineStyle(2, 0x7D7D7D, 3);
+  window3Hex = new Hexagon({x:menuButton.x, y:window2Hex.y+20}, 0, 37);
+    window3Hex.graphics.lineStyle(1, 0xFFFFFF, 1);
     window3Hex.graphics.buttonMode = true;
     window3Hex.graphics.interactive = true;
     window3Hex.graphics.on('mouseover', function(){ this.x = this.x + 10; });
     window3Hex.graphics.on('mouseout', function(){ this.x = this.x - 10; });
     window3Hex.graphics.on('pointerdown', w_WindowSelect);
-  window3Hex.draw(0xFFFFFF);
+  window3Hex.draw(0x000000);
   app.stage.removeChild(window3Hex.container);
 
   window3Label = new PIXI.Text("Window\n     3", w_style);
   window3Label.position.x = 6;
-  window3Label.position.y = 22;
+  window3Label.position.y = 27;
   window3Hex.graphics.addChild(window3Label);
 
 
-  window4Hex = new Hexagon({x:window3Hex.x, y:window3Hex.getCenterLowerRight(0).y}, 0, 37);
-    window4Hex.graphics.lineStyle(2, 0x7D7D7D, 3);
+  window4Hex = new Hexagon({x:menuButton.x, y:window3Hex.y+20}, 0, 37);
+    window4Hex.graphics.lineStyle(1, 0xFFFFFF, 1);
     window4Hex.graphics.buttonMode = true;
     window4Hex.graphics.interactive = true;
     window4Hex.graphics.on('mouseover', function(){ this.x = this.x + 10; });
     window4Hex.graphics.on('mouseout', function(){ this.x = this.x - 10; });
     window4Hex.graphics.on('mousedown', w_WindowSelect);
-    window4Hex.draw(0xFFFFFF);
+    window4Hex.draw(0x000000);
   app.stage.removeChild(window4Hex.container);
 
   window4Label = new PIXI.Text("Window\n     4", w_style);
   window4Label.position.x = 6;
-  window4Label.position.y = 22;
+  window4Label.position.y = 27;
   window4Hex.graphics.addChild(window4Label);
 
 
@@ -323,6 +324,7 @@ function startWindows(){
     w_windowContainer.scale.x = w_windowContainer.scale.y = 0.5;
   }
   app.stage.addChild(w_windowContainer);
+  app.stage.addChild(menuButton.container);
 
 
 
@@ -586,23 +588,17 @@ function w_MenuSelect()
   if(w_hideCC == 1)
   {
     app.stage.addChild(w_windowContainer);
+    unblurBg();
     w_hideCC = 0;
+    menuButton.container.y = 18;
   }
 
   if (w_menuCC == 0)
   {
+    app.stage.removeChild(menuButton.container);
     blurBg();
     app.stage.addChild(tintBg);
-
-
-    app.stage.removeChild(menuButton.container);
-    w_menuIconContainer.addChild(menuButton.container);
-
-    app.stage.removeChild(menuIcon);
-    w_menuIconContainer.addChild(menuIcon);
-    app.stage.removeChild(w_menuIconContainer);
-    app.stage.addChild(w_menuIconContainer);
-
+    app.stage.addChild(menuButton.container);
     app.stage.addChild(w_menuContainer);
     w_menuCC = 1;
   }
@@ -610,8 +606,8 @@ function w_MenuSelect()
   {
     app.stage.removeChild(tintBg);
     app.stage.removeChild(w_menuContainer);
-    unblurBg();
     w_menuCC = 0;
+    unblurBg();
   }
 }
 

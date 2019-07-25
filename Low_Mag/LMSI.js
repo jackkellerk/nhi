@@ -38,12 +38,13 @@ mode_button.width = 50;
 mode_button.height = 50;
 mode_button.x = 10;
 mode_button.y = 70;
-mode_button.alpha = 0;
+mode_button.alpha = 1;
 mode_button.interactive = true;
 mode_button.buttonMode = true;
 mode_button
-    .on('pointerdown', changeMode);
-    // .on('pointeroutside', cancelUp);
+    .on('pointerdown', changeMode)
+    .on('pointerup', modeOut)
+    .on('pointeroutside', modeOut);
 
 // variable to determine if user clicked on cancel button
 var cancel_draw = false;
@@ -85,28 +86,33 @@ function LMSI() {
         .pinch()
         .wheel()
         .decelerate();
+        
+    // activate click & cancel
+    Viewport.on('pointerdown', drawPoint);
+    Viewport.on('rightclick', cancelDraw);
+    Viewport.on('rightdown', cancelDraw);
+    
+    Viewport.pausePlugin('pointerdown');
+    Viewport.pausePlugin('rightclick');
+    Viewport.pausePlugin('rightdown');
 
     testimg.width = window.innerWidth;
     testimg.height = window.innerWidth;
 
     // add background image and cancel button to viewport
     Viewport.addChild(testimg);
-    Viewport.addChild(cancel_button);
-    Viewport.addChild(mode_button);
+
+    LMSIContainer.addChild(cancel_button);
+    LMSIContainer.addChild(mode_button);
 
     // Text to guide users
-    guideText = new PIXI.Text('Select two points on a image to select an area.', style);
+    guideText = new PIXI.Text('Select two points on a image to crop.', style);
     guideText.x = window.innerWidth / 2 - 250;
     guideText.y = 50;
-    Viewport.addChild(guideText);
+    LMSIContainer.addChild(guideText);
 
     // add the viewport to the container
     LMSIContainer.addChild(Viewport);
-
-    // // activate click & cancel
-    // Viewport.on('pointerdown', drawPoint);
-    // Viewport.on('rightclick', cancelDraw);
-    // Viewport.on('rightdown', cancelDraw);
 
     // Sets the app to be interactable and allows drawPoint function to be called
     LMSIContainer.interactive = true;
@@ -118,9 +124,6 @@ function LMSI() {
 
 function drawPoint(event) {
     if (!cancel_draw) { //Checks if user clicked on cancel button
-        
-        // alpha of cancle button
-        cancel_button.alpha = 0.5;
 
         if (!drawing) { //Checks what phase of line create user is in
 
@@ -141,6 +144,9 @@ function drawPoint(event) {
 
             //Updates text and cancel button
             guideText.text = 'Select the ending point of rectangle. (Touch cancel / right click to stop)';
+            
+            // alpha of cancle button
+            cancel_button.alpha = 0.5;
         } //end drawing if
         else {
             //Draws end point
@@ -164,7 +170,11 @@ function drawPoint(event) {
 
             //Changes draw value and updates other information
             drawing = false;
+            
             guideText.text = 'Copy of the selected area is added.';
+
+            // alpha of cancle button
+            cancel_button.alpha = 0;
         } //end else
     } //end cancel if
 } // end draw point
@@ -182,7 +192,7 @@ function cancelDraw(event) {
         points = [0, 0];
         cancel_draw = true;
         drawing = false;
-        guideText.text = 'Select two points on a image to select.';
+        guideText.text = 'Select two points on a image to crop.';
     }
 } // end cancel draw
 
@@ -206,16 +216,16 @@ function changeMode(event) {
     // if mode is 'drag', pan & pinch zoom: change to 'screenshot'
     if (dragMode == true) {
 
-        // disable gestures for 'drag'
+        // pause gestures for 'drag'
         Viewport.pausePlugin('drag');
         Viewport.pausePlugin('pinch');
         Viewport.pausePlugin('wheel');
         Viewport.pausePlugin('decelerate');
     
-        // activate click & cancel
-        Viewport.on('pointerdown', drawPoint);
-        Viewport.on('rightclick', cancelDraw);
-        Viewport.on('rightdown', cancelDraw);
+        // resume gestures for click & cancel
+        Viewport.resumePlugin('pointerdown');
+        Viewport.resumePlugin('rightclick');
+        Viewport.resumePlugin('rightdown');
 
         // change guideText to 'screenshot' mode
         dragMode = false;
@@ -223,6 +233,10 @@ function changeMode(event) {
     }
     // if mode is 'screenshot', getting part of the image and save it as child image of current image: change to 'drag'
     else {
+        // pause gestures for click & cancel
+        Viewport.pausePlugin('pointerdown');
+        Viewport.pausePlugin('rightclick');
+        Viewport.pausePlugin('rightdown');
 
         // resume gestures for 'drag'
         Viewport.resumePlugin('drag');
@@ -235,3 +249,10 @@ function changeMode(event) {
         guideText.text = 'Drag and scroll the image to explore.';
     }
 } // end changeMode
+
+/**
+ *  restore alpha of mode_button changed when modeOver() is called
+ */
+function modeOut(event) {
+    mode_button.alpha = 1;
+}

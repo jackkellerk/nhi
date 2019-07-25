@@ -17,7 +17,7 @@ var a_tintBg = new PIXI.Graphics();
 // misc
 var hexSize;
 var p1_image;
-var isTouch;
+var isTouch = false;
 
 // user settings variable(s)
 var userSettingsResponse; // valid uses of userSettingsResponse are: userSettingsResponse.legalName, userSettingsResponse.username, userSettingsResponse.passwordLength, userSettingsResponse.email, userSettingsResponse.profilePicture, userSettingsResponse.institution, and userSettingsResponse.id
@@ -71,7 +71,6 @@ function createUIProjects()
     if ((app.screen.width)/(app.screen.height) > 5) // in case of multi touch screen in CITL
     {
         isTouch = true;
-        a_drawHexGridTouch();
         hexSize = 27;
 
         a_p1Container.scale.x = a_p1Container.scale.y = 0.5;
@@ -80,16 +79,15 @@ function createUIProjects()
     else
     {
         isTouch = false;
-        a_drawHexGrid();
         hexSize = 80;
     }
 
-
+    a_drawHexGrid(isTouch);
 
 
     // Title
 
-    var spacing = 35;
+    var spacing = 35; // spacing between title and subtitle
     if (isTouch) {
         a_titlestyle = new PIXI.TextStyle({fill: "#d3d3d3", fontFamily: "Helvetica", fontSize: 16, letterSpacing: 2});
         a_subtitlestyle = new PIXI.TextStyle({fill: "#d3d3d3", fontFamily: "Helvetica", fontSize: 12, letterSpacing: 2});
@@ -149,24 +147,34 @@ function createUIProjects()
 
     // User Settings
 
+    let userSettingsCirlce = new PIXI.Graphics();
+    userSettingsCirlce.beginFill(0xFFFFFF);
+    userSettingsCirlce.drawCircle(57, 54, 22.5);
+    userSettingsCirlce.endFill();
+    userSettingsCirlce.alpha = 0.5;
+
     let userSettingsHex = new Hexagon({x:57, y:57}, 0, 37);
-        userSettingsHex.graphics.lineStyle(2, 0x7D7D7D, 3);
+        userSettingsHex.graphics.lineStyle(1, 0xFFFFFF, 1);
         userSettingsHex.graphics.buttonMode = true;
         userSettingsHex.graphics.interactive = true;
-        userSettingsHex.graphics.on('mouseover', function(){ userSettingsIcon.alpha = 1; });
-        userSettingsHex.graphics.on('mouseout', function(){ userSettingsIcon.alpha = 0.8; });
+        userSettingsHex.graphics.on('mouseover', function(){
+            userSettingsCirlce.alpha = 0.7;
+        });
+        userSettingsHex.graphics.on('mouseout', function(){
+            userSettingsCirlce.alpha = 0.5;
+        });
         userSettingsHex.graphics.on('pointerdown', a_SettingsSelect);
-        userSettingsHex.graphics.alpha = 0.8;
-    userSettingsHex.draw(0xFFFFFF);
+    userSettingsHex.draw(0x000000);
     app.stage.removeChild(userSettingsHex.container);
     a_settIconContainer.addChild(userSettingsHex.container);
 
-    let userSettingsIcon = new PIXI.Sprite.fromImage("Images/profilesettings.png");
-        userSettingsIcon.width = 55;
-        userSettingsIcon.height = 50;
-        userSettingsIcon.position.x = userSettingsHex.x-27;
-        userSettingsIcon.position.y = userSettingsHex.y-24;
-        userSettingsIcon.alpha = 0.8;
+    a_settIconContainer.addChild(userSettingsCirlce);
+
+    let userSettingsIcon = new PIXI.Sprite.fromImage("Images/profile-settings.png");
+        userSettingsIcon.width = 47;
+        userSettingsIcon.height = 47;
+        userSettingsIcon.position.x = userSettingsHex.x-24;
+        userSettingsIcon.position.y = userSettingsHex.y-26;
     a_settIconContainer.addChild(userSettingsIcon);
 
     if (isTouch) {
@@ -287,13 +295,13 @@ function createUIProjects()
     a_p1Container.on('mouseout', function(){ app.stage.removeChild(a_p1InfoContainer); });
 
     if (isTouch) {
-        a_p1InfoContainer.scale.x = a_p1InfoContainer.scale.y = 0.3375;
-        a_p1InfoContainer.x = a_p1InfoContainer.x + 508;
-        a_p1InfoContainer.y = a_p1InfoContainer.y + 86;
-
         a_p1Container.scale.x = a_p1Container.scale.y = 0.3375;
-        a_p1Container.x = a_p1Container.x + 508;
+        a_p1Container.x = a_p1Container.x + 461;
         a_p1Container.y = a_p1Container.y + 86;
+
+        a_p1InfoContainer.scale.x = a_p1InfoContainer.scale.y = 0.3375;
+        a_p1InfoContainer.x = a_p1InfoContainer.x + 461;
+        a_p1InfoContainer.y = a_p1InfoContainer.y + 86;
     }
 
 
@@ -323,7 +331,7 @@ function createUIProjects()
 
     if (isTouch) {
         newProjectContainer.scale.x = newProjectContainer.scale.y = 0.3375;
-        newProjectContainer.x = newProjectContainer.x + 508;
+        newProjectContainer.x = newProjectContainer.x + 461;
         newProjectContainer.y = newProjectContainer.y + 86;
     }
     app.stage.addChild(newProjectContainer);
@@ -353,11 +361,14 @@ function createUIProjects()
 
 function a_SettingsSelect()
 {
+    blurBg();
     app.stage.addChild(a_settingsContainer);
+    /*
     blurTransform(a_titleContainer,1.0, 10)
     blurTransform(a_p1InfoContainer,1.0, 10)
     blurTransform(maskContainer,1.0, 10)
     blurTransform(p1_image,1.0, 10)
+    */
 }
 
 
@@ -410,5 +421,5 @@ function moveLeftProjectSelection(){
     positionTransform(-1000, a_p1InfoContainer.y, a_p1InfoContainer, 10)
     positionTransform(-1000, maskContainer.y, maskContainer, 10)
     positionTransform(-1000, a_p1Container.y, a_p1Container, 10)
-    blurTransform(app.stage, 1.0, 10)
+    //blurTransform(app.stage, 1.0, 10)
 }

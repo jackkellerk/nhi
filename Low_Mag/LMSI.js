@@ -54,11 +54,17 @@ mode_button
     .on('pointerup', onButtonUp);
 
 // icons to show current mode - screenshot & move
-screenshot.width = 25;
-screenshot.height = 25;
-screenshot.x = cancel_button.x + cancel_button.width / 4;
-screenshot.y = cancel_button.y + cancel_button.height + cancel_button.y + cancel_button.height / 4;
-screenshot.alpha = 0;
+
+// mode icon should be at the center of mode_button
+// however, but screenshot.png is touching the arrow of mode_button, so the width & height is shrinked by 2.5, and 2.5 is added to each x and y position.
+
+// TL;DR
+// screenshot icon is smaller than move icon by (cancel_button.width / 2 - screenshot.width), and (cancel_button.width / 2 - screenshot.width) / 2 is added to each x and y.
+screenshot.width = 20;
+screenshot.height = 20;
+screenshot.x = cancel_button.x + cancel_button.width / 4 + (cancel_button.width / 2 - screenshot.width) / 2;
+screenshot.y = cancel_button.y + cancel_button.height + cancel_button.y + cancel_button.height / 4 + (cancel_button.width / 2 - screenshot.width) / 2;
+screenshot.alpha = 0;   // 0 because default mode is move
 
 move.width = 25;
 move.height = 25;
@@ -78,14 +84,17 @@ var drawing = false;
 // varible to save points user clicked for rectangle
 var points = [0, 0];
 
+// variable to save PIXI.Point
+var testPoint = new PIXI.Point(0, 0);
+var testPointEnd = new PIXI.Point(0, 0);
+
 //Creates style used by text
 const style = new PIXI.TextStyle({
     fontFamily: 'Helvetica',
-    fontSize: 25,
-    fontWeight: 'bold',
+    fontSize: 20,
     fill: '#FFFFFF', // gradient
     align: 'center',
-    strokeThickness: 5,
+    strokeThickness: 3,
     wordWrap: true,
     wordWrapWidth: 500,
 });
@@ -159,22 +168,30 @@ function drawPoint(event) {
 
         if (!drawing) { //Checks what phase of line create user is in
 
-            //Clears current graphics on screen
+            // Clears current graphics on screen
             graphics.clear();
 
-            //Constructs starting point
+            // Updates starting point
+            points = [event.data.global.x, event.data.global.y];
+            testPoint = Viewport.toWorld(points[0], points[1]);
+
+            // Constructs starting point
             graphics.beginFill(0xFFFFFF);
-            graphics.drawRect(event.data.global.x - 5, event.data.global.y - 5, 10, 10);
+            graphics.drawRect(testPoint.x - 5, testPoint.y - 5, 10, 10);
             graphics.endFill();
 
             Viewport.addChild(graphics);
 
-            //Changes drawing value 
+            // Changes drawing value 
             drawing = true;
 
-            //Updates starting point
-            points = [event.data.global.x, event.data.global.y];
-
+            // test println
+            console.log("Starting point of rectangle from event.data.global: \n" + event.data.global.x + ", " + event.data.global.y);
+            // testPoint = Viewport.toWorld(points[0], points[1]);
+            console.log("After toWorld: " + testPoint.x + ", " + testPoint.y);
+            // testPoint = Viewport.toScreen(event.data.global.x, event.data.global.y);
+            // console.log("After toScreen: " + testPoint.x + ", " + testPoint.y + "\n");
+            
             //Updates text and cancel button
             guideText.text = 'Select the ending point of rectangle. (Touch cancel / right click to stop)';
             
@@ -182,9 +199,13 @@ function drawPoint(event) {
             cancel_button.alpha = 1;
         } //end drawing if
         else {
+
+            // update ending point 
+            testPointEnd = Viewport.toWorld(event.data.global.x, event.data.global.y);
+
             //Draws end point
             graphics.beginFill(0xFFFFFF);
-            graphics.drawRect(event.data.global.x - 5, event.data.global.y - 5, 10, 10);
+            graphics.drawRect(testPointEnd.x - 5, testPointEnd.y - 5, 10, 10);
             graphics.endFill()
 
             //Constructs line from saved starting point to current end point
@@ -194,12 +215,14 @@ function drawPoint(event) {
             // points: starting (x,y) on canvas
             // event.data.global: ending (x,y) on canvas
             // event.data.global - points = width / height of rectangle
-            graphics.drawRect(points[0], points[1], event.data.global.x - points[0], event.data.global.y -
-                points[1]);
+            graphics.drawRect(testPoint.x, testPoint.y, testPointEnd.x - testPoint.x, testPointEnd.y -
+                testPoint.y);
 
-            // test println for printing start(x,y) and end (x,y) of rectangle
-            console.log("start: " + points[0] + " " + points[1] + ",\nend: " + event.data.global.x + " " +
-                event.data.global.y);
+            // test println
+            console.log("Ending point of rectangle from event.data.global: \n" + event.data.global.x + ", " + event.data.global.y);
+            console.log("After toWorld: " + testPointEnd.x + ", " + testPointEnd.y);
+            // testPoint = Viewport.toScreen(event.data.global.x, event.data.global.y);
+            // console.log("After toScreen: " + testPoint.x + ", " + testPoint.y + "\n");
 
             //Changes draw value and updates other information
             drawing = false;

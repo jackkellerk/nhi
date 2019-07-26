@@ -24,28 +24,7 @@ var userSettingsResponse; // valid uses of userSettingsResponse are: userSetting
 
 function startAllProjects()
 {
-    // This loads the information about the userSettings
-    var username = "jkk322"; //userTextBox.text; // This will probably be global and accessable from the login screen files, but for now it is here
-    $.ajax({
-        method: 'POST',
-        contentType: 'application/json',
-        data: JSON.stringify({"username": username}),
-        url: 'http://localhost:4567/usersettings', // You can change the port to 8080 if this doesnt work
-        dataType: 'json',
-        crossDomain: 'true',
-        xhrFields: {
-            withCredentials: true
-        },
-        success: function(data) {
-            userSettingsResponse = data;
-            createUIProjects();
-        },
-        error: function(xhr, status, error) {
-            alert("Error loading user settings!");
-        }
-    });
-
-    // eventually create more functions that wait for database information and create the UI last
+    gatherUserSettings();
 }
 
 function createUIProjects()

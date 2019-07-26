@@ -172,13 +172,13 @@ function createUIProjects()
     a_settingsContainer.addChild(a_tintBg);
 
     var passwordString = "";
-    for(var i = 0; i < userSettingsResponse.passwordLength; i++)
+    for(var i = 0; i < userSettingsResponse.password.length; i++)
     {
         passwordString += "*";
     }
 
     createSettings("User Settings", a_settingsContainer, 5);
-    s_addField("Name", userSettingsResponse.legalName, 1);
+    s_addField("Name", userSettingsResponse.legalname, 1);
     s_addField("Institution", userSettingsResponse.institution, 2, true);
     s_addField("Username", userSettingsResponse.username, 3);
     s_addField("Password", passwordString, 4);

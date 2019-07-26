@@ -101,6 +101,9 @@ const style = new PIXI.TextStyle({
 // variable for viewport
 var Viewport;
 
+// variable for screenot (crop)
+var cropImage = new PIXI.Graphics();
+
 /**
  *  LMSI is called to start Low Magnification Screening / Imaging (Zoom & Crop).
  *  it activates gestures, add viewport, buttons, and sprites on LMSIContainer
@@ -187,13 +190,10 @@ function drawPoint(event) {
 
             // test println
             console.log("Starting point of rectangle from event.data.global: \n" + event.data.global.x + ", " + event.data.global.y);
-            // testPoint = Viewport.toWorld(points[0], points[1]);
             console.log("After toWorld: " + testPoint.x + ", " + testPoint.y);
-            // testPoint = Viewport.toScreen(event.data.global.x, event.data.global.y);
-            // console.log("After toScreen: " + testPoint.x + ", " + testPoint.y + "\n");
             
             //Updates text and cancel button
-            guideText.text = 'Select the ending point of rectangle. (Touch cancel / right click to stop)';
+            guideText.text = 'Select the ending point of rectangle. Cancel to reset.';
             
             // alpha of cancle button
             cancel_button.alpha = 1;
@@ -218,11 +218,18 @@ function drawPoint(event) {
             graphics.drawRect(testPoint.x, testPoint.y, testPointEnd.x - testPoint.x, testPointEnd.y -
                 testPoint.y);
 
+            cropImage.drawRect(testPoint.x, testPoint.y, testPointEnd.x - testPoint.x, testPointEnd.y -
+                testPoint.y);
+            cropImage.renderable = true;
+            cropImage.cacheAsBitmap = true;
+
+            Viewport.addChild(cropImage);
+            // app.stage.addChild(cropImage);
+            Viewport.mask = cropImage;
+
             // test println
             console.log("Ending point of rectangle from event.data.global: \n" + event.data.global.x + ", " + event.data.global.y);
             console.log("After toWorld: " + testPointEnd.x + ", " + testPointEnd.y);
-            // testPoint = Viewport.toScreen(event.data.global.x, event.data.global.y);
-            // console.log("After toScreen: " + testPoint.x + ", " + testPoint.y + "\n");
 
             //Changes draw value and updates other information
             drawing = false;
@@ -261,17 +268,11 @@ function cancelUp(event) {
  */
 function modeChange(event) {
 
-    // test printlm
-    console.log("Drag mode: " + dragMode);
-
     // Resets all line UI components
     graphics.clear();
 
     // if mode is 'drag', pan & pinch zoom: change to 'screenshot'
     if (dragMode == true) {
-
-        // test println
-        console.log("Click-to-crop paused!");
 
         // change mode icon to 'screenshot'
         move.alpha = 0;
@@ -295,9 +296,6 @@ function modeChange(event) {
     }
     // if mode is 'screenshot', getting part of the image and save it as child image of current image: change to 'drag'
     else {
-
-        //test println
-        console.log("Drag-and-zoom stated!");
 
         // change mode icon to 'screenshot'
         move.alpha = 1;

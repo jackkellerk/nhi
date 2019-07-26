@@ -410,7 +410,7 @@ function startWindows(){
   });
 
   //manually triggers tool1 to be displayed from the start
-  window1.tool3.emit('pointerdown');
+  window1.tool4.emit('pointerdown');
 
 
 
@@ -514,7 +514,7 @@ function startWindows(){
   });
 
   //manually triggers tool1 to be displayed from the start
-  window2.tool4.emit('pointerdown');
+  window2.tool3.emit('pointerdown');
 
 }
 

@@ -34,8 +34,9 @@ function AvailableOption(options) {
     this.text = new PIXI.Text(this.content, this.style);
     this.text.buttonMode = true;
     this.text.interactive = true;
-    this.text.onClick = options.onClick;
+    // this.text.onClick = options.onClick;
     this.text.on('pointerdown', onButtonDown)
+            .on('pointerdown', options.onClick)
         .on('pointerup', onButtonUp)
         .on('pointerupoutside', onButtonUp)
         .on('pointerover', onButtonOver)
@@ -93,8 +94,6 @@ function Choice(options) {
     this.optionContainer.buttonMode = true;
     this.optionContainer.interactive = true;
     this.optionContainer.on('pointerdown', checkboxOnPointerDown)
-        .on('pointerup', checkboxOnPointerUp)
-        .on('pointerupoutside', checkboxOnPointerUp)
         .on('pointerover', checkboxOnPointerOver)
         .on('pointerout', checkboxOnPointerOut);
     this.optionContainer.isChecked = false;
@@ -106,11 +105,8 @@ function Choice(options) {
     checkbox.y = 2;
     checkbox.interactive = true;
     function checkboxOnPointerDown() {
-        this.isdown = true;
-    }
-
-    function checkboxOnPointerUp() {
-        this.isdown = false;
+        // this.isdown = true;
+        // this.isdown = false;
         if (this.isOver) {
             if (this.isChecked) {
                 checkbox.texture = checkboxUncheckedSelectedTexture;
@@ -121,18 +117,17 @@ function Choice(options) {
             }
         } else {
             if (this.isChecked) {
-                checkbox.texture = checkboxCheckedTexture;
-            } else {
                 checkbox.texture = checkboxUncheckedTexture;
+                this.isChecked = false;
+            } else {
+                checkbox.texture = checkboxCheckedTexture;
+                this.isChecked = true;
             }
         }
     }
 
     function checkboxOnPointerOver() {
         this.isOver = true;
-        if (this.isdown) {
-            return;
-        }
         if (this.isChecked) {
             checkbox.texture = checkboxCheckedSelectedTexture;
         } else {
@@ -142,9 +137,6 @@ function Choice(options) {
 
     function checkboxOnPointerOut() {
         this.isOver = false;
-        if (this.isdown) {
-            return;
-        }
         if (this.isChecked) {
             checkbox.texture = checkboxCheckedTexture;
         } else {

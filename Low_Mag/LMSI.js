@@ -50,15 +50,14 @@ mode_button.alpha = 1;
 mode_button.interactive = true;
 mode_button.buttonMode = true;
 mode_button
-    .on('pointerdown', changeMode)
+    .on('pointerdown', modeChange)
+    .on('pointerdown', onButtonDown)
     .on('pointerup', onButtonUp);
 
 // icons to show current mode - screenshot & move
-
 // mode icon should be at the center of mode_button
 // however, but screenshot.png is touching the arrow of mode_button, so the width & height is shrinked by 2.5, and 2.5 is added to each x and y position.
-
-// TL;DR
+// TL;DR -->
 // screenshot icon is smaller than move icon by (cancel_button.width / 2 - screenshot.width), and (cancel_button.width / 2 - screenshot.width) / 2 is added to each x and y.
 screenshot.width = 20;
 screenshot.height = 20;
@@ -99,6 +98,7 @@ const style = new PIXI.TextStyle({
     wordWrapWidth: 500,
 });
 
+// variable for viewport
 var Viewport;
 
 /**
@@ -228,9 +228,6 @@ function drawPoint(event) {
             drawing = false;
             
             guideText.text = 'Copy of the selected area is added.';
-
-            // alpha of cancle button
-            cancel_button.alpha = 0.33;
         } //end else
     } //end cancel if
 } // end draw point
@@ -254,14 +251,15 @@ function cancelDraw(event) {
 function cancelUp(event) {
     // Resets cancel value
     cancel_draw = false;
+    
+    // restore alpha of cancle button, since there is no graphics on screen to cancel
+    cancel_button.alpha = 0.33;
 } // end cancel up
 
 /**
  *  Change mode between 'drag' and 'screenshot'
  */
-function changeMode(event) {
-
-    onButtonDown();
+function modeChange(event) {
 
     // test printlm
     console.log("Drag mode: " + dragMode);
@@ -288,6 +286,9 @@ function changeMode(event) {
         // resume gestures for click & cancel
         Viewport.on('pointerdown', drawPoint);
 
+        // resume cancel_button in 'drag' mode
+        cancel_button.on('pointerdown', cancelDraw);
+
         // change guideText to 'screenshot' mode
         dragMode = false;
         guideText.text = 'Select two points on a image to copy.';
@@ -304,7 +305,9 @@ function changeMode(event) {
 
         // pause gestures for click & cancel
         Viewport.off('pointerdown', drawPoint);
-        // Viewport.pausePlugin('pointerdown');
+
+        // pause cancel_button in 'screenshot' mode
+        cancel_button.off('pointerdown', cancelDraw);
 
         // resume gestures for 'drag'
         Viewport.resumePlugin('drag');
@@ -316,7 +319,7 @@ function changeMode(event) {
         dragMode = true;
         guideText.text = 'Drag, wheel and scroll the image to explore.';
     }
-} // end changeMode
+} // end modeChange
 
 /**
  * General button gestures including pointerdown, pointerup, pointerover, pointerdownout

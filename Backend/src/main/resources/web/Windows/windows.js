@@ -237,7 +237,7 @@ function startWindows(){
       window1Hex.graphics.interactive = true;
       window1Hex.graphics.on('mouseover', function(){ this.y += 13; });
       window1Hex.graphics.on('mouseout', function(){ this.y -= 13; });
-      window1Hex.graphics.on('pointerdown', w_WindowSelect);
+      //window1Hex.graphics.on('pointerdown', w_WindowSelect);
       window1Hex.draw(0x000000);
   app.stage.removeChild(window1Hex.container);
 
@@ -252,7 +252,7 @@ function startWindows(){
     window2Hex.graphics.interactive = true;
     window2Hex.graphics.on('mouseover', function(){ this.y += 13; });
     window2Hex.graphics.on('mouseout', function(){ this.y -= 13; });
-    window2Hex.graphics.on('pointerdown', w_WindowSelect);
+    //window2Hex.graphics.on('pointerdown', w_WindowSelect);
   window2Hex.draw(0x000000);
   app.stage.removeChild(window2Hex.container);
   
@@ -268,7 +268,7 @@ function startWindows(){
     window3Hex.graphics.interactive = true;
     window3Hex.graphics.on('mouseover', function(){ this.y += 13; });
     window3Hex.graphics.on('mouseout', function(){ this.y -= 13; });
-    window3Hex.graphics.on('pointerdown', w_WindowSelect);
+    //window3Hex.graphics.on('pointerdown', w_WindowSelect(window1));
   window3Hex.draw(0x000000);
   app.stage.removeChild(window3Hex.container);
 
@@ -284,7 +284,7 @@ function startWindows(){
     window4Hex.graphics.interactive = true;
     window4Hex.graphics.on('mouseover', function(){ this.y += 13; });
     window4Hex.graphics.on('mouseout', function(){ this.y -= 13; });
-    window4Hex.graphics.on('mousedown', w_WindowSelect);
+    //window4Hex.graphics.on('mousedown', w_WindowSelect(window2));
     window4Hex.draw(0x000000);
   app.stage.removeChild(window4Hex.container);
 
@@ -297,7 +297,7 @@ function startWindows(){
   // add window icons in reverse order for descending overlapping
 
   //windowHexes.addChild(window4Hex.container);
-  windowHexes.addChild(window3Hex.container);
+  //windowHexes.addChild(window3Hex.container);
   windowHexes.addChild(window2Hex.container);
   windowHexes.addChild(window1Hex.container);
 
@@ -312,6 +312,8 @@ function startWindows(){
 
   blurTransform(app.stage, 0.5, 10);
 
+
+  // ------------------------------------- Window 1 -----------------------------------------
 
   var window1 = new WorkWindow("This is Window 4");
   window1.container.interactive = true;
@@ -404,8 +406,13 @@ function startWindows(){
       app.stage.removeChild(tintBg); 
       windowHexes.addChildAt(window4Hex.container, 0);
       app.stage.addChild(menuButton.container);
-      Acc = 0;
+      window1.isOpen = false;
   });
+
+  //manually triggers tool1 to be displayed from the start
+  window1.tool4.emit('pointerdown');
+
+
 
 
   // ------------------------------------- Window 2 -----------------------------------------
@@ -501,10 +508,13 @@ function startWindows(){
   window2.minIcon.on('pointerdown', function(){
       app.stage.removeChild(window2.container);
       app.stage.removeChild(tintBg); 
-      windowHexes.addChildAt(window4Hex.container, 0);
+      windowHexes.addChildAt(window3Hex.container, 0);
       app.stage.addChild(menuButton.container);
-      Acc = 0;
+      window2.isOpen = false;
   });
+
+  //manually triggers tool1 to be displayed from the start
+  window2.tool3.emit('pointerdown');
 
 }
 
@@ -537,26 +547,11 @@ function w_MenuSelect()
   }
 }
 
-function w_windowHover()
+function w_WindowSelect(window)
 {
-  this.y += 10;
-}
-
-function w_windowHoverOff()
-{
-
-}
-
-function w_WindowSelect()
-{
-  if (Acc == 0) {
-    app.stage.addChild(w_Popup1Container);
-    Acc = 1;
-  }
-  else if (Acc == 1)
-  {
-    app.stage.removeChild(w_Popup1Container);
-    Acc = 0;
+  if (!window.isOpen) {
+    app.stage.addChild(window.container);
+    window.isOpen = true;
   }
 }
 

@@ -56,8 +56,8 @@ var SU_userTextBox;
 var SU_emailTextBox;
 var SU_passwordTextBox;
 var SU_repasswordTextBox;
-var SU_legalTextBox;
-var SU_institutionTextBox;
+var legalTextBox;
+var institutionTextBox;
 
 var timerCheck = false;
 var counter = 0;

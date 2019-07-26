@@ -1,6 +1,8 @@
 // This is the javascript file I added for the connection to the backend
 
 var base_url = "localhost:4567";
+var uid;
+var session_key;
 
 function loginToBackend()
 {
@@ -19,12 +21,14 @@ function loginToBackend()
         xhrFields: {
             withCredentials: true
         },
-        success: function(data) {
-            if(data.errorCode != 0)
+        success: function(callback) {
+            if(callback.errorCode != 0)
             {
                 alert("Incorrect Username or Password");
                 return;
             }
+            uid = callback.data.uid;
+            session_key = callback.data.session_key;
             toProjectSelection();
             currentActivity = "AllProjects";
         },
@@ -81,26 +85,27 @@ function signUpBackend()
 function gatherUserSettings()
 {
     // This loads the information about the userSettings
-    var username = userTextBox.text; // This will probably be global and accessable from the login screen files, but for now it is here
+    var username = userTextBox.text;
     $.ajax({
-        method: 'POST',
+        method: 'GET',
         contentType: 'application/json',
-        data: JSON.stringify({"username": username}),
-        url: 'http://' + base_url + '/usersettings',
+        headers: {"uid": uid, "session_key": session_key},
+        url: 'http://' + base_url + '/user',
         dataType: 'json',
         crossDomain: 'true',
         xhrFields: {
             withCredentials: true
         },
-        success: function(data) {
-            userSettingsResponse = data;
+        success: function(callback) {
+            if(callback.errorCode != 0)
+            {
+                alert("Error loading the user settings!");
+            }
+            userSettingsResponse = callback.data;
             createUIProjects();
         },
         error: function(xhr, status, error) {
-            console.log()
-            alert("Error loading user settings!");
+            alert("Internal Server Error: 500");
         }
     });
-
-    // eventually create more functions that wait for database information and create the UI last
 }

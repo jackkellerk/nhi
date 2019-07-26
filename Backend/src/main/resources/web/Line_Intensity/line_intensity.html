@@ -1,0 +1,99 @@
+﻿<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Hello World</title>
+</head>
+
+<style>
+canvas {
+  display:block;
+}
+
+#frame {
+  /* Necessary to make sure frame width/height
+  isn't set according to the canvas element */
+  position: absolute;
+  overflow: hidden;
+  
+  /* Optional stuff for positioning */
+  top:50%;
+  left:50%;
+  width: 75%;
+  height: 50%;
+  transform: translate(-50%, -50%);
+  -webkit-transform: translate(-50%, -50%);
+}
+</style>
+<body>
+    <script src="pixi.min.js"></script>
+
+    <script src="text_styles.js"></script>
+    <script src="point.js"></script>
+    <script src="line.js"></script>
+    <script src="graphs.js"></script>
+    <script src="change_text.js"></script>
+    <script src="bring_to_front.js"></script>
+    <script src="line_intensity_file.js"></script>
+
+
+
+    <script type="text/javascript">
+        let type = "WebGL"
+        if (!PIXI.utils.isWebGLSupported()) {
+            type = "canvas"
+        }
+        let app = new PIXI.Application({
+            width: window.innerWidth,         // default: 800
+            height: window.innerHeight,        // default: 600
+            antialias: true,    // default: false
+            transparent: false, // default: false
+            //			resolution: 1       // default: 1
+            autoResize: true,
+            resolution: devicePixelRatio
+        }
+        );
+        document.body.appendChild(app.view);
+
+        //Preloads images used
+        app.loader.add('t1', '../images/sinteredMetal.png');
+        app.loader.add('t2', '../images/cancel_icon.png');
+        app.loader.add('t3', '../images/line_tool_icon.png');
+        app.loader.add('t4', '../images/Picture1.png');
+        app.loader.add('t5', '../images/eraser_icon.png');
+        app.loader.add('t6', '../images/edit_tool_icon.png');
+        app.loader.add('t7', '../images/clear_all_icon.png');
+        app.loader.add('t8', '../images/next_icon.png');
+        app.loader.add('t9', '../images/previous_icon.png');
+        app.loader.load(setup);
+
+        //After loading setup occurs
+        function setup(loader, resources) {
+
+            const previous_button = new PIXI.Sprite.from('../images/previous_icon.png');
+            app.stage.addChild(previous_button);
+            previous_button.width = 50;
+            previous_button.height = 50;
+            previous_button.x = app.screen.width - 100;
+            previous_button.y = app.screen.height - 50;
+            previous_button.interactive = true;
+            previous_button.buttonMode = true;
+            previous_button.on('pointerdown', LI_showAll);
+
+            const next_button = new PIXI.Sprite.from('../images/next_icon.png');
+            app.stage.addChild(next_button);
+            next_button.width = 50;
+            next_button.height = 50;
+            next_button.x = app.screen.width - 50;
+            next_button.y = app.screen.height - 50;
+            next_button.interactive = true;
+            next_button.buttonMode = true;
+            next_button.on('pointerdown', LI_hideAll);
+
+            
+
+        }// end setup
+
+    </script>
+</body>
+</html>

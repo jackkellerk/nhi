@@ -124,14 +124,6 @@ function LMSI() {
         .pinch()
         .wheel()
         .decelerate();
-        
-    // activate click & cancel
-    // left click to draw point
-    // right click to cancel
-    // Viewport.on('pointerdown', drawPoint);
-    
-    // pause 'pointerdown' for drag mode
-    // Viewport.pausePlugin('pointerdown');
 
     testimg.width = window.innerWidth;
     testimg.height = window.innerWidth; 
@@ -187,10 +179,6 @@ function drawPoint(event) {
 
             // Changes drawing value 
             drawing = true;
-
-            // test println
-            console.log("Starting point of rectangle from event.data.global: \n" + event.data.global.x + ", " + event.data.global.y);
-            console.log("After toWorld: " + testPoint.x + ", " + testPoint.y);
             
             //Updates text and cancel button
             guideText.text = 'Select the ending point of rectangle. Cancel to reset.';
@@ -226,10 +214,6 @@ function drawPoint(event) {
             Viewport.addChild(cropImage);
             // app.stage.addChild(cropImage);
             Viewport.mask = cropImage;
-
-            // test println
-            console.log("Ending point of rectangle from event.data.global: \n" + event.data.global.x + ", " + event.data.global.y);
-            console.log("After toWorld: " + testPointEnd.x + ", " + testPointEnd.y);
 
             //Changes draw value and updates other information
             drawing = false;

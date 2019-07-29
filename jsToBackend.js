@@ -1,12 +1,15 @@
 // This is the javascript file I added for the connection to the backend
 
-var base_url = "localhost:4567";
+//get the hosting url.
+var base_url = location.protocol + '//' + location.host;
+var uid;
+var session_key;
 
 function loginToBackend()
 {
     // converts the username into json
     var username = userTextBox.text;
-    var password = passwordTextBox.text;
+    var password = loginPassword;
     var convertToJSON = {"username": username, "password": password};
 
     $.ajax({
@@ -19,12 +22,14 @@ function loginToBackend()
         xhrFields: {
             withCredentials: true
         },
-        success: function(data) {
-            if(data.errorCode != 0)
+        success: function(callback) {
+            if(callback.errorCode != 0)
             {
                 alert("Incorrect Username or Password");
                 return;
             }
+            uid = callback.data.uid;
+            session_key = callback.data.session_key;
             toProjectSelection();
             currentActivity = "AllProjects";
         },
@@ -38,8 +43,8 @@ function signUpBackend()
 {
     var username = SU_userTextBox.text;
     var email = SU_emailTextBox.text;
-    var password = SU_passwordTextBox.text;
-    var confirmPassword = SU_repasswordTextBox.text;
+    var password = signUpPassword;
+    var confirmPassword = signUpRePassword;
     var legalName = legalTextBox.text;
     var institution = institutionTextBox.text;
     var convertToJSON = {"username": username, "password": password, "email": email, "legalname": legalName, "institution": institution};
@@ -81,26 +86,27 @@ function signUpBackend()
 function gatherUserSettings()
 {
     // This loads the information about the userSettings
-    var username = userTextBox.text; // This will probably be global and accessable from the login screen files, but for now it is here
+    var username = userTextBox.text;
     $.ajax({
-        method: 'POST',
+        method: 'GET',
         contentType: 'application/json',
-        data: JSON.stringify({"username": username}),
-        url: 'http://' + base_url + '/usersettings',
+        headers: {"uid": uid, "session_key": session_key},
+        url: 'http://' + base_url + '/user',
         dataType: 'json',
         crossDomain: 'true',
         xhrFields: {
             withCredentials: true
         },
-        success: function(data) {
-            userSettingsResponse = data;
+        success: function(callback) {
+            if(callback.errorCode != 0)
+            {
+                alert("Error loading the user settings!");
+            }
+            userSettingsResponse = callback.data;
             createUIProjects();
         },
         error: function(xhr, status, error) {
-            console.log()
-            alert("Error loading user settings!");
+            alert("Internal Server Error: 500");
         }
     });
-
-    // eventually create more functions that wait for database information and create the UI last
 }

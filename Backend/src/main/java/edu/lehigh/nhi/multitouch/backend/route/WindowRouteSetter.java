@@ -27,7 +27,7 @@ public final class WindowRouteSetter {
          * IMPORTANT: check documentations of RouteSetter and setRoute before use.
          */
 
-        // create new window of a porject.
+        // create new window of a project.
         RouteSetter.setRoute(RequestType.POST, "/p/:pid/new_window", (request, response) -> {
             return RouteSetter.preprocessSessionCheck(request, response, encryption, (uid, sessionKey) -> {
                 return RouteSetter.preprocessPathParam(request, response, new String[] { "pid" }, (params) -> {
@@ -97,6 +97,30 @@ public final class WindowRouteSetter {
                                             "Failed to fatch the newly created window. ");
                                 return StructuredResponse.getResponse(retval);
                             });
+                });
+            });
+        });
+
+        // update the posion of the window.
+        RouteSetter.setRoute(RequestType.PUT, "/w/:wid/update_pos", (request, response) -> {
+            return RouteSetter.preprocessSessionCheck(request, response, encryption, (uid, sessionKey) -> {
+                return RouteSetter.preprocessPathParam(request, response, new String[] { "wid" }, (params) -> {
+                    int wid = params[0];
+                    if (!db.checkWindowOwnership(uid, wid)) {
+                        return StructuredResponse.getErrorResponse(ErrorHandler.PRIVILAGE.NO_RIGHT_TO_ACCESS_PROJECT);
+                    }
+                    return RouteSetter.preprocessJSONValueGet(request, response,
+                            new String[] { "pos_x", "pos_y", "width","height" },
+                            new Type[] { Type.FLOAT, Type.FLOAT, Type.FLOAT, Type.FLOAT}, (vals) -> {
+                            float pos_x = (float) vals[0];
+                            float pos_y = (float) vals[1];
+                            float width = (float) vals[2];
+                            float height = (float) vals[3];
+                            int num_rows_updated = db.window.updateWindowPosition(wid, pos_x, pos_y, width, height);
+                            JSONObject retval = new JSONObject();
+                            retval.put("num_rows_updated", num_rows_updated);
+                            return new StructuredResponse(retval).toJson().toString();
+                    });
                 });
             });
         });

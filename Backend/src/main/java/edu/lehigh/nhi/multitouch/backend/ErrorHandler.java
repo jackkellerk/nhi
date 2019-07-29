@@ -3,7 +3,9 @@ package edu.lehigh.nhi.multitouch.backend;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -48,7 +50,7 @@ public class ErrorHandler {
 
     // TODO: Create/paste your error code and massage to "error_message.csv" under
     // "backend/src/resources".
-    private static final HashMap<Integer, String> MESSAGE_MAP = loadCSVFileToMap("/error_messages.csv");
+    private static final HashMap<Integer, String> MESSAGE_MAP = loadCSVFileToMap();
 
     public static String getMessage(int errno) {
         String message = MESSAGE_MAP.get(errno);
@@ -57,40 +59,54 @@ public class ErrorHandler {
         return message;
     }
 
-    private static HashMap<Integer, String> loadCSVFileToMap(String fileName) {
-        // System.out.println("loading error table ...     ");
+    // empty method for envoking this class, which would load the global variable
+    // MESSAGE_MAP.
+    public static void setup() {
 
-        // try {
-        //     CSVReader reader = new CSVReader(new InputStreamReader(
-        //             ErrorHandler.class.getClass().getClassLoader().getResourceAsStream(fileName)));
-        //     Iterator<String[]> iterator = reader.iterator();
-        //     HashMap<Integer, String> map = new HashMap<>();
-        //     System.out.println("path: " + ErrorHandler.class.getResource(fileName).toString());
-        //     while (iterator.hasNext()) {
-        //         String[] pair = iterator.next();
-        //         int key = Integer.parseInt(pair[0]);
-        //         map.put(key, pair[1]);
-        //         System.out.println(key + ": " + pair[1]);
-        //     }
+    }
 
-        //     reader.close();
-        //     System.out.print("success\n");
-        //     return map;
-        // } catch (IOException e) {
-        //     System.err.println("Error Ocurred while loading error messages.");
-        //     e.printStackTrace();
-        //     System.err.println("Quiting... ");
-        //     System.exit(1);
-        // }
+    private static HashMap<Integer, String> loadCSVFileToMap() {
+        System.out.println("loading error table ...     ");
+        ErrorHandler eh = new ErrorHandler();
+        InputStream inputStream = eh.getClass().getClassLoader().getResourceAsStream("error_messages.csv");
+        if (inputStream == null) {
+            System.err.println("Fatal: cannot find resource: error_messages.csv" + "\n" + "Quiting..");
+            System.exit(1);
+        }
+
+        try {
+            CSVReader reader = new CSVReader(new InputStreamReader(inputStream));
+            Iterator<String[]> iterator = reader.iterator();
+            HashMap<Integer, String> map = new HashMap<>();
+            while (iterator.hasNext()) {
+                String[] pair = iterator.next();
+                int key = Integer.parseInt(pair[0]);
+                map.put(key, pair[1]);
+                System.out.println(key + ": " + pair[1]);
+            }
+
+            reader.close();
+            System.out.println("Success.");
+            return map;
+
+        } catch (IOException e) {
+            System.err.println("Error Ocurred while loading error messages.");
+            e.printStackTrace();
+            System.err.println("Quiting... ");
+            System.exit(1);
+        }
         return null;
     }
 
     // for a simple test
     public static void main(String args[]) throws IOException {
         Enumeration<URL> a = ErrorHandler.class.getClassLoader().getResources("resources");
-        while(a.hasMoreElements()){
+        while (a.hasMoreElements()) {
             System.out.println(a.nextElement());
         }
-        
+
+    }
+
+    private ErrorHandler() {
     }
 }

@@ -13,4 +13,5 @@
 601,Session key does not exist or uid and session key do not match. Possible cause: session expired. Try to login again.
 602,Access Denied. You have no right to access others' projects. 
 603,Login failed.
+604,Access Denied. You have no right to access others' windows. 
 701,The project you look for does not exist.

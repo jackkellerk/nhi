@@ -50,15 +50,14 @@ mode_button.alpha = 1;
 mode_button.interactive = true;
 mode_button.buttonMode = true;
 mode_button
-    .on('pointerdown', changeMode)
+    .on('pointerdown', modeChange)
+    .on('pointerdown', onButtonDown)
     .on('pointerup', onButtonUp);
 
 // icons to show current mode - screenshot & move
-
 // mode icon should be at the center of mode_button
 // however, but screenshot.png is touching the arrow of mode_button, so the width & height is shrinked by 2.5, and 2.5 is added to each x and y position.
-
-// TL;DR
+// TL;DR -->
 // screenshot icon is smaller than move icon by (cancel_button.width / 2 - screenshot.width), and (cancel_button.width / 2 - screenshot.width) / 2 is added to each x and y.
 screenshot.width = 20;
 screenshot.height = 20;
@@ -99,7 +98,11 @@ const style = new PIXI.TextStyle({
     wordWrapWidth: 500,
 });
 
+// variable for viewport
 var Viewport;
+
+// variable for screenot (crop)
+var cropImage = new PIXI.Graphics();
 
 /**
  *  LMSI is called to start Low Magnification Screening / Imaging (Zoom & Crop).
@@ -121,14 +124,6 @@ function LMSI() {
         .pinch()
         .wheel()
         .decelerate();
-        
-    // activate click & cancel
-    // left click to draw point
-    // right click to cancel
-    // Viewport.on('pointerdown', drawPoint);
-    
-    // pause 'pointerdown' for drag mode
-    // Viewport.pausePlugin('pointerdown');
 
     testimg.width = window.innerWidth;
     testimg.height = window.innerWidth; 
@@ -149,6 +144,10 @@ function LMSI() {
     guideText.y = 50;
     guideTextContainer.addChild(guideText);
 
+    // test println
+    console.log(getDPI());
+    console.log(screen.width + "," + screen.height);
+
     // add the viewport to the container
     LMSIContainer.addChild(Viewport);
 
@@ -163,6 +162,9 @@ function LMSI() {
 
 }
 
+/**
+ *  Help functions for drawing rectancle area on image to crop
+ */
 function drawPoint(event) {
     if (!cancel_draw) { //Checks if user clicked on cancel button
 
@@ -184,16 +186,9 @@ function drawPoint(event) {
 
             // Changes drawing value 
             drawing = true;
-
-            // test println
-            console.log("Starting point of rectangle from event.data.global: \n" + event.data.global.x + ", " + event.data.global.y);
-            // testPoint = Viewport.toWorld(points[0], points[1]);
-            console.log("After toWorld: " + testPoint.x + ", " + testPoint.y);
-            // testPoint = Viewport.toScreen(event.data.global.x, event.data.global.y);
-            // console.log("After toScreen: " + testPoint.x + ", " + testPoint.y + "\n");
             
             //Updates text and cancel button
-            guideText.text = 'Select the ending point of rectangle. (Touch cancel / right click to stop)';
+            guideText.text = 'Select the ending point of rectangle. Cancel to reset.';
             
             // alpha of cancle button
             cancel_button.alpha = 1;
@@ -218,19 +213,19 @@ function drawPoint(event) {
             graphics.drawRect(testPoint.x, testPoint.y, testPointEnd.x - testPoint.x, testPointEnd.y -
                 testPoint.y);
 
-            // test println
-            console.log("Ending point of rectangle from event.data.global: \n" + event.data.global.x + ", " + event.data.global.y);
-            console.log("After toWorld: " + testPointEnd.x + ", " + testPointEnd.y);
-            // testPoint = Viewport.toScreen(event.data.global.x, event.data.global.y);
-            // console.log("After toScreen: " + testPoint.x + ", " + testPoint.y + "\n");
+            cropImage.drawRect(testPoint.x, testPoint.y, testPointEnd.x - testPoint.x, testPointEnd.y -
+                testPoint.y);
+            cropImage.renderable = true;
+            cropImage.cacheAsBitmap = true;
+
+            Viewport.addChild(cropImage);
+            // app.stage.addChild(cropImage);
+            Viewport.mask = cropImage;
 
             //Changes draw value and updates other information
             drawing = false;
             
             guideText.text = 'Copy of the selected area is added.';
-
-            // alpha of cancle button
-            cancel_button.alpha = 0.33;
         } //end else
     } //end cancel if
 } // end draw point
@@ -254,26 +249,22 @@ function cancelDraw(event) {
 function cancelUp(event) {
     // Resets cancel value
     cancel_draw = false;
+    
+    // restore alpha of cancle button, since there is no graphics on screen to cancel
+    cancel_button.alpha = 0.33;
 } // end cancel up
 
 /**
+ *  Helper function for mode buttons
  *  Change mode between 'drag' and 'screenshot'
  */
-function changeMode(event) {
-
-    onButtonDown();
-
-    // test printlm
-    console.log("Drag mode: " + dragMode);
+function modeChange(event) {
 
     // Resets all line UI components
     graphics.clear();
 
     // if mode is 'drag', pan & pinch zoom: change to 'screenshot'
     if (dragMode == true) {
-
-        // test println
-        console.log("Click-to-crop paused!");
 
         // change mode icon to 'screenshot'
         move.alpha = 0;
@@ -288,6 +279,9 @@ function changeMode(event) {
         // resume gestures for click & cancel
         Viewport.on('pointerdown', drawPoint);
 
+        // resume cancel_button in 'drag' mode
+        cancel_button.on('pointerdown', cancelDraw);
+
         // change guideText to 'screenshot' mode
         dragMode = false;
         guideText.text = 'Select two points on a image to copy.';
@@ -295,16 +289,15 @@ function changeMode(event) {
     // if mode is 'screenshot', getting part of the image and save it as child image of current image: change to 'drag'
     else {
 
-        //test println
-        console.log("Drag-and-zoom stated!");
-
         // change mode icon to 'screenshot'
         move.alpha = 1;
         screenshot.alpha = 0;
 
         // pause gestures for click & cancel
         Viewport.off('pointerdown', drawPoint);
-        // Viewport.pausePlugin('pointerdown');
+
+        // pause cancel_button in 'screenshot' mode
+        cancel_button.off('pointerdown', cancelDraw);
 
         // resume gestures for 'drag'
         Viewport.resumePlugin('drag');
@@ -316,10 +309,10 @@ function changeMode(event) {
         dragMode = true;
         guideText.text = 'Drag, wheel and scroll the image to explore.';
     }
-} // end changeMode
+} // end modeChange
 
 /**
- * General button gestures including pointerdown, pointerup, pointerover, pointerdownout
+ * General helper functions for button gestures including pointerdown, pointerup, pointerover, pointerdownout
  */
 function onButtonDown() {
     this.isdown = true;
@@ -352,4 +345,61 @@ function onButtonOut() {
         return;
     }
     // this.texture = textureButton;
+}
+
+/**
+ *  Helper function for calculating height, length, diagonal and resolution of the screen
+ */
+function calculateByDiagonal() {
+    var aspectRatioWidth = $("#aspectRatioWidth").val();
+    var aspectRatioHeight = $("#aspectRatioHeight").val();
+    var aspectRatioDiagonal = calculateDiagonal(aspectRatioWidth, aspectRatioHeight);
+    
+    for (var i in UNITS) {
+        var unit = UNITS[i];
+        var inputElement = findInput("d", unit);
+        var diagonal = inputElement.data("exactValue") || inputElement.val();
+        
+        if (diagonal > 0) {
+            var factor = diagonal / aspectRatioDiagonal;
+            var width = aspectRatioWidth * factor;
+            var height = aspectRatioHeight * factor;
+            
+            findInput("w", unit).val(width.toFixed(1)).data("exactValue", width);
+            findInput("h", unit).val(height.toFixed(1)).data("exactValue", height);
+            
+        }
+    }
+}
+
+function setAspectRatio(width, height) {
+    $("#aspectRatioWidth").val(width);
+    $("#aspectRatioHeight").val(height);
+    
+    calculate(currentKey);
+}
+
+function cmToInch(value) {
+    return value / 2.54;
+}
+
+function inchToCm(value) {
+    return value * 2.54;
+}
+
+function transformUnits(key, unit, value) {
+    var element, transfomredValue;
+    if (unit === "cm") {
+        element = findInput(key, "in");
+        transfomredValue = cmToInch(value);
+    } else if (unit === "in") {
+        element = findInput(key, "cm");
+        transfomredValue = inchToCm(value);
+    }
+    element.data("exactValue", transfomredValue);
+    element.val(transfomredValue.toFixed(1));
+}
+
+function getDPI(){
+    return jQuery('#dpi').height();
 }

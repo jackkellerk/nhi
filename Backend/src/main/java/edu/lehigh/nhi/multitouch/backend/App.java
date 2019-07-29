@@ -20,7 +20,8 @@ public class App {
     public static void main(String[] args) {
 
         final Encryption encryption = Encryption.getEncryption();
-
+        //default port for http
+        Spark.port(80);
         Spark.staticFileLocation("/web");
         Spark.get("/", (req, res) -> {
             res.redirect("/master.html");
@@ -39,7 +40,7 @@ public class App {
             System.err.println("Unexpected Error Occured During Setup.");
             e.printStackTrace();
             System.err.println("quiting...");
-            System.exit(1);
+            // System.exit(1);
         }
     }
 }

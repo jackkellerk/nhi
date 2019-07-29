@@ -1,7 +1,11 @@
 package edu.lehigh.nhi.multitouch.backend;
 
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
 
@@ -35,8 +39,7 @@ public class ErrorHandler {
     }
 
     public static final class PRIVILAGE {
-        public static final int INVALID_SESSION_KEY = 601, NO_RIGHT_TO_ACCESS_PROJECT = 602,
-                LOGIN_FAILED = 603;
+        public static final int INVALID_SESSION_KEY = 601, NO_RIGHT_TO_ACCESS_PROJECT = 602, LOGIN_FAILED = 603;
     }
 
     public static final class EXISTANSE {
@@ -45,7 +48,7 @@ public class ErrorHandler {
 
     // TODO: Create/paste your error code and massage to "error_message.csv" under
     // "backend/src/resources".
-    private static final HashMap<Integer, String> MESSAGE_MAP = loadCSVFileToMap("error_messages.csv");
+    private static final HashMap<Integer, String> MESSAGE_MAP = loadCSVFileToMap("/error_messages.csv");
 
     public static String getMessage(int errno) {
         String message = MESSAGE_MAP.get(errno);
@@ -55,29 +58,39 @@ public class ErrorHandler {
     }
 
     private static HashMap<Integer, String> loadCSVFileToMap(String fileName) {
-        System.out.println("loading error messages ...     ");
+        // System.out.println("loading error table ...     ");
 
-        try {
-            CSVReader reader = new CSVReader(new FileReader("src/main/resources/" + fileName));
-            Iterator<String[]> iterator = reader.iterator();
-            HashMap<Integer, String> map = new HashMap<>();
+        // try {
+        //     CSVReader reader = new CSVReader(new InputStreamReader(
+        //             ErrorHandler.class.getClass().getClassLoader().getResourceAsStream(fileName)));
+        //     Iterator<String[]> iterator = reader.iterator();
+        //     HashMap<Integer, String> map = new HashMap<>();
+        //     System.out.println("path: " + ErrorHandler.class.getResource(fileName).toString());
+        //     while (iterator.hasNext()) {
+        //         String[] pair = iterator.next();
+        //         int key = Integer.parseInt(pair[0]);
+        //         map.put(key, pair[1]);
+        //         System.out.println(key + ": " + pair[1]);
+        //     }
 
-            while (iterator.hasNext()) {
-                String[] pair = iterator.next();
-                int key = Integer.parseInt(pair[0]);
-                map.put(key, pair[1]);
-            }
-
-            reader.close();
-            System.out.print("success\n");
-            return map;
-        } catch (IOException e) {
-            System.err.println("Error Ocurred while loading error messages.");
-            e.printStackTrace();
-            System.err.println("Quiting... ");
-            System.exit(1);
-        }
+        //     reader.close();
+        //     System.out.print("success\n");
+        //     return map;
+        // } catch (IOException e) {
+        //     System.err.println("Error Ocurred while loading error messages.");
+        //     e.printStackTrace();
+        //     System.err.println("Quiting... ");
+        //     System.exit(1);
+        // }
         return null;
     }
 
+    // for a simple test
+    public static void main(String args[]) throws IOException {
+        Enumeration<URL> a = ErrorHandler.class.getClassLoader().getResources("resources");
+        while(a.hasMoreElements()){
+            System.out.println(a.nextElement());
+        }
+        
+    }
 }

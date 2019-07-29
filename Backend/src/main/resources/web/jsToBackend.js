@@ -1,6 +1,6 @@
 // This is the javascript file I added for the connection to the backend
 
-var base_url = "localhost:4567";
+var base_url = "nhitest.lehigh.edu";
 
 function loginToBackend()
 {

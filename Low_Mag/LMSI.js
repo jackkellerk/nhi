@@ -144,6 +144,10 @@ function LMSI() {
     guideText.y = 50;
     guideTextContainer.addChild(guideText);
 
+    // test println
+    console.log(getDPI());
+    console.log(screen.width + "," + screen.height);
+
     // add the viewport to the container
     LMSIContainer.addChild(Viewport);
 
@@ -158,6 +162,9 @@ function LMSI() {
 
 }
 
+/**
+ *  Help functions for drawing rectancle area on image to crop
+ */
 function drawPoint(event) {
     if (!cancel_draw) { //Checks if user clicked on cancel button
 
@@ -248,6 +255,7 @@ function cancelUp(event) {
 } // end cancel up
 
 /**
+ *  Helper function for mode buttons
  *  Change mode between 'drag' and 'screenshot'
  */
 function modeChange(event) {
@@ -304,7 +312,7 @@ function modeChange(event) {
 } // end modeChange
 
 /**
- * General button gestures including pointerdown, pointerup, pointerover, pointerdownout
+ * General helper functions for button gestures including pointerdown, pointerup, pointerover, pointerdownout
  */
 function onButtonDown() {
     this.isdown = true;
@@ -337,4 +345,61 @@ function onButtonOut() {
         return;
     }
     // this.texture = textureButton;
+}
+
+/**
+ *  Helper function for calculating height, length, diagonal and resolution of the screen
+ */
+function calculateByDiagonal() {
+    var aspectRatioWidth = $("#aspectRatioWidth").val();
+    var aspectRatioHeight = $("#aspectRatioHeight").val();
+    var aspectRatioDiagonal = calculateDiagonal(aspectRatioWidth, aspectRatioHeight);
+    
+    for (var i in UNITS) {
+        var unit = UNITS[i];
+        var inputElement = findInput("d", unit);
+        var diagonal = inputElement.data("exactValue") || inputElement.val();
+        
+        if (diagonal > 0) {
+            var factor = diagonal / aspectRatioDiagonal;
+            var width = aspectRatioWidth * factor;
+            var height = aspectRatioHeight * factor;
+            
+            findInput("w", unit).val(width.toFixed(1)).data("exactValue", width);
+            findInput("h", unit).val(height.toFixed(1)).data("exactValue", height);
+            
+        }
+    }
+}
+
+function setAspectRatio(width, height) {
+    $("#aspectRatioWidth").val(width);
+    $("#aspectRatioHeight").val(height);
+    
+    calculate(currentKey);
+}
+
+function cmToInch(value) {
+    return value / 2.54;
+}
+
+function inchToCm(value) {
+    return value * 2.54;
+}
+
+function transformUnits(key, unit, value) {
+    var element, transfomredValue;
+    if (unit === "cm") {
+        element = findInput(key, "in");
+        transfomredValue = cmToInch(value);
+    } else if (unit === "in") {
+        element = findInput(key, "cm");
+        transfomredValue = inchToCm(value);
+    }
+    element.data("exactValue", transfomredValue);
+    element.val(transfomredValue.toFixed(1));
+}
+
+function getDPI(){
+    return jQuery('#dpi').height();
 }

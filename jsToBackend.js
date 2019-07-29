@@ -8,7 +8,7 @@ function loginToBackend()
 {
     // converts the username into json
     var username = userTextBox.text;
-    var password = passwordTextBox.text;
+    var password = loginPassword;
     var convertToJSON = {"username": username, "password": password};
 
     $.ajax({
@@ -42,8 +42,8 @@ function signUpBackend()
 {
     var username = SU_userTextBox.text;
     var email = SU_emailTextBox.text;
-    var password = SU_passwordTextBox.text;
-    var confirmPassword = SU_repasswordTextBox.text;
+    var password = signUpPassword;
+    var confirmPassword = signUpRePassword;
     var legalName = legalTextBox.text;
     var institution = institutionTextBox.text;
     var convertToJSON = {"username": username, "password": password, "email": email, "legalname": legalName, "institution": institution};

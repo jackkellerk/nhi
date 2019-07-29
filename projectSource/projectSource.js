@@ -12,6 +12,8 @@ class Institution{
 
 // containers to hold image and information about microscopes in source page
 var ins_infoContainer = new PIXI.Container();
+var index = 0;
+var freshStart = true;
 
 // graphics for line and hexagon
 var line = new PIXI.Graphics();
@@ -58,7 +60,10 @@ const ps_caption_style = new PIXI.TextStyle({
 
 // set background image
 var source_bg = new PIXI.Sprite.from('Images/projectSource_test.jpg');
-var selected_Icon = new PIXI.Sprite.from('Images/selected_icon.jpg')
+var up_arrow = new PIXI.Sprite.from('Images/up_arrow.png')
+var down_arrow = new PIXI.Sprite.from('Images/down_arrow.png')
+//var selected_Icon = new PIXI.Sprite.from('Images/selected_icon.jpg')
+
 
 // variables to set border for hexagons
 // x_limit: x coordinates of the screen, set in startSourcePage()
@@ -146,8 +151,10 @@ function drawSourceInfo() {
     // stage the infroConatiner
     sourcesArray.forEach(element => {
         console.log("ellloooo")
-        positionTransform(0, 0, element, 30)
+        positionTransform(0, element.container.y, element.container, 30)
     });
+    positionTransform(app.screen.width * (9.5/10), app.screen.height * (7/10), up_arrow, 30);
+    positionTransform(app.screen.width * (9.5/10), app.screen.height * (8/10), down_arrow, 30);
 }
 
 /**
@@ -171,7 +178,7 @@ function startSourcePage() {
 
     // ps_title = new PIXI.Text('Sources: Lehigh', ps_title_style);
     ps_title.x =  app.screen.width / 16;
-    ps_title.y = app.screen.height / 25;
+    ps_title.y = app.screen.height / 20;
     app.stage.addChild(ps_title);
 
     // set example texts
@@ -179,6 +186,27 @@ function startSourcePage() {
     ps_sampleImage.x = app.screen.width * (6/8);
     ps_sampleImage.y = app.screen.height / 25;
     app.stage.addChild(ps_sampleImage);
+
+    //Up and down arrows for the sources scrolling
+    up_arrow.width = 50;
+    up_arrow.height = 50;
+    up_arrow.x = app.screen.width + 50
+    up_arrow.y = app.screen.height * ( 7/10);
+    down_arrow.width = 50;
+    down_arrow.height = 50;
+    down_arrow.x = app.screen.width + 50;
+    down_arrow.y = app.screen.height * (8/10);
+
+    //Button mechanics for the arrows
+    up_arrow.interactive = true;
+    up_arrow.buttonMode = true;
+    up_arrow.on('pointerdown', upButton);
+    down_arrow.interactive = true;
+    down_arrow.buttonMode = true;
+    down_arrow.on('pointerdown', downButton);
+
+    app.stage.addChild(up_arrow);
+    app.stage.addChild(down_arrow);
 
     populateSourceArray();
 }
@@ -206,8 +234,10 @@ function moveSources(){
     ps_title.buttonMode = false;
     //ps_title.on("pointerdown", moveSources);
     sourcesArray.forEach(element => {
-        positionTransform(app.screen.width + 200, element.y, element, 30);
+        positionTransform(app.screen.width + 200, element.container.y, element.container, 30);
     });
+    positionTransform(app.screen.width + 50, app.screen.height * (7/10), up_arrow, 30);
+    positionTransform(app.screen.width + 50, app.screen.height * (8/10), down_arrow, 30);
     //alphaTransform(source_infoContainer, 0, 30)
 
 }
@@ -254,6 +284,59 @@ function ins_HoverOver(input){
     ps_sampleImage.text = input;
 }
 
+function upButton(){
+    console.log(index)
+
+    yChange = app.screen.height/4
+    if(index == 0 ){ 
+        sourcesArray[11].container.y = 0 - (yChange* 12);
+        sourcesArray.forEach(element => {
+            positionTransform(element.container.x, element.container.y +yChange, element.container, 10)
+        });
+        index = 11;
+    } else if(index > -1){
+        sourcesArray[index-1].container.y = 0 - yChange*(index);
+        sourcesArray.forEach(element => {
+            positionTransform(element.container.x, element.container.y +yChange, element.container, 10)
+        });
+        index -=1;
+    } else {
+        console.log("past 12")
+    }
+}
+
+function downButton(){
+    yChange = app.screen.height/4
+    console.log(index)
+    if(index ==11){
+        console.log("   A  ")
+        var newIndex = index-8
+        sourcesArray[newIndex].container.y = 0 + ((yChange) * (4-newIndex))
+        sourcesArray.forEach(element => {
+            positionTransform(element.container.x, element.container.y -yChange, element.container, 10)
+        });
+        index = 0;
+    }else if(index > 7){ 
+        console.log("   A  ")
+        var newIndex = index-8
+        sourcesArray[newIndex].container.y = 0 + ((yChange) * (4-newIndex))
+        sourcesArray.forEach(element => {
+            positionTransform(element.container.x, element.container.y -yChange, element.container, 10)
+        });
+        index += 1;
+    } else if(index > -1){
+        console.log("   B  ")
+        var newIndex = index+4
+        sourcesArray[newIndex].container.y = 0 + ((yChange) * (4-newIndex))
+        sourcesArray.forEach(element => {
+            positionTransform(element.container.x, element.container.y -yChange, element.container, 10)
+        });
+        index +=1;
+    } else {
+        console.log("past 12")
+    }
+}
+
 
 function ins_HoverOver1(){
     scaleTransform(1.02, 1.02, this, 5)
@@ -266,7 +349,10 @@ function ins_HoverOff(){
 }
 
 function populateSourceArray() {
-    for (var i = 0; i < defaultSources.length; i++, y += 80 * 2 + 4 * 2) {
+    var change = (80 * 2 + 4 * 2)
+    var x_origin = app.screen.width/8;
+    var y_origin = app.screen.height/7;
+    for (var i = 0; i < defaultSources.length; i++, y += change) {
         var source_infoContainer = new PIXI.Container();
         var textContainer = new PIXI.Container();
         var hexContainer = new PIXI.Container();
@@ -297,20 +383,14 @@ function populateSourceArray() {
         // if lowest point of the new row is over y_limit, break;
 
         var pl_radius = 0;
-        if(app.screen.width >= app.screen.height) {
-            pl_radius = app.screen.height/2.5;
-        }
-        else { 
-            pl_radius = app.screen.width/2.5; 
-        }
-        pl_radius = app.screen.width * (1/20);
-        var mask_hex = new Hexagon({x: app.screen.width/8, y: 0 + app.screen.height * ((1 + i)/4)}, 0, pl_radius);
+        pl_radius = app.screen.width * (1/25);
+        var mask_hex = new Hexagon({x: x_origin, y: y_origin}, 0, pl_radius);
         mask_hex.graphics.lineStyle(1, 0xFFFFFF);
         mask_hex.draw(0xFFFFFF, 1);
         app.stage.removeChild(mask_hex.container);
         hexContainer.addChild(mask_hex.container);
 
-        var border_hex = new Hexagon({x: app.screen.width/8, y: 0 + app.screen.height * ((1 + i)/4)}, 0, pl_radius);
+        var border_hex = new Hexagon({x: x_origin, y: y_origin}, 0, pl_radius);
         border_hex.graphics.lineStyle(6, 0xFFFFFF);
         border_hex.draw(0xFFFFFF, 0);
         app.stage.removeChild(border_hex.container);
@@ -322,10 +402,10 @@ function populateSourceArray() {
         sourceImg.width = mask_hex.width;
         sourceImg.height = mask_hex.height;
         sourceImg.x = app.screen.width/8 - sourceImg.width/2;
-        sourceImg.y = 0 + app.screen.height * ((1 + i)/4) - sourceImg.height/2;
+        sourceImg.y =  (y_origin) - sourceImg.height/2;
 
         // draw hexagon thumbnail
-        hex.drawPolygon([mask_hex.x + pl_radius * 2 ,mask_hex.y - pl_radius, mask_hex.x + pl_radius * 2  + app.screen.width * (5/8),mask_hex.y - pl_radius, mask_hex.x + pl_radius * 2  + app.screen.width* (5/8),mask_hex.y + pl_radius,mask_hex.x + pl_radius * 2 ,mask_hex.y + pl_radius]);
+        hex.drawPolygon([mask_hex.x + pl_radius * 2 ,mask_hex.y - pl_radius, mask_hex.x + pl_radius * 2  + app.screen.width * (5.5/8),mask_hex.y - pl_radius, mask_hex.x + pl_radius * 2  + app.screen.width* (5.5/8),mask_hex.y + pl_radius,mask_hex.x + pl_radius * 2 ,mask_hex.y + pl_radius]);
        
         var sourceTitle = new PIXI.Text(sourceName, ps_title_style);
         sourceTitle.x = mask_hex.x + pl_radius * 2;
@@ -397,8 +477,12 @@ function populateSourceArray() {
         source_infoContainer.addChild(textContainer);
         source_infoContainer.addChild(hexContainer);
         source_infoContainer.x = app.stage.width + 10;
-        sourcesArray.push(source_infoContainer);
+
+        var newSource = new SourceElement(source_infoContainer);
+        sourcesArray.push(newSource);
         app.stage.addChild(source_infoContainer);
+
+        y_origin += app.screen.height/4;
     }
 }
 

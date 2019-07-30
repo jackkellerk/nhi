@@ -132,7 +132,8 @@ class NewProject{
     
         function shiftToNextPrompt(){
             for (let i = 0; i < numPrompts; i++) {
-                prompts[i].container.x -= (gap + hwidth * 2);  // Customize
+                positionTransform(prompts[i].container.x - (gap + hwidth * 2), prompts[i].container.y, prompts[i].container, 10);  // Customize
+                // prompts[i].container.x -= (gap + hwidth * 2);  // Customize
             }
             returnIcons[NewProject.currentHexagon].visible = true;
             NewProject.currentHexagon ++;
@@ -142,7 +143,8 @@ class NewProject{
             console.log(clickedIndex + " " + NewProject.currentHexagon);
             if(clickedIndex === NewProject.currentHexagon - 1){
                 for (let i = 0; i < numPrompts; i++) {
-                    prompts[i].container.x += (gap + hwidth * 2);  // Customize
+                    positionTransform(prompts[i].container.x - (gap + hwidth * 2), prompts[i].container.y, prompts[i].container, 10);  // Customize
+                    // prompts[i].container.x += (gap + hwidth * 2);  // Customize
                 }
                 NewProject.currentHexagon --;
                 returnIcons[NewProject.currentHexagon].visible = false;

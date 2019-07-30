@@ -8,7 +8,7 @@ function loginToBackend()
 {
     // converts the username into json
     var username = userTextBox.text;
-    var password = passwordTextBox.text;
+    var password = loginPassword;
     var convertToJSON = {"username": username, "password": password};
 
     $.ajax({
@@ -42,8 +42,8 @@ function signUpBackend()
 {
     var username = SU_userTextBox.text;
     var email = SU_emailTextBox.text;
-    var password = SU_passwordTextBox.text;
-    var confirmPassword = SU_repasswordTextBox.text;
+    var password = signUpPassword;
+    var confirmPassword = signUpRePassword;
     var legalName = legalTextBox.text;
     var institution = institutionTextBox.text;
     var convertToJSON = {"username": username, "password": password, "email": email, "legalname": legalName, "institution": institution};
@@ -91,6 +91,34 @@ function gatherUserSettings()
         contentType: 'application/json',
         headers: {"uid": uid, "session_key": session_key},
         url: 'http://' + base_url + '/user',
+        dataType: 'json',
+        crossDomain: 'true',
+        xhrFields: {
+            withCredentials: true
+        },
+        success: function(callback) {
+            if(callback.errorCode != 0)
+            {
+                alert("Error loading the user settings!");
+            }
+            userSettingsResponse = callback.data;
+            createUIProjects();
+        },
+        error: function(xhr, status, error) {
+            alert("Internal Server Error: 500");
+        }
+    });
+}
+
+function postNewProject(data)
+{
+    let newProjectSettings = {newProjectSettings: data};
+    $.ajax({
+        method: 'POST',
+        contentType: 'application/json',
+        headers: {"uid": uid, "session_key": session_key},
+        data: JSON.stringify(newProjectSettings),
+        url: 'http://' + base_url + '/project/create',
         dataType: 'json',
         crossDomain: 'true',
         xhrFields: {

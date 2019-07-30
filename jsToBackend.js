@@ -109,3 +109,31 @@ function gatherUserSettings()
         }
     });
 }
+
+function postNewProject(data)
+{
+    let newProjectSettings = {newProjectSettings: data};
+    $.ajax({
+        method: 'POST',
+        contentType: 'application/json',
+        headers: {"uid": uid, "session_key": session_key},
+        data: JSON.stringify(newProjectSettings),
+        url: 'http://' + base_url + '/project/create',
+        dataType: 'json',
+        crossDomain: 'true',
+        xhrFields: {
+            withCredentials: true
+        },
+        success: function(callback) {
+            if(callback.errorCode != 0)
+            {
+                alert("Error loading the user settings!");
+            }
+            userSettingsResponse = callback.data;
+            createUIProjects();
+        },
+        error: function(xhr, status, error) {
+            alert("Internal Server Error: 500");
+        }
+    });
+}

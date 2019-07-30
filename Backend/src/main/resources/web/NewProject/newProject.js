@@ -7,24 +7,6 @@ TODO: Cancel
  */
 class NewProject{
     
-    static createWindowHexagons(){
-        let h = app.screen.height;
-        let radius = h * 0.7 / 3.5;
-        let hwidth = radius / 2 * Math.sqrt(3);
-        let center0 = {x: 0.3 * h + hwidth, y: 0.2 * h + radius};
-        let windowHexagons = [];
-        for (let i = 0; i < 3; i++) {
-            windowHexagons.push(new Hexagon(center0, null, radius));
-            windowHexagons[i * 2].draw(Hexagon.getHexColor("purple"));
-            windowHexagons.push(new Hexagon(windowHexagons[i*2].getCenterLowerRight(0.005 * h), null, radius));
-            windowHexagons[i * 2 + 1].draw(Hexagon.getHexColor("purple"));
-            center0 = windowHexagons[i * 2].getCenterRight(0.005 * h);
-        }
-        // h1.graphics.lineStyle(2, 0x414141, 3);
-        
-        // const
-    }
-    
     static createBg(){
         const gradTexture = createGradTexture();
         const sprite = new PIXI.Sprite(gradTexture);
@@ -83,7 +65,7 @@ class NewProject{
             questionTitle: 'To optimize the data acquisition \nworkflow, you may want to ...',
             availableOptions: [{
                 content: 'confirm',
-                onClick: returnToAllProjects
+                onClick: NewProject.goToSources
             }],
             choices: ['Operate microscope at 200 kV', 'Set probe current to 150 pA', 'Set detector collection angles', 'Etc.'],
             fill: Hexagon.getHexColor("white"),
@@ -152,20 +134,10 @@ class NewProject{
         }
     }
     
-    /*
-    Goes back to All Projects Page
-     */
-    static createCancelButton(){
-        // let h = app.screen.height;
-        let cancel = new PIXI.Text("Cancel", {fill: Hexagon.getHexColor("white")});
-        cancel.interactive = true;
-        cancel.onClick = returnToAllProjects;
-        cancel.on('pointerdown', onButtonDown)
-                .on('pointerup', onButtonUp)
-                .on('pointerupoutside', onButtonUp)
-                .on('pointerover', onButtonOver)
-                .on('pointerout', onButtonOut);
-        return cancel;
+    static goToSources(){
+        postNewProject("TODO");  // An Ajax "POST" call to backend
+        currentActivity = activityArray[4];
+        updateActivity();
     }
     
     static startProjects(){
@@ -178,7 +150,3 @@ class NewProject{
 
 NewProject.currentHexagon = 0;
 
-function returnToAllProjects(){
-    currentActivity = activityArray[1];
-    updateActivity();
-}

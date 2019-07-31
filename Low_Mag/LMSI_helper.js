@@ -425,11 +425,3 @@ function transformUnits(key, unit, value) {
     element.data("exactValue", transfomredValue);
     element.val(transfomredValue.toFixed(1));
 }
-
-/**
- *  get dpi from masterStylesheet.css from master.html
- *  @Source http://jsfiddle.net/normanzb/UgBtw/
- */
-function getDPI(){
-    return $("#dpi").height();
-}

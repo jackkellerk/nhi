@@ -26,7 +26,7 @@ class LMSI {
         else if (str.indexOf("/") >= 0 && str.indexOf("./") >= 0) {
             setBackground(imageSource);
         }
-        // if imageSource is on the server (base64)
+        // if imageSource is in base64
         else if (base64Matcher.test(imageSoruce)) {
             var tempImg = new Image();
             this.tempImg.src = imageSoruce;
@@ -52,24 +52,12 @@ class LMSI {
             setBackground("./Images/lowmag_test.jpg");
         }
 
-        // calls pixi-viewport
-        this.Viewport = new PIXI.extras.Viewport({
-            screenWidth: window.innerWidth,
-            screenHeight: window.innerHeight,
-            worldWidth: 5000,
-            worldHeight: 5000,
-            interaction: app.renderer.plugins.interaction // the interaction module is important for wheel() to work properly when renderer.view is placed or scaled
-        });
+        
+        // calls pixi-viewport, initialize gestures (pointerdown, etc.)
+        this.initViewport();
 
-        // activate mouse/touch gestures for viewport
-        this.Viewport
-            .drag()
-            .pinch()
-            .wheel()
-            .decelerate();
-
-            this.testimg.width = window.innerWidth;
-            this.testimg.height = window.innerWidth; 
+        this.testimg.width = window.innerWidth;
+        this.testimg.height = window.innerWidth; 
 
         // add background image to viewport
         this.Viewport.addChild(this.testimg);
@@ -101,6 +89,23 @@ class LMSI {
     set setBackground(imageSource) {
         this.zoom_background = PIXI.Texture.from(imageSource);
         this.testimg = new PIXI.Sprite(this.zoom_background);
+    }
+
+    initViewport() {
+        this.Viewport = new PIXI.extras.Viewport({
+            screenWidth: window.innerWidth,
+            screenHeight: window.innerHeight,
+            worldWidth: 5000,
+            worldHeight: 5000,
+            interaction: app.renderer.plugins.interaction // the interaction module is important for wheel() to work properly when renderer.view is placed or scaled
+        });
+
+        // activate mouse/touch gestures for viewport
+        this.Viewport
+            .drag()
+            .pinch()
+            .wheel()
+            .decelerate();
     }
 
     // init guideText with text
@@ -291,9 +296,10 @@ class LMSI {
             // resume cancel_button in 'drag' mode
             cancel_button.on('pointerdown', this.cancelDraw);
 
-            // change guideText to 'screenshot' mode
             this.dragMode = false;
-            this.guideText.text = 'Select two points on a image to copy.';
+
+            // change guideText to 'screenshot' mode
+            this.setGuideText("Select two points on a image to copy.");
         }
         // if mode is 'screenshot', getting part of the image and save it as child image of current image: change to 'drag'
         else {
@@ -315,8 +321,8 @@ class LMSI {
             this.Viewport.resumePlugin('decelerate');
 
             // change guideText to 'drag' mode
-            this.dragMode = true;
-            this.guideText.text = 'Drag, wheel and scroll the image to explore.';
+            
+            this.setGuideText("Drag, wheel and scroll the image to explore.");
         }
     } // end modeChange
 

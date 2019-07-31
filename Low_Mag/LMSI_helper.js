@@ -199,7 +199,7 @@ function drawPoint(event) {
             graphics.endFill()
 
             //Constructs line from saved starting point to current end point
-            graphics.lineStyle(2, 0xFFFFFF).moveTo(points[0], points[1]);
+            graphics.lineStyle(2, 0xFFFFFF).moveTo(testPoint.x, testPoint.y);
 
             // draw rectangle from current starting point and endpoint
             // points: starting (x,y) on canvas

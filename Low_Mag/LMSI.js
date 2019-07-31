@@ -98,4 +98,61 @@ class LMSI {
         guideText.text = text;
     }
 
+    /**
+     *  Helper function for mode buttons
+     *  Change mode between 'drag' and 'screenshot'
+     */
+    modeChange(event) {
+
+        // Resets all line UI components
+        graphics.clear();
+
+        // if mode is 'drag', pan & pinch zoom: change to 'screenshot'
+        if (dragMode == true) {
+
+            // change mode icon to 'screenshot'
+            move.alpha = 0;
+            screenshot.alpha = 1;
+
+            // pause gestures for 'drag'
+            Viewport.pausePlugin('drag');
+            Viewport.pausePlugin('pinch');
+            Viewport.pausePlugin('wheel');
+            Viewport.pausePlugin('decelerate');
+        
+            // resume gestures for click & cancel
+            Viewport.on('pointerdown', drawPoint);
+
+            // resume cancel_button in 'drag' mode
+            cancel_button.on('pointerdown', cancelDraw);
+
+            // change guideText to 'screenshot' mode
+            dragMode = false;
+            guideText.text = 'Select two points on a image to copy.';
+        }
+        // if mode is 'screenshot', getting part of the image and save it as child image of current image: change to 'drag'
+        else {
+
+            // change mode icon to 'screenshot'
+            move.alpha = 1;
+            screenshot.alpha = 0;
+
+            // pause gestures for click & cancel
+            Viewport.off('pointerdown', drawPoint);
+
+            // pause cancel_button in 'screenshot' mode
+            cancel_button.off('pointerdown', cancelDraw);
+
+            // resume gestures for 'drag'
+            Viewport.resumePlugin('drag');
+            Viewport.resumePlugin('pinch');
+            Viewport.resumePlugin('wheel');
+            Viewport.resumePlugin('decelerate');
+
+            // change guideText to 'drag' mode
+            dragMode = true;
+            guideText.text = 'Drag, wheel and scroll the image to explore.';
+        }
+    } // end modeChange
+
 }

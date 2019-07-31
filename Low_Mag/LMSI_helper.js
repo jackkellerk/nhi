@@ -79,10 +79,7 @@ var dragMode = true;
 // variable to determine if user is in the middle of drawing
 var drawing = false;
 
-// varible to save points user clicked for rectangle
-var points = [0, 0];
-
-// variable to save PIXI.Point
+// variable to save PIXI.Point for cropping
 var testPoint = new PIXI.Point(0, 0);
 var testPointEnd = new PIXI.Point(0, 0);
 
@@ -173,8 +170,7 @@ function drawPoint(event) {
             graphics.clear();
 
             // Updates starting point
-            points = [event.data.global.x, event.data.global.y];
-            testPoint = Viewport.toWorld(points[0], points[1]);
+            testPoint = Viewport.toWorld(event.data.global.x, event.data.global.y);
 
             // Constructs starting point
             graphics.beginFill(0xFFFFFF);
@@ -236,7 +232,6 @@ function drawPoint(event) {
 function cancelDraw(event) {
     //Resets all line UI components
     graphics.clear();
-    points = [0, 0];
     cancel_draw = true;
     drawing = false;
     guideText.text = 'Select two points on a image to crop.';

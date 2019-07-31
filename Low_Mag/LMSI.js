@@ -14,17 +14,6 @@ class LMSI {
         this.buttonContainer = new PIXI.Container();
         this.guideTextContainer = new PIXI.Container();
 
-        // define style
-        this.style = new PIXI.TextStyle({
-            fontFamily: 'Helvetica',
-            fontSize: 20,
-            fill: '#FFFFFF', // gradient
-            align: 'center',
-            strokeThickness: 3,
-            wordWrap: true,
-            wordWrapWidth: 500,
-        });
-
         // base64 matcher in RegExp to test base64 strings
         var base64Matcher = new RegExp("^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{4})$");
         
@@ -120,10 +109,10 @@ class LMSI {
     initGuideText(text) {
         if (text == null) {
             this.text = 'Drag, wheel and scroll the image to explore.';
-            this.guideText = new PIXI.Text(this.text, this.style);
+            this.guideText = new PIXI.Text(this.text, guideTextstyle);
         }
         else {
-            this.guideText = new PIXI.Text(this.text, this.style);
+            this.guideText = new PIXI.Text(this.text, guideTextstyle);
         }
         this.guideText.x = window.innerWidth / 2 - 250;
         this.guideText.y = 50;
@@ -193,3 +182,14 @@ class LMSI {
     } // end modeChange
 
 }
+
+// define style
+guideTextstyle = new PIXI.TextStyle({
+    fontFamily: 'Helvetica',
+    fontSize: 20,
+    fill: '#FFFFFF', // gradient
+    align: 'center',
+    strokeThickness: 3,
+    wordWrap: true,
+    wordWrapWidth: 500,
+});

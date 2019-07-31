@@ -71,6 +71,7 @@
         
         <!-- Low Magnification Screening / Imaging (Zoom, pinch, crop, etc) Dependencies -->
         <script src="./pixi-viewport.js" type="text/javascript"></script>
+        <script src="Low_Mag/LMSI_helper.js"></script>
         <script src="Low_Mag/LMSI.js"></script>
     </head>
     <!--Determines whether Mouse Button is down or not using jQuery (this is for Multi-block)-->
@@ -154,8 +155,8 @@
                 }
                 else if(currentActivity == 'Zoom')
                 {
-                    // Low_Mag/LMSI.js
-                    LMSI();
+                    // Low_Mag/LMSI_helper.js
+                    LMSI_init();
                     changeActivityButton();
                 }
                 else if(currentActivity == 'Multispectrum')
@@ -205,7 +206,5 @@
             }
         
         </script>
-        <!--<div> element to get DPI of the current screen-->
-        <div id="dpi" style="display:none"></div>
     </body>
 </html>

@@ -20,10 +20,9 @@ const move = PIXI.Sprite.from('./Images/move.png');
 // create a new new texture from image
 var testimg = new PIXI.Sprite(zoom_background);
 
+// containers for button, guide text, and LMSIContainer to hold everything
 var LMSIContainer = new PIXI.Container();
-
 var buttonContainer = new PIXI.Container();
-
 var guideTextContainer = new PIXI.Container();
 
 // set buttons requried
@@ -144,9 +143,9 @@ function LMSI() {
     guideText.y = 50;
     guideTextContainer.addChild(guideText);
 
-    // test println
-    console.log(getDPI());
-    console.log(screen.width + "," + screen.height);
+    // test printlns
+    console.log("DPI:" + getDPI());
+    console.log("Resolution: " + screen.width + "," + screen.height);
 
     // add the viewport to the container
     LMSIContainer.addChild(Viewport);
@@ -349,8 +348,16 @@ function onButtonOut() {
 
 /**
  *  Helper function for calculating height, length, diagonal and resolution of the screen
+ *  All of the helper fucntions for this section is from screen-size.info
+ *  @Source http://screen-size.info/
  */
-function calculateByDiagonal() {
+/**
+ *  calulate width and height of screen based on diagonal
+ * @param {*} width  width resolution in px
+ * @param {*} height heihgt resolution in px
+ * @param {*} dpi    diagonal of the screen
+ *  */
+function calculateByDiagonal(width, height, dpi) {
     var aspectRatioWidth = $("#aspectRatioWidth").val();
     var aspectRatioHeight = $("#aspectRatioHeight").val();
     var aspectRatioDiagonal = calculateDiagonal(aspectRatioWidth, aspectRatioHeight);
@@ -372,6 +379,11 @@ function calculateByDiagonal() {
     }
 }
 
+/**
+ *  get aspectRatio (resolution) of the screen
+ * @param {*} width  width resolution in px
+ * @param {*} height heihgt resolution in px
+ */
 function setAspectRatio(width, height) {
     $("#aspectRatioWidth").val(width);
     $("#aspectRatioHeight").val(height);
@@ -379,14 +391,28 @@ function setAspectRatio(width, height) {
     calculate(currentKey);
 }
 
+/**
+ *  Transfrom cm to inch
+ * @param {*} value size in cm
+ */
 function cmToInch(value) {
     return value / 2.54;
 }
 
+/**
+ *  Transfrom inch to cm
+ * @param {*} value size in inch
+ */
 function inchToCm(value) {
     return value * 2.54;
 }
 
+/**
+ * 
+ * @param {*} key 
+ * @param {*} unit 
+ * @param {*} value 
+ */
 function transformUnits(key, unit, value) {
     var element, transfomredValue;
     if (unit === "cm") {
@@ -400,6 +426,10 @@ function transformUnits(key, unit, value) {
     element.val(transfomredValue.toFixed(1));
 }
 
+/**
+ *  get dpi from masterStylesheet.css from master.html
+ *  @Source http://jsfiddle.net/normanzb/UgBtw/
+ */
 function getDPI(){
-    return jQuery('#dpi').height();
+    return $("#dpi").height();
 }

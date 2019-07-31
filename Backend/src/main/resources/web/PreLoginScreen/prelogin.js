@@ -1,8 +1,3 @@
-/* Updates to password information:
- * From now on the password textboxes will only hold *** to retreive the actual
- * user input you must pull from the loginPassword, signUpPassword, signUprePassword
- * string variables.
- */
 var login_backgroundImage;
 
 const ui_style = new PIXI.TextStyle({
@@ -54,17 +49,15 @@ const display_text1 = new PIXI.TextStyle({
 });
 var userTextBox;
 var passwordTextBox;
-var loginPassword = "";
+
 
 
 var SU_userTextBox;
 var SU_emailTextBox;
 var SU_passwordTextBox;
 var SU_repasswordTextBox;
-var SU_legalTextBox;
-var SU_institutionTextBox;
-var signUpPassword = "";
-var signUpRePassword = "";
+var legalTextBox;
+var institutionTextBox;
 
 var timerCheck = false;
 var counter = 0;
@@ -77,38 +70,14 @@ var password = "";
 
 function startPreLogin()
 {
-    //Since the background image isn't allowed to stretch to fit the screen, this invisible image
-    //is needed to act as the area that users can click on to show the login UI
-    var fullScreenImage = new PIXI.Sprite.from("Images/login_background2.jpg");
-    fullScreenImage.width = app.screen.width;
-    fullScreenImage.height = app.screen.height;
-    fullScreenImage.alpha = 0;
-    app.stage.addChild(fullScreenImage);
-    
     //Back drop for the pre/login screen and when clicked on will reveal the login screen
-    login_backgroundImage = new PIXI.Sprite.from("Images/login_background2.jpg");
+    login_backgroundImage = new PIXI.Sprite.from("Images/login_background.jpg");
     
     app.stage.addChild(login_backgroundImage);
-    if(app.screen.width > app.screen.height){
-        login_backgroundImage.height = app.screen.height;
-        login_backgroundImage.width = app.screen.height * (1024/680);
-        login_backgroundImage.x = app.screen.width/2 - login_backgroundImage.width/2;
-    }
-    else if(app.screen.height > app.screen.width){
-        login_backgroundImage.width = app.screen.width;
-        login_backgroundImage.height = app.screen.width * (680/1024);
-        login_backgroundImage.y = app.screen.height/2 - login_backgroundImage.height/2;
-    }
+    login_backgroundImage.width = app.screen.width;
+    login_backgroundImage.height = app.screen.height;
     login_backgroundImage.on("pointerdown",touchScreen);
     login_backgroundImage.alpha = 1.0;
-
-    display_text1.fontSize = login_backgroundImage.height * .08;
-    display_text1.wordWrapWidth = login_backgroundImage.width;
-    login_style.fontSize = login_backgroundImage.height * .06;
-    signUp_style.fontSize = login_backgroundImage.height * .04;
-
-
-    //1024 x 680
 
     //For now these quotes are random ones found on the internet related to programming in general. 
     //They will be replaced with descriptions of the background image shown.
@@ -148,7 +117,8 @@ function startPreLogin()
     login_UI.addChild(login_hex.container);
 
     //Pre login text shows up when login hexagon is tiny
-    // preLoginText = new PIXI.Text("Login", preLogin_style);
+   // preLoginText = new PIXI.Text("Login", preLogin_style);
+
 
     var mask_hex = new Hexagon({x: app.screen.width/2, y:app.screen.height/2}, 0, pl_radius);
     mask_hex.graphics.lineStyle(9, 0xFFFFFF);
@@ -163,31 +133,27 @@ function startPreLogin()
     loginButtonImage.height = mask_hex.height;
     loginButtonImage.x = app.screen.width/2 - loginButtonImage.width/2;
     loginButtonImage.y = app.screen.height/2 - loginButtonImage.height/2;
-    app.stage.on("pointerdown",showLogin);
-    app.stage.interactive = true;
-    app.stage.buttonMode = true;
+    loginButtonImage.on("pointerdown",showLogin);
+    loginButtonImage.interactive = true;
+    loginButtonImage.buttonMode = true;
   
+
     /** Inner elements of Login UI **/
     
-    //Area where user types in their username
-    var _text =  login_backgroundImage.height * .025;
-    if(_text < 1){
-        _text = 1;
-    }
-    var _size = '' +  _text + 'pt';    
+    //Area where user types in their username    
     userTextBox = new PIXI.TextInput({
         input: {
             fontFamily: 'Tahoma',
-            fontSize: _size,
+            fontSize: '14pt',
             padding: '10px',
             width: '250px',
             color: '#FFFFFF',
             letterSpacing: 2
         }, 
-        box: generateTextLine(login_hex.x-((pl_radius * 2) * .58)/2, login_hex.y - _text * 2, (pl_radius * 2) * .58, 3, 1)
+        box: generateTextLine(login_hex.x-(pl_radius+50)/2, login_hex.y-31, pl_radius+50, 3, 1)
     });
-    userTextBox.x = login_hex.x-((pl_radius * 2) * .58)/2;
-    userTextBox.y = login_hex.y - _text * 5;
+    userTextBox.x = login_hex.x-(pl_radius+50)/2 + 2;
+    userTextBox.y = login_hex.y - 75;
     userTextBox.interactiveChildren = true;
     userTextBox.placeholder = "Username";
     userTextBox.on("keydown",keyDown);
@@ -197,27 +163,27 @@ function startPreLogin()
     passwordTextBox = new PIXI.TextInput({
         input: {
             fontFamily: 'Tahoma',
-            fontSize: _size,
+            fontSize: '14pt',
             padding: '10px',
             width: '250px',
             color: '#FFFFFF',
             letterSpacing: 2
         }, 
-        box: generateTextLine(login_hex.x-((pl_radius * 2) * .58)/2, login_hex.y + _text * 3, (pl_radius * 2) * .58, 3, 1)
+        box: generateTextLine(login_hex.x-(pl_radius+50)/2, login_hex.y+44, pl_radius+50, 3, 1)
     });
-    passwordTextBox.x = login_hex.x-((pl_radius * 2) * .58)/2;
+    passwordTextBox.x = login_hex.x-(pl_radius+50)/2 + 2;
     passwordTextBox.y = login_hex.y;
     passwordTextBox.interactiveChildren = true;
     passwordTextBox.placeholder = "Password";
     passwordTextBox.on("keydown",keyDown);
-    passwordTextBox.on("input",privateText);
     Inner_Login_UI.addChild(passwordTextBox);
 
+    
 
     //Interactable text used to move to project selection screen
     let loginText = new PIXI.Text("Login", login_style);
     loginText.x = login_hex.x - loginText.width/2;
-    loginText.y = login_hex.y + loginText.height * 2;
+    loginText.y = login_hex.y + 135;
     loginText.interactive = true;
     loginText.buttonMode = true;
     loginText.on("pointerdown", loginToBackend);
@@ -226,7 +192,7 @@ function startPreLogin()
     //Interactable text used to move to sign up screen
     let signUpText = new PIXI.Text("Sign Up", signUp_style);
     signUpText.x = login_hex.x - signUpText.width/2;
-    signUpText.y = loginText.y + (login_backgroundImage.height * .1);
+    signUpText.y = loginText.y + (signUpText.height * 3);
     signUpText.on("pointerdown",moveLogin);
     signUpText.interactive = true;
     signUpText.buttonMode = true;
@@ -270,7 +236,7 @@ function startPreLogin()
     SU_userTextBox = new PIXI.TextInput({
         input: {
             fontFamily: 'Tahoma',
-            fontSize: _size,
+            fontSize: '13pt',
             padding: '10px',
             width: '250px',
             color: '#FFFFFF',
@@ -287,7 +253,7 @@ function startPreLogin()
     SU_emailTextBox = new PIXI.TextInput({
         input: {
             fontFamily: 'Tahoma',
-            fontSize: _size,
+            fontSize: '13pt',
             padding: '10px',
             width: '250px',
             color: '#FFFFFF',
@@ -305,7 +271,7 @@ function startPreLogin()
     SU_passwordTextBox = new PIXI.TextInput({
         input: {
             fontFamily: 'Tahoma',
-            fontSize: _size,
+            fontSize: '13pt',
             padding: '10px',
             width: '250px',
             color: '#FFFFFF',
@@ -317,14 +283,12 @@ function startPreLogin()
     SU_passwordTextBox.y = signup_hex.y - 62;
     SU_passwordTextBox.interactiveChildren = true;
     SU_passwordTextBox.placeholder = "Password";
-    SU_passwordTextBox.on("keydown",keyDown);
-    SU_passwordTextBox.on("input",privateText);
     signUp_UI.addChild(SU_passwordTextBox);
 
     SU_repasswordTextBox = new PIXI.TextInput({
         input: {
             fontFamily: 'Tahoma',
-            fontSize: _size,
+            fontSize: '13pt',
             padding: '10px',
             width: '250px',
             color: '#FFFFFF',
@@ -336,15 +300,13 @@ function startPreLogin()
     SU_repasswordTextBox.y = signup_hex.y + 0;
     SU_repasswordTextBox.interactiveChildren = true;
     SU_repasswordTextBox.placeholder = "Confirm Password";
-    SU_repasswordTextBox.on("keydown",keyDown);
-    SU_repasswordTextBox.on("input",privateText);
     signUp_UI.addChild(SU_repasswordTextBox);
 
 
     legalTextBox = new PIXI.TextInput({
         input: {
             fontFamily: 'Tahoma',
-            fontSize: _size,
+            fontSize: '14pt',
             padding: '10px',
             width: '250px',
             color: '#FFFFFF',
@@ -362,7 +324,7 @@ function startPreLogin()
     institutionTextBox = new PIXI.TextInput({
         input: {
             fontFamily: 'Tahoma',
-            fontSize: _size,
+            fontSize: '14pt',
             padding: '10px',
             width: '250px',
             color: '#FFFFFF',
@@ -379,7 +341,7 @@ function startPreLogin()
 
     var SU_signUpText = new PIXI.Text("Sign Up", login_style);
     SU_signUpText.x = signup_hex.x - SU_signUpText.width/2;
-    SU_signUpText.y = signup_hex.y + (login_backgroundImage.height * .22);
+    SU_signUpText.y = signup_hex.y + 195;
     SU_signUpText.interactive = true;
     SU_signUpText.buttonMode = true;
     SU_signUpText.on("pointerdown", signUpBackend);
@@ -426,16 +388,16 @@ function generateTextLine(x, y, w, lineWidth, type){
 function showLogin(event){
 
     //Make quote and login button fade
-    alphaTransform(preDisplayQuote, 0, 5);
-    alphaTransform(preDisplayAuthor, 0, 5);
-    alphaTransform(loginButtonImage, 0, 5);
+    alphaTransform(preDisplayQuote, 0, 10);
+    alphaTransform(preDisplayAuthor, 0, 10);
+    alphaTransform(this, 0, 10);
 
     //Show inner parts of login Ui
-    alphaTransform(Inner_Login_UI, 1, 10);
+    alphaTransform(Inner_Login_UI, 1, 15);
 
     //Move Hexagon to front of the screen
-    scaleTransform(1, 1, login_UI, 6);
-    positionTransform(0, 0, login_UI, 6);
+    scaleTransform(1, 1, login_UI, 15);
+    positionTransform(0, 0, login_UI, 15);
 
     //blur background
     blurTransform(login_backgroundImage, 1, 10);
@@ -474,8 +436,8 @@ function hideLogin(event){
     //Make UI interactive 
     Inner_Login_UI.interactiveChildren = false;
 
-    app.stage.interactive = true;
-    app.stage.buttonMode = true;
+    loginButtonImage.interactive = true;
+    loginButtonImage.buttonMode = true;
 
     login_backgroundImage.interactive = false;
 
@@ -548,57 +510,6 @@ function touchScreen(){
     counter = 0;
 }
 
-function keyDown(keycode){
+function keyDown(){
     counter = 0;
-    if(this == passwordTextBox){
-        if(keycode == 8){
-            loginPassword = "";
-            this.text = "";
-        }
-    }
-    else if(this == SU_passwordTextBox){
-        if(keycode == 8){
-            signUpPassword = "";
-            this.text = "";
-        }
-    }
-    else if(this == SU_repasswordTextBox){
-        if(keycode == 8){
-            signUpRePassword = "";
-            this.text = "";
-        }
-    }
-}
-
-function privateText(keycode){
-    if(this == passwordTextBox){
-        //this.text += "*";
-        loginPassword += keycode.charAt(keycode.length - 1);
-        var length = loginPassword.length;
-        console.log("Activated down function: " + loginPassword);
-        this.text = "";
-        for(var i = 0; i < length; i++){
-            this.text += "*";
-        }
-    }
-    else if(this == SU_passwordTextBox){
-        //this.text += "*";
-        signUpPassword += keycode.charAt(keycode.length - 1);
-        var length = signUpPassword.length;
-        console.log("Activated down function: " + signUpPassword);
-        this.text = "";
-        for(var i = 0; i < length; i++){
-            this.text += "*";
-        }
-    }
-    else if(this == SU_repasswordTextBox){
-        //this.text += "*";
-        signUpRePassword += keycode.charAt(keycode.length - 1);
-        var length = signUpRePassword.length;
-        console.log("Activated down function: " + signUpRePassword);
-        this.text = "";
-        for(var i = 0; i < length; i++){
-            this.text += "*";
-        }
-    }
 }

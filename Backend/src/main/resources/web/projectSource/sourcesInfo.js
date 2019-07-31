@@ -7,6 +7,13 @@ class Source {
     }
 }
 
+class SourceElement{
+    constructor( container){
+        //this.index = index;
+        this.container = container;
+    }
+}
+
 var insTile = "Images/institution/cmu.png";
 var insImages = ['Images/institution/cmu.png', 'Images/institution/drexel.png', 'Images/institution/lehigh.png', 'Images/institution/ohio.png',
             'Images/institution/pennstate.jpg', 'Images/institution/TempleUniversity.png', 'Images/institution/StonyBrook.png','Images/institution/JohnHopkins.jpg'];

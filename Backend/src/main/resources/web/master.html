@@ -1,5 +1,5 @@
-<!--Version: 14 // Please raise the number every time you make an edit-->
-<!--Last Edited By: Anna Thomas // Change to your name after every edit-->
+<!--Version: 16 // Please raise the number every time you make an edit-->
+<!--Last Edited By: Eddie Sohn // Change to your name after every edit-->
 <html>
     <head>
         <title>Unified Code</title>
@@ -44,6 +44,7 @@
         
         <!--Source Page Dependencies-->
         <script src="projectSource/projectSource.js"></script>
+        <script src="projectSource/sourcesInfo.js"></script>
         
         <!--Spectrum Imaging Dependencies-->
         <script src="Spectrum_Imaging/newSpectrum.js"></script>
@@ -82,10 +83,8 @@
         });
     </script>
     <body>
-        
         <!--Main javascript method-->
         <script>
-
 
             // Instantiate PIXI JS (from example)
             let type = "WebGL";
@@ -127,7 +126,7 @@
 
                 // Logs the currentActivity (this variable is in globalVariables.js) (the function that this changes the currentActivity is in createButton.js in Multi-block // This is a temporary solution)
                 console.log("Current Activity: " + currentActivity);
-
+                
                 // Everyone please updates these according to your code! - Jack
                 if(currentActivity == 'Welcome')
                 {
@@ -156,7 +155,7 @@
                 else if(currentActivity == 'Zoom')
                 {
                     // Low_Mag/LMSI.js
-                    LSMI();
+                    LMSI();
                     changeActivityButton();
                 }
                 else if(currentActivity == 'Multispectrum')
@@ -206,5 +205,7 @@
             }
         
         </script>
+        <!--<div> element to get DPI of the current screen-->
+        <div id="dpi" style="display:none"></div>
     </body>
 </html>

@@ -107,7 +107,7 @@ public final class WindowRouteSetter {
                 return RouteSetter.preprocessPathParam(request, response, new String[] { "wid" }, (params) -> {
                     int wid = params[0];
                     if (!db.checkWindowOwnership(uid, wid)) {
-                        return StructuredResponse.getErrorResponse(ErrorHandler.PRIVILAGE.NO_RIGHT_TO_ACCESS_WINDOW);
+                        return StructuredResponse.getErrorResponse(ErrorHandler.PRIVILAGE.NO_RIGHT_TO_ACCESS_PROJECT);
                     }
                     return RouteSetter.preprocessJSONValueGet(request, response,
                             new String[] { "pos_x", "pos_y", "width","height" },

@@ -1,5 +1,6 @@
 package edu.lehigh.nhi.multitouch.backend.database;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -10,13 +11,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
- * Supper class for all Database Managers. Acess point for all
- * database related methods. Provides constractors and common methods for all
- * subclasses.
+ * Supper class for all Database Managers. Acess point for all database related
+ * methods. Provides constractors and common methods for all subclasses.
  */
 public class DatabaseManager {
 
-    
     /**
      * Setup Statement Loader
      * 
@@ -24,8 +23,8 @@ public class DatabaseManager {
      */
 
     private final Statements mStatements;
-    
-    //provides access point for relavent methods.
+
+    // provides access point for relavent methods.
     public final UserManager user;
     public final WindowManager window;
     public final ProjectManager project;
@@ -52,11 +51,27 @@ public class DatabaseManager {
         mStatements.common.checkProjectOwnership.setInt(1, uid);
         mStatements.common.checkProjectOwnership.setInt(2, pid);
         ResultSet rs = mStatements.common.checkProjectOwnership.executeQuery();
-        if(rs.next())
+        if (rs.next()) {
+            rs.close();
             return true;
+        }
+        rs.close();
         return false;
     }
-    
+
+    public boolean checkWindowOwnership(int uid, int wid) throws SQLException {
+        PreparedStatement ps = mStatements.common.getPidByWid;
+        ps.setInt(1, wid);
+        ResultSet rs = ps.executeQuery();
+        if (!rs.next()) {
+            rs.close();
+            return false;
+        }
+        int pid = rs.getInt("pid");
+        rs.close();
+        return checkProjectOwnership(uid, pid);
+    }
+
     protected static JSONArray convertToJSONArray(ResultSet resultSet) throws JSONException, SQLException {
         JSONArray jsonArray = new JSONArray();
         while (resultSet.next()) {

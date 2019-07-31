@@ -20,10 +20,9 @@ const move = PIXI.Sprite.from('./Images/move.png');
 // create a new new texture from image
 var testimg = new PIXI.Sprite(zoom_background);
 
+// containers for button, guide text, and LMSIContainer to hold everything
 var LMSIContainer = new PIXI.Container();
-
 var buttonContainer = new PIXI.Container();
-
 var guideTextContainer = new PIXI.Container();
 
 // set buttons requried
@@ -80,10 +79,7 @@ var dragMode = true;
 // variable to determine if user is in the middle of drawing
 var drawing = false;
 
-// varible to save points user clicked for rectangle
-var points = [0, 0];
-
-// variable to save PIXI.Point
+// variable to save PIXI.Point for cropping
 var testPoint = new PIXI.Point(0, 0);
 var testPointEnd = new PIXI.Point(0, 0);
 
@@ -108,7 +104,7 @@ var cropImage = new PIXI.Graphics();
  *  LMSI is called to start Low Magnification Screening / Imaging (Zoom & Crop).
  *  it activates gestures, add viewport, buttons, and sprites on LMSIContainer
  */
-function LMSI() {
+function LMSI_init() {
     // calls pixi-viewport
     Viewport = new PIXI.extras.Viewport({
         screenWidth: window.innerWidth,
@@ -144,9 +140,9 @@ function LMSI() {
     guideText.y = 50;
     guideTextContainer.addChild(guideText);
 
-    // test println
-    console.log(getDPI());
-    console.log(screen.width + "," + screen.height);
+    // test printlns
+    console.log("DPI:" + getDPI());
+    console.log("Resolution: " + screen.width + "," + screen.height);
 
     // add the viewport to the container
     LMSIContainer.addChild(Viewport);
@@ -174,8 +170,7 @@ function drawPoint(event) {
             graphics.clear();
 
             // Updates starting point
-            points = [event.data.global.x, event.data.global.y];
-            testPoint = Viewport.toWorld(points[0], points[1]);
+            testPoint = Viewport.toWorld(event.data.global.x, event.data.global.y);
 
             // Constructs starting point
             graphics.beginFill(0xFFFFFF);
@@ -204,7 +199,7 @@ function drawPoint(event) {
             graphics.endFill()
 
             //Constructs line from saved starting point to current end point
-            graphics.lineStyle(2, 0xFFFFFF).moveTo(points[0], points[1]);
+            graphics.lineStyle(2, 0xFFFFFF).moveTo(testPoint.x, testPoint.y);
 
             // draw rectangle from current starting point and endpoint
             // points: starting (x,y) on canvas
@@ -237,7 +232,6 @@ function drawPoint(event) {
 function cancelDraw(event) {
     //Resets all line UI components
     graphics.clear();
-    points = [0, 0];
     cancel_draw = true;
     drawing = false;
     guideText.text = 'Select two points on a image to crop.';
@@ -349,8 +343,16 @@ function onButtonOut() {
 
 /**
  *  Helper function for calculating height, length, diagonal and resolution of the screen
+ *  All of the helper fucntions for this section is from screen-size.info
+ *  @Source http://screen-size.info/
  */
-function calculateByDiagonal() {
+/**
+ *  calulate width and height of screen based on diagonal
+ * @param {*} width  width resolution in px
+ * @param {*} height heihgt resolution in px
+ * @param {*} dpi    diagonal of the screen
+ *  */
+function calculateByDiagonal(width, height, dpi) {
     var aspectRatioWidth = $("#aspectRatioWidth").val();
     var aspectRatioHeight = $("#aspectRatioHeight").val();
     var aspectRatioDiagonal = calculateDiagonal(aspectRatioWidth, aspectRatioHeight);
@@ -372,6 +374,11 @@ function calculateByDiagonal() {
     }
 }
 
+/**
+ *  get aspectRatio (resolution) of the screen
+ * @param {*} width  width resolution in px
+ * @param {*} height heihgt resolution in px
+ */
 function setAspectRatio(width, height) {
     $("#aspectRatioWidth").val(width);
     $("#aspectRatioHeight").val(height);
@@ -379,14 +386,28 @@ function setAspectRatio(width, height) {
     calculate(currentKey);
 }
 
+/**
+ *  Transfrom cm to inch
+ * @param {*} value size in cm
+ */
 function cmToInch(value) {
     return value / 2.54;
 }
 
+/**
+ *  Transfrom inch to cm
+ * @param {*} value size in inch
+ */
 function inchToCm(value) {
     return value * 2.54;
 }
 
+/**
+ * 
+ * @param {*} key 
+ * @param {*} unit 
+ * @param {*} value 
+ */
 function transformUnits(key, unit, value) {
     var element, transfomredValue;
     if (unit === "cm") {
@@ -398,8 +419,4 @@ function transformUnits(key, unit, value) {
     }
     element.data("exactValue", transfomredValue);
     element.val(transfomredValue.toFixed(1));
-}
-
-function getDPI(){
-    return jQuery('#dpi').height();
 }

@@ -1,6 +1,7 @@
 // This is the javascript file I added for the connection to the backend
 
-var base_url = "localhost:4567";
+//get the hosting url.
+var base_url = location.protocol + '//' + location.host;
 var uid;
 var session_key;
 

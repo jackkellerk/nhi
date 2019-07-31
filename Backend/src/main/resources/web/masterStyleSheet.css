@@ -28,4 +28,11 @@ canvas
         transform: translate(-50%, -50%);
         -webkit-transform: translate(-50%, -50%);
     }
+    #dpi{
+        height: 1in;
+        width: 1in;
+        position: absolute;
+        left: -100%;
+        top: -100%;
+    }
 

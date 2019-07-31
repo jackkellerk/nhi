@@ -12,12 +12,13 @@ class Statements {
     protected Source source;
 
     protected class Common {
-        protected final PreparedStatement selectLastInsertion, checkProjectOwnership;
+        protected final PreparedStatement selectLastInsertion, checkProjectOwnership, getPidByWid;
 
         private Common() throws SQLException {
             selectLastInsertion = mMySQLConnection.prepareStatement("select last_insert_id()");
             checkProjectOwnership = mMySQLConnection
                     .prepareStatement("select uid from user_project where uid = ? and pid = ?");
+            getPidByWid = mMySQLConnection.prepareStatement("select pid from window_t where wid = ?");
         }
     }
 

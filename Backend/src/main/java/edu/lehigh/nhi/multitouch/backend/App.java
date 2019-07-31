@@ -18,9 +18,23 @@ import spark.Spark;
 public class App {
 
     public static void main(String[] args) {
+        ErrorHandler.setup();
 
+        int port = 0;
+        if (args.length < 1) {
+            System.out.println("No argument read for port number, set port to default (4567).");
+            port = 4567;
+        } else {
+            try {
+                port = Integer.parseInt(args[0]);
+            } catch (NumberFormatException e) {
+                System.err.println("Fatal: first argument(port number) should be a Integer." + "\n" + "Quiting..");
+                System.exit(1);
+            }
+        }
         final Encryption encryption = Encryption.getEncryption();
-
+        // default port for http
+        Spark.port(port);
         Spark.staticFileLocation("/web");
         Spark.get("/", (req, res) -> {
             res.redirect("/master.html");
@@ -34,12 +48,12 @@ public class App {
             UserRouteSetter.setRoutes(db, encryption);
             WindowRouteSetter.setRoutes(db, encryption);
             SourceRouteSetter.setRoutes(db, encryption);
-       
+
         } catch (SQLException e) {
             System.err.println("Unexpected Error Occured During Setup.");
             e.printStackTrace();
             System.err.println("quiting...");
-            System.exit(1);
+            // System.exit(1);
         }
     }
 }

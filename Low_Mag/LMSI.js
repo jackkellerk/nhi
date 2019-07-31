@@ -1,6 +1,30 @@
 class LMSI {
     constructor(imageSoruce, wid) {
 
+        // variables
+        this.zoom_background = PIXI.Texture.from('./Images/lowmag_test.jpg');
+        this.testimg = this.zoom_background;
+        this.guideText = 'Init';
+        this.cancel_draw = false;
+        this.dragMode = true;
+        this.drawing = false;
+        
+        // containers for button, guide text, and LMSIContainer to hold everything
+        this.LMSIContainer = new PIXI.Container();
+        this.buttonContainer = new PIXI.Container();
+        this.guideTextContainer = new PIXI.Container();
+
+        // define style
+        this.style = new PIXI.TextStyle({
+            fontFamily: 'Helvetica',
+            fontSize: 20,
+            fill: '#FFFFFF', // gradient
+            align: 'center',
+            strokeThickness: 3,
+            wordWrap: true,
+            wordWrapWidth: 500,
+        });
+
         // base64 matcher in RegExp to test base64 strings
         var base64Matcher = new RegExp("^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{4})$");
         
@@ -10,13 +34,13 @@ class LMSI {
         }
         // if imageSource is a dir to an image
         else if (str.indexOf("/") >= 0 && str.indexOf("./") >= 0) {
-            zoom_background = PIXI.Texture.from(imageSource);
-            testimg = new PIXI.Sprite(zoom_background);
+            this.zoom_background = PIXI.Texture.from(imageSource);
+            this.testimg = new PIXI.Sprite(this.zoom_background);
         }
         // if imageSource is on the server (base64)
         else if (base64Matcher.test(imageSoruce)) {
             var tempImg = new Image();
-            tempImg.src = imageSoruce;
+            this.tempImg.src = imageSoruce;
 
             var tempBaseTexture = new PIXI.BaseTexture(tempImg);
             var tempTexture = new PIXI.Texture(tempBaseTexture);
@@ -24,16 +48,16 @@ class LMSI {
             // then add to the cache
             // TODO: use texture Cache
             if (wid == null) {
-                zoom_background = tempTexture;
-                testimg = new PIXI.Sprite(zoom_background);
+                this.zoom_background = tempTexture;
+                this.testimg = new PIXI.Sprite(this.zoom_background);
             }
             else {
                 PIXI.Texture.addTextureToCache(tempTexture, "LMSI" + wid);
 
                 // to retrieve the texture it would be a case of
                 var finalBase64Sprite = PIXI.Sprite.fromImage("LMSI" + wid);
-                zoom_background = finalBase64Sprite;
-                testimg = new PIXI.Sprite(zoom_background);
+                this.zoom_background = finalBase64Sprite;
+                this.testimg = new PIXI.Sprite(this.zoom_background);
             }
         }
         // nothing match. get default image
@@ -42,7 +66,7 @@ class LMSI {
         }
 
         // calls pixi-viewport
-        Viewport = new PIXI.extras.Viewport({
+        this.Viewport = new PIXI.extras.Viewport({
             screenWidth: window.innerWidth,
             screenHeight: window.innerHeight,
             worldWidth: 5000,
@@ -51,51 +75,64 @@ class LMSI {
         });
 
         // activate mouse/touch gestures for viewport
-        Viewport
+        this.Viewport
             .drag()
             .pinch()
             .wheel()
             .decelerate();
 
-        testimg.width = window.innerWidth;
-        testimg.height = window.innerWidth; 
+            this.testimg.width = window.innerWidth;
+            this.testimg.height = window.innerWidth; 
 
         // add background image to viewport
-        Viewport.addChild(testimg);
+        this.Viewport.addChild(this.testimg);
 
         // add buttons to buttonContainer, and set interative
-        buttonContainer.addChild(cancel_button);
-        buttonContainer.addChild(mode_button);
-        buttonContainer.addChild(move);
-        buttonContainer.addChild(screenshot);
-        buttonContainer.interactive = true;
+        this.buttonContainer.addChild(cancel_button);
+        this.buttonContainer.addChild(mode_button);
+        this.buttonContainer.addChild(move);
+        this.buttonContainer.addChild(screenshot);
+        this.buttonContainer.interactive = true;
 
-        // update guideText
-        var text = 'Drag, wheel and scroll the image to explore.';
-        this.initGuideText(text);
+        // init guideText
+        this.initGuideText();
 
         // add the viewport to the container
-        LMSIContainer.addChild(Viewport);
+        this.LMSIContainer.addChild(this.Viewport);
 
-        LMSIContainer.addChild(buttonContainer);
-        LMSIContainer.addChild(guideTextContainer);
+        this.LMSIContainer.addChild(this.buttonContainer);
+        this.LMSIContainer.addChild(this.guideTextContainer);
 
         // Sets the app to be interactable and allows drawPoint function to be called
         // LMSIContainer.interactive = true;
 
-        app.stage.addChild(LMSIContainer);
-        app.renderer.render(LMSIContainer);
+        app.stage.addChild(this.LMSIContainer);
+        app.renderer.render(this.LMSIContainer);
     }
 
-    initGuideText(text){
-        guideText = new PIXI.Text(text, style);
-        guideText.x = window.innerWidth / 2 - 250;
-        guideText.y = 50;
-        guideTextContainer.addChild(guideText);
+    // update image to drag & screenshot
+    updateBackground(imageSource) {
+        this.zoom_background = PIXI.Texture.from(imageSource);
+        this.testimg = new PIXI.Sprite(this.zoom_background);
     }
 
-    updateGuideText(text){
-        guideText.text = text;
+    // init guideText with text
+    initGuideText(text) {
+        if (text == null) {
+            this.text = 'Drag, wheel and scroll the image to explore.';
+            this.guideText = new PIXI.Text(this.text, this.style);
+        }
+        else {
+            this.guideText = new PIXI.Text(this.text, this.style);
+        }
+        this.guideText.x = window.innerWidth / 2 - 250;
+        this.guideText.y = 50;
+        this.guideTextContainer.addChild(this.guideText);
+    }
+
+    // update guideText with text
+    updateGuideText(text) {
+        this.guideText.text = text;
     }
 
     /**
@@ -105,30 +142,30 @@ class LMSI {
     modeChange(event) {
 
         // Resets all line UI components
-        graphics.clear();
+        this.graphics.clear();
 
         // if mode is 'drag', pan & pinch zoom: change to 'screenshot'
-        if (dragMode == true) {
+        if (this.dragMode == true) {
 
             // change mode icon to 'screenshot'
             move.alpha = 0;
             screenshot.alpha = 1;
 
             // pause gestures for 'drag'
-            Viewport.pausePlugin('drag');
-            Viewport.pausePlugin('pinch');
-            Viewport.pausePlugin('wheel');
-            Viewport.pausePlugin('decelerate');
+            this.Viewport.pausePlugin('drag');
+            this.Viewport.pausePlugin('pinch');
+            this.Viewport.pausePlugin('wheel');
+            this.Viewport.pausePlugin('decelerate');
         
             // resume gestures for click & cancel
-            Viewport.on('pointerdown', drawPoint);
+            this.Viewport.on('pointerdown', this.drawPoint);
 
             // resume cancel_button in 'drag' mode
-            cancel_button.on('pointerdown', cancelDraw);
+            cancel_button.on('pointerdown', this.cancelDraw);
 
             // change guideText to 'screenshot' mode
-            dragMode = false;
-            guideText.text = 'Select two points on a image to copy.';
+            this.dragMode = false;
+            this.guideText.text = 'Select two points on a image to copy.';
         }
         // if mode is 'screenshot', getting part of the image and save it as child image of current image: change to 'drag'
         else {
@@ -138,20 +175,20 @@ class LMSI {
             screenshot.alpha = 0;
 
             // pause gestures for click & cancel
-            Viewport.off('pointerdown', drawPoint);
+            this.Viewport.off('pointerdown', this.drawPoint);
 
             // pause cancel_button in 'screenshot' mode
-            cancel_button.off('pointerdown', cancelDraw);
+            cancel_button.off('pointerdown', this.cancelDraw);
 
             // resume gestures for 'drag'
-            Viewport.resumePlugin('drag');
-            Viewport.resumePlugin('pinch');
-            Viewport.resumePlugin('wheel');
-            Viewport.resumePlugin('decelerate');
+            this.Viewport.resumePlugin('drag');
+            this.Viewport.resumePlugin('pinch');
+            this.Viewport.resumePlugin('wheel');
+            this.Viewport.resumePlugin('decelerate');
 
             // change guideText to 'drag' mode
-            dragMode = true;
-            guideText.text = 'Drag, wheel and scroll the image to explore.';
+            this.dragMode = true;
+            this.guideText.text = 'Drag, wheel and scroll the image to explore.';
         }
     } // end modeChange
 

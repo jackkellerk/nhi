@@ -263,8 +263,16 @@ function moveSources(){
 }
 
 
-function clickSource(){
-    console.log("hi") 
+function clickSource(element){
+    //console.log(element.container.getChildAt(1).alpha)
+    var start = element.container.getChildAt(1).alpha
+    if ( start == 0){
+        element.container.getChildAt(1).alpha =1;
+    } else {
+        element.container.getChildAt(1).alpha =0;
+    }
+    
+    
 }
 
 
@@ -497,17 +505,19 @@ function populateSourceArray() {
         // end filling
         hex.endFill();
 
-        hex.interactive = true;
-        hex.buttonMode = true;
-        hex.on('pointerdown', clickSource);
+        // hex.interactive = true;
+        // hex.buttonMode = true;
+        // hex.on('pointerdown', clickSource);
 
-        // var selected_Icon = new PIXI.Sprite.from('Images/selected_icon2.png')
-        // selected_Icon.width = 50;
-        // selected_Icon.height = 50;
-        // selected_Icon.x = hex.width-10
-        // selected_Icon.y= hex.height - hex.height-10;
-        // source_infoContainer.addChild(selected_Icon)
-        // console.log(selected_Icon.x + "     " +selected_Icon.y);
+        //mask_hex.y - pl_radius, mask_hex.x + pl_radius * 2  + app.screen.width* (5.5/8)
+        var selected_Icon = new PIXI.Sprite.from('Images/selected_icon2.png')
+        selected_Icon.width = 30;
+        selected_Icon.height = 30;
+        selected_Icon.x = app.screen.width * 7.2/8;
+        selected_Icon.y= y_origin -20
+        selected_Icon.alpha = 0;
+        source_infoContainer.addChild(selected_Icon)
+        console.log(selected_Icon.x + "     " +selected_Icon.y);
 
         // add child to the container
 
@@ -524,6 +534,14 @@ function populateSourceArray() {
 
         y_origin += app.screen.height/4;
     }
+
+    sourcesArray.forEach(element => {
+        element.container.getChildAt(2).interactive = true;
+        element.container.getChildAt(2).buttonMode = true;
+        element.container.getChildAt(2).on('pointerdown', function(){
+            clickSource(element);
+        });
+    });
 }
 
 

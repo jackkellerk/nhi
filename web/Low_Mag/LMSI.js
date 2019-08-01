@@ -1,16 +1,48 @@
+// define style
+var guideTextstyle = new PIXI.TextStyle({
+    fontFamily: 'Helvetica',
+    fontSize: 20,
+    fill: '#FFFFFF', // gradient
+    align: 'center',
+    strokeThickness: 3,
+    wordWrap: true,
+    wordWrapWidth: 500,
+});
+
+// base64 matcher in RegExp to test base64 strings
+const base64Matcher = new RegExp("^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{4})$");
+
+// const image for buttons
+const cancelButton = PIXI.Sprite.from('./Images/cancel_icon.png');
+const modeChangeButton = PIXI.Sprite.from('./Images/mode_change.png');
+
+// const image for icons in modeChangeButton
+const screenshotIcon = PIXI.Sprite.from('./Images/screenshot.png');
+const dragIcon = PIXI.Sprite.from('./Images/move.png');
+
 class LMSI {
-    constructor(imageSoruce, wid) {
+    constructor(imageSource, wid, pid) {
 
         // initialize variables
-        this.zoom_background;
-        this.testimg;
         this.guideText = 'Init';
         this.cancel_draw = false;
         this.dragMode = true;
         this.drawing = false;
         this.zoomLvl = 1.0;
+
+        // information about original image
         this.imageOrigin_x = 0;
         this.imageOrigin_Y = 0;
+        this.imageSource = imageSource;
+
+        // id for window, parentsImage, childImage
+        this.wid = wid;
+        this.pid = pid;
+        this.cid = null;
+
+        // image variables
+        this.zoom_background;
+        this.testimg;
 
         // initialize buttons
         this.cancel_button = cancelButton;
@@ -22,25 +54,32 @@ class LMSI {
 
         // initialize graphics 
         this.LMSIGraphics = new PIXI.Graphics();
+
+        // initialize graphics for screenshot
+        this.cropImage = new PIXI.Graphics();
         
         // initialize containers for button, guide text, and LMSIContainer to hold everything
         this.LMSIContainer = new PIXI.Container();
         this.buttonContainer = new PIXI.Container();
         this.guideTextContainer = new PIXI.Container();
+        this.Viewport = 0;
+        this.Viewport = this.initViewport();
 
         // load image to drag (explore) or screenshot
         // if imageSource is null.. load default image
         if (imageSource == null) {
-            setBackground("./Images/lowmag_test.jpg");
+            this.zoom_background = PIXI.Texture.from("./Images/lowmag_test.jpg");
+            this.testimg = new PIXI.Sprite(this.zoom_background);
         }
         // if imageSource is a dir to an image
         else if (str.indexOf("/") >= 0 && str.indexOf("./") >= 0) {
-            setBackground(imageSource);
+            this.zoom_background = PIXI.Texture.from(imageSource);
+            this.testimg = new PIXI.Sprite(this.zoom_background);
         }
         // if imageSource is in base64
-        else if (base64Matcher.test(imageSoruce)) {
+        else if (base64Matcher.test(imageSource)) {
             var tempImg = new Image();
-            this.tempImg.src = imageSoruce;
+            this.tempImg.src = imageSource;
 
             var tempBaseTexture = new PIXI.BaseTexture(tempImg);
             var tempTexture = new PIXI.Texture(tempBaseTexture);
@@ -48,27 +87,31 @@ class LMSI {
             // then add to the cache
             // TODO: use texture Cache
             if (wid == null) {
-                setBackground(tempTexture);
+                this.zoom_background = PIXI.Texture.from(tempTexture);
+                this.testimg = new PIXI.Sprite(this.zoom_background);
             }
             else {
                 PIXI.Texture.addTextureToCache(tempTexture, "LMSI" + wid);
 
                 // to retrieve the texture it would be a case of
                 var finalBase64Sprite = PIXI.Sprite.fromImage("LMSI" + wid);
-                setBackground(finalBase64Sprite);
+                this.zoom_background = PIXI.Texture.from(finalBase64Sprite);
+                this.testimg = new PIXI.Sprite(this.zoom_background);
             }
         }
         // nothing match. get default image
         else {
-            setBackground("./Images/lowmag_test.jpg");
+            this.zoom_background = PIXI.Texture.from("./Images/lowmag_test.jpg");
+            this.testimg = new PIXI.Sprite(this.zoom_background);
         }
 
         
         // calls pixi-viewport, initialize gestures (pointerdown, etc.)
         this.initViewport();
 
-        this.testimg.width = window.innerWidth;
-        this.testimg.height = window.innerWidth; 
+        // set image size, same as Viewport windows
+        this.testimg.width = this.window.innerWidth;
+        this.testimg.height = this.window.innerWidth; 
 
         // add background image to viewport
         this.Viewport.addChild(this.testimg);
@@ -104,8 +147,8 @@ class LMSI {
 
     initViewport() {
         this.Viewport = new PIXI.extras.Viewport({
-            screenWidth: window.innerWidth,
-            screenHeight: window.innerHeight,
+            screenWidth: this.window.innerWidth,
+            screenHeight: this.window.innerHeight,
             worldWidth: 5000,
             worldHeight: 5000,
             interaction: app.renderer.plugins.interaction // the interaction module is important for wheel() to work properly when renderer.view is placed or scaled
@@ -181,10 +224,10 @@ class LMSI {
         this.cancel_button.interactive = true;
         this.cancel_button.buttonMode = true;
         this.cancel_button
-            .on('pointerdown', cancelDraw)
-            .on('pointerup', cancelUp)
-            .on('pointerover', cancelUp)
-            .on('pointeroutside', cancelUp);
+            .on('pointerdown', this.cancelDraw)
+            .on('pointerup', this.cancelUp)
+            .on('pointerover', this.cancelUp)
+            .on('pointeroutside', this.cancelUp);
     }
 
     initModeChangeButton() {
@@ -196,9 +239,9 @@ class LMSI {
         this.mode_button.interactive = true;
         this.mode_button.buttonMode = true;
         this.mode_button
-            .on('pointerdown', modeChange)
-            .on('pointerdown', onButtonDown)
-            .on('pointerup', onButtonUp);
+            .on('pointerdown', this.modeChange)
+            .on('pointerdown', this.onButtonDown)
+            .on('pointerup', this.onButtonUp);
 
         // init icon inside modeChange
         // screenshot button is 20px instead of 25px because the icon touch mode_button
@@ -273,14 +316,14 @@ class LMSI {
                 this.LMSIGraphics.drawRect(this.testPoint.x, this.testPoint.y, this.testPointEnd.x - this.testPoint.x, this.testPointEnd.y -
                     this.testPoint.y);
     
-                cropImage.drawRect(this.testPoint.x, this.testPoint.y, this.testPointEnd.x - this.testPoint.x, this.testPointEnd.y -
+                this.cropImage.drawRect(this.testPoint.x, this.testPoint.y, this.testPointEnd.x - this.testPoint.x, this.testPointEnd.y -
                     this.testPoint.y);
-                cropImage.renderable = true;
-                cropImage.cacheAsBitmap = true;
+                    this.cropImage.renderable = true;
+                    this.cropImage.cacheAsBitmap = true;
     
-                this.Viewport.addChild(cropImage);
+                this.Viewport.addChild(this.cropImage);
                 // app.stage.addChild(cropImage);
-                this.Viewport.mask = cropImage;
+                this.Viewport.mask = this.cropImage;
     
                 //Changes draw value and updates other information
                 this.drawing = false;
@@ -307,7 +350,7 @@ class LMSI {
      */
     cancelUp() {
         // Resets cancel value
-        cancel_draw = false;
+        this.cancel_draw = false;
         
         // restore alpha of cancle button, since there is no graphics on screen to cancel
         this.cancel_button.alpha = 0.33;
@@ -365,14 +408,19 @@ class LMSI {
         
     }
 
+    // calculate current zoom percentage based on originImage_X, originImage_Y
     calculateZoomLvl() {
 
     } // end of calculateZoomLvl
 
-    set setZoomLvl() {
-
+    // setter for zoomLvl
+    set setZoomLvl(zoomLvl) {
+        this.zoomLvl = zoomLvl;
     } // end of setZoomLvl
 
+    set cid(cid) {
+        this.cid = cid;
+    }
     
     /**
      * General helper functions for button gestures including pointerdown, pointerup, pointerover, pointerdownout
@@ -388,26 +436,7 @@ class LMSI {
         this.alpha = 1;
     }
 
+    static outputID() {
+        console.log("Wokrs?");
+    }
 }
-
-// define style
-var guideTextstyle = new PIXI.TextStyle({
-    fontFamily: 'Helvetica',
-    fontSize: 20,
-    fill: '#FFFFFF', // gradient
-    align: 'center',
-    strokeThickness: 3,
-    wordWrap: true,
-    wordWrapWidth: 500,
-});
-
-// base64 matcher in RegExp to test base64 strings
-const base64Matcher = new RegExp("^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{4})$");
-
-// const image for buttons
-const cancelButton = PIXI.Sprite.from('./Images/cancel_icon.png');
-const modeChangeButton = PIXI.Sprite.from('./Images/mode_change.png');
-
-// const image for icons in modeChangeButton
-const screenshotIcon = PIXI.Sprite.from('./Images/screenshot.png');
-const dragIcon = PIXI.Sprite.from('./Images/move.png');

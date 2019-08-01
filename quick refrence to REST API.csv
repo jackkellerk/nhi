@@ -1,0 +1,14 @@
+short description,request type,path,uid and session_key required in header(Y/N),contributor
+project,,,,
+get a project,GET,/p/:pid,Y,Xuewei
+get listing of project owned by the current user,GET,/project,Y,Xuewei
+create a single project and set its ownership to the current user,POST,/project/create,Y,Xuewei
+user,,,,
+get user's infomation,GET,/user,Y,Jack and Xuewei
+sign up,POST,/signup,N,Jack and Xuewei
+login,POST,/login,N,Jack and Xuewei
+window,,,,
+create window,POST,/p/:pid/new_window,Y,Xuewei
+source,,,,
+get object list,GET,/s/:sid/object,Y,Xuewei
+get detailed info of a object,GET,/s/1/object,Y,Xuewei

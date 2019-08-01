@@ -1,0 +1,208 @@
+Version: 17 // Please raise the number every time you make an edit
+<!--Last Edited By: Eddie Sohn // Change to your name after every edit-->
+<html>
+    <head>
+        <title>Unified Code</title>
+
+        <!--Dependencies-->
+
+        <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+        <script src="pixi.min.js"></script>
+        <script src="globalVariables.js"></script>
+        <link rel="stylesheet" href="masterStyleSheet.css">
+        <script src="hexagon.js"></script>
+        <script src="popupMenu.js"></script>
+        <script src="transitions.js"></script>
+        <script src="createSettings.js"></script>
+        <script src="PIXI.TextInput.js"></script>
+
+        <!--Pre Login Dependencies-->
+        <script src="PreLoginScreen/prelogin.js"></script>
+        <script src="PreLoginScreen/dist/PIXI.TextInput.min.js"></script>
+
+
+        <!--Login Dependencies-->
+<!--        <script src="Login/login.js"></script>-->
+<!--        <script src="Login/captionFactory.js"></script>-->
+        <script src="jsToBackend.js"></script>
+        
+        <!--Project Selection Dependencies-->
+        <script src="AllProjects/projectSelection.js"></script>
+        <script src="AllProjects/a_drawHex.js"></script>
+
+        <!--Windows Dependencies-->
+        <script src="Windows/windows.js"></script>
+        <script src="Windows/makeBg.js"></script>
+        <script src="Windows/w_drawHex.js"></script>
+        <script src="Windows/drawInfoBox.js"></script>
+        <script src="Windows/moveWindowAroundScreen.js"></script>
+        <script src="Windows/createWindow.js"></script>
+        
+        <!--NewProject Page Dependencies-->
+        <script src="NewProject/newProject.js"></script>
+        <script src="NewProject/captionFactory.js"></script>
+        
+        <!--Source Page Dependencies-->
+        <script src="projectSource/projectSource.js"></script>
+        <script src="projectSource/sourcesInfo.js"></script>
+        
+        <!--Spectrum Imaging Dependencies-->
+        <script src="Spectrum_Imaging/newSpectrum.js"></script>
+        
+        <!--Tilting Dependencies-->
+        <script src="Tilting/tilting.js"></script>
+  
+        <!--Multi-block Dependencies-->
+        <script src="Multi-block/boxInformation.js"></script>
+        <script src="Multi-block/createButton.js"></script>
+        <script src="Multi-block/moveAroundCanvas.js"></script>
+        
+        <script src="Multi-block/main.js"></script>
+  
+        <!--Line Integral Dependencies-->
+        <script src="Line_Intensity_v2/text_styles.js"></script>
+        <script src="Line_Intensity_v2/line_intensity_file.js"></script>
+        <script src="Line_Intensity_v2/edited_graphs.js"></script>
+        <script src="Line_Intensity_v2/bring_to_front.js"></script>
+        <script src="Line_Intensity_v2/change_text.js"></script>
+        <script src="Line_Intensity_v2/graphs.js"></script>
+        <script src="Line_Intensity_v2/line.js"></script>
+        <script src="Line_Intensity_v2/point.js"></script>
+        
+        <!-- Low Magnification Screening / Imaging (Zoom, pinch, crop, etc) Dependencies -->
+        <script src="./pixi-viewport.js" type="text/javascript"></script>
+        <script src="Low_Mag/LMSI_helper.js"></script>
+        <script src="Low_Mag/LMSI.js"></script>
+    </head>
+    <!--Determines whether Mouse Button is down or not using jQuery (this is for Multi-block)-->
+    <script>
+    var down = false;
+    $(document).mousedown(function() {
+            down = true;
+        }).mouseup(function() {
+            down = false;  
+        });
+    </script>
+    <body>
+        <!--Main javascript method-->
+        <script>
+            // Instantiate PIXI JS (from example)
+            let type = "WebGL";
+            if(!PIXI.utils.isWebGLSupported())
+            {
+                type = "canvas";
+            }
+            PIXI.utils.sayHello(type);
+
+            let app = new PIXI.Application({ 
+                    width: window.innerWidth,
+                    height: window.innerHeight,
+                    antialias: true,
+                    transparent: false,
+                    autoResize: true,
+                    resolution: devicePixelRatio,
+                    backgroundColor: 0x000000 
+            });
+    
+            document.body.appendChild(app.view);
+            window.addEventListener('resize', resize);
+    
+            function resize()
+            {
+                const parent = app.view.parentNode;
+                app.renderer.resize(parent.clientWidth, parent.clientHeight);
+            }
+
+            var mouseData = app.renderer.plugins.interaction.mouse.global; // Change to pointer later (this is for multi-block)
+
+            // Initially call updateActivity to start application
+            updateActivity();
+
+            // updates the current activity (this is called from the createButton file)
+            function updateActivity()
+            {
+                // clears the stage
+                clear();
+
+                // Logs the currentActivity (this variable is in globalVariables.js) (the function that this changes the currentActivity is in createButton.js in Multi-block // This is a temporary solution)
+                console.log("Current Activity: " + currentActivity);
+                
+                // Everyone please updates these according to your code! - Jack
+                if(currentActivity == 'Welcome')
+                {
+                    startPreLogin();
+                }
+                else if(currentActivity == 'AllProjects')
+                {
+                    startAllProjects();
+                }
+                else if(currentActivity == 'Windows')
+                {
+                    // function in windows.js in Windows folder
+                    startWindows();
+                }
+                else if(currentActivity == 'NewProject')
+                {
+                    NewProject.startProjects();
+                    changeActivityButton();
+                    
+                }
+                else if(currentActivity == 'Source')
+                {
+                    startSourcePage();
+                    changeActivityButton();
+                }
+                else if(currentActivity == 'Zoom')
+                {
+                    // Low_Mag/LMSI_helper.js
+                    LMSI_init();
+                    changeActivityButton();
+                }
+                else if(currentActivity == 'Multispectrum')
+                {
+                    startSpectrum();
+                    changeActivityButton();
+                }
+                else if(currentActivity == 'Tilting')
+                {
+                    Tilting.startTilting();
+                    changeActivityButton();
+                }
+                else if(currentActivity == 'Multi-block')
+                {
+                    // this function is in main.js in Multi-block folder. This function generates the UI for my activity
+                    startMultiblock();
+                    changeActivityButton();
+                }
+                else if(currentActivity == 'Line')
+                {
+                    LI_showAll();
+                }
+
+            }
+
+            function changeActivityButton()
+            {
+                // This button will be to switch activites (reference is in createButton.js in the folder Multi-block)
+                var changeActivitesButton = new RectButton(app.screen.width - 80, app.screen.height / 2, 60, 60, 'switchActivity');
+
+                // This creates the icon to switch activites
+                var arrowImage = new PIXI.Sprite.fromImage('Images/arrow.png', true);
+                arrowImage.height = 60;
+                arrowImage.width = 60;
+                arrowImage.x = app.screen.width - 80;
+                arrowImage.y = app.screen.height / 2;
+                arrowImage.alpha = 0.7;
+                app.stage.addChild(arrowImage);
+            }
+
+            function clear()
+            {
+                for(var i = app.stage.children.length - 1; i > 0; i--)
+                {
+                    app.stage.removeChild(app.stage.children[i]);
+                }
+            }
+        </script>
+    </body>
+</html>

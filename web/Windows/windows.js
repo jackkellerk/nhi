@@ -109,8 +109,13 @@ function startWindows(){
   w_saveMenu.leftButton.on('mouseout', function(){ w_saveMenu.leftButton.alpha = 0.7; });
   w_saveMenu.leftButton.on('pointerdown', function(){
     currentActivity = activityArray[1];
-    alphaTransform(sprite, 0.0, 10);
-    positionTransform(1000, -app.stage.y, app.stage, 12);
+    alphaTransform(sprite, 0.0, 10 )
+    positionTransform(0, a_titleContainer.y, a_titleContainer, 10)
+    positionTransform(0, a_settingsContainer.y, a_settingsContainer, 10)
+    positionTransform(0, a_p1InfoContainer.y, a_p1InfoContainer, 10)
+    positionTransform(0, maskContainer.y, maskContainer, 10)
+    positionTransform(0, a_p1Container.y, a_p1Container, 10)
+    positionTransform(-1000, app.stage.y, app.stage, 12)
     updateActivity();
   });
 

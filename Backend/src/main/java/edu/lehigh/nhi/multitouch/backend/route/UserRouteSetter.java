@@ -66,7 +66,12 @@ public final class UserRouteSetter {
                             return StructuredResponse.getErrorResponse(ErrorHandler.UNKOWN.INSERTION_NO_UPDATE_UNKNOWN);
                         }
 
-                        return db.user.userSettings(db.getLastInsertedId());
+                        int uid = db.user.getUidByUsername(username);
+                        String sessionKey = encryption.addSessionkey(uid);
+                        JSONObject dataJs = new JSONObject();
+                        dataJs.put("session_key", sessionKey);
+                        dataJs.put("uid", uid);
+                        return StructuredResponse.getResponse(dataJs);
                     });
         });
 

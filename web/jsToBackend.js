@@ -72,7 +72,9 @@ function signUpBackend()
         xhrFields: {
             withCredentials: true
         },
-        success: function(data) {
+        success: function(callback) {
+            uid = callback.data.uid;
+            session_key = callback.data.session_key;
             userTextBox.text = username;
             toProjectSelection();
             currentActivity = "AllProjects";
@@ -119,7 +121,7 @@ function postNewProject(data)
         contentType: 'application/json',
         headers: {"uid": uid, "session_key": session_key},
         data: JSON.stringify(newProjectSettings),
-        url: 'http://' + base_url + '/project/create',
+        url: base_url + '/project/create',
         dataType: 'json',
         crossDomain: 'true',
         xhrFields: {

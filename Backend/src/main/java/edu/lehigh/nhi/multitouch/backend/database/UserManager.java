@@ -69,10 +69,8 @@ public class UserManager {
         mInsertUserFullPS.setString(2, password);
         mInsertUserFullPS.setString(3, legalName);
         mInsertUserFullPS.setString(4, email);
-        // TODO:
         mInsertUserFullPS.setString(5, "TODO");
         mInsertUserFullPS.setString(6, institution);
-        mInsertUserFullPS.executeUpdate();
         return mInsertUserFullPS.executeUpdate();
     }
 

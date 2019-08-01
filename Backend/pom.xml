@@ -44,6 +44,12 @@
       <artifactId>opencsv</artifactId>
       <version>3.8</version>
     </dependency>
+    <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-simple</artifactId>
+      <version>1.7.21</version>
+    </dependency>
 
 
   </dependencies>
@@ -92,7 +98,7 @@
         </configuration>
       </plugin>
     </plugins>
-<!-- 
+    <!-- 
     <resources>
       <resource>
         <directory>src/main/resources</directory>

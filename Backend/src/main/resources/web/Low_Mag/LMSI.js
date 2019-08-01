@@ -1,7 +1,7 @@
 class LMSI {
     constructor(imageSoruce, wid) {
 
-        // variables
+        // initialize variables
         this.zoom_background;
         this.testimg;
         this.guideText = 'Init';
@@ -9,15 +9,26 @@ class LMSI {
         this.dragMode = true;
         this.drawing = false;
         this.zoomLvl = 1.0;
+        this.imageOrigin_x = 0;
+        this.imageOrigin_Y = 0;
 
-        // define graphics 
+        // initialize buttons
+        this.cancel_button = cancelButton;
+        this.mode_button= modeChangeButton;
+
+        // initialize icons inside mode_button to display current mode
+        this.drag = dragIcon;
+        this.screenshot = screenshotIcon;
+
+        // initialize graphics 
         this.LMSIGraphics = new PIXI.Graphics();
         
-        // containers for button, guide text, and LMSIContainer to hold everything
+        // initialize containers for button, guide text, and LMSIContainer to hold everything
         this.LMSIContainer = new PIXI.Container();
         this.buttonContainer = new PIXI.Container();
         this.guideTextContainer = new PIXI.Container();
 
+        // load image to drag (explore) or screenshot
         // if imageSource is null.. load default image
         if (imageSource == null) {
             setBackground("./Images/lowmag_test.jpg");
@@ -63,10 +74,10 @@ class LMSI {
         this.Viewport.addChild(this.testimg);
 
         // add buttons to buttonContainer, and set interative
-        this.buttonContainer.addChild(cancel_button);
-        this.buttonContainer.addChild(mode_button);
-        this.buttonContainer.addChild(move);
-        this.buttonContainer.addChild(screenshot);
+        this.buttonContainer.addChild(this.cancel_button);
+        this.buttonContainer.addChild(this.mode_button);
+        this.buttonContainer.addChild(this.drag);
+        this.buttonContainer.addChild(this.screenshot);
         this.buttonContainer.interactive = true;
 
         // init guideText
@@ -108,6 +119,40 @@ class LMSI {
             .decelerate();
     }
 
+    // pause gestures for 'drag' on Viewport
+    pauseDragMode() {
+        this.Viewport.pausePlugin('drag');
+        this.Viewport.pausePlugin('pinch');
+        this.Viewport.pausePlugin('wheel');
+        this.Viewport.pausePlugin('decelerate');
+    }
+
+    // resume gestures for 'drag' on Viewport
+    resumeDragMode() {
+        this.Viewport.resumePlugin('drag');
+        this.Viewport.resumePlugin('pinch');
+        this.Viewport.resumePlugin('wheel');
+        this.Viewport.resumePlugin('decelerate');
+    }
+
+    // pause gestures for 'screenshot' on Viewport
+    pauseScreenshotMode() {
+        // pause gestures for click & cancel
+        this.Viewport.off('pointerdown', drawPoint);
+
+        // pause cancel_button in 'screenshot' mode
+        this.cancel_button.off('pointerdown', cancelDraw);
+    }
+
+    // resume gestures for 'screenshot' on Viewport
+    resumeScreenshotMode() {
+        // resume gestures for click & cancel
+        this.Viewport.on('pointerdown', drawPoint);
+
+        // resume cancel_button in 'drag' mode
+        this.cancel_button.on('pointerdown', cancelDraw);
+    }
+
     // init guideText with text
     initGuideText(text) {
         if (text == null) {
@@ -128,14 +173,14 @@ class LMSI {
     }
 
     initCancelButton() {
-        cancel_button.width = 50;
-        cancel_button.height = 50;
-        cancel_button.x = 10;
-        cancel_button.y = 10;
-        cancel_button.alpha = 0.33;
-        cancel_button.interactive = true;
-        cancel_button.buttonMode = true;
-        cancel_button
+        this.cancel_button.width = 50;
+        this.cancel_button.height = 50;
+        this.cancel_button.x = 10;
+        this.cancel_button.y = 10;
+        this.cancel_button.alpha = 0.33;
+        this.cancel_button.interactive = true;
+        this.cancel_button.buttonMode = true;
+        this.cancel_button
             .on('pointerdown', cancelDraw)
             .on('pointerup', cancelUp)
             .on('pointerover', cancelUp)
@@ -143,31 +188,31 @@ class LMSI {
     }
 
     initModeChangeButton() {
-        mode_button.width = 50;
-        mode_button.height = 50;
-        mode_button.x = cancel_button.x;
-        mode_button.y = cancel_button.y + cancel_button.height + cancel_button.y;
-        mode_button.alpha = 1;
-        mode_button.interactive = true;
-        mode_button.buttonMode = true;
-        mode_button
+        this.mode_button.width = 50;
+        this.mode_button.height = 50;
+        this.mode_button.x = this.cancel_button.x;
+        this.mode_button.y = this.cancel_button.y + this.cancel_button.height + this.cancel_button.y;
+        this.mode_button.alpha = 1;
+        this.mode_button.interactive = true;
+        this.mode_button.buttonMode = true;
+        this.mode_button
             .on('pointerdown', modeChange)
             .on('pointerdown', onButtonDown)
             .on('pointerup', onButtonUp);
 
         // init icon inside modeChange
         // screenshot button is 20px instead of 25px because the icon touch mode_button
-        screenshot.width = 20;
-        screenshot.height = 20;
-        screenshot.x = cancel_button.x + cancel_button.width / 4 + (cancel_button.width / 2 - screenshot.width) / 2;
-        screenshot.y = cancel_button.y + cancel_button.height + cancel_button.y + cancel_button.height / 4 + (cancel_button.width / 2 - screenshot.width) / 2;
-        screenshot.alpha = 0;   // 0 because default mode is move
+        this.screenshot.width = 20;
+        this.screenshot.height = 20;
+        this.screenshot.x = this.cancel_button.x + this.cancel_button.width / 4 + (this.cancel_button.width / 2 - this.screenshot.width) / 2;
+        this.screenshot.y = this.cancel_button.y + this.cancel_button.height + this.cancel_button.y + this.cancel_button.height / 4 + (this.cancel_button.width / 2 - this.screenshot.width) / 2;
+        this.screenshot.alpha = 0;   // 0 because default mode is move
 
-        move.width = 25;
-        move.height = 25;
-        move.x = cancel_button.x + cancel_button.width / 4;
-        move.y = cancel_button.y + cancel_button.height + cancel_button.y + cancel_button.height / 4;
-        move.alpha = 1;
+        this.drag.width = 25;
+        this.drag.height = 25;
+        this.drag.x = this.cancel_button.x + this.cancel_button.width / 4;
+        this.drag.y = this.cancel_button.y + this.cancel_button.height + this.cancel_button.y + this.cancel_button.height / 4;
+        this.drag.alpha = 1;
     }
 
     drawPoint(pointX, pointY) {
@@ -201,7 +246,7 @@ class LMSI {
                 this.setGuideText("Select the ending point of rectangle. Cancel to reset.");
                 
                 // alpha of cancle button
-                cancel_button.alpha = 1;
+                this.cancel_button.alpha = 1;
             } //end drawing if
             else {
 
@@ -265,7 +310,7 @@ class LMSI {
         cancel_draw = false;
         
         // restore alpha of cancle button, since there is no graphics on screen to cancel
-        cancel_button.alpha = 0.33;
+        this.cancel_button.alpha = 0.33;
     } // end cancel up
 
     /**
@@ -280,21 +325,10 @@ class LMSI {
         // if mode is 'drag', pan & pinch zoom: change to 'screenshot'
         if (this.dragMode == true) {
 
-            // change mode icon to 'screenshot'
-            move.alpha = 0;
-            screenshot.alpha = 1;
+            
 
-            // pause gestures for 'drag'
-            this.Viewport.pausePlugin('drag');
-            this.Viewport.pausePlugin('pinch');
-            this.Viewport.pausePlugin('wheel');
-            this.Viewport.pausePlugin('decelerate');
-        
-            // resume gestures for click & cancel
-            this.Viewport.on('pointerdown', this.drawPoint);
-
-            // resume cancel_button in 'drag' mode
-            cancel_button.on('pointerdown', this.cancelDraw);
+            this.pauseDragMode();
+            this.resumeScreenshotMode();
 
             this.dragMode = false;
 
@@ -304,31 +338,55 @@ class LMSI {
         // if mode is 'screenshot', getting part of the image and save it as child image of current image: change to 'drag'
         else {
 
-            // change mode icon to 'screenshot'
-            move.alpha = 1;
-            screenshot.alpha = 0;
+            
 
-            // pause gestures for click & cancel
-            this.Viewport.off('pointerdown', this.drawPoint);
+            this.pauseScreenshotMode();
+            this.resumeDragMode();
 
-            // pause cancel_button in 'screenshot' mode
-            cancel_button.off('pointerdown', this.cancelDraw);
-
-            // resume gestures for 'drag'
-            this.Viewport.resumePlugin('drag');
-            this.Viewport.resumePlugin('pinch');
-            this.Viewport.resumePlugin('wheel');
-            this.Viewport.resumePlugin('decelerate');
+            this.dragMode = true;
 
             // change guideText to 'drag' mode
-            
             this.setGuideText("Drag, wheel and scroll the image to explore.");
         }
     } // end modeChange
 
+    modeIconChange() {
+
+        if (this.dragMode == true) {
+            // change mode icon to 'screenshot'
+            this.drag.alpha = 0;
+            this.screenshot.alpha = 1;
+        }
+        else {
+            // change mode icon to 'drag'
+            this.drag.alpha = 1;
+            this.screenshot.alpha = 0;
+        }
+        
+    }
+
     calculateZoomLvl() {
 
     } // end of calculateZoomLvl
+
+    set setZoomLvl() {
+
+    } // end of setZoomLvl
+
+    
+    /**
+     * General helper functions for button gestures including pointerdown, pointerup, pointerover, pointerdownout
+     */
+    onButtonDown() {
+        this.isdown = true;
+        // this.texture = textureButtonDown;
+        this.alpha = 0.5;
+    }
+
+    onButtonUp() {
+        this.isdown = false;
+        this.alpha = 1;
+    }
 
 }
 
@@ -344,4 +402,12 @@ var guideTextstyle = new PIXI.TextStyle({
 });
 
 // base64 matcher in RegExp to test base64 strings
-var base64Matcher = new RegExp("^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{4})$");
+const base64Matcher = new RegExp("^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{4})$");
+
+// const image for buttons
+const cancelButton = PIXI.Sprite.from('./Images/cancel_icon.png');
+const modeChangeButton = PIXI.Sprite.from('./Images/mode_change.png');
+
+// const image for icons in modeChangeButton
+const screenshotIcon = PIXI.Sprite.from('./Images/screenshot.png');
+const dragIcon = PIXI.Sprite.from('./Images/move.png');

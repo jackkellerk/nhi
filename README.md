@@ -1,3 +1,49 @@
+## Quick Tutoring
+
+##### Xuewei Wang
+
+### Tools you should get:
+1. **A git repo management tool.** SourceTree (GUI) or Git (Command-line). This allows you to pull changes within seconds. No need to download. This also gives you more advanced features, like resolving conflicts, branching, and etc.
+
+2. **Maven.** I believe everyone has already installed this. If not, do it now.
+3. **A REST API testing tool.** This helps you to understand our API before use it in your code. I recomand the downloadable version of **Advanced Rest Client** https://install.advancedrestclient.com/install. NOTE: any browser extension will not work properly because browser cannot handle localhost correctly. I learnt this the hard way.
+4. **(backend only) MySQL Workbench.** No need to emphasis on this.
+5. **(backend only) Some sort of Linux environment** (if you are a mac user, by default you are in a Linux environment). Git Bash is enough for this project. If you are using VSCode, I recommand seting a Linux-like bash as the default bash. This is needed to execute bash files we have for automated deployment.
+
+### Frontend coding and debuging:
+#### step 1: pull the latest code from github
+#### step 2: run the backend server in test mode.  
+options:  
+a) In the backend folder, use command "mvn exec:java" to run the backend server on the default port (4567);   
+b) Use command "mvn exec:java -Dexec.args="port:***port***"" to run the backend server on the port ***port***. (Check the port availability before usage.)
+
+#### step 3: debug/make change
+Updated feature: In test mode, the backend will host "nhi/web" as the static folder. Make change to files inside the "nhi/web" folder. After your change, visit localhost:***port*** to test the latest website. NOTE: A simple refresh sometimes does not work because the older website is cached in the brower. In this case, you should either: a) open a new tab in incognito mode every time you make changes; b) clear caches every time you make changes.
+
+### Deployment on the server
+**IMPORTANT: only deploy when a new stable version is created.**
+
+NOTE (Only for Windows PC): By default, git will automatically convert LF formated files into CRLF formated files. You want to turn off this feature. We want our bash files to be in LF format, otherwise, a Linux bash will read the extra "\r" at the end of each line. In VSCode, on the bottom-right corner, there is a buttom that tells you if the current file is in CRLF. If so, click that button and convert the file to LF.
+#### step 1: make the project
+Open a Linux shell, and run "sh build.sh" in the "nhi" folder. This command build the structure of our project.
+#### step 2: copy to the server
+Copy the "nhi-multitouch-v1" folder (naming subject to change) to somewhere(TBD) on the server.
+#### step 3: run
+ssh to the server, and run "sh run.sh" in the "nhi-multitouch-v1" folder (naming subject to change).
+
+### Backend: testing mode and deployment mode
+-  Description: the testing mode serves files from the external folder "nhi/web". However, the deployment mode serves files form the resource folder inside the mvn project. The testing mode allows the frontend developer to make and view changes without restarting the backend. On the other hand, the deployment mode read files from 
+- Setting up: by default, the backend runs in testing mode. It runs the deployment mode with the command line arguement "mode:deploy". Copying web to the resource folder and passing the command-line is handled by bash files, so no need to worry about this unless you want to change bash files.
+### Add Resources for testing/demoing
+Add them to backend/images. Then add their metadata to the image table.
+
+### Project sturcture
+- *why we need the project sturcture? Isn't a single jar file good enough?* This is because some resources is dynamic (Namely images). We don't want to package this kind of resources in to the JAR file. Instead, we allow the program to read external resouces inside this folder.
+- Images: images are sorted by institutions they belongs to.
+- log: log files.
+
+end of Quick Tutoring.
+
 Hey guys, this is the place for all of our individual code. 
 
 I guess I will list some coding standards here:

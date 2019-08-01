@@ -1,4 +1,4 @@
-<!--Version: 16 // Please raise the number every time you make an edit-->
+<!--Version: 17 // Please raise the number every time you make an edit-->
 <!--Last Edited By: Eddie Sohn // Change to your name after every edit-->
 <html>
     <head>
@@ -71,6 +71,7 @@
         
         <!-- Low Magnification Screening / Imaging (Zoom, pinch, crop, etc) Dependencies -->
         <script src="./pixi-viewport.js" type="text/javascript"></script>
+        <script src="Low_Mag/LMSI_helper.js"></script>
         <script src="Low_Mag/LMSI.js"></script>
     </head>
     <!--Determines whether Mouse Button is down or not using jQuery (this is for Multi-block)-->
@@ -154,8 +155,8 @@
                 }
                 else if(currentActivity == 'Zoom')
                 {
-                    // Low_Mag/LMSI.js
-                    LMSI();
+                    // Low_Mag/LMSI_helper.js
+                    LMSI_init();
                     changeActivityButton();
                 }
                 else if(currentActivity == 'Multispectrum')
@@ -203,9 +204,6 @@
                     app.stage.removeChild(app.stage.children[i]);
                 }
             }
-        
         </script>
-        <!--<div> element to get DPI of the current screen-->
-        <div id="dpi" style="display:none"></div>
     </body>
 </html>

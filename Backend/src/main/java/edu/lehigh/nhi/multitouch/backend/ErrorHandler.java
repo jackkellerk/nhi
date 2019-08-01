@@ -82,7 +82,7 @@ public class ErrorHandler {
                 String[] pair = iterator.next();
                 int key = Integer.parseInt(pair[0]);
                 map.put(key, pair[1]);
-                System.out.println(key + ": " + pair[1]);
+                // System.out.println(key + ": " + pair[1]);
             }
 
             reader.close();

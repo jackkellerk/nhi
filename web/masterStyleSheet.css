@@ -1,0 +1,38 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+canvas
+    {
+        display:block;
+    }
+        
+    /* Hides the scrollbar */
+    ::-webkit-scrollbar 
+    {
+        display: none;
+    }
+        
+    #frame 
+    {
+        /* Necessary to make sure frame width/height
+        isn't set according to the canvas element */
+        position: absolute;
+        overflow: hidden;
+          
+        /* Optional stuff for positioning */
+        top:50%;
+        left:50%;
+        width: 75%;
+        height: 50%;
+        transform: translate(-50%, -50%);
+        -webkit-transform: translate(-50%, -50%);
+    }
+    #dpi{
+        height: 1in;
+        width: 1in;
+        position: absolute;
+        left: -100%;
+        top: -100%;
+    }
+

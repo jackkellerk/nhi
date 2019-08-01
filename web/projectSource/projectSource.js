@@ -38,24 +38,26 @@ var insHexArr = new Array (10);
 //console.log("Length: " + defaultSources.length);
 //Creates style used by text. It is currently unnecessary but more of an example
 const ps_title_style = new PIXI.TextStyle({
-    fontFamily: 'Helvetica',
-    fontSize: 30,
+    fontFamily: "Arial",
+    fontVariant: "small-caps",
+    fontSize: 26,
     fontWeight: 'bold',
     fill: '#FFFFFF', // gradient
     align: 'center',
-    strokeThickness: 4,
+    //strokeThickness: 3,
     wordWrap: true,
-    wordWrapWidth: 800,
+    wordWrapWidth: 1000,
 });
 
 const ps_caption_style = new PIXI.TextStyle({
-    fontFamily: 'Helvetica',
+    fontFamily: "Arial",
+    fontVariant: "small-caps",
     fontSize: 20,
     fill: '#FFFFFF', // gradient
-    align: 'center',
-    strokeThickness: 1,
+    align: 'left',
+    //strokeThickness: 1,
     wordWrap: true,
-    wordWrapWidth: 800,
+    wordWrapWidth: 1000,
 });
 
 // set background image
@@ -78,6 +80,7 @@ var y_infostarts;
 
 var ps_sampleText;
 var ps_sampleImage;
+var afterSelectText;
 
 // array for commands
 //var ps_buttonCommands = [];
@@ -100,7 +103,7 @@ function drawInsInfo (numIns) {
     }
     // Hexagon Info: (all numbers already scaled)
     x = app.screen.width/6;
-    y = app.screen.height/5;
+    y = app.screen.height/3;
     var scale = 2.2
     xChange = 100 * ((scale -2.3) + 1.0);
     showInstitutions(x,y, 2.2);
@@ -116,11 +119,14 @@ function drawInsInfo (numIns) {
         res = res.replace(".jpg", "")
         console.log(res)
         element.container.interactive = true;
-        element.container.on('pointerdown', drawSourceInfo);
+        //element.container.on('pointerdown', drawSourceInfo);
+        element.container.on('pointerdown', function(){
+            drawSourceInfo(res)
+        });
         element.container.on('mouseout', ins_HoverOff);
         element.container.on('mouseover', ins_HoverOver1);
         element.container.on('mouseover', function(){
-            ins_HoverOver(res);
+            changeSourceName(res);
         });
         count++;
     });
@@ -128,7 +134,7 @@ function drawInsInfo (numIns) {
 
 
 //lehigh, oakridge, john hopkins, ohio state
-function drawSourceInfo() {
+function drawSourceInfo(inputText) {
     var count = 1;
     var change = true;
     for( var i = 0; i < institutionArray.length; i++ ){
@@ -147,14 +153,22 @@ function drawSourceInfo() {
     ps_title.text = "Sources";
     ps_title.interactive = true;
     ps_title.buttonMode = true;
+
+    positionTransform(app.screen.width*6/8, afterSelectText.y, afterSelectText, 30)
+
+    afterSelectText.text = inputText
+
+    console.log(afterSelectText)
+
     
     // stage the infroConatiner
     sourcesArray.forEach(element => {
-        console.log("ellloooo")
+        //console.log("ellloooo")
         positionTransform(0, element.container.y, element.container, 30)
     });
     positionTransform(app.screen.width * (9.5/10), app.screen.height * (7/10), up_arrow, 30);
     positionTransform(app.screen.width * (9.5/10), app.screen.height * (8/10), down_arrow, 30);
+    ps_sampleText = inputText
 }
 
 /**
@@ -177,15 +191,20 @@ function startSourcePage() {
     ps_title.on("pointerdown", moveSources);
 
     // ps_title = new PIXI.Text('Sources: Lehigh', ps_title_style);
-    ps_title.x =  app.screen.width / 16;
-    ps_title.y = app.screen.height / 20;
+    ps_title.x =  app.screen.width / 30;
+    ps_title.y = app.screen.height / 30;
     app.stage.addChild(ps_title);
 
     // set example texts
     ps_sampleImage = new PIXI.Text(' ', ps_title_style);
     ps_sampleImage.x = app.screen.width * (6/8);
-    ps_sampleImage.y = app.screen.height / 25;
+    ps_sampleImage.y = app.screen.height / 50;
     app.stage.addChild(ps_sampleImage);
+
+    afterSelectText = new PIXI.Text(' ', ps_title_style);
+    afterSelectText.x = app.screen.width * (10/8);
+    afterSelectText.y = app.screen.height / 50;
+    app.stage.addChild(afterSelectText);
 
     //Up and down arrows for the sources scrolling
     up_arrow.width = 50;
@@ -238,6 +257,7 @@ function moveSources(){
     });
     positionTransform(app.screen.width + 50, app.screen.height * (7/10), up_arrow, 30);
     positionTransform(app.screen.width + 50, app.screen.height * (8/10), down_arrow, 30);
+    positionTransform(app.screen.width * 10/8, afterSelectText.y, afterSelectText, 30);
     //alphaTransform(source_infoContainer, 0, 30)
 
 }
@@ -280,7 +300,7 @@ function ps_pointerOut() {
 }
 
 
-function ins_HoverOver(input){
+function changeSourceName(input){
     ps_sampleImage.text = input;
 }
 
@@ -291,13 +311,13 @@ function upButton(){
     if(index == 0 ){ 
         sourcesArray[11].container.y = 0 - (yChange* 12);
         sourcesArray.forEach(element => {
-            positionTransform(element.container.x, element.container.y +yChange, element.container, 10)
+            positionTransform(element.container.x, element.container.y +yChange, element.container, 7)
         });
         index = 11;
     } else if(index > -1){
         sourcesArray[index-1].container.y = 0 - yChange*(index);
         sourcesArray.forEach(element => {
-            positionTransform(element.container.x, element.container.y +yChange, element.container, 10)
+            positionTransform(element.container.x, element.container.y +yChange, element.container, 7)
         });
         index -=1;
     } else {
@@ -313,7 +333,7 @@ function downButton(){
         var newIndex = index-8
         sourcesArray[newIndex].container.y = 0 + ((yChange) * (4-newIndex))
         sourcesArray.forEach(element => {
-            positionTransform(element.container.x, element.container.y -yChange, element.container, 10)
+            positionTransform(element.container.x, element.container.y -yChange, element.container, 7)
         });
         index = 0;
     }else if(index > 7){ 
@@ -321,7 +341,7 @@ function downButton(){
         var newIndex = index-8
         sourcesArray[newIndex].container.y = 0 + ((yChange) * (4-newIndex))
         sourcesArray.forEach(element => {
-            positionTransform(element.container.x, element.container.y -yChange, element.container, 10)
+            positionTransform(element.container.x, element.container.y -yChange, element.container, 7)
         });
         index += 1;
     } else if(index > -1){
@@ -329,7 +349,7 @@ function downButton(){
         var newIndex = index+4
         sourcesArray[newIndex].container.y = 0 + ((yChange) * (4-newIndex))
         sourcesArray.forEach(element => {
-            positionTransform(element.container.x, element.container.y -yChange, element.container, 10)
+            positionTransform(element.container.x, element.container.y -yChange, element.container, 7)
         });
         index +=1;
     } else {
@@ -339,13 +359,31 @@ function downButton(){
 
 
 function ins_HoverOver1(){
-    scaleTransform(1.02, 1.02, this, 5)
+    var element1 = this.getChildAt(0);
+    var element2 = this.getChildAt(1);
+    var element3 = this.getChildAt(2);
+    if( element1.scale.x < 1.1){
+        scaleTransform(element1.scale.x*1.1, element1.scale.y*1.1, element1, 2)
+        scaleTransform(element2.scale.x*1.1, element2.scale.y*1.1, element2, 2)
+        scaleTransform(element3.scale.x*1.1, element3.scale.y*1.1, element3, 2)
+    } else {
+        return;
+    }
 }
 
 
 function ins_HoverOff(){
-    scaleTransform(1.0, 1.0, this, 5)
-    ps_sampleImage.text = " ";
+    ps_sampleImage.text = "";
+    var element1 = this.getChildAt(0);
+    var element2 = this.getChildAt(1);
+    var element3 = this.getChildAt(2);
+    if (element1.scale.x > 1.0){
+        scaleTransform(element1.scale.x/1.1, element1.scale.y/1.1, element1, 2)
+        scaleTransform(element2.scale.x/1.1, element2.scale.y/1.1, element2, 2)
+        scaleTransform(element3.scale.x/1.1, element3.scale.y/1.1, element3, 2)
+    } else {
+        return;
+    }
 }
 
 function populateSourceArray() {
@@ -359,9 +397,9 @@ function populateSourceArray() {
         var hex = new PIXI.Graphics();
         hex.clear();
         // set color as white (0xffffff), line thickness as 3
-        hex.lineStyle(6, 0xffffff, 9);
+        hex.lineStyle(4, 0xffffff, 9);
         // fill hexagon with grey (0x808080)
-        hex.beginFill(0x808080);
+        hex.beginFill(0x889399);
 
         var sourceName;
         var imgPath;
@@ -391,7 +429,7 @@ function populateSourceArray() {
         hexContainer.addChild(mask_hex.container);
 
         var border_hex = new Hexagon({x: x_origin, y: y_origin}, 0, pl_radius);
-        border_hex.graphics.lineStyle(6, 0xFFFFFF);
+        border_hex.graphics.lineStyle(4, 0xFFFFFF);
         border_hex.draw(0xFFFFFF, 0);
         app.stage.removeChild(border_hex.container);
         hexContainer.addChild(border_hex.container);
@@ -408,7 +446,7 @@ function populateSourceArray() {
         hex.drawPolygon([mask_hex.x + pl_radius * 2 ,mask_hex.y - pl_radius, mask_hex.x + pl_radius * 2  + app.screen.width * (5.5/8),mask_hex.y - pl_radius, mask_hex.x + pl_radius * 2  + app.screen.width* (5.5/8),mask_hex.y + pl_radius,mask_hex.x + pl_radius * 2 ,mask_hex.y + pl_radius]);
        
         var sourceTitle = new PIXI.Text(sourceName, ps_title_style);
-        sourceTitle.x = mask_hex.x + pl_radius * 2;
+        sourceTitle.x = (mask_hex.x + pl_radius * 2) + 5;
         sourceTitle.y = mask_hex.y - pl_radius;
         textContainer.addChild(sourceTitle);
 
@@ -427,7 +465,7 @@ function populateSourceArray() {
             pl_radius = app.screen.width * (1/200); 
         }
         var tiny_hex = new Hexagon({x: indentSpace, y: infoCaption.y + infoCaption.height/2}, 0, pl_radius);
-        tiny_hex.graphics.lineStyle(9, 0xFFFFFF);
+        tiny_hex.graphics.lineStyle(6, 0xFFFFFF);
 
         //  mask_hex.graphics.on("pointerdown",moveLogin);
         tiny_hex.draw(0xFFFFFF, 0);
@@ -448,7 +486,7 @@ function populateSourceArray() {
             pl_radius = app.screen.width * (1/200); 
         }
         var tiny_hex2 = new Hexagon({x: indentSpace, y: infoCaption2.y + infoCaption2.height/2}, 0, pl_radius);
-        tiny_hex2.graphics.lineStyle(9, 0xFFFFFF);
+        tiny_hex2.graphics.lineStyle(6, 0xFFFFFF);
 
         //  mask_hex.graphics.on("pointerdown",moveLogin);
         tiny_hex2.draw(0xFFFFFF, 0);
@@ -472,7 +510,9 @@ function populateSourceArray() {
         // console.log(selected_Icon.x + "     " +selected_Icon.y);
 
         // add child to the container
-        sourceDescriptionBoxes.push(hex);
+
+        
+        //sourceDescriptionBoxes.push(hex);
         source_infoContainer.addChild(hex);
         source_infoContainer.addChild(textContainer);
         source_infoContainer.addChild(hexContainer);
@@ -500,8 +540,8 @@ function showInstitutions(startX, startY, inScale){
         var newSprite = new PIXI.Sprite.from(insImages[i]);
         newSprite.width = 100 * (((scale-2.1) * 0.5) + 1.0);
         newSprite.height = 100 * (((scale-2.1) * 0.5) + 1.0);
-        newSprite.x = x + 30 * ((scale-2.0) + 1.0);
-        newSprite.y = y + 30 * ((scale-2.0) + 1.0);
+        newSprite.x = x + 70 * ((scale-2.0) + 1.0);
+        newSprite.y = y + 1 * ((scale-2.0) + 1.0);
 
         var hex = new PIXI.Graphics();
         // set color as white (0xffffff), line thickness as 3
@@ -519,11 +559,28 @@ function showInstitutions(startX, startY, inScale){
         // draw hexagon for institution
         hex1.drawPolygon([x+(34.8 + 4)*scale, y, x+(34.8*2 + 4)*scale, y+20*scale, x+(34.8*2 + 4)*scale, y+60*scale, x+(34.8 + 4)*scale, y+80*scale, x+4*scale ,y+60*scale, x+4*scale, y+20*scale]);
        
-        ins_infoContainer.addChild(hex);
-        ins_infoContainer.addChild(hex1);
+        var texture = app.renderer.generateTexture(hex);
+        var sprite = new PIXI.Sprite(texture);
+        sprite.x = x+(34.8 + 4)*scale
+        sprite.y = y
+        ins_infoContainer.addChild(sprite);
+
+        var texture1 = app.renderer.generateTexture(hex1);
+        var sprite1 = new PIXI.Sprite(texture1);
+        sprite1.x = x+(34.8 + 4)*scale
+        sprite1.y = y
+        ins_infoContainer.addChild(sprite1);
+
+        sprite.anchor.set(0.5);
+        sprite1.anchor.set(0.5);
+        newSprite.anchor.set(0.5);
+
+        //ins_infoContainer.addChild(hex);
+        //ins_infoContainer.addChild(hex1);
         ins_infoContainer.addChild(newSprite);
         ins_infoContainer.pivot.x = (ins_infoContainer.width/2)
         ins_infoContainer.pivot.y = (ins_infoContainer.height/2)
+        
 
         var newInstitution = new Institution(insImages[i], i, ins_infoContainer);
         institutionArray.push(newInstitution);

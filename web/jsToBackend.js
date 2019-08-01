@@ -16,7 +16,7 @@ function loginToBackend()
         method: 'POST',
         contentType: 'application/json',
         data: JSON.stringify(convertToJSON),
-        url: 'http://' + base_url + '/login', // change to 8080 if this doesnt work
+        url: base_url + '/login', // change to 8080 if this doesnt work
         dataType: 'json',
         crossDomain: 'true',
         xhrFields: {
@@ -47,7 +47,7 @@ function signUpBackend()
     var confirmPassword = signUpRePassword;
     var legalName = legalTextBox.text;
     var institution = institutionTextBox.text;
-    var convertToJSON = {"username": username, "password": password, "email": email, "legalname": legalName, "institution": institution};
+    var convertToJSON = {"username": username, "password": password, "email": email, "legal_name": legalName, "institution": institution};
 
     if(confirmPassword != password)
     {
@@ -66,7 +66,7 @@ function signUpBackend()
         method: 'POST',
         contentType: 'application/json',
         data: JSON.stringify(convertToJSON),
-        url: 'http://' + base_url + '/signup',
+        url: base_url + '/signup',
         dataType: 'json',
         crossDomain: 'true',
         xhrFields: {
@@ -91,7 +91,7 @@ function gatherUserSettings()
         method: 'GET',
         contentType: 'application/json',
         headers: {"uid": uid, "session_key": session_key},
-        url: 'http://' + base_url + '/user',
+        url: base_url + '/user',
         dataType: 'json',
         crossDomain: 'true',
         xhrFields: {

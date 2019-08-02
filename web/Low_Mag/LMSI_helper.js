@@ -34,6 +34,7 @@ const LMSIgraphics = new PIXI.Graphics();
 // variable to save PIXI.Point for cropping
 var testPoint = new PIXI.Point(0, 0);
 var testPointEnd = new PIXI.Point(0, 0);
+var imagePoint = new PIXI.Point(0,0);
 
 // variable for viewport
 var viewport = null;
@@ -129,15 +130,15 @@ function LMSI(imageSource, _wid, _pid) {
     viewport = new PIXI.extras.Viewport({
         screenWidth: window.innerWidth,
         screenHeight: window.innerHeight,
-        worldWidth: 1000,
-        worldHeight: 1000,
+        worldWidth: window.innerWidth,
+        worldHeight: window.innerHeight,
         interaction: app.renderer.plugins.interaction // the interaction module is important for wheel() to work properly when renderer.view is placed or scaled
     });
 
 
     // activate mouse/touch gestures for viewport
     viewport
-        .drag()
+        .drag().on('drag-end', (screen, word) => console.log(screen, viewport.world))
         .pinch()
         .wheel()
         .decelerate();
@@ -151,6 +152,8 @@ function LMSI(imageSource, _wid, _pid) {
     // resize image as size of viewport
     testimg.width = window.innerWidth;
     testimg.height = window.innerWidth; 
+
+    imagePoint = testimg.toGlobal(imagePoint);
 
     // add background image to viewport
     viewport.addChild(testimg);
@@ -195,7 +198,11 @@ function LMSI(imageSource, _wid, _pid) {
 function drawPoint(event) {
     if (!cancel_draw) { //Checks if user clicked on cancel button
 
+
         if (!drawing) { //Checks what phase of line create user is in
+
+            // test printlnt
+            console.log("ImagePoint: " + imagePoint.x + ", " + imagePoint.y);
 
             // Clears current graphics on screen
             graphics.clear();
@@ -264,6 +271,7 @@ function drawPoint(event) {
 
             // test println
             console.log("Cropped: " + testPoint.x + " " + testPoint.y + " , " + testPointEnd.x + " " + testPointEnd.y);
+            console.log("ImagePoint: " + imagePoint.x + ", " + imagePoint.y);
 
             // test crop
             // temp.frame = cropImage.drawRect(testPoint.x, testPoint.y, testPointEnd.x - testPoint.x, testPointEnd.y -

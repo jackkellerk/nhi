@@ -424,7 +424,7 @@ function startWindows(){
 
   window1.inFront = false;
 
-  /* var window2 = new WorkWindow("This is Window 3", x=100, y=50);
+  var window2 = new WorkWindow("This is Window 3", x=100, y=50);
   window2.container.interactive = true;
   window2.container.on('pointerdown', function(){
     if (!window2.inFront) {
@@ -521,7 +521,7 @@ function startWindows(){
   //manually triggers tool1 to be displayed from the start
   window2.tool3.emit('pointerdown');
 
-} */
+}
 
 
 function w_MenuSelect()

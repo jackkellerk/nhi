@@ -13,6 +13,8 @@ cp -a web/. $TARGETFOLDER
 # step 3: install mvn dependencies.
 (cd backend; mvn install; mvn package)
 # step 4: copy over the images folder
+rm -rf $PROJECTFOLDER/images
+mkdir $PROJECTFOLDER/images
 cp -a images/. $PROJECTFOLDER/images
 # step 5: put the jar file to the right location.
 rm -rf $PROJECTFOLDER/executable

@@ -1,0 +1,33 @@
+<html>
+
+<head>
+  <title>Example for Getting Image by AJEX</title>
+
+  <!--Dependencies-->
+
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+</head>
+
+<body>
+
+  <div id="container"></div>
+  <script>
+    var uid = 8;
+    var sessionkey = "test_session_key";
+    var filename = "1.jpg";
+    var institution = "demo";
+    //create the image
+    var i = new Image();
+    var url = location.protocol + '//' + location.host + "/i/" + institution + "/" + filename + "?uid=" + uid + "&session_key=" + sessionkey;
+    console.log(url);
+    i.src = url;
+    i.onload = onload;
+
+    //show the image after it is loaded. You might want to make it a Pixi Sprike to use it later.
+    onload = function () {
+      $('#container').append(i);
+    }
+  </script>
+</body>
+
+</html>

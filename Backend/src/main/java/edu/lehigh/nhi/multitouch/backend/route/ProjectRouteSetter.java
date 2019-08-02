@@ -49,7 +49,7 @@ public final class ProjectRouteSetter {
 
                 JSONObject retval = db.project.getProject(pid);
                 if (retval == null)
-                    return StructuredResponse.getErrorResponse(ErrorHandler.EXISTANSE.PROJECT_EXISTNACE);
+                    return StructuredResponse.getErrorResponse(ErrorHandler.EXISTANSE.PROJECT_EXISTANCE);
 
                 if (!db.checkProjectOwnership(uid, pid))
                     return StructuredResponse.getErrorResponse(ErrorHandler.PRIVILAGE.NO_RIGHT_TO_ACCESS_PROJECT);

@@ -62,13 +62,13 @@ public class App {
             System.out.println("Testing mode. Serving content from external foler '/web'.");
             Spark.externalStaticFileLocation("../web");
         }
+        DatabaseManager db;
 
         Spark.get("/", (req, res) -> {
             res.redirect("/master.html");
             return "";
         });
 
-        DatabaseManager db;
         try {
             db = new DatabaseManager();
             ProjectRouteSetter.setRoutes(db, encryption);

@@ -37,7 +37,7 @@ public class ErrorHandler {
     }
 
     public static final class PATH {
-        public static final int PATH_NUM_FORMAT = 501;
+        public static final int PATH_NUM_FORMAT = 501, MISSING_QUERY_PARAM = 502;
     }
 
     public static final class PRIVILAGE {
@@ -45,7 +45,11 @@ public class ErrorHandler {
     }
 
     public static final class EXISTANSE {
-        public static final int PROJECT_EXISTNACE = 701;
+        public static final int PROJECT_EXISTANCE = 701, IMAGE_FILE_EXISTANCE = 702;
+    }
+
+    public static final class IO{
+        public static final int SERVING_IMAGE_FILE = 801;
     }
 
     // TODO: Create/paste your error code and massage to "error_message.csv" under

@@ -12,6 +12,9 @@ mkdir $TARGETFOLDER
 cp -a web/. $TARGETFOLDER
 # step 3: install mvn dependencies.
 (cd backend; mvn install; mvn package)
-# step 4: put the jar file to the right location.
-rm $PROJECTFOLDER/$BACKENDJAR
-cp backend/target/$BACKENDJAR $PROJECTFOLDER/$BACKENDJAR
+# step 4: copy over the images folder
+cp -a images/. $PROJECTFOLDER/images
+# step 5: put the jar file to the right location.
+rm -rf $PROJECTFOLDER/executable
+mkdir $PROJECTFOLDER/executable
+cp backend/target/$BACKENDJAR $PROJECTFOLDER/executable/$BACKENDJAR

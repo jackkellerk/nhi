@@ -4,6 +4,7 @@
  * string variables.
  */
 var login_backgroundImage;
+var fullScreenImage;
 
 const ui_style = new PIXI.TextStyle({
     fontFamily: 'Tahoma',
@@ -77,18 +78,27 @@ var password = "";
 
 function startPreLogin()
 {
+
     //Since the background image isn't allowed to stretch to fit the screen, this invisible image
     //is needed to act as the area that users can click on to show the login UI
-    var fullScreenImage = new PIXI.Sprite.from("Images/login_background2.jpg");
+    fullScreenImage = new PIXI.Sprite.from("Images/login_background2.jpg");
     fullScreenImage.width = app.screen.width;
     fullScreenImage.height = app.screen.height;
     fullScreenImage.alpha = 0;
-    app.stage.addChild(fullScreenImage);
     
+    var addCheck = true;
+    for(i = 0; i < app.stage.children.length; i++){
+        var child = app.stage.getChildAt(i);
+        if(child == fullScreenImage){
+            addCheck = false;
+        }
+    }
+    if(addCheck){
+    }
     //Back drop for the pre/login screen and when clicked on will reveal the login screen
     login_backgroundImage = new PIXI.Sprite.from("Images/login_background2.jpg");
     
-    app.stage.addChild(login_backgroundImage);
+    
     if(app.screen.width > app.screen.height){
         login_backgroundImage.height = app.screen.height;
         login_backgroundImage.width = app.screen.height * (1024/680);
@@ -132,8 +142,7 @@ function startPreLogin()
     preDisplayAuthor.x = preDisplayQuote.x;
     preDisplayAuthor.y = preDisplayQuote.y + preDisplayQuote.height + preDisplayAuthor.height;
 
-    app.stage.addChild(preDisplayQuote);
-    app.stage.addChild(preDisplayAuthor);
+    
     
     //Login_UI - container for all UI elements concerning the login screen 
     //The hexgon that surrounds all the other elements
@@ -164,6 +173,8 @@ function startPreLogin()
     loginButtonImage.x = app.screen.width/2 - loginButtonImage.width/2;
     loginButtonImage.y = app.screen.height/2 - loginButtonImage.height/2;
     app.stage.on("pointerdown",showLogin);
+
+
     app.stage.interactive = true;
     app.stage.buttonMode = true;
   
@@ -245,7 +256,17 @@ function startPreLogin()
   //  preLoginText.x = login_UI.x + login_UI.width - login_hex.width/2 - preLoginText.width/2;
   //  preLoginText.y = login_UI.y + login_UI.height - login_hex.height/2 - preLoginText.height/2;
    // preLoginText.alpha = 1;
-    app.stage.addChild(login_UI);
+   addCheck = true;
+    for(i = 0; i < app.stage.children.length; i++){
+        var child = app.stage.getChildAt(i);
+        if(child == login_UI){
+            console.log("Child found");
+            addCheck = false;
+        }
+    }
+    if(addCheck){
+             
+    }
     /**
      *  Sign Up UI is similar to login as it is a hexagon will text boxes inside of it.
      *  It starts off hidden a the bottle of the screen and is shown after the move Login
@@ -397,7 +418,7 @@ function startPreLogin()
     SU_loginText.on("pointerdown",moveSignUp);
     signUp_UI.addChild(SU_loginText);
 
-    app.stage.addChild(signUp_UI);
+   
 
     app.ticker.add(() => {
         if(timerCheck){
@@ -411,6 +432,13 @@ function startPreLogin()
             }
         }
     });
+
+    app.stage.addChild(fullScreenImage);
+    app.stage.addChild(login_backgroundImage);
+    app.stage.addChild(preDisplayQuote);
+    app.stage.addChild(preDisplayAuthor);
+    app.stage.addChild(login_UI);   
+    app.stage.addChild(signUp_UI);
 }
 
 
@@ -421,6 +449,39 @@ function generateTextLine(x, y, w, lineWidth, type){
         .lineTo(x+w, y);
     if (type == 1) { Inner_Login_UI.addChild(line); }
     else if (type ==2) { signUp_UI.addChild(line); }
+}
+
+function showPrelogin(){
+    login_UI.visible = true;
+    login_UI.interactiveChildren = true;
+    login_UI.buttonMode = true;
+    signUp_UI.visible = true;
+    signUp_UI.interactiveChildren = true;
+    signUp_UI.buttonMode = true;
+    preDisplayAuthor.visible = true;
+    preDisplayQuote.visible = true;
+    login_backgroundImage.visible = true;
+    login_backgroundImage.interactive = true;
+    login_backgroundImage.buttonMode = true;
+    fullScreenImage.visible = true;
+    fullScreenImage.interactive = true;
+    fullScreenImage.buttonMode = true;
+}
+function hidePrelogin(){
+    login_UI.visible = false;
+    login_UI.interactiveChildren = false;
+    login_UI.buttonMode = false;
+    signUp_UI.visible = false;
+    signUp_UI.interactiveChildren = false;
+    signUp_UI.buttonMode = false;
+    preDisplayAuthor.visible = false;
+    preDisplayQuote.visible = false;
+    login_backgroundImage.visible = false;
+    login_backgroundImage.interactive = false;
+    login_backgroundImage.buttonMode = false;
+    fullScreenImage.visible = false;
+    fullScreenImage.interactive = false;
+    fullScreenImage.buttonMode = false;
 }
 
 function showLogin(event){
@@ -451,6 +512,8 @@ function showLogin(event){
     //CheckAFK(0);
     timerCheck = true;
     counter = 0;
+
+    //hidePrelogin();
 }
 
 function hideLogin(event){
@@ -469,7 +532,7 @@ function hideLogin(event){
     positionTransform(app.screen.width - ((login_UI.width * .1) * 1.2), app.screen.height - ((login_UI.height * .1) * 1.2), login_UI, 15);
 
     //blur background
-    blurTransform(this, 0.1, 1);
+    blurTransform(this, 0.5, 10);
 
     //Make UI interactive 
     Inner_Login_UI.interactiveChildren = false;
@@ -510,8 +573,19 @@ function showInput(event){
 function toProjectSelection()
 {
     currentActivity = activityArray[1];
-    alphaTransform(login_backgroundImage,0.0, 10 )
-    positionTransform(-1000, app.stage.y, app.stage, 12)
+    alphaTransform(login_backgroundImage,0.0, 10 );
+    positionTransform(-1000, app.stage.y, app.stage, 12);
+    login_UI.removeChildren(0,login_UI.children.length);
+    Inner_Login_UI.removeChildren(0,Inner_Login_UI.children.length);
+    loginPassword = "";
+
+    signUp_UI.removeChildren(0,signUp_UI.children.length);
+    signUpPassword = "";
+    signUpRePassword = "";
+
+    app.stage.off("pointerdown",showLogin);
+    login_backgroundImage.off("pointerdown",touchScreen);
+
     updateActivity();
 }
 

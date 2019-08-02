@@ -143,7 +143,8 @@ class NewProject{
     static startProjects(){
         NewProject.createBg();
         NewProject.createNewProjectPrompt();
-        blurTransform(app.stage, 0.5, 5)
+        blurTransform(app.stage, 0.5, 5);
+        console.log("Transform blurr");
         // NewProject.createWindowHexagons();
     }
 }

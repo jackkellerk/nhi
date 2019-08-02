@@ -123,35 +123,7 @@ function LMSI(imageSource, wid, pid) {
     _wid = wid;
     _pid = pid;
 
-    if (imageSource == null) {
-
-    }
-    // if it's Object (consider it's PIXI texture object)
-    else if (typeof imageSource === 'object' && imageSource.constructor === Object) {
-        // set background as imageSource
-        zoom_background = imageSource;
-        testimg = new PIXI.Sprite.from(zoom_background);
-
-        _imageSource = imageSource;
-        _imageOrigin_w = _imageSource.width;
-        _imageOrigin_h = _imageSource.height;
-    }
-    // if it's dir
-    else if (str.indexOf("/") >= 0 && str.indexOf("./") >= 0) {
-        zoom_background = PIXI.Texture.from(imageSource);
-        testimg = new PIXI.Sprite.from(zoom_background);
-
-        _imageSource = imageSource;
-        _imageOrigin_w = _imageSource.width;
-        _imageOrigin_h = _imageSource.height;;        
-    }
-    // if imageSource is in base64
-    // else if (base64Matcher.test(imageSource)) {
-    else {
-        _imageSource = imageSource;
-        _imageOrigin_w = _imageSource.width;
-        _imageOrigin_h = _imageSource.height;
-    }
+    setBackground(imageSource);
     
     // calls pixi-viewport
     viewport = new PIXI.extras.Viewport({
@@ -389,6 +361,38 @@ function modeChange(event) {
         guideText.text = 'Drag, wheel and scroll the image to explore.';
     }
 } // end modeChange
+
+function setBackground(imageSource) {
+    if (imageSource == null) {
+        // do nothing
+    }
+    // if it's Object (consider it's PIXI texture object)
+    else if (typeof imageSource === 'object' && imageSource.constructor === Object) {
+        // set background as imageSource
+        zoom_background = imageSource;
+        testimg = new PIXI.Sprite.from(zoom_background);
+
+        _imageSource = imageSource;
+        _imageOrigin_w = _imageSource.width;
+        _imageOrigin_h = _imageSource.height;
+    }
+    // if it's dir
+    else if (str.indexOf("/") >= 0 && str.indexOf("./") >= 0) {
+        zoom_background = PIXI.Texture.from(imageSource);
+        testimg = new PIXI.Sprite.from(zoom_background);
+
+        _imageSource = imageSource;
+        _imageOrigin_w = _imageSource.width;
+        _imageOrigin_h = _imageSource.height;;        
+    }
+    // if imageSource is in base64
+    // else if (base64Matcher.test(imageSource)) {
+    else {
+        _imageSource = imageSource;
+        _imageOrigin_w = _imageSource.width;
+        _imageOrigin_h = _imageSource.height;
+    }
+}
 
 /**
  * General helper functions for button gestures including pointerdown, pointerup, pointerover, pointerdownout

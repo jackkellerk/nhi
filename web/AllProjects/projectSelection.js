@@ -332,6 +332,7 @@ function createUIProjects()
 
     //Agustin: alpha transform on app.stage
     alphaTransform(app.stage, 1.0, 20);
+    unblurBg();
 
 
 

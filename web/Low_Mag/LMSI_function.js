@@ -20,7 +20,17 @@ const modeChangeButton = PIXI.Sprite.from('./Images/mode_change.png');
 const screenshotIcon = PIXI.Sprite.from('./Images/screenshot.png');
 const dragIcon = PIXI.Sprite.from('./Images/move.png');
 
-function LMSI_init() {
+/**
+ * 
+* @class
+ */
+
+    // constrctor
+function LMSI(imageSource, wid, pid)
+{
+    
+    // LMSI.prototype.constructor = LMSI;
+
     // initialize variables
     this.guideText = 'Init';
     this.cancel_draw = false;
@@ -31,16 +41,20 @@ function LMSI_init() {
     // information about original image
     this.imageOrigin_x = 0;
     this.imageOrigin_Y = 0;
-    this.imageSource = imageSource;
+    this._imageSource = imageSource;
+
+    // variable to save PIXI.Point for cropping
+    this.testPoint = new PIXI.Point(0, 0);
+    this.testPointEnd = new PIXI.Point(0, 0);    
 
     // id for window, parentsImage, childImage
-    this.wid = wid;
-    this.pid = pid;
-    this.cid = null;
+    this._wid = wid;
+    this._pid = pid;
+    this._cid = null;
 
     // image variables
-    this.zoom_background;
-    this.testimg;
+    this.zoom_background = null;
+    this.testimg = null;
 
     // initialize buttons
     this.cancel_button = cancelButton;
@@ -49,6 +63,46 @@ function LMSI_init() {
     // initialize icons inside mode_button to display current mode
     this.drag = dragIcon;
     this.screenshot = screenshotIcon;
+
+    // set button values
+    this.cancel_button.width = 50;
+    this.cancel_button.height = 50;
+    this.cancel_button.x = 10;
+    this.cancel_button.y = 10;
+    this.cancel_button.alpha = 0.33;
+    this.cancel_button.interactive = true;
+    this.cancel_button.buttonMode = true;
+    this.cancel_button
+        .on('pointerdown', this.cancelDraw)
+        .on('pointerup', this.cancelUp)
+        .on('pointerover', this.cancelUp)
+        .on('pointeroutside', this.cancelUp);
+
+    this.mode_button.width = 50;
+    this.mode_button.height = 50;
+    this.mode_button.x = this.cancel_button.x;
+    this.mode_button.y = this.cancel_button.y + this.cancel_button.height + this.cancel_button.y;
+    this.mode_button.alpha = 1;
+    this.mode_button.interactive = true;
+    this.mode_button.buttonMode = true;
+    this.mode_button
+        .on('pointerdown', this.modeChange)
+        .on('pointerdown', this.onButtonDown)
+        .on('pointerup', this.onButtonUp);
+
+    // init icon inside modeChange
+    // screenshot button is 20px instead of 25px because the icon touch mode_button
+    this.screenshot.width = 20;
+    this.screenshot.height = 20;
+    this.screenshot.x = this.cancel_button.x + this.cancel_button.width / 4 + (this.cancel_button.width / 2 - this.screenshot.width) / 2;
+    this.screenshot.y = this.cancel_button.y + this.cancel_button.height + this.cancel_button.y + this.cancel_button.height / 4 + (this.cancel_button.width / 2 - this.screenshot.width) / 2;
+    this.screenshot.alpha = 0;   // 0 because default mode is move
+
+    this.drag.width = 25;
+    this.drag.height = 25;
+    this.drag.x = this.cancel_button.x + this.cancel_button.width / 4;
+    this.drag.y = this.cancel_button.y + this.cancel_button.height + this.cancel_button.y + this.cancel_button.height / 4;
+    this.drag.alpha = 1;
 
     // initialize graphics 
     this.LMSIGraphics = new PIXI.Graphics();
@@ -60,8 +114,15 @@ function LMSI_init() {
     this.LMSIContainer = new PIXI.Container();
     this.buttonContainer = new PIXI.Container();
     this.guideTextContainer = new PIXI.Container();
-    this.Viewport = 0;
-    this.Viewport = this.initViewport();
+    
+    // calls pixi-viewport, initialize gestures (pointerdown, etc.)
+    this._viewport = new PIXI.extras.Viewport({
+        screenWidth: window.innerWidth,
+        screenHeight: window.innerHeight,
+        worldWidth: 5000,
+        worldHeight: 5000,
+        interaction: app.renderer.plugins.interaction // the interaction module is important for wheel() to work properly when renderer.view is placed or scaled
+    });
 
     // load image to drag (explore) or screenshot
     // if imageSource is null.. load default image
@@ -103,16 +164,13 @@ function LMSI_init() {
         this.testimg = new PIXI.Sprite(this.zoom_background);
     }
 
-    
-    // calls pixi-viewport, initialize gestures (pointerdown, etc.)
-    this.initViewport();
 
     // set image size, same as Viewport windows
-    this.testimg.width = this.window.innerWidth;
-    this.testimg.height = this.window.innerWidth; 
+    this.testimg.width = window.innerWidth;
+    this.testimg.height = window.innerWidth; 
 
     // add background image to viewport
-    this.Viewport.addChild(this.testimg);
+    this._viewport.addChild(this.testimg);
 
     // add buttons to buttonContainer, and set interative
     this.buttonContainer.addChild(this.cancel_button);
@@ -125,71 +183,43 @@ function LMSI_init() {
     this.initGuideText();
 
     // add the viewport to the container
-    this.LMSIContainer.addChild(this.Viewport);
+    this.LMSIContainer.addChild(this._viewport);
 
     this.LMSIContainer.addChild(this.buttonContainer);
     this.LMSIContainer.addChild(this.guideTextContainer);
-
-    // Sets the app to be interactable and allows drawPoint function to be called
-    // LMSIContainer.interactive = true;
 
     app.stage.addChild(this.LMSIContainer);
     app.renderer.render(this.LMSIContainer);
 }
 
-function initViewport() {
-    this.Viewport = new PIXI.extras.Viewport({
-        screenWidth: this.window.innerWidth,
-        screenHeight: this.window.innerHeight,
-        worldWidth: 5000,
-        worldHeight: 5000,
-        interaction: app.renderer.plugins.interaction // the interaction module is important for wheel() to work properly when renderer.view is placed or scaled
-    });
-
-    // activate mouse/touch gestures for viewport
-    this.Viewport
-        .drag()
-        .pinch()
-        .wheel()
-        .decelerate();
-}
-
 // pause gestures for 'drag' on Viewport
-function pauseDragMode() {
-    this.Viewport.pausePlugin('drag');
-    this.Viewport.pausePlugin('pinch');
-    this.Viewport.pausePlugin('wheel');
-    this.Viewport.pausePlugin('decelerate');
+LMSI.prototype.pauseDragMode = function pauseDragMode() {
+    this._viewport.pausePlugin('drag');
+    this._viewport.pausePlugin('pinch');
+    this._viewport.pausePlugin('wheel');
+    this._viewport.pausePlugin('decelerate');
 }
+
 
 // resume gestures for 'drag' on Viewport
-function resumeDragMode() {
-    this.Viewport.resumePlugin('drag');
-    this.Viewport.resumePlugin('pinch');
-    this.Viewport.resumePlugin('wheel');
-    this.Viewport.resumePlugin('decelerate');
-}
-
-// pause gestures for 'screenshot' on Viewport
-function pauseScreenshotMode() {
-    // pause gestures for click & cancel
-    this.Viewport.off('pointerdown', drawPoint);
-
-    // pause cancel_button in 'screenshot' mode
-    this.cancel_button.off('pointerdown', cancelDraw);
+LMSI.prototype.resumeDragMode = function resumeDragMode() {
+    this._viewport.resumePlugin('drag');
+    this._viewport.resumePlugin('pinch');
+    this._viewport.resumePlugin('wheel');
+    this._viewport.resumePlugin('decelerate');
 }
 
 // resume gestures for 'screenshot' on Viewport
-function resumeScreenshotMode() {
+LMSI.prototype.resumeScreenshotMode = function resumeScreenshotMode() {
     // resume gestures for click & cancel
-    this.Viewport.on('pointerdown', drawPoint);
+    this._viewport.on('pointerdown', drawPoint);
 
     // resume cancel_button in 'drag' mode
     this.cancel_button.on('pointerdown', cancelDraw);
 }
 
 // init guideText with text
-function initGuideText(text) {
+LMSI.prototype.initGuideText = function initGuideText(text) {
     if (text == null) {
         this.text = 'Drag, wheel and scroll the image to explore.';
         this.guideText = new PIXI.Text(this.text, guideTextstyle);
@@ -202,56 +232,13 @@ function initGuideText(text) {
     this.guideTextContainer.addChild(this.guideText);
 }
 
-function initCancelButton() {
-    this.cancel_button.width = 50;
-    this.cancel_button.height = 50;
-    this.cancel_button.x = 10;
-    this.cancel_button.y = 10;
-    this.cancel_button.alpha = 0.33;
-    this.cancel_button.interactive = true;
-    this.cancel_button.buttonMode = true;
-    this.cancel_button
-        .on('pointerdown', this.cancelDraw)
-        .on('pointerup', this.cancelUp)
-        .on('pointerover', this.cancelUp)
-        .on('pointeroutside', this.cancelUp);
-}
-
-function initModeChangeButton() {
-    this.mode_button.width = 50;
-    this.mode_button.height = 50;
-    this.mode_button.x = this.cancel_button.x;
-    this.mode_button.y = this.cancel_button.y + this.cancel_button.height + this.cancel_button.y;
-    this.mode_button.alpha = 1;
-    this.mode_button.interactive = true;
-    this.mode_button.buttonMode = true;
-    this.mode_button
-        .on('pointerdown', this.modeChange)
-        .on('pointerdown', this.onButtonDown)
-        .on('pointerup', this.onButtonUp);
-
-    // init icon inside modeChange
-    // screenshot button is 20px instead of 25px because the icon touch mode_button
-    this.screenshot.width = 20;
-    this.screenshot.height = 20;
-    this.screenshot.x = this.cancel_button.x + this.cancel_button.width / 4 + (this.cancel_button.width / 2 - this.screenshot.width) / 2;
-    this.screenshot.y = this.cancel_button.y + this.cancel_button.height + this.cancel_button.y + this.cancel_button.height / 4 + (this.cancel_button.width / 2 - this.screenshot.width) / 2;
-    this.screenshot.alpha = 0;   // 0 because default mode is move
-
-    this.drag.width = 25;
-    this.drag.height = 25;
-    this.drag.x = this.cancel_button.x + this.cancel_button.width / 4;
-    this.drag.y = this.cancel_button.y + this.cancel_button.height + this.cancel_button.y + this.cancel_button.height / 4;
-    this.drag.alpha = 1;
-}
-
-function drawPoint(pointX, pointY) {
+LMSI.prototype.drawPoint = function drawPoint(pointX, pointY) {
     if (!this.cancel_draw) { //Checks if user clicked on cancel button
 
         if (!this.drawing) { //Checks what phase of line create user is in
 
             // Clears current graphics on screen
-            this.LMSIGraphics.clear();
+            (this.LMSIGraphics).Graphics.clear();
 
             if (pointX == null) {
                 // Updates starting point
@@ -267,7 +254,7 @@ function drawPoint(pointX, pointY) {
             this.LMSIGraphics.drawRect(this.testPoint.x - 5, this.testPoint.y - 5, 10, 10);
             this.LMSIGraphics.endFill();
 
-            this.Viewport.addChild(this.LMSIGraphics);
+            this._viewport.addChild(this.LMSIGraphics);
 
             // Changes drawing value 
             this.drawing = true;
@@ -282,10 +269,10 @@ function drawPoint(pointX, pointY) {
 
             // update ending point 
             if (pointX == null) {
-                this.testPointEnd = this.Viewport.toWorld(event.data.global.x, event.data.global.y);
+                this.testPointEnd = this._viewport.toWorld(event.data.global.x, event.data.global.y);
             }
             else {
-                this.testPointEnd = this.Viewport.toWorld(pointX, pointY);
+                this.testPointEnd = this._viewport.toWorld(pointX, pointY);
             }
 
             //Draws end point
@@ -308,9 +295,9 @@ function drawPoint(pointX, pointY) {
                 this.cropImage.renderable = true;
                 this.cropImage.cacheAsBitmap = true;
 
-            this.Viewport.addChild(this.cropImage);
+            this._viewport.addChild(this.cropImage);
             // app.stage.addChild(cropImage);
-            this.Viewport.mask = this.cropImage;
+            this._viewport.mask = this.cropImage;
 
             //Changes draw value and updates other information
             this.drawing = false;
@@ -324,9 +311,9 @@ function drawPoint(pointX, pointY) {
  *  called when cancel_button is fired.
  *  modify alpha value of the image, resets points[], cancel_draw, drawing
  */
-function cancelDraw() {
+LMSI.prototype.cancelDraw = function cancelDraw() {
     //Resets all line UI components
-    this.LMSIGraphics.clear();
+    (this.LMSIGraphics).clear();
     this.cancel_draw = true;
     this.drawing = false;
     this.setGuideText("Select two points on a image to crop.");
@@ -335,27 +322,25 @@ function cancelDraw() {
 /**
  *  Resets cancel_draw after canelDraw() is called.
  */
-function cancelUp() {
+LMSI.prototype.cancelUp = function cancelUp() {
     // Resets cancel value
     this.cancel_draw = false;
     
     // restore alpha of cancle button, since there is no graphics on screen to cancel
-    this.cancel_button.alpha = 0.33;
+    (this.cancel_button).alpha = 0.33;
 } // end cancel up
 
 /**
  *  Helper function for mode buttons
  *  Change mode between 'drag' and 'screenshot'
  */
-function modeChange(event) {
+LMSI.prototype.modeChange = function modeChange() {
 
     // Resets all line UI components
-    this.LMSIGraphics.clear();
+    // (this.LMSIGraphics).clear();
 
     // if mode is 'drag', pan & pinch zoom: change to 'screenshot'
     if (this.dragMode == true) {
-
-        
 
         this.pauseDragMode();
         this.resumeScreenshotMode();
@@ -367,10 +352,12 @@ function modeChange(event) {
     }
     // if mode is 'screenshot', getting part of the image and save it as child image of current image: change to 'drag'
     else {
+        // this.pauseScreenshotMode();
+        // pause gestures for click & cancel
+        this._viewport.off('pointerdown', drawPoint);
 
-        
-
-        this.pauseScreenshotMode();
+        // pause cancel_button in 'screenshot' mode
+        this.cancel_button.off('pointerdown', cancelDraw);
         this.resumeDragMode();
 
         this.dragMode = true;
@@ -380,7 +367,8 @@ function modeChange(event) {
     }
 } // end modeChange
 
-function modeIconChange() {
+
+LMSI.prototype.modeIconChange = function modeIconChange() {
 
     if (this.dragMode == true) {
         // change mode icon to 'screenshot'
@@ -392,24 +380,18 @@ function modeIconChange() {
         this.drag.alpha = 1;
         this.screenshot.alpha = 0;
     }
-    
 }
-
-// calculate current zoom percentage based on originImage_X, originImage_Y
-function calculateZoomLvl() {
-
-} // end of calculateZoomLvl
 
 /**
  * General helper functions for button gestures including pointerdown, pointerup, pointerover, pointerdownout
  */
-function onButtonDown() {
+LMSI.prototype.onButtonDown = function onButtonDown() {
     this.isdown = true;
     // this.texture = textureButtonDown;
     this.alpha = 0.5;
 }
 
-function onButtonUp() {
+LMSI.prototype.onButtonUp = function onButtonUp() {
     this.isdown = false;
     this.alpha = 1;
 }

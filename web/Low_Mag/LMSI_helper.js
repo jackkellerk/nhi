@@ -11,19 +11,21 @@
 // screenshot.png made by https://www.flaticon.com/authors/freepik
 // move.png made made by https://www.flaticon.com/authors/icongeek26
 var zoom_background = PIXI.Texture.from('./Images/lowmag_test.jpg');
+var temp = PIXI.Texture.from('./Images/lowmag_test.jpg');
+// create a new new texture from image
+var testimg = new PIXI.Sprite(zoom_background);
 const cancel_button = PIXI.Sprite.from('./Images/cancel_icon.png');
 const mode_button = PIXI.Sprite.from('./Images/mode_change.png');
 const screenshot = PIXI.Sprite.from('./Images/screenshot.png');
 const move = PIXI.Sprite.from('./Images/move.png');
 
-// call the image and added to Viewport
-// create a new new texture from image
-var testimg = new PIXI.Sprite(zoom_background);
 
 // containers for button, guide text, and LMSIContainer to hold everything
 var LMSIContainer = new PIXI.Container();
 var buttonContainer = new PIXI.Container();
 var guideTextContainer = new PIXI.Container();
+
+const LMSIgraphlics = new PIXI.Graphics();
 
 // set buttons requried
 // cancel button
@@ -104,13 +106,13 @@ var cropImage = new PIXI.Graphics();
  *  LMSI is called to start Low Magnification Screening / Imaging (Zoom & Crop).
  *  it activates gestures, add viewport, buttons, and sprites on LMSIContainer
  */
-function LMSI() {
+function LMSI(imageSource, wid, pid) {
     // calls pixi-viewport
     Viewport = new PIXI.extras.Viewport({
         screenWidth: window.innerWidth,
         screenHeight: window.innerHeight,
-        worldWidth: 5000,
-        worldHeight: 5000,
+        worldWidth: 1000,
+        worldHeight: 1000,
         interaction: app.renderer.plugins.interaction // the interaction module is important for wheel() to work properly when renderer.view is placed or scaled
     });
 
@@ -121,28 +123,33 @@ function LMSI() {
         .wheel()
         .decelerate();
 
+    // resize image as size of viewport
     testimg.width = window.innerWidth;
     testimg.height = window.innerWidth; 
 
     // add background image to viewport
     Viewport.addChild(testimg);
 
+    // draw rectangle box to put buttons
+    LMSIgraphlics.beginFill(0xFFFFFF);
+    LMSIgraphlics.drawRect(5, 5, 60, 115);
+    LMSIgraphlics.endFill();
+
     // add buttons to buttonContainer, and set interative
+    buttonContainer.addChild(LMSIgraphlics);
     buttonContainer.addChild(cancel_button);
     buttonContainer.addChild(mode_button);
     buttonContainer.addChild(move);
     buttonContainer.addChild(screenshot);
     buttonContainer.interactive = true;
+    buttonContainer.tint = 0xff0000;
+
 
     // text to guide users
     guideText = new PIXI.Text('Drag, wheel and scroll the image to explore.', style);
     guideText.x = window.innerWidth / 2 - 250;
     guideText.y = 50;
     guideTextContainer.addChild(guideText);
-
-    // test printlns
-    console.log("DPI:" + getDPI());
-    console.log("Resolution: " + screen.width + "," + screen.height);
 
     // add the viewport to the container
     LMSIContainer.addChild(Viewport);
@@ -168,6 +175,8 @@ function drawPoint(event) {
 
             // Clears current graphics on screen
             graphics.clear();
+            cropImage.clear();
+            Viewport.mask = null;
 
             // Updates starting point
             testPoint = Viewport.toWorld(event.data.global.x, event.data.global.y);
@@ -213,14 +222,24 @@ function drawPoint(event) {
             cropImage.renderable = true;
             cropImage.cacheAsBitmap = true;
 
-            Viewport.addChild(cropImage);
-            // app.stage.addChild(cropImage);
             Viewport.mask = cropImage;
+            // Viewport.addChild(cropImage);
+
+            // app.stage.addChild(cropImage);
 
             //Changes draw value and updates other information
             drawing = false;
             
-            guideText.text = 'Copy of the selected area is added.';
+            guideText.text = 'Copy of the selected area of image created.';
+
+            // test println
+            console.log("Cropped: " + testPoint.x + " " + testPoint.y + " , " + testPointEnd.x + " " + testPointEnd.y);
+
+            // test crop
+            // temp.frame = new PIXI.Rectangle(testPoint.x, testPoint.y, testPointEnd.x - testPoint.x, testPointEnd.y -
+            //     testPoint.y);
+            // var newZoom = new PIXI.Texture(temp.baseTexture, temp.frame);
+
         } //end else
     } //end cancel if
 } // end draw point
@@ -232,6 +251,10 @@ function drawPoint(event) {
 function cancelDraw(event) {
     //Resets all line UI components
     graphics.clear();
+
+    cropImage.clear();
+    Viewport.mask = null;
+    
     cancel_draw = true;
     drawing = false;
     guideText.text = 'Select two points on a image to crop.';
@@ -249,13 +272,17 @@ function cancelUp(event) {
 } // end cancel up
 
 /**
- *  Helper function for mode buttons
- *  Change mode between 'drag' and 'screenshot'
+ *  helper function for mode buttons
+ *  change mode between 'drag' and 'screenshot'
  */
 function modeChange(event) {
 
-    // Resets all line UI components
+    // resets all line UI components
     graphics.clear();
+
+    // reset all the masking too
+    cropImage.clear();
+    Viewport.mask = null;
 
     // if mode is 'drag', pan & pinch zoom: change to 'screenshot'
     if (dragMode == true) {

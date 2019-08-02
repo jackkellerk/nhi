@@ -273,7 +273,6 @@ function startWindows(){
     window3Hex.graphics.interactive = true;
     window3Hex.graphics.on('mouseover', function(){ this.y += 13; });
     window3Hex.graphics.on('mouseout', function(){ this.y -= 13; });
-    //window3Hex.graphics.on('pointerdown', w_WindowSelect(window1));
   window3Hex.draw(0x000000);
   app.stage.removeChild(window3Hex.container);
 
@@ -289,7 +288,6 @@ function startWindows(){
     window4Hex.graphics.interactive = true;
     window4Hex.graphics.on('mouseover', function(){ this.y += 13; });
     window4Hex.graphics.on('mouseout', function(){ this.y -= 13; });
-    //window4Hex.graphics.on('mousedown', w_WindowSelect(window2));
     window4Hex.draw(0x000000);
   app.stage.removeChild(window4Hex.container);
 
@@ -303,7 +301,7 @@ function startWindows(){
 
   //windowHexes.addChild(window4Hex.container);
   //windowHexes.addChild(window3Hex.container);
-  windowHexes.addChild(window2Hex.container);
+  //windowHexes.addChild(window2Hex.container);
   windowHexes.addChild(window1Hex.container);
 
   Acc = 1;
@@ -320,7 +318,7 @@ function startWindows(){
 
   // ------------------------------------- Window 1 -----------------------------------------
 
-  var window1 = new WorkWindow("This is Window 4");
+  var window1 = new WorkWindow("Window 2");
   window1.container.interactive = true;
   window1.container.on('pointerdown', function(){
     if (!window1.inFront) {
@@ -342,81 +340,86 @@ function startWindows(){
 
   window1.tool1.interactive = true;
   window1.tool1.on('pointerdown', function(){
-      clearWindow(window1);
-      window1.container.addChild(LMSIContainer);
-      LMSIContainer.mask = window1.windowRect;
-      window1.tool1.x += 5;
+    clearWindow(window1);
+    window1.container.addChild(LMSIContainer);
+    LMSIContainer.mask = window1.windowRect;
+    window1.tool1.x += 5;
   });
   
   window1.tool2.interactive = true;
   window1.tool2.on('pointerdown', function(){
-      clearWindow(window1);
-      window1.container.addChild(MSContainer);
-      MSContainer.mask = window1.windowRect;
-      window1.tool2.x += 5;
+    clearWindow(window1);
+    window1.container.addChild(MSContainer);
+    MSContainer.mask = window1.windowRect;
+    window1.tool2.x += 5;
   });
 
   window1.tool3.interactive = true;
   window1.tool3.on('pointerdown', function(){
-      clearWindow(window1);
-      window1.container.addChild(MBContainer);
-      MBContainer.mask = window1.windowRect;
-      window1.tool3.x += 5;
+    clearWindow(window1);
+    window1.container.addChild(MBContainer);
+    MBContainer.mask = window1.windowRect;
+    window1.tool3.x += 5;
   });
 
   window1.tool4.interactive = true;
   window1.tool4.on('pointerdown', function(){
-      clearWindow(window1);
-      window1.container.addChild(LIContainer);
-      LIContainer.mask = window1.windowRect;
-      window1.tool4.x += 5;
+    clearWindow(window1);
+    window1.container.addChild(LIContainer);
+    LIContainer.mask = window1.windowRect;
+    window1.tool4.x += 5;
   });
 
   window1.closeWindowMenu.close.interactive = true;
   window1.closeWindowMenu.close.on('mouseover', function(){ window1.closeWindowMenu.close.alpha = 0.7; });
   window1.closeWindowMenu.close.on('mouseout', function(){ window1.closeWindowMenu.close.alpha = 0.4; });
   window1.closeWindowMenu.close.on('pointerdown', function(){
-      app.stage.removeChild(window1.closeWindowMenu.container);
+    app.stage.removeChild(window1.closeWindowMenu.container);
   });
 
   window1.closeWindowMenu.leftButton.interactive = true;
   window1.closeWindowMenu.leftButton.on('mouseover', function(){ window1.closeWindowMenu.leftButton.alpha = 1; });
   window1.closeWindowMenu.leftButton.on('mouseout', function(){ window1.closeWindowMenu.leftButton.alpha = 0.7; });
   window1.closeWindowMenu.leftButton.on('pointerdown', function(){
-      app.stage.removeChild(window1.closeWindowMenu.container);
-      app.stage.removeChild(window1.container);
-      //w_container.removeChild(window4Hex.container);
-      Acc = 0;
+    app.stage.removeChild(window1.closeWindowMenu.container);
+    app.stage.removeChild(window1.container);
+    //w_container.removeChild(window2Hex.container);
+    Acc = 0;
   });
 
   window1.closeWindowMenu.rightButton.interactive = true;
   window1.closeWindowMenu.rightButton.on('mouseover', function(){ window1.closeWindowMenu.rightButton.alpha = 1; });
   window1.closeWindowMenu.rightButton.on('mouseout', function(){ window1.closeWindowMenu.rightButton.alpha = 0.7; });
   window1.closeWindowMenu.rightButton.on('pointerdown', function(){
-      app.stage.removeChild(window1.closeWindowMenu.container);
+    app.stage.removeChild(window1.closeWindowMenu.container);
   });
 
   window1.closeIcon.interactive = true;
   window1.closeIcon.on('mouseover', function(){ window1.closeIcon.alpha = 1; });
   window1.closeIcon.on('mouseout', function(){ window1.closeIcon.alpha = 0.8; });
   window1.closeIcon.on('pointerdown', function(){
-      app.stage.addChild(window1.closeWindowMenu.container); 
+    app.stage.addChild(window1.closeWindowMenu.container); 
   });
 
   window1.minIcon.interactive = true;
   window1.minIcon.on('mouseover', function(){ window1.minIcon.alpha = 1; });
   window1.minIcon.on('mouseout', function(){ window1.minIcon.alpha = 0.8; });
   window1.minIcon.on('pointerdown', function(){
-      app.stage.removeChild(window1.container);
-      app.stage.removeChild(tintBg); 
-      windowHexes.addChildAt(window4Hex.container, 0);
-      app.stage.addChild(menuButton.container);
-      window1.isOpen = false;
+    window1.isOpen = false;
+    app.stage.removeChild(window1.container);
+    app.stage.removeChild(tintBg); 
+    windowHexes.addChildAt(window1Hex.container, 0);
+    app.stage.addChild(menuButton.container);
   });
 
   //manually triggers tool1 to be displayed from the start
-  window1.tool4.emit('pointerdown');
+  window1.tool2.emit('pointerdown');
 
+  window1Hex.graphics.on('pointerdown', function(){
+    window1.isOpen = true;
+    app.stage.addChild(window1.container);
+    windowHexes.removeChild(window1Hex.container);
+  });
 
 
 
@@ -424,7 +427,7 @@ function startWindows(){
 
   window1.inFront = false;
 
-  var window2 = new WorkWindow("This is Window 3", x=100, y=50);
+  var window2 = new WorkWindow("Window 1", x=0, y=0);
   window2.container.interactive = true;
   window2.container.on('pointerdown', function(){
     if (!window2.inFront) {
@@ -436,90 +439,99 @@ function startWindows(){
   window2.drawWindow();
   window2.windowBorder.interactive = true;
   window2.windowBorder.on('pointerdown', onDragStart)
-    .on('pointerdown', getMousePositionBeforeWindow) // This is in Multi-block coord system
-    .on('pointerup', onDragEnd)
-    .on('pointerup', getMousePositionAfterWindow)
-    .on('pointerupoutside', onDragEnd)
-    .on('pointermove', onDragMove)
-    .on('pointermove', updateMousePositionWindow);
+  .on('pointerdown', getMousePositionBeforeWindow) // This is in Multi-block coord system
+  .on('pointerup', onDragEnd)
+  .on('pointerup', getMousePositionAfterWindow)
+  .on('pointerupoutside', onDragEnd)
+  .on('pointermove', onDragMove)
+  .on('pointermove', updateMousePositionWindow);
 
 
   window2.tool1.interactive = true;
   window2.tool1.on('pointerdown', function(){
-      clearWindow(window2);
-      window2.container.addChild(LMSIContainer);
-      LMSIContainer.mask = window2.windowRect;
-      window2.tool1.x += 5;
+    clearWindow(window2);
+    window2.container.addChild(LMSIContainer);
+    LMSIContainer.mask = window2.windowRect;
+    window2.tool1.x += 5;
   });
   
   window2.tool2.interactive = true;
   window2.tool2.on('pointerdown', function(){
-      clearWindow(window2);
-      window2.container.addChild(MSContainer);
-      MSContainer.mask = window2.windowRect;
-      window2.tool2.x += 5;
+    clearWindow(window2);
+    window2.container.addChild(MSContainer);
+    MSContainer.mask = window2.windowRect;
+    window2.tool2.x += 5;
   });
 
   window2.tool3.interactive = true;
   window2.tool3.on('pointerdown', function(){
-      clearWindow(window2);
-      window2.container.addChild(MBContainer);
-      MBContainer.mask = window2.windowRect;
-      window2.tool3.x += 5;
+    clearWindow(window2);
+    window2.container.addChild(MBContainer);
+    MBContainer.mask = window2.windowRect;
+    window2.tool3.x += 5;
   });
 
   window2.tool4.interactive = true;
   window2.tool4.on('pointerdown', function(){
-      clearWindow(window2);
-      window2.container.addChild(LIContainer);
-      LIContainer.mask = window2.windowRect;
-      window2.tool4.x += 5;
+    clearWindow(window2);
+    window2.container.addChild(LIContainer);
+    LIContainer.mask = window2.windowRect;
+    window2.tool4.x += 5;
   });
 
   window2.closeWindowMenu.close.interactive = true;
   window2.closeWindowMenu.close.on('mouseover', function(){ window2.closeWindowMenu.close.alpha = 0.7; });
   window2.closeWindowMenu.close.on('mouseout', function(){ window2.closeWindowMenu.close.alpha = 0.4; });
   window2.closeWindowMenu.close.on('pointerdown', function(){
-      app.stage.removeChild(window2.closeWindowMenu.container);
+    app.stage.removeChild(window2.closeWindowMenu.container);
   });
 
   window2.closeWindowMenu.leftButton.interactive = true;
   window2.closeWindowMenu.leftButton.on('mouseover', function(){ window2.closeWindowMenu.leftButton.alpha = 1; });
   window2.closeWindowMenu.leftButton.on('mouseout', function(){ window2.closeWindowMenu.leftButton.alpha = 0.7; });
   window2.closeWindowMenu.leftButton.on('pointerdown', function(){
-      app.stage.removeChild(window2.closeWindowMenu.container);
-      app.stage.removeChild(window2.container);
-      //w_container.removeChild(window4Hex.container);
-      Acc = 0;
+    app.stage.removeChild(window2.closeWindowMenu.container);
+    app.stage.removeChild(window2.container);
+    //w_container.removeChild(window2Hex.container);
+    Acc = 0;
   });
 
   window2.closeWindowMenu.rightButton.interactive = true;
   window2.closeWindowMenu.rightButton.on('mouseover', function(){ window2.closeWindowMenu.rightButton.alpha = 1; });
   window2.closeWindowMenu.rightButton.on('mouseout', function(){ window2.closeWindowMenu.rightButton.alpha = 0.7; });
   window2.closeWindowMenu.rightButton.on('pointerdown', function(){
-      app.stage.removeChild(window2.closeWindowMenu.container);
+    app.stage.removeChild(window2.closeWindowMenu.container);
   });
 
   window2.closeIcon.interactive = true;
   window2.closeIcon.on('mouseover', function(){ window2.closeIcon.alpha = 1; });
   window2.closeIcon.on('mouseout', function(){ window2.closeIcon.alpha = 0.8; });
   window2.closeIcon.on('pointerdown', function(){
-      app.stage.addChild(window2.closeWindowMenu.container); 
+    app.stage.addChild(window2.closeWindowMenu.container); 
   });
 
   window2.minIcon.interactive = true;
   window2.minIcon.on('mouseover', function(){ window2.minIcon.alpha = 1; });
   window2.minIcon.on('mouseout', function(){ window2.minIcon.alpha = 0.8; });
   window2.minIcon.on('pointerdown', function(){
-      app.stage.removeChild(window2.container);
-      app.stage.removeChild(tintBg); 
-      windowHexes.addChildAt(window3Hex.container, 0);
-      app.stage.addChild(menuButton.container);
-      window2.isOpen = false;
+    window2.isOpen = false;
+    app.stage.removeChild(window2.container);
+    app.stage.removeChild(tintBg); 
+    windowHexes.addChildAt(window2Hex.container, 0);
+    app.stage.addChild(menuButton.container);
+    window2.isOpen = false;
   });
 
   //manually triggers tool1 to be displayed from the start
   window2.tool3.emit('pointerdown');
+
+  window2Hex.graphics.on('pointerdown', function(){
+    app.stage.addChild(window2.container);
+    window2.isOpen = true;
+    app.stage.removeChild(window2Hex.container);
+  });
+
+  window1.minIcon.emit('pointerdown');
 
 }
 
@@ -528,7 +540,7 @@ function w_MenuSelect()
 {
   if(w_hideCC == 1)
   {
-    app.stage.addChild(window4Hex.container);
+    app.stage.addChild(window2Hex.container);
     unblurBg();
     w_hideCC = 0;
     menuButton.container.y = 18;
@@ -552,12 +564,11 @@ function w_MenuSelect()
   }
 }
 
-function w_WindowSelect(window)
+function w_WindowSelect(window, windowHex)
 {
-  if (!window.isOpen) {
-    app.stage.addChild(window.container);
-    window.isOpen = true;
-  }
+  app.stage.addChild(window.container);
+  window.isOpen = true;
+  windowHexes.removeChild(windowHex.container);
 }
 
 

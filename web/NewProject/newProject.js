@@ -1,9 +1,9 @@
 /*
 TODO: Make textStyle in captionFactory customizable
 TODO: change fontSize according to hexagon size
-TODO: click on last hexagon to go back
-TODO: Text don't go off the hexagon
+TODO: Text don't go off the hexagon (auto-wrapping)
 TODO: Cancel
+TODO: onHover color change. Option square color change
  */
 class NewProject{
     
@@ -125,7 +125,7 @@ class NewProject{
             console.log(clickedIndex + " " + NewProject.currentHexagon);
             if(clickedIndex === NewProject.currentHexagon - 1){
                 for (let i = 0; i < numPrompts; i++) {
-                    positionTransform(prompts[i].container.x - (gap + hwidth * 2), prompts[i].container.y, prompts[i].container, 10);  // Customize
+                    positionTransform(prompts[i].container.x + (gap + hwidth * 2), prompts[i].container.y, prompts[i].container, 10);  // Customize
                     // prompts[i].container.x += (gap + hwidth * 2);  // Customize
                 }
                 NewProject.currentHexagon --;
@@ -145,7 +145,6 @@ class NewProject{
         NewProject.createNewProjectPrompt();
         blurTransform(app.stage, 0.5, 5);
         console.log("Transform blurr");
-        // NewProject.createWindowHexagons();
     }
 }
 

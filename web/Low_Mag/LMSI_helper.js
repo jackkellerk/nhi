@@ -104,7 +104,7 @@ var cropImage = new PIXI.Graphics();
  *  LMSI is called to start Low Magnification Screening / Imaging (Zoom & Crop).
  *  it activates gestures, add viewport, buttons, and sprites on LMSIContainer
  */
-function LMSI_init() {
+function LMSI() {
     // calls pixi-viewport
     Viewport = new PIXI.extras.Viewport({
         screenWidth: window.innerWidth,

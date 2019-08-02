@@ -16,6 +16,7 @@ var preLoginText = new PIXI.Text();
 var loginText = new PIXI.Text();
 var signUpText = new PIXI.Text();
 
+var initialActivation = true;
 
 
 

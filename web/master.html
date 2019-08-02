@@ -117,13 +117,17 @@
             var mouseData = app.renderer.plugins.interaction.mouse.global; // Change to pointer later (this is for multi-block)
 
             // Initially call updateActivity to start application
+          //  startPreLogin();
+           // hidePrelogin();
+
             updateActivity();
+            
 
             // updates the current activity (this is called from the createButton file)
             function updateActivity()
             {
                 // clears the stage
-                clear();
+               clear();
 
                 // Logs the currentActivity (this variable is in globalVariables.js) (the function that this changes the currentActivity is in createButton.js in Multi-block // This is a temporary solution)
                 console.log("Current Activity: " + currentActivity);
@@ -131,10 +135,13 @@
                 // Everyone please updates these according to your code! - Jack
                 if(currentActivity == 'Welcome')
                 {
-                     startPreLogin();
+                    startPreLogin();
+
+                    // showPrelogin();
                 }
                 else if(currentActivity == 'AllProjects')
                 {
+
                     startAllProjects();
                 }
                 else if(currentActivity == 'Windows')

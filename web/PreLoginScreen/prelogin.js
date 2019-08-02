@@ -173,6 +173,8 @@ function startPreLogin()
     loginButtonImage.x = app.screen.width/2 - loginButtonImage.width/2;
     loginButtonImage.y = app.screen.height/2 - loginButtonImage.height/2;
     app.stage.on("pointerdown",showLogin);
+
+
     app.stage.interactive = true;
     app.stage.buttonMode = true;
   
@@ -580,6 +582,9 @@ function toProjectSelection()
     signUp_UI.removeChildren(0,signUp_UI.children.length);
     signUpPassword = "";
     signUpRePassword = "";
+
+    app.stage.off("pointerdown",showLogin);
+    login_backgroundImage.off("pointerdown",touchScreen);
 
     updateActivity();
 }

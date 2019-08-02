@@ -16,7 +16,7 @@
     let yChange = yDiff/rate;
 
     let count = 0;                          //The variable "count" will start at zero but be incremented inside the animation loop
-    
+    console.log("Lets move");
     let animationMove =() => {                  //We are declaring the animation function here
         if(count >= rate){                      //It's made of a simple if-else statment that changes the (x,y) coordinates
             element.x = xPos;                   //Once the "count" variable reaches the "rate" value, the object gets set to the exact final coordinates and the animation ends

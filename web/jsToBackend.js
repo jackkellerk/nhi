@@ -128,12 +128,12 @@ function postNewProject(data)
             withCredentials: true
         },
         success: function(callback) {
-            if(callback.errorCode != 0)
-            {
-                alert("Error loading the user settings!");
-            }
-            userSettingsResponse = callback.data;
-            createUIProjects();
+            // if(callback.errorCode != 0)
+            // {
+            //     alert("Error loading the user settings!");
+            // }
+            // userSettingsResponse = callback.data;
+            // createUIProjects();
         },
         error: function(xhr, status, error) {
             alert("Internal Server Error: 500");

@@ -29,7 +29,7 @@ var guideTextContainer = new PIXI.Container();
 const LMSIgraphics = new PIXI.Graphics();
 
 // variable for screenot (crop)
-var cropImage = new PIXI.Graphics();
+// var cropImage = new PIXI.Graphics();
 
 // variable to save PIXI.Point for cropping
 var testPoint = new PIXI.Point(0, 0);
@@ -48,9 +48,9 @@ var dragMode = true;
 var drawing = false;
 
 // variables to save image info
-var _pid = 0;
-var _cid = 0;
-var _wid = 0;
+var pid = 0;
+var cid = 0;
+var wid = 0;
 var _imageOrigin_x = 0;
 var _imageOrigin_y = 0;
 var _imageOrigin_w = 0;
@@ -117,11 +117,11 @@ move.alpha = 1;
  *  LMSI is called to start Low Magnification Screening / Imaging (Zoom & Crop).
  *  it activates gestures, add viewport, buttons, and sprites on LMSIContainer
  */
-function LMSI(imageSource, wid, pid) {
+function LMSI(imageSource, _wid, _pid) {
 
     
-    _wid = wid;
-    _pid = pid;
+    wid = _wid;
+    pid = _pid;
 
     setBackground(imageSource);
     
@@ -134,8 +134,6 @@ function LMSI(imageSource, wid, pid) {
         interaction: app.renderer.plugins.interaction // the interaction module is important for wheel() to work properly when renderer.view is placed or scaled
     });
 
-    
-    console.log("Not yet called! " + viewport.plugins.list);
 
     // activate mouse/touch gestures for viewport
     viewport
@@ -144,7 +142,11 @@ function LMSI(imageSource, wid, pid) {
         .wheel()
         .decelerate();
     
-    console.log("Viewport gesture called!" + viewport.plugins.length);
+    // test printlns
+    console.log("Viewport viewport.plugins['drag']: " + viewport.plugins['drag']);
+    console.log("Viewport viewport.plugins['drag'].parent.x: " + viewport.plugins['drag'].parent.x);
+    // console.log("Viewport viewport.parent.x: " + viewport.parent.x); // doesn't work
+    console.log("Viewport viewport.plugins['drag'].moved: " + viewport.plugins['drag'].moved);
 
     // resize image as size of viewport
     testimg.width = window.innerWidth;
@@ -195,13 +197,9 @@ function drawPoint(event) {
 
         if (!drawing) { //Checks what phase of line create user is in
 
-            //tests
-            
-            console.log("drag var: " + viewport.plugins.length);
-
             // Clears current graphics on screen
             graphics.clear();
-            cropImage.clear();
+            // cropImage.clear();
             viewport.mask = null;
 
             // Updates starting point
@@ -243,6 +241,9 @@ function drawPoint(event) {
             graphics.drawRect(testPoint.x, testPoint.y, testPointEnd.x - testPoint.x, testPointEnd.y -
                 testPoint.y);
 
+            // initialize cropImage
+            var cropImage = new PIXI.Graphics();
+
             // set cropImage, which is PIXI.Graphics to mask image on screen
             cropImage.drawRect(testPoint.x, testPoint.y, testPointEnd.x - testPoint.x, testPointEnd.y -
                 testPoint.y);
@@ -282,7 +283,7 @@ function cancelDraw(event) {
     //Resets all line UI components
     graphics.clear();
 
-    cropImage.clear();
+    // cropImage.clear();
     viewport.mask = null;
     
     cancel_draw = true;
@@ -311,7 +312,7 @@ function modeChange(event) {
     graphics.clear();
 
     // reset all the masking too
-    cropImage.clear();
+    // cropImage.clear();
     viewport.mask = null;
 
     // if mode is 'drag', pan & pinch zoom: change to 'screenshot'
@@ -386,7 +387,28 @@ function setBackground(imageSource) {
         _imageOrigin_h = _imageSource.height;;        
     }
     // if imageSource is in base64
-    // else if (base64Matcher.test(imageSource)) {
+    else if (base64Matcher.test(imageSource)) {
+        var tempImg = new Image();
+        this.tempImg.src = imageSource;
+
+        var tempBaseTexture = new PIXI.BaseTexture(tempImg);
+        var tempTexture = new PIXI.Texture(tempBaseTexture);
+
+        // then add to the cache
+        // TODO: use texture Cache
+        if (wid == null) {
+            this.zoom_background = PIXI.Texture.from(tempTexture);
+            this.testimg = new PIXI.Sprite(this.zoom_background);
+        }
+        else {
+            PIXI.Texture.addTextureToCache(tempTexture, "LMSI" + wid);
+
+            // to retrieve the texture it would be a case of
+            var finalBase64Sprite = PIXI.Sprite.fromImage("LMSI" + wid);
+            this.zoom_background = PIXI.Texture.from(finalBase64Sprite);
+            this.testimg = new PIXI.Sprite(this.zoom_background);
+        }
+    }
     else {
         _imageSource = imageSource;
         _imageOrigin_w = _imageSource.width;

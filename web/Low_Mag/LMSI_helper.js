@@ -34,7 +34,6 @@ const LMSIgraphics = new PIXI.Graphics();
 // variable to save PIXI.Point for cropping
 var testPoint = new PIXI.Point(0, 0);
 var testPointEnd = new PIXI.Point(0, 0);
-var imagePoint = new PIXI.Point(0,0);
 
 // variable for viewport
 var viewport = null;
@@ -153,8 +152,6 @@ function LMSI(imageSource, _wid, _pid) {
     testimg.width = window.innerWidth;
     testimg.height = window.innerWidth; 
 
-    imagePoint = testimg.toGlobal(imagePoint);
-
     // add background image to viewport
     viewport.addChild(testimg);
 
@@ -202,7 +199,7 @@ function drawPoint(event) {
         if (!drawing) { //Checks what phase of line create user is in
 
             // test printlnt
-            console.log("ImagePoint: " + imagePoint.x + ", " + imagePoint.y);
+            console.log("testimg w & h: " + testimg.width + ", " + testimg.height);
 
             // Clears current graphics on screen
             graphics.clear();
@@ -271,7 +268,7 @@ function drawPoint(event) {
 
             // test println
             console.log("Cropped: " + testPoint.x + " " + testPoint.y + " , " + testPointEnd.x + " " + testPointEnd.y);
-            console.log("ImagePoint: " + imagePoint.x + ", " + imagePoint.y);
+            console.log("testimg w & h: " + testimg.width + ", " + testimg.height);
 
             // test crop
             // temp.frame = cropImage.drawRect(testPoint.x, testPoint.y, testPointEnd.x - testPoint.x, testPointEnd.y -

@@ -1,9 +1,9 @@
 /*
 TODO: Make textStyle in captionFactory customizable
 TODO: change fontSize according to hexagon size
-TODO: click on last hexagon to go back
-TODO: Text don't go off the hexagon
+TODO: Text don't go off the hexagon (auto-wrapping)
 TODO: Cancel
+TODO: onHover color change. Option square color change
  */
 class NewProject{
     

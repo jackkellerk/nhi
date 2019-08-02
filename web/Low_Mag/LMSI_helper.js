@@ -25,7 +25,48 @@ var LMSIContainer = new PIXI.Container();
 var buttonContainer = new PIXI.Container();
 var guideTextContainer = new PIXI.Container();
 
-const LMSIgraphlics = new PIXI.Graphics();
+// graphics for buttonBox
+const LMSIgraphics = new PIXI.Graphics();
+
+// variable for screenot (crop)
+var cropImage = new PIXI.Graphics();
+
+// variable to save PIXI.Point for cropping
+var testPoint = new PIXI.Point(0, 0);
+var testPointEnd = new PIXI.Point(0, 0);
+
+// variable for viewport
+var viewport = null;
+
+// variable to determine if user clicked on cancel button
+var cancel_draw = false;
+
+// varaible to determine current mode
+var dragMode = true;
+
+// variable to determine if user is in the middle of drawing
+var drawing = false;
+
+// variables to save image info
+var _pid = 0;
+var _cid = 0;
+var _wid = 0;
+var _imageOrigin_x = 0;
+var _imageOrigin_y = 0;
+var _imageOrigin_w = 0;
+var _imageOrigin_h = 0;
+var _imageSource = null;
+
+//Creates style used by text
+const style = new PIXI.TextStyle({
+    fontFamily: 'Helvetica',
+    fontSize: 20,
+    fill: '#FFFFFF', // gradient
+    align: 'center',
+    strokeThickness: 3,
+    wordWrap: true,
+    wordWrapWidth: 500,
+});
 
 // set buttons requried
 // cancel button
@@ -72,43 +113,48 @@ move.x = cancel_button.x + cancel_button.width / 4;
 move.y = cancel_button.y + cancel_button.height + cancel_button.y + cancel_button.height / 4;
 move.alpha = 1;
 
-// variable to determine if user clicked on cancel button
-var cancel_draw = false;
-
-// varaible to determine current mode
-var dragMode = true;
-
-// variable to determine if user is in the middle of drawing
-var drawing = false;
-
-// variable to save PIXI.Point for cropping
-var testPoint = new PIXI.Point(0, 0);
-var testPointEnd = new PIXI.Point(0, 0);
-
-//Creates style used by text
-const style = new PIXI.TextStyle({
-    fontFamily: 'Helvetica',
-    fontSize: 20,
-    fill: '#FFFFFF', // gradient
-    align: 'center',
-    strokeThickness: 3,
-    wordWrap: true,
-    wordWrapWidth: 500,
-});
-
-// variable for viewport
-var Viewport;
-
-// variable for screenot (crop)
-var cropImage = new PIXI.Graphics();
-
 /**
  *  LMSI is called to start Low Magnification Screening / Imaging (Zoom & Crop).
  *  it activates gestures, add viewport, buttons, and sprites on LMSIContainer
  */
 function LMSI(imageSource, wid, pid) {
+
+    
+    _wid = wid;
+    _pid = pid;
+
+    if (imageSource == null) {
+
+    }
+    // if it's Object (consider it's PIXI texture object)
+    else if (typeof imageSource === 'object' && imageSource.constructor === Object) {
+        // set background as imageSource
+        zoom_background = imageSource;
+        testimg = new PIXI.Sprite.from(zoom_background);
+
+        _imageSource = imageSource;
+        _imageOrigin_w = _imageSource.width;
+        _imageOrigin_h = _imageSource.height;
+    }
+    // if it's dir
+    else if (str.indexOf("/") >= 0 && str.indexOf("./") >= 0) {
+        zoom_background = PIXI.Texture.from(imageSource);
+        testimg = new PIXI.Sprite.from(zoom_background);
+
+        _imageSource = imageSource;
+        _imageOrigin_w = _imageSource.width;
+        _imageOrigin_h = _imageSource.height;;        
+    }
+    // if imageSource is in base64
+    // else if (base64Matcher.test(imageSource)) {
+    else {
+        _imageSource = imageSource;
+        _imageOrigin_w = _imageSource.width;
+        _imageOrigin_h = _imageSource.height;
+    }
+    
     // calls pixi-viewport
-    Viewport = new PIXI.extras.Viewport({
+    viewport = new PIXI.extras.Viewport({
         screenWidth: window.innerWidth,
         screenHeight: window.innerHeight,
         worldWidth: 1000,
@@ -116,34 +162,38 @@ function LMSI(imageSource, wid, pid) {
         interaction: app.renderer.plugins.interaction // the interaction module is important for wheel() to work properly when renderer.view is placed or scaled
     });
 
+    
+    console.log("Not yet called! " + viewport.plugins.list);
+
     // activate mouse/touch gestures for viewport
-    Viewport
+    viewport
         .drag()
         .pinch()
         .wheel()
         .decelerate();
+    
+    console.log("Viewport gesture called!" + viewport.plugins.length);
 
     // resize image as size of viewport
     testimg.width = window.innerWidth;
     testimg.height = window.innerWidth; 
 
     // add background image to viewport
-    Viewport.addChild(testimg);
+    viewport.addChild(testimg);
 
     // draw rectangle box to put buttons
-    LMSIgraphlics.beginFill(0xFFFFFF);
-    LMSIgraphlics.drawRect(5, 5, 60, 115);
-    LMSIgraphlics.endFill();
+    LMSIgraphics.beginFill(0xFFFFFF);
+    LMSIgraphics.drawRect(5, 5, 60, 115);
+    LMSIgraphics.endFill();
 
     // add buttons to buttonContainer, and set interative
-    buttonContainer.addChild(LMSIgraphlics);
+    buttonContainer.addChild(LMSIgraphics);
     buttonContainer.addChild(cancel_button);
     buttonContainer.addChild(mode_button);
     buttonContainer.addChild(move);
     buttonContainer.addChild(screenshot);
     buttonContainer.interactive = true;
     buttonContainer.tint = 0xff0000;
-
 
     // text to guide users
     guideText = new PIXI.Text('Drag, wheel and scroll the image to explore.', style);
@@ -152,7 +202,7 @@ function LMSI(imageSource, wid, pid) {
     guideTextContainer.addChild(guideText);
 
     // add the viewport to the container
-    LMSIContainer.addChild(Viewport);
+    LMSIContainer.addChild(viewport);
 
     LMSIContainer.addChild(buttonContainer);
     LMSIContainer.addChild(guideTextContainer);
@@ -173,20 +223,24 @@ function drawPoint(event) {
 
         if (!drawing) { //Checks what phase of line create user is in
 
+            //tests
+            
+            console.log("drag var: " + viewport.plugins.length);
+
             // Clears current graphics on screen
             graphics.clear();
             cropImage.clear();
-            Viewport.mask = null;
+            viewport.mask = null;
 
             // Updates starting point
-            testPoint = Viewport.toWorld(event.data.global.x, event.data.global.y);
+            testPoint = viewport.toWorld(event.data.global.x, event.data.global.y);
 
             // Constructs starting point
             graphics.beginFill(0xFFFFFF);
             graphics.drawRect(testPoint.x - 5, testPoint.y - 5, 10, 10);
             graphics.endFill();
 
-            Viewport.addChild(graphics);
+            viewport.addChild(graphics);
 
             // Changes drawing value 
             drawing = true;
@@ -200,7 +254,7 @@ function drawPoint(event) {
         else {
 
             // update ending point 
-            testPointEnd = Viewport.toWorld(event.data.global.x, event.data.global.y);
+            testPointEnd = viewport.toWorld(event.data.global.x, event.data.global.y);
 
             //Draws end point
             graphics.beginFill(0xFFFFFF);
@@ -208,7 +262,7 @@ function drawPoint(event) {
             graphics.endFill()
 
             //Constructs line from saved starting point to current end point
-            graphics.lineStyle(2, 0xFFFFFF).moveTo(testPoint.x, testPoint.y);
+            graphics.lineStyle(1, 0xFFFFFF).moveTo(testPoint.x, testPoint.y);
 
             // draw rectangle from current starting point and endpoint
             // points: starting (x,y) on canvas
@@ -217,13 +271,16 @@ function drawPoint(event) {
             graphics.drawRect(testPoint.x, testPoint.y, testPointEnd.x - testPoint.x, testPointEnd.y -
                 testPoint.y);
 
+            // set cropImage, which is PIXI.Graphics to mask image on screen
             cropImage.drawRect(testPoint.x, testPoint.y, testPointEnd.x - testPoint.x, testPointEnd.y -
                 testPoint.y);
+                
             cropImage.renderable = true;
             cropImage.cacheAsBitmap = true;
 
-            Viewport.mask = cropImage;
-            // Viewport.addChild(cropImage);
+            viewport.mask = cropImage;
+            
+            // viewport.addChild(cropImage);
 
             // app.stage.addChild(cropImage);
 
@@ -236,9 +293,10 @@ function drawPoint(event) {
             console.log("Cropped: " + testPoint.x + " " + testPoint.y + " , " + testPointEnd.x + " " + testPointEnd.y);
 
             // test crop
-            // temp.frame = new PIXI.Rectangle(testPoint.x, testPoint.y, testPointEnd.x - testPoint.x, testPointEnd.y -
-            //     testPoint.y);
+            // temp.frame = cropImage.drawRect(testPoint.x, testPoint.y, testPointEnd.x - testPoint.x, testPointEnd.y -
+            //         testPoint.y);
             // var newZoom = new PIXI.Texture(temp.baseTexture, temp.frame);
+            // viewport.addChild(newZoom);
 
         } //end else
     } //end cancel if
@@ -253,7 +311,7 @@ function cancelDraw(event) {
     graphics.clear();
 
     cropImage.clear();
-    Viewport.mask = null;
+    viewport.mask = null;
     
     cancel_draw = true;
     drawing = false;
@@ -282,7 +340,7 @@ function modeChange(event) {
 
     // reset all the masking too
     cropImage.clear();
-    Viewport.mask = null;
+    viewport.mask = null;
 
     // if mode is 'drag', pan & pinch zoom: change to 'screenshot'
     if (dragMode == true) {
@@ -292,13 +350,13 @@ function modeChange(event) {
         screenshot.alpha = 1;
 
         // pause gestures for 'drag'
-        Viewport.pausePlugin('drag');
-        Viewport.pausePlugin('pinch');
-        Viewport.pausePlugin('wheel');
-        Viewport.pausePlugin('decelerate');
+        viewport.pausePlugin('drag');
+        viewport.pausePlugin('pinch');
+        viewport.pausePlugin('wheel');
+        viewport.pausePlugin('decelerate');
     
         // resume gestures for click & cancel
-        Viewport.on('pointerdown', drawPoint);
+        viewport.on('pointerdown', drawPoint);
 
         // resume cancel_button in 'drag' mode
         cancel_button.on('pointerdown', cancelDraw);
@@ -315,16 +373,16 @@ function modeChange(event) {
         screenshot.alpha = 0;
 
         // pause gestures for click & cancel
-        Viewport.off('pointerdown', drawPoint);
+        viewport.off('pointerdown', drawPoint);
 
         // pause cancel_button in 'screenshot' mode
         cancel_button.off('pointerdown', cancelDraw);
 
         // resume gestures for 'drag'
-        Viewport.resumePlugin('drag');
-        Viewport.resumePlugin('pinch');
-        Viewport.resumePlugin('wheel');
-        Viewport.resumePlugin('decelerate');
+        viewport.resumePlugin('drag');
+        viewport.resumePlugin('pinch');
+        viewport.resumePlugin('wheel');
+        viewport.resumePlugin('decelerate');
 
         // change guideText to 'drag' mode
         dragMode = true;
@@ -368,82 +426,6 @@ function onButtonOut() {
     // this.texture = textureButton;
 }
 
-/**
- *  Helper function for calculating height, length, diagonal and resolution of the screen
- *  All of the helper fucntions for this section is from screen-size.info
- *  @Source http://screen-size.info/
- */
-/**
- *  calulate width and height of screen based on diagonal
- * @param {*} width  width resolution in px
- * @param {*} height heihgt resolution in px
- * @param {*} dpi    diagonal of the screen
- *  */
-function calculateByDiagonal(width, height, dpi) {
-    var aspectRatioWidth = $("#aspectRatioWidth").val();
-    var aspectRatioHeight = $("#aspectRatioHeight").val();
-    var aspectRatioDiagonal = calculateDiagonal(aspectRatioWidth, aspectRatioHeight);
-    
-    for (var i in UNITS) {
-        var unit = UNITS[i];
-        var inputElement = findInput("d", unit);
-        var diagonal = inputElement.data("exactValue") || inputElement.val();
-        
-        if (diagonal > 0) {
-            var factor = diagonal / aspectRatioDiagonal;
-            var width = aspectRatioWidth * factor;
-            var height = aspectRatioHeight * factor;
-            
-            findInput("w", unit).val(width.toFixed(1)).data("exactValue", width);
-            findInput("h", unit).val(height.toFixed(1)).data("exactValue", height);
-            
-        }
-    }
-}
+function calculateZoomLvl() {
 
-/**
- *  get aspectRatio (resolution) of the screen
- * @param {*} width  width resolution in px
- * @param {*} height heihgt resolution in px
- */
-function setAspectRatio(width, height) {
-    $("#aspectRatioWidth").val(width);
-    $("#aspectRatioHeight").val(height);
-    
-    calculate(currentKey);
-}
-
-/**
- *  Transfrom cm to inch
- * @param {*} value size in cm
- */
-function cmToInch(value) {
-    return value / 2.54;
-}
-
-/**
- *  Transfrom inch to cm
- * @param {*} value size in inch
- */
-function inchToCm(value) {
-    return value * 2.54;
-}
-
-/**
- * 
- * @param {*} key 
- * @param {*} unit 
- * @param {*} value 
- */
-function transformUnits(key, unit, value) {
-    var element, transfomredValue;
-    if (unit === "cm") {
-        element = findInput(key, "in");
-        transfomredValue = cmToInch(value);
-    } else if (unit === "in") {
-        element = findInput(key, "cm");
-        transfomredValue = inchToCm(value);
-    }
-    element.data("exactValue", transfomredValue);
-    element.val(transfomredValue.toFixed(1));
 }

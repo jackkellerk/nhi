@@ -81,35 +81,35 @@ Body Information:
 
 {
 
-"iid": STRING, 
+  "iid": STRING, 
 
-"image_box": JSON OBJECT 
+  "image_box": JSON OBJECT 
 
-{
+  {
 
-"pos_x": FLOAT,
+    "pos_x": FLOAT,
 
-"pos_y": FLOAT,
+    "pos_y": FLOAT,
 
-"width": FLOAT,
+    "width": FLOAT,
 
-"height": FLOAT
+    "height": FLOAT
 
-}, 
+  }, 
 
-"window_box": JSON OBJECT
+  "window_box": JSON OBJECT
 
-{
+  {
 
-"pos_x": FLOAT,
+    "pos_x": FLOAT,
 
-"pos_y": FLOAT,
+    "pos_y": FLOAT,
 
-"width": FLOAT,
+    "width": FLOAT,
 
-"height": FLOAT
+    "height": FLOAT
 
-}
+  }
 
 }
 

@@ -194,6 +194,7 @@ Body Information: { "username": STRING, "password": STRING, "email": STRING, "le
 Return Value: Returns JSON object containing uid(user id) and the session key
 
 ## Source:
+Work in progress
 
 ## User_Project(relationship):
 ### Add User to Project

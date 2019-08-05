@@ -67,7 +67,9 @@ This document should detail the Backend API used in this project. The routes det
 
     Return Value: number of rows deleted
 
-    Extra: Since there are many items associated with projects all of these elements are deleted as well including windows and user_project relationships. Only users with a user_project relationship can delete projects.
+    Extra: Since there are many items associated with projects all of these elements are deleted as
+    well including windows and user_project relationships. Only users with a user_project relationship 
+    can delete projects.
 
 ## Window:
 ### Create Window

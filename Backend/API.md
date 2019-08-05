@@ -8,7 +8,7 @@ This document should detail the Backend API used in this project. The routes det
 
 ## Project:
 
-#### Get Project Information
+### Get Project Information
 URL: /p/:pid (pid = project id)
 
 Request Type: GET
@@ -19,7 +19,7 @@ Body Information: None
 
 Return Value: JSON object that contains project information and also contains a JSON array of the project's windows.
 
-#### User's projects
+### User's projects
 URL: /project
 
 Request Type: GET
@@ -30,7 +30,7 @@ Body Information: None
 
 Return Value: JSON Array of all of the current user's projects.
 
-#### Create Project
+### Create Project
 URL: /project/create
 
 Request Type: POST
@@ -41,7 +41,9 @@ Body Information: { "name": STRING, "canvas_width": FLOAT, "canvas_height": FLOA
 
 Return Value: JSON object that contains project information
 
-#### Update Project
+Extra: Creates a user_project relationship allowing user future access to this new project
+
+### Update Project
 URL: /p/:pid/update (pid = project id)
 
 Request Type: PUT
@@ -51,6 +53,21 @@ Header Information: {"uid": INT, "session_key": STRING}
 Body Information: { "name": STRING, "thumbnail": STRING, "width": FLOAT, "height": FLOAT}
 
 Return Value: number of rows updated
+
+Extra: Only users with a user_project relationship are allowed to make changes to the project
+
+### Delete Project
+URL: /p/:pid (pid = project id)
+
+Request Type: DELETE
+
+Header Information: {"uid": INT, "session_key": STRING}
+
+Body Information: None
+
+Return Value: number of rows deleted
+
+Extra: Since there are many items associated with projects all of these elements are deleted as well including windows and user_project relationships. Only users with a user_project relationship can delete projects.
 
 ## Window:
 ## User:

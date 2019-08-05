@@ -135,7 +135,7 @@ class NewProject{
     }
     
     static goToSources(){
-        postNewProject("TODO");  // An Ajax "POST" call to backend
+        postNewProject("new proj", app.screen.width, app.screen.height);  // An Ajax "POST" call to backend
         currentActivity = activityArray[4];
         updateActivity();
     }

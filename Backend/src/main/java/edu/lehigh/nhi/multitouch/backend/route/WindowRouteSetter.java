@@ -105,7 +105,7 @@ public final class WindowRouteSetter {
         RouteSetter.setRoute(RequestType.PUT, "/w/:wid/update_pos", (request, response) -> {
             return RouteSetter.preprocessSessionCheck(request, response, encryption, (uid, sessionKey) -> {
                 return RouteSetter.preprocessPathParam(request, response, new String[] { "wid" }, (params) -> {
-                    int wid = params[0];
+                    int wid = (int)params[0];
                     if (!db.checkWindowOwnership(uid, wid)) {
                         return StructuredResponse.getErrorResponse(ErrorHandler.PRIVILAGE.NO_RIGHT_TO_ACCESS_PROJECT);
                     }
@@ -121,6 +121,46 @@ public final class WindowRouteSetter {
                             retval.put("num_rows_updated", num_rows_updated);
                             return new StructuredResponse(retval).toJson().toString();
                     });
+                });
+            });
+        });
+
+        // update the posion of image.
+        RouteSetter.setRoute(RequestType.PUT, "/w/:wid/update_img_pos", (request, response) -> {
+            return RouteSetter.preprocessSessionCheck(request, response, encryption, (uid, sessionKey) -> {
+                return RouteSetter.preprocessPathParam(request, response, new String[] { "wid" }, (params) -> {
+                    int wid = (int)params[0];
+                    if (!db.checkWindowOwnership(uid, wid)) {
+                        return StructuredResponse.getErrorResponse(ErrorHandler.PRIVILAGE.NO_RIGHT_TO_ACCESS_PROJECT);
+                    }
+                    return RouteSetter.preprocessJSONValueGet(request, response,
+                            new String[] { "pos_x", "pos_y", "width","height" },
+                            new Type[] { Type.FLOAT, Type.FLOAT, Type.FLOAT, Type.FLOAT}, (vals) -> {
+                            float pos_x = (float) vals[0];
+                            float pos_y = (float) vals[1];
+                            float width = (float) vals[2];
+                            float height = (float) vals[3];
+                            int num_rows_updated = db.window.updateImagePosition(wid, pos_x, pos_y, width, height);
+                            JSONObject retval = new JSONObject();
+                            retval.put("num_rows_updated", num_rows_updated);
+                            return new StructuredResponse(retval).toJson().toString();
+                    });
+                });
+            });
+        });
+
+        // delete window.
+        RouteSetter.setRoute(RequestType.DELETE, "/w/:wid", (request, response) -> {
+            return RouteSetter.preprocessSessionCheck(request, response, encryption, (uid, sessionKey) -> {
+                return RouteSetter.preprocessPathParam(request, response, new String[] { "wid" }, (params) -> {
+                    int wid = (int)params[0];
+                    if (!db.checkWindowOwnership(uid, wid)) {
+                        return StructuredResponse.getErrorResponse(ErrorHandler.PRIVILAGE.NO_RIGHT_TO_ACCESS_PROJECT);
+                    }
+                    int num_windows_deleted = db.window.deleteWindow(wid);
+                    JSONObject retval = new JSONObject();
+                    retval.put("num_windows_deleted", num_windows_deleted);
+                    return new StructuredResponse(retval).toJson().toString();
                 });
             });
         });

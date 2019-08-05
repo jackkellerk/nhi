@@ -20,7 +20,8 @@ public class WindowManager {
     private final Gson mGson;
     private final DatabaseManager mManager;
     private final Statements mStatements;
-    private final PreparedStatement mSelectWindowByWidPS, mInsertWindowPS, mUpdateWindowPositionPS;
+    private final PreparedStatement mSelectWindowByWidPS, mInsertWindowPS, mUpdateWindowPositionPS,
+            mDeleteWindowByWidPS, mUpdateImagePositionPS;
 
     /** Window structure class being traslated into Json by Gson. */
     @SuppressWarnings("unused")
@@ -54,6 +55,8 @@ public class WindowManager {
         mSelectWindowByWidPS = mStatements.window.selectWindowByWid;
         mInsertWindowPS = mStatements.window.insertWindow;
         mUpdateWindowPositionPS = mStatements.window.updateWindowPosition;
+        mUpdateImagePositionPS = mStatements.window.updateImagePosition;
+        mDeleteWindowByWidPS = mStatements.window.deleteWindowByWid;
     }
 
     public JSONObject getWindow(int wid) throws JSONException, SQLException {
@@ -83,6 +86,17 @@ public class WindowManager {
         return retval;
     }
 
+    public int updateImagePosition(int wid, float pos_x, float pos_y, float width, float height) throws SQLException {
+        mUpdateImagePositionPS.setFloat(1, pos_x);
+        mUpdateImagePositionPS.setFloat(2, pos_y);
+        mUpdateImagePositionPS.setFloat(3, width);
+        mUpdateImagePositionPS.setFloat(4, height);
+        mUpdateImagePositionPS.setInt(5, wid);
+        int retval = mUpdateImagePositionPS.executeUpdate();
+        mUpdateImagePositionPS.close();
+        return retval;
+    }
+
     public int insertWindow(int pid, int iid, Square image_box, Square window_box) throws SQLException {
         Window window = new Window();
         window.pid = pid;
@@ -106,5 +120,12 @@ public class WindowManager {
         mInsertWindowPS.setFloat(10, window_box.height);
         mInsertWindowPS.setTimestamp(11, DatabaseManager.convertDateToTimestamp(new Date()));
         return mInsertWindowPS.executeUpdate();
+    }
+
+    public int deleteWindow(int wid) throws JSONException, SQLException {
+        mDeleteWindowByWidPS.setInt(1, wid);
+        int retval = mDeleteWindowByWidPS.executeUpdate();
+        mDeleteWindowByWidPS.close();
+        return retval;
     }
 }

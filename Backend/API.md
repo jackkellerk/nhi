@@ -17,7 +17,8 @@ This document should detail the Backend API used in this project. The routes det
 
     Body Information: None
 
-    Return Value: JSON object that contains project information and also contains a JSON array of the project's windows.
+    Return Value: JSON object that contains project information and also contains a JSON array
+    of the project's windows.
 
 ### User's projects
     URL: /project
@@ -73,168 +74,170 @@ This document should detail the Backend API used in this project. The routes det
 
 ## Window:
 ### Create Window
-URL: /p/:pid/new_window (pid = project id)
+    URL: /p/:pid/new_window (pid = project id)
 
-Request Type: POST
+    Request Type: POST
 
-Header Information: {"uid": INT, "session_key": STRING}
+    Header Information: {"uid": INT, "session_key": STRING}
 
-Body Information: 
+    Body Information: 
 
-{
+    {
 
-  "iid": STRING, 
+      "iid": STRING, 
 
-  "image_box": JSON OBJECT 
+      "image_box": JSON OBJECT 
 
-  {
+      {
 
-    "pos_x": FLOAT,
+        "pos_x": FLOAT,
 
-    "pos_y": FLOAT,
+        "pos_y": FLOAT,
 
-    "width": FLOAT,
+        "width": FLOAT,
 
-    "height": FLOAT
+        "height": FLOAT
 
-  }, 
+      }, 
 
-  "window_box": JSON OBJECT
+      "window_box": JSON OBJECT
 
-  {
+      {
 
-    "pos_x": FLOAT,
+        "pos_x": FLOAT,
 
-    "pos_y": FLOAT,
+        "pos_y": FLOAT,
 
-    "width": FLOAT,
+        "width": FLOAT,
 
-    "height": FLOAT
+        "height": FLOAT
 
-  }
+      }
 
-}
+    }
 
-Return Value: Returns JSON object containing information for the newly made window
+    Return Value: Returns JSON object containing information for the newly made window
 
 ### Create Default Window
-URL: /p/:pid/new_window_default (pid = project id)
+    URL: /p/:pid/new_window_default (pid = project id)
 
-Request Type: POST
+    Request Type: POST
 
-Header Information: {"uid": INT, "session_key": STRING}
+    Header Information: {"uid": INT, "session_key": STRING}
 
-Body Information: { "iid": STRING }
+    Body Information: { "iid": STRING }
 
-Return Value: Returns JSON object containing information for the newly made window
+    Return Value: Returns JSON object containing information for the newly made window
 
 ### Update Window Position
-URL: /w/:wid/update_pos (wid = window id)
+    URL: /w/:wid/update_pos (wid = window id)
 
-Request Type: PUT
+    Request Type: PUT
 
-Header Information: {"uid": INT, "session_key": STRING}
+    Header Information: {"uid": INT, "session_key": STRING}
 
-Body Information:  { "pos_x": FLOAT, "pos_y": FLOAT, "width": FLOAT,"height": FLOAT }
+    Body Information:  { "pos_x": FLOAT, "pos_y": FLOAT, "width": FLOAT,"height": FLOAT }
 
-Return Value: Number of rows updated
+    Return Value: Number of rows updated
 
-Extra: Can only update a window if it belongs to a project that the user has access to
+    Extra: Can only update a window if it belongs to a project that the user has access to
 
 ### Update Image Position
-URL: /w/:wid/update_img_pos (wid = window id)
+    URL: /w/:wid/update_img_pos (wid = window id)
 
-Request Type: PUT
+    Request Type: PUT
 
-Header Information: {"uid": INT, "session_key": STRING}
+    Header Information: {"uid": INT, "session_key": STRING}
 
-Body Information:  { "pos_x": FLOAT, "pos_y": FLOAT, "width": FLOAT,"height": FLOAT }
+    Body Information:  { "pos_x": FLOAT, "pos_y": FLOAT, "width": FLOAT,"height": FLOAT }
 
-Return Value: Number of rows updated. 
+    Return Value: Number of rows updated. 
 
-Extra: Can only update a window if it belongs to a project that the user has access to
+    Extra: Can only update a window if it belongs to a project that the user has access to
 
 ### Delete Window
-URL: /w/:wid(wid = window id)
+    URL: /w/:wid(wid = window id)
 
-Request Type: DELETE
+    Request Type: DELETE
 
-Header Information: {"uid": INT, "session_key": STRING}
+    Header Information: {"uid": INT, "session_key": STRING}
 
-Body Information:  None
+    Body Information:  None
 
-Return Value: Number of rows updated. 
+    Return Value: Number of rows updated. 
 
-Extra: Can only delete a window if it belongs to a project that the user has access to
+    Extra: Can only delete a window if it belongs to a project that the user has access to
 
 ## User:
 ### Get User Information
-URL: /user 
+    URL: /user 
 
-Request Type: GET
+    Request Type: GET
 
-Header Information: {"uid": INT, "session_key": STRING}
+    Header Information: {"uid": INT, "session_key": STRING}
 
-Body Information: None
+    Body Information: None
 
-Return Value: JSON object that contains user information.
+    Return Value: JSON object that contains user information.
 
 ### Update User Information
-URL: /u/update_settings
+    URL: /u/update_settings
 
-Request Type: PUT
+    Request Type: PUT
 
-Header Information: {"uid": INT, "session_key": STRING}
+    Header Information: {"uid": INT, "session_key": STRING}
 
-Body Information: { "username": STRING, "password": STRING, "email": STRING, "legal_name": STRING, "institution": STRING }
+    Body Information: { "username": STRING, "password": STRING, "email": STRING, 
+    "legal_name": STRING, "institution": STRING }
 
-Return Value: Number of rows updated
+    Return Value: Number of rows updated
 
 ### User Login
-URL: /login
+    URL: /login
 
-Request Type: POST
+    Request Type: POST
 
-Header Information: None
+    Header Information: None
 
-Body Information: { "username": STRING, "password": STRING}
+    Body Information: { "username": STRING, "password": STRING}
 
-Return Value: Returns JSON object containing uid(user id) and the session key
+    Return Value: Returns JSON object containing uid(user id) and the session key
 
 ### User Sign Up
-URL: /signup
+    URL: /signup
 
-Request Type: POST
+    Request Type: POST
 
-Header Information: None
+    Header Information: None
 
-Body Information: { "username": STRING, "password": STRING, "email": STRING, "legal_name": STRING, "institution": STRING }
+    Body Information: { "username": STRING, "password": STRING, "email": STRING, 
+    "legal_name": STRING, "institution": STRING }
 
-Return Value: Returns JSON object containing uid(user id) and the session key
+    Return Value: Returns JSON object containing uid(user id) and the session key
 
 ## Source:
 Work in progress
 
 ## User_Project(relationship):
 ### Add User to Project
-URL: /p/:pid/add_to_project (pid = project id)
+    URL: /p/:pid/add_to_project (pid = project id)
 
-Request Type: POST
+    Request Type: POST
 
-Header Information: {"uid": INT, "session_key": STRING}
+    Header Information: {"uid": INT, "session_key": STRING}
 
-Body Information: None
+    Body Information: None
 
-Return Value: Number of rows updated
+    Return Value: Number of rows updated
 
 ### Remove User From Project
-URL: /p/:pid/remove_from_project (pid = project id)
+    URL: /p/:pid/remove_from_project (pid = project id)
 
-Request Type: POST
+    Request Type: POST
 
-Header Information: {"uid": INT, "session_key": STRING}
+    Header Information: {"uid": INT, "session_key": STRING}
 
-Body Information: None
+    Body Information: None
 
-Return Value: Number of rows updated
+    Return Value: Number of rows updated
 

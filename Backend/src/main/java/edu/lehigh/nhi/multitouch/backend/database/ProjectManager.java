@@ -8,6 +8,7 @@ import java.util.Date;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -20,6 +21,8 @@ public class ProjectManager {
     private final Gson gson;
     private final Statements mStatements;
     private final DatabaseManager mManager;
+    private final PreparedStatement mSelectProjectByPidPS, mSelectProjectsByUidPS, mInsertProjectPS, mUpdateProjectPS,
+            mDeleteProjectByPidPS;
 
     /** Project structure class being traslated into Json by Gson. */
     @SuppressWarnings("unused")
@@ -36,6 +39,11 @@ public class ProjectManager {
         gson = new Gson();
         mStatements = Statements.getInstance();
         mManager = manager;
+        mSelectProjectByPidPS = mStatements.project.selectProjectByPid;
+        mSelectProjectsByUidPS = mStatements.project.selectProjectsByUid;
+        mInsertProjectPS = mStatements.project.insertProject;
+        mUpdateProjectPS = mStatements.project.updateProjectByPid;
+        mDeleteProjectByPidPS = mStatements.project.deleteProjectByPid;
     }
 
     public JSONArray getProjectList(int uid) throws SQLException {
@@ -48,9 +56,9 @@ public class ProjectManager {
     }
 
     public JSONObject getProject(int pid) throws SQLException {
-        mStatements.project.selectProjectByPid.setInt(1, pid);
+        mSelectProjectByPidPS.setInt(1, pid);
         mStatements.window.selectWindowByPid.setInt(1, pid);
-        ResultSet projectRS = mStatements.project.selectProjectByPid.executeQuery();
+        ResultSet projectRS = mSelectProjectByPidPS.executeQuery();
         ResultSet windowRS = mStatements.window.selectWindowByPid.executeQuery();
         JSONObject retval = null;
         if (projectRS.next()) {
@@ -75,16 +83,46 @@ public class ProjectManager {
     }
 
     public JSONObject createProject(int uid, String name, float canvas_width, float canvas_height) throws SQLException {
-        PreparedStatement statement = mStatements.project.insertProject;
-        statement.setString(1, name);
-        statement.setTimestamp(2, DatabaseManager.convertDateToTimestamp(new Date()));
-        statement.setFloat(3, canvas_width);
-        statement.setFloat(4, canvas_height);
-        if (statement.executeUpdate() > 0) {
+        mInsertProjectPS.setString(1, name);
+        mInsertProjectPS.setTimestamp(2, DatabaseManager.convertDateToTimestamp(new Date()));
+        mInsertProjectPS.setFloat(3, canvas_width);
+        mInsertProjectPS.setFloat(4, canvas_height);
+        if (mInsertProjectPS.executeUpdate() > 0) {
             int pid;
             if ((pid = mManager.getLastInsertedId()) > 0)
                 return getProject(pid);
         }
         return null;
+    }
+
+    public int updateProject(int pid, String name, String thumbnail, float width, float height) throws SQLException {
+        mUpdateProjectPS.setString(1, name);
+        mUpdateProjectPS.setString(2, thumbnail);
+        mUpdateProjectPS.setFloat(3, width);
+        mUpdateProjectPS.setFloat(4, height);
+        mUpdateProjectPS.setInt(5, pid);
+        int retval = mUpdateProjectPS.executeUpdate();
+        mUpdateProjectPS.close();
+        return retval;
+    }
+
+    //TODO: Incomplete until relationships are complete
+    public int deleteProject(int pid) throws JSONException, SQLException{
+        int retval = 0;
+
+        mStatements.window.selectWindowByPid.setInt(1, pid);
+        ResultSet windowRS = mStatements.window.selectWindowByPid.executeQuery();
+        while (windowRS.next()) {
+            mStatements.window.deleteWindowByWid.setInt(1, windowRS.getInt("wid"));
+            retval += mStatements.window.deleteWindowByWid.executeUpdate();
+        }
+        mStatements.window.deleteWindowByWid.close();
+        windowRS.close();
+
+        mDeleteProjectByPidPS.setInt(1, pid);
+        retval += mDeleteProjectByPidPS.executeUpdate();
+        mDeleteProjectByPidPS.close();
+
+        return retval;
     }
 }

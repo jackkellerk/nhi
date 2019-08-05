@@ -13,7 +13,8 @@ public class UserManager {
     @SuppressWarnings("unused")
     private final DatabaseManager mManager;
     private final Statements mStatements;
-    private final PreparedStatement mSelectUserByUsernamePS, mInsertUserSimplePS, mInsertUserFullPS, mSelectPidByUidPS;
+    private final PreparedStatement mSelectUserByUsernamePS, mInsertUserSimplePS, mInsertUserFullPS, mSelectPidByUidPS,
+            mUpdateUserPS;
 
     protected UserManager(DatabaseManager manager) throws SQLException {
         mManager = manager;
@@ -22,6 +23,7 @@ public class UserManager {
         mInsertUserSimplePS = mStatements.user.insertUserSimple;
         mInsertUserFullPS = mStatements.user.insertUserFull;
         mSelectPidByUidPS = mStatements.user.selectPidByUid;
+        mUpdateUserPS = mStatements.user.updateUserSettings;
     }
 
     public String getPassword(String username) throws SQLException {
@@ -83,5 +85,16 @@ public class UserManager {
         }
         rs.close();
         return retval;
+    }
+
+    public int updateUser(int uid, String username, String password, String email, String legalName, String institution) throws SQLException {
+        mUpdateUserPS.setString(1, username);
+        mUpdateUserPS.setString(2, password);
+        mUpdateUserPS.setString(3, legalName);
+        mUpdateUserPS.setString(4, email);
+        mUpdateUserPS.setString(5, "TODO");
+        mUpdateUserPS.setString(6, institution);
+        mUpdateUserPS.setInt(7, uid);
+        return mUpdateUserPS.executeUpdate();
     }
 }

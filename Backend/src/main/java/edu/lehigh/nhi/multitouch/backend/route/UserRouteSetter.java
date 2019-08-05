@@ -85,5 +85,21 @@ public final class UserRouteSetter {
             });
         });
 
+         // update user settings.
+         RouteSetter.setRoute(RequestType.PUT, "/u/update_settings", (request, response) -> {
+            return RouteSetter.preprocessSessionCheck(request, response, encryption, (uid, sessionKey) -> {
+                    return RouteSetter.preprocessJSONValueGet(request, response,
+                        new String[] { "username", "password", "email", "legal_name", "institution" },
+                        new Type[] {Type.STRING, Type.STRING, Type.STRING, Type.STRING, Type.STRING }, (vals) -> {
+                            String username = (String) vals[0], password = (String) vals[1], email = (String) vals[2],
+                                    legalName = (String) vals[3], institution = (String) vals[4];
+                            int num_rows_updated = db.user.updateUser(uid, username, password, email, legalName, institution);
+                            JSONObject retval = new JSONObject();
+                            retval = db.user.userSettings(uid);
+                            retval.put("num_rows_updated", num_rows_updated);
+                            return new StructuredResponse(retval).toJson().toString();
+                    });
+            });
+        });
     }
 }

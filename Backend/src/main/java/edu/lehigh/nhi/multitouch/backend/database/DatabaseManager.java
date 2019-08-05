@@ -29,6 +29,8 @@ public class DatabaseManager {
     public final WindowManager window;
     public final ProjectManager project;
     public final SourceManager source;
+    public final UPRelationshipManager uprelationship;
+
 
     public DatabaseManager() throws SQLException {
         mStatements = Statements.getInstance();
@@ -36,6 +38,8 @@ public class DatabaseManager {
         window = new WindowManager(this);
         project = new ProjectManager(this);
         source = new SourceManager(this);
+        uprelationship = new UPRelationshipManager(this);
+
     }
 
     public int getLastInsertedId() throws SQLException {

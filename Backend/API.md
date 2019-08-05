@@ -77,7 +77,24 @@ Request Type: POST
 
 Header Information: {"uid": INT, "session_key": STRING}
 
-Body Information: { "iid": STRING, "image_box": JSON OBJECT {"pos_x": FLOAT,"pos_y": FLOAT,"width": FLOAT,"height": FLOAT}, "window_box": JSON OBJECT{"pos_x": FLOAT,"pos_y": FLOAT,"width": FLOAT,"height": FLOAT} }
+Body Information: 
+{ 
+"iid": STRING, 
+"image_box": JSON OBJECT 
+{
+"pos_x": FLOAT,
+"pos_y": FLOAT,
+"width": FLOAT,
+"height": FLOAT
+}, 
+"window_box": JSON OBJECT
+{
+"pos_x": FLOAT,
+"pos_y": FLOAT,
+"width": FLOAT,
+"height": FLOAT
+}
+}
 
 Return Value: Returns JSON object containing information for the newly made window
 

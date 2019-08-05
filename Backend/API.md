@@ -11,6 +11,11 @@ This document should detail the Backend API used in this project. The routes det
 ### Get Project Information
 #### URL: /p/:pid
 #### Request Type: GET
+#### Header Information: {"uid": uid, "session_key": session_key}
+#### Body Information: None
+#### Return Value: 
+JSON object that contains project information and also contians a JSON array of the project's windows.
+
 
 ## Window:
 ## User:

@@ -114,14 +114,16 @@ function gatherUserSettings()
     });
 }
 
-function postNewProject(data)
+// name: String, canvasWidth: float, canvasHeight: float
+function postNewProject(name, canvasWidth, canvasHeight)
 {
-    let newProjectSettings = {newProjectSettings: data};
+    // let newProjectSettings = {newProjectSettings: data};
+    let responseData = {name: name, canvas_width: canvasWidth, canvas_height: canvasHeight};
     $.ajax({
         method: 'POST',
         contentType: 'application/json',
         headers: {"uid": uid, "session_key": session_key},
-        data: JSON.stringify(newProjectSettings),
+        data: JSON.stringify(responseData),
         url: base_url + '/project/create',
         dataType: 'json',
         crossDomain: 'true',

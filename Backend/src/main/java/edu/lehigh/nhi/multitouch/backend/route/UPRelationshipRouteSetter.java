@@ -36,7 +36,7 @@ public final class UPRelationshipRouteSetter {
                     int num_rows_updated = db.uprelationship.createRelationship(uid,pid);
                     JSONObject retval = new JSONObject();
                     retval.put("num_rows_updated", num_rows_updated);
-                    return new StructuredResponse(404,"Stop").toJson().toString();
+                    return new StructuredResponse(retval).toJson().toString();
                 });
             });
         });

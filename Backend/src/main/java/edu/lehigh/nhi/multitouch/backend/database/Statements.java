@@ -94,7 +94,7 @@ class Statements {
 
         private UPRelationship() throws SQLException{
             insertRelationship = mMySQLConnection.prepareStatement("insert into user_project (uid, pid) values (?, ?)");
-            deleteRelationship = mMySQLConnection.prepareStatement("delete from user_project where uid = ?, pid = ?");
+            deleteRelationship = mMySQLConnection.prepareStatement("delete from user_project where uid = ? and pid = ?");
         }
     }
 

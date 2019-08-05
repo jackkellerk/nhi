@@ -9,16 +9,48 @@ This document should detail the Backend API used in this project. The routes det
 ## Project:
 
 #### Get Project Information
-URL: /p/:pid
+URL: /p/:pid (pid = project id)
 
 Request Type: GET
 
-Header Information: {"uid": uid, "session_key": session_key}
+Header Information: {"uid": INT, "session_key": STRING}
 
 Body Information: None
 
-Return Value: JSON object that contains project information and also contians a JSON array of the project's windows.
+Return Value: JSON object that contains project information and also contains a JSON array of the project's windows.
 
+#### User's projects
+URL: /project
+
+Request Type: GET
+
+Header Information: {"uid": INT, "session_key": STRING}
+
+Body Information: None
+
+Return Value: JSON Array of all of the current user's projects.
+
+#### Create Project
+URL: /project/create
+
+Request Type: POST
+
+Header Information: {"uid": INT, "session_key": STRING}
+
+Body Information: { "name": STRING, "canvas_width": FLOAT, "canvas_height": FLOAT}
+
+Return Value: JSON object that contains project information
+
+#### Update Project
+URL: /p/:pid/update (pid = project id)
+
+Request Type: PUT
+
+Header Information: {"uid": INT, "session_key": STRING}
+
+Body Information: { "name": STRING, "thumbnail": STRING, "width": FLOAT, "height": FLOAT}
+
+Return Value: number of rows updated
 
 ## Window:
 ## User:

@@ -9,6 +9,8 @@ import edu.lehigh.nhi.multitouch.backend.route.ProjectRouteSetter;
 import edu.lehigh.nhi.multitouch.backend.route.SourceRouteSetter;
 import edu.lehigh.nhi.multitouch.backend.route.UserRouteSetter;
 import edu.lehigh.nhi.multitouch.backend.route.WindowRouteSetter;
+import edu.lehigh.nhi.multitouch.backend.route.UPRelationshipRouteSetter;
+
 import spark.Spark;
 
 /**
@@ -75,6 +77,8 @@ public class App {
             UserRouteSetter.setRoutes(db, encryption);
             WindowRouteSetter.setRoutes(db, encryption);
             SourceRouteSetter.setRoutes(db, encryption);
+            UPRelationshipRouteSetter.setRoutes(db, encryption);
+
 
         } catch (SQLException e) {
             System.err.println("Unexpected Error Occured During Setup.");

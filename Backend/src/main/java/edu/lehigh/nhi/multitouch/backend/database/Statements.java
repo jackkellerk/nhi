@@ -10,6 +10,7 @@ class Statements {
     protected Window window;
     protected User user;
     protected Source source;
+    protected UPRelationship uprelationship;
 
     protected class Common {
         protected final PreparedStatement selectLastInsertion, checkProjectOwnership, getPidByWid;
@@ -23,7 +24,8 @@ class Statements {
     }
 
     protected class Project {
-        protected final PreparedStatement selectProjectByPid, insertProject, selectProjectsByUid;
+        protected final PreparedStatement selectProjectByPid, insertProject, selectProjectsByUid, updateProjectByPid, 
+                deleteProjectByPid;
 
         private Project() throws SQLException {
             selectProjectByPid = mMySQLConnection.prepareStatement("select * from project_t where pid = ?");
@@ -31,11 +33,16 @@ class Statements {
                     "insert into project_t(name, date_creation, canvas_width, canvas_height) values(?, ?, ?, ?)");
             selectProjectsByUid = mMySQLConnection
                     .prepareStatement("select * from user_project natural join project_t where uid = ?");
+            updateProjectByPid = mMySQLConnection.prepareStatement(
+                ("update project_t set name = ?, thumbnail = ?, canvas_width = ?, canvas_height = ? where pid = ?"));
+            deleteProjectByPid = mMySQLConnection.prepareStatement("delete from project_t where pid = ?");       
+                
         }
     }
 
     protected class Window {
-        protected final PreparedStatement selectWindowByPid, selectWindowByWid, insertWindow, updateWindowPosition;
+        protected final PreparedStatement selectWindowByPid, selectWindowByWid, insertWindow, updateWindowPosition,
+                updateImagePosition, deleteWindowByWid;
 
         private Window() throws SQLException {
             selectWindowByWid = mMySQLConnection.prepareStatement("select * from window_t where wid = ?");
@@ -46,12 +53,16 @@ class Statements {
             selectWindowByPid = mMySQLConnection.prepareStatement("select * from window_t where pid = ?");
             updateWindowPosition = mMySQLConnection.prepareStatement(
                     ("update window_t set canvas_pos_x = ?, canvas_pos_y = ?, canvas_width = ?, canvas_height = ? where wid = ?"));
+            updateImagePosition = mMySQLConnection.prepareStatement(
+                    ("update window_t set img_pos_x = ?, img_pos_y = ?, img_width = ?, img_height = ? where wid = ?"));
+            deleteWindowByWid = mMySQLConnection.prepareStatement("delete from window_t where wid = ?");       
+
         }
     }
 
     protected class User {
         protected final PreparedStatement selectUserByUsername, selectUserByUid, insertUserSimple, insertUserFull,
-                selectPidByUid;
+                selectPidByUid, updateUserSettings;
 
         private User() throws SQLException {
             selectUserByUsername = mMySQLConnection.prepareStatement("select * from users where username = ?");
@@ -61,6 +72,7 @@ class Statements {
             insertUserFull = mMySQLConnection.prepareStatement(
                     "INSERT INTO users (username, password, legalname, email, profilepicture, institution) VALUES (?, ?, ?,?,?,?)");
             selectPidByUid = mMySQLConnection.prepareStatement("select pid from user_project where uid = ?");
+            updateUserSettings = mMySQLConnection.prepareStatement("update users set username = ?, password = ?, legalname = ?, email = ?, profilepicture = ?, institution = ? where id = ?");
         }
     }
 
@@ -77,6 +89,15 @@ class Statements {
         }
     }
 
+    protected class UPRelationship {
+        protected final PreparedStatement insertRelationship, deleteRelationship;
+
+        private UPRelationship() throws SQLException{
+            insertRelationship = mMySQLConnection.prepareStatement("insert into user_project (uid, pid) values (?, ?)");
+            deleteRelationship = mMySQLConnection.prepareStatement("delete from user_project where uid = ?, pid = ?");
+        }
+    }
+
     private static Statements INSTANCE;
 
     private Statements() throws SQLException {
@@ -88,6 +109,7 @@ class Statements {
         user = new User();
         window = new Window();
         source = new Source();
+        uprelationship = new UPRelationship();
     }
 
     protected synchronized static Statements getInstance() throws SQLException {

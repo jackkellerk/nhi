@@ -57,3 +57,9 @@ var instructionContainer = new PIXI.Container();
 /* Start of global variables for Zoom (LMSI) */
 var richText;
 /* End of global variables for Zoom (LMSI) */
+
+
+/* Start of global variables for New Project */
+let newProjectAnswers = [];  // each element in the array is {option: "", choices: ["", ...]}
+let newProjectProperties;  // processed JSON object of newProjectAnswers
+/* End of global variables for New Project */

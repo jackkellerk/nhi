@@ -24,6 +24,7 @@ Title.prototype.clear = function () {
 
 
 
+let clickedOption;
 function AvailableOption(options) {
     this.content = options.content;
     this.style = new PIXI.TextStyle({
@@ -36,11 +37,20 @@ function AvailableOption(options) {
     this.text.interactive = true;
     // this.text.onClick = options.onClick;
     this.text.on('pointerdown', onButtonDown)
-            .on('pointerdown', options.onClick)
+            .on('pointerdown', function(){ onClickAvailableOption(options.content); })
         .on('pointerup', onButtonUp)
         .on('pointerupoutside', onButtonUp)
         .on('pointerover', onButtonOver)
         .on('pointerout', onButtonOut);
+    
+    function onClickAvailableOption(content){
+        clickedOption = content;
+        newProjectAnswers.push({option: clickedOption, choices: selectedChoices});
+        clickedOption = null;
+        selectedChoices = [];
+        
+        options.onClick();
+    }
 }
 
 AvailableOption.prototype.display = function (container, options) {
@@ -84,6 +94,8 @@ const checkboxCheckedSelectedTexture = new PIXI.Texture.from('Images/checkbox_ch
 const checkboxUncheckedTexture = new PIXI.Texture.from('Images/checkbox_unchecked.png');
 const checkboxUncheckedSelectedTexture = new PIXI.Texture.from('Images/checkbox_unchecked_selected.png');
 
+let selectedChoices = [];
+
 function Choice(options) {
     let text = new PIXI.Text(options.content, new PIXI.TextStyle({
         fill: options.fill || "#2d2d2d",
@@ -93,7 +105,7 @@ function Choice(options) {
     text.x = 40;
     this.optionContainer.buttonMode = true;
     this.optionContainer.interactive = true;
-    this.optionContainer.on('pointerdown', checkboxOnPointerDown)
+    this.optionContainer.on('pointerdown', function(){ checkboxOnPointerDown(options.content); })
         .on('pointerover', checkboxOnPointerOver)
         .on('pointerout', checkboxOnPointerOut);
     this.optionContainer.isChecked = false;
@@ -103,25 +115,30 @@ function Choice(options) {
     checkbox.width = 30;
     checkbox.height = 30;
     checkbox.y = 2;
+    // checkbox.tint = 0x333333;
     checkbox.interactive = true;
-    function checkboxOnPointerDown() {
+    function checkboxOnPointerDown(content) {
         // this.isdown = true;
         // this.isdown = false;
         if (this.isOver) {
             if (this.isChecked) {
                 checkbox.texture = checkboxUncheckedSelectedTexture;
                 this.isChecked = false;
+                selectedChoices = selectedChoices.filter(e => e !== content);  // remove content from the array
             } else {
                 checkbox.texture = checkboxCheckedSelectedTexture;
                 this.isChecked = true;
+                selectedChoices.push(content);
             }
         } else {
             if (this.isChecked) {
                 checkbox.texture = checkboxUncheckedTexture;
                 this.isChecked = false;
+                selectedChoices = selectedChoices.filter(e => e !== content);  // remove content from the array
             } else {
                 checkbox.texture = checkboxCheckedTexture;
                 this.isChecked = true;
+                selectedChoices.push(content);
             }
         }
     }

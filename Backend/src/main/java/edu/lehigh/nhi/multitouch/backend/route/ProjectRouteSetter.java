@@ -5,6 +5,7 @@ import org.json.JSONObject;
 
 import edu.lehigh.nhi.multitouch.backend.Encryption;
 import edu.lehigh.nhi.multitouch.backend.ErrorHandler;
+import edu.lehigh.nhi.multitouch.backend.JSONValueGetter;
 import edu.lehigh.nhi.multitouch.backend.JSONValueGetter.Type;
 import edu.lehigh.nhi.multitouch.backend.StructuredResponse;
 import edu.lehigh.nhi.multitouch.backend.database.DatabaseManager;
@@ -65,12 +66,15 @@ public final class ProjectRouteSetter {
 
             return RouteSetter.preprocessSessionCheck(request, response, encryption, (uid, sessionkey) -> {
                 return RouteSetter.preprocessJSONValueGet(request, response,
-                        new String[] { "name", "canvas_width", "canvas_height" },
-                        new Type[] { Type.STRING, Type.FLOAT, Type.FLOAT, Type.FLOAT }, (vals) -> {
+                        new String[] { "name", "canvas_width", "canvas_height", "properties", "institution", "sources" },
+                        new Type[] { Type.STRING, Type.FLOAT, Type.FLOAT, Type.JSONOBJ, Type.STRING, Type.JSONARR }, (vals) -> {
 
                             String name = (String) vals[0];
                             float canvas_width = (float) vals[1];
                             float canvas_height = (float) vals[2];
+                            JSONObject properties = (JSONObject) vals[3];
+                            String institution = (String) vals[4];
+                            JSONArray sources = (JSONArray) vals[5];
                             JSONObject retval = db.project.createProject(uid, name, canvas_width, canvas_height);
 
                             if (retval == null)

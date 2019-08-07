@@ -55,6 +55,7 @@ public final class ProjectRouteSetter {
                     return StructuredResponse.getErrorResponse(ErrorHandler.PRIVILAGE.NO_RIGHT_TO_ACCESS_PROJECT);
 
                 return StructuredResponse.getResponse(retval);
+                //
             });
         });
 

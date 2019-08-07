@@ -134,8 +134,20 @@ class NewProject{
         }
     }
     
+    static processNewProjectAnswers(){
+        let ret = {};
+        ret.proficiency = newProjectAnswers[0].option;
+        ret.materials = newProjectAnswers[1].choices;
+        ret.objective = newProjectAnswers[2].option;
+        ret.optimize = newProjectAnswers[3].choices;
+        console.log(ret);
+        return ret;
+    }
+    
     static goToSources(){
-        postNewProject("new proj", app.screen.width, app.screen.height);  // An Ajax "POST" call to backend
+        newProjectProperties = NewProject.processNewProjectAnswers();
+        postNewProject("new proj", app.screen.width, app.screen.height, newProjectProperties, "Lehigh", [1, 2]);  // An Ajax "POST" call to backend
+        
         currentActivity = activityArray[4];
         updateActivity();
     }

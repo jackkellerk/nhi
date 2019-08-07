@@ -28,12 +28,16 @@ var guideTextContainer = new PIXI.Container();
 // graphics for buttonBox
 const LMSIgraphics = new PIXI.Graphics();
 
+// initialize cropImage
+var cropImage = new PIXI.Graphics();
+
 // variable for screenot (crop)
 // var cropImage = new PIXI.Graphics();
 
 // variable to save PIXI.Point for cropping
 var testPoint = new PIXI.Point(0, 0);
 var testPointEnd = new PIXI.Point(0, 0);
+var curImagePosition = new PIXI.Point(0, 0);
 
 // variable for viewport
 var viewport = null;
@@ -137,23 +141,30 @@ function LMSI(imageSource, _wid, _pid) {
 
     // activate mouse/touch gestures for viewport
     viewport
-        .drag().on('drag-end', (screen, word) => console.log(screen, viewport.world))
+        .drag()
+            .on('drag-start', (screen, world) => console.log(screen, viewport.world))
+            .on('drag-end', (screen, world) => console.log(screen, viewport.world))
         .pinch()
         .wheel()
         .decelerate();
-    
+
+    // add resize() eventLisetenr for viewport, when resize event fires
+    window.addEventListener('resize', () => viewport.resize(window.innerWidth, window.innerHeight));
+
     // test printlns
     console.log("Viewport viewport.plugins['drag']: " + viewport.plugins['drag']);
     console.log("Viewport viewport.plugins['drag'].parent.x: " + viewport.plugins['drag'].parent.x);
-    // console.log("Viewport viewport.parent.x: " + viewport.parent.x); // doesn't work
     console.log("Viewport viewport.plugins['drag'].moved: " + viewport.plugins['drag'].moved);
 
     // resize image as size of viewport
-    testimg.width = window.innerWidth;
-    testimg.height = window.innerWidth; 
+    // testimg.width = window.innerWidth;
+    // testimg.height = window.innerWidth; 
+    // testimg.position.set(0, 0);
 
     // add background image to viewport
     viewport.addChild(testimg);
+
+    // add cropImage Graphics to 
 
     // draw rectangle box to put buttons
     LMSIgraphics.beginFill(0xFFFFFF);
@@ -198,77 +209,84 @@ function drawPoint(event) {
 
         if (!drawing) { //Checks what phase of line create user is in
 
-            // test printlnt
-            console.log("testimg w & h: " + testimg.width + ", " + testimg.height);
-
-            // Clears current graphics on screen
-            graphics.clear();
-            // cropImage.clear();
-            viewport.mask = null;
-
-            // Updates starting point
+            
+            // Updates starting point with toWorld()
             testPoint = viewport.toWorld(event.data.global.x, event.data.global.y);
 
-            // Constructs starting point
-            graphics.beginFill(0xFFFFFF);
-            graphics.drawRect(testPoint.x - 5, testPoint.y - 5, 10, 10);
-            graphics.endFill();
+            // check if point is on the image
+            if (testPoint.x < 0 || testPoint.y < 0 || testPoint.x > testimg.width || testPoint.y > testimg.height) {
+                // nothing happens;
+            }
+            else {
+                // Clears current graphics on screen
+                graphics.clear();
+                // cropImage.clear();
+                viewport.mask = null;
 
-            viewport.addChild(graphics);
+                // Constructs starting point
+                graphics.beginFill(0xFFFFFF);
+                graphics.drawRect(testPoint.x - 5, testPoint.y - 5, 10, 10);
+                graphics.endFill();
 
-            // Changes drawing value 
-            drawing = true;
-            
-            //Updates text and cancel button
-            guideText.text = 'Select the ending point of rectangle. Cancel to reset.';
-            
-            // alpha of cancle button
-            cancel_button.alpha = 1;
+                viewport.addChild(graphics);
+
+                // Changes drawing value 
+                drawing = true;
+                
+                //Updates text and cancel button
+                guideText.text = 'Select the ending point of rectangle. Cancel to reset.';
+                
+                // alpha of cancle button
+                cancel_button.alpha = 1;
+            }
+
         } //end drawing if
         else {
 
-            // update ending point 
+            // update ending point with toWorld()
             testPointEnd = viewport.toWorld(event.data.global.x, event.data.global.y);
 
-            //Draws end point
-            graphics.beginFill(0xFFFFFF);
-            graphics.drawRect(testPointEnd.x - 5, testPointEnd.y - 5, 10, 10);
-            graphics.endFill()
-
-            //Constructs line from saved starting point to current end point
-            graphics.lineStyle(1, 0xFFFFFF).moveTo(testPoint.x, testPoint.y);
-
-            // draw rectangle from current starting point and endpoint
-            // points: starting (x,y) on canvas
-            // event.data.global: ending (x,y) on canvas
-            // event.data.global - points = width / height of rectangle
-            graphics.drawRect(testPoint.x, testPoint.y, testPointEnd.x - testPoint.x, testPointEnd.y -
-                testPoint.y);
-
-            // initialize cropImage
-            var cropImage = new PIXI.Graphics();
-
-            // set cropImage, which is PIXI.Graphics to mask image on screen
-            cropImage.drawRect(testPoint.x, testPoint.y, testPointEnd.x - testPoint.x, testPointEnd.y -
-                testPoint.y);
+            // check if point is on the image
+            if (testPointEnd.x < 0 || testPointEnd.y < 0 || testPointEnd.x > testimg.width || testPointEnd.y > testimg.height) {
+                // nothing happens;
+            }
+            else {
                 
-            cropImage.renderable = true;
-            cropImage.cacheAsBitmap = true;
+                //Draws end point
+                graphics.beginFill(0xFFFFFF);
+                graphics.drawRect(testPointEnd.x - 5, testPointEnd.y - 5, 10, 10);
+                graphics.endFill()
 
-            viewport.mask = cropImage;
-            
-            // viewport.addChild(cropImage);
+                //Constructs line from saved starting point to current end point
+                graphics.lineStyle(1, 0xFFFFFF).moveTo(testPoint.x, testPoint.y);
 
-            // app.stage.addChild(cropImage);
+                // draw rectangle from current starting point and endpoint
+                // points: starting (x,y) on canvas
+                // event.data.global: ending (x,y) on canvas
+                // event.data.global - points = width / height of rectangle
+                graphics.drawRect(testPoint.x, testPoint.y, testPointEnd.x - testPoint.x, testPointEnd.y -
+                    testPoint.y);
 
-            //Changes draw value and updates other information
-            drawing = false;
-            
-            guideText.text = 'Copy of the selected area of image created.';
+                // set cropImage, which is PIXI.Graphics to mask image on screen
+                cropImage.drawRect(testPoint.x, testPoint.y, testPointEnd.x - testPoint.x, testPointEnd.y -
+                    testPoint.y);
+                    
+                cropImage.renderable = true;
+                cropImage.cacheAsBitmap = true;
 
-            // test println
-            console.log("Cropped: " + testPoint.x + " " + testPoint.y + " , " + testPointEnd.x + " " + testPointEnd.y);
-            console.log("testimg w & h: " + testimg.width + ", " + testimg.height);
+                viewport.mask = cropImage;
+
+                //Changes draw value and updates other information
+                drawing = false;
+                
+                guideText.text = 'Copy of the selected area of image created.';
+
+                // test println
+                console.log("Cropped: " + testPoint.x + " " + testPoint.y + " , " + testPointEnd.x + " " + testPointEnd.y);
+                console.log("testimg w & h: " + testimg.width + ", " + testimg.height);
+                console.log("testimg position: " + testimg.position.x + ", " + testimg.position.y);
+                console.log("testimg position: " + viewport.position.x + ", " + testimg.position.y);
+            }
 
             // test crop
             // temp.frame = cropImage.drawRect(testPoint.x, testPoint.y, testPointEnd.x - testPoint.x, testPointEnd.y -

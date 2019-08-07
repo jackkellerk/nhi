@@ -43,6 +43,19 @@ This document should detail the Backend API used in this project. The routes det
     Return Value: JSON object that contains project information
 
     Extra: Creates a user_project relationship allowing user future access to this new project
+### Copy Project
+    URL: /p/:pid/copy (pid = project id)
+
+    Request Type: POST
+
+    Header Information: {"uid": INT, "session_key": STRING}
+
+    Body Information: None
+
+    Return Value: JSON object that contains project information
+
+    Extra: This will copy all windows but will not copy all user_project relationships making 
+    the person who copied the only person to access it.
 
 ### Update Project
     URL: /p/:pid/update (pid = project id)

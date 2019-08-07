@@ -90,11 +90,12 @@ class Statements {
     }
 
     protected class UPRelationship {
-        protected final PreparedStatement insertRelationship, deleteRelationship;
+        protected final PreparedStatement insertRelationship, deleteRelationship, selectRelationshipByPid;
 
         private UPRelationship() throws SQLException{
             insertRelationship = mMySQLConnection.prepareStatement("insert into user_project (uid, pid) values (?, ?)");
             deleteRelationship = mMySQLConnection.prepareStatement("delete from user_project where uid = ? and pid = ?");
+            selectRelationshipByPid = mMySQLConnection.prepareStatement("select * from user_project where pid = ?");
         }
     }
 

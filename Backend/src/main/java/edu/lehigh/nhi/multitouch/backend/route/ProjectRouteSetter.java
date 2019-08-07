@@ -66,7 +66,7 @@ public final class ProjectRouteSetter {
             return RouteSetter.preprocessSessionCheck(request, response, encryption, (uid, sessionkey) -> {
                 return RouteSetter.preprocessJSONValueGet(request, response,
                         new String[] { "name", "canvas_width", "canvas_height" },
-                        new Type[] { Type.STRING, Type.FLOAT, Type.FLOAT, Type.FLOAT }, (vals) -> {
+                        new Type[] { Type.STRING, Type.FLOAT, Type.FLOAT}, (vals) -> {
 
                             String name = (String) vals[0];
                             float canvas_width = (float) vals[1];
@@ -82,6 +82,7 @@ public final class ProjectRouteSetter {
 
             });
         });
+
 
         // update projects.
         RouteSetter.setRoute(RequestType.PUT, "/p/:pid/update", (request, response) -> {
@@ -107,20 +108,37 @@ public final class ProjectRouteSetter {
             });
         });
 
+        // update projects.
+        RouteSetter.setRoute(RequestType.POST, "/p/:pid/copy", (request, response) -> {
+            return RouteSetter.preprocessSessionCheck(request, response, encryption, (uid, sessionKey) -> {
+                return RouteSetter.preprocessPathParam(request, response, new String[] { "pid" }, (params) -> {
+                    int pid = (int)params[0];
+                    if (!db.checkProjectOwnership(uid, pid)) {
+                        return StructuredResponse.getErrorResponse(ErrorHandler.PRIVILAGE.NO_RIGHT_TO_ACCESS_PROJECT);
+                    }
+                    JSONObject retval = db.project.copyProject(pid,uid);
+                    if (retval == null){
+                        return StructuredResponse.getErrorResponse(ErrorHandler.UNKOWN.INSERTION_NO_UPDATE_UNKNOWN);
+                    }
+                    return StructuredResponse.getResponse(retval);
+                    });
+                });
+            });
+
             // delete project.
             RouteSetter.setRoute(RequestType.DELETE, "/p/:pid", (request, response) -> {
-              //  return RouteSetter.preprocessSessionCheck(request, response, encryption, (uid, sessionKey) -> {
+                return RouteSetter.preprocessSessionCheck(request, response, encryption, (uid, sessionKey) -> {
                     return RouteSetter.preprocessPathParam(request, response, new String[] { "pid" }, (params) -> {
                         int pid = (int)params[0];
-               //         if (!db.checkProjectOwnership(uid, pid)) {
-                //            return StructuredResponse.getErrorResponse(ErrorHandler.PRIVILAGE.NO_RIGHT_TO_ACCESS_PROJECT);
-                //        }
+                        if (!db.checkProjectOwnership(uid, pid)) {
+                            return StructuredResponse.getErrorResponse(ErrorHandler.PRIVILAGE.NO_RIGHT_TO_ACCESS_PROJECT);
+                        }
                         int num_items_deleted = db.project.deleteProject(pid);
                         JSONObject retval = new JSONObject();
                         retval.put("num_itemss_deleted", num_items_deleted);
                         return new StructuredResponse(retval).toJson().toString();
                     });
-               // });
+                });
             });
     }
 }

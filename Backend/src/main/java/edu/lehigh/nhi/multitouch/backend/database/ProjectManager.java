@@ -89,8 +89,12 @@ public class ProjectManager {
         mInsertProjectPS.setFloat(4, canvas_height);
         if (mInsertProjectPS.executeUpdate() > 0) {
             int pid;
-            if ((pid = mManager.getLastInsertedId()) > 0)
+            if ((pid = mManager.getLastInsertedId()) > 0){
+                mStatements.uprelationship.insertRelationship.setFloat(1, uid);
+                mStatements.uprelationship.insertRelationship.setFloat(2, pid);
+                mStatements.uprelationship.insertRelationship.executeUpdate();
                 return getProject(pid);
+            }
         }
         return null;
     }
@@ -106,10 +110,38 @@ public class ProjectManager {
         return retval;
     }
 
+    public JSONObject copyProject(int pid, int uid) throws SQLException{
+        JSONObject oldProject = getProject(pid);
+        JSONObject newProject = createProject(uid, oldProject.getString("name") + " COPY", oldProject.getFloat("canvas_width"), oldProject.getFloat("canvas_height"));
+        
+        //Gathers and copies all associated windows
+        mStatements.window.selectWindowByPid.setInt(1, pid);
+        ResultSet windowRS = mStatements.window.selectWindowByPid.executeQuery();
+        while (windowRS.next()) {
+            mStatements.window.insertWindow.setInt(1, windowRS.getInt("iid"));
+            mStatements.window.insertWindow.setInt(2, newProject.getInt("pid"));
+            mStatements.window.insertWindow.setFloat(3, windowRS.getFloat("img_pos_x"));
+            mStatements.window.insertWindow.setFloat(4, windowRS.getFloat("img_pos_y"));
+            mStatements.window.insertWindow.setFloat(5, windowRS.getFloat("img_width"));
+            mStatements.window.insertWindow.setFloat(6, windowRS.getFloat("img_height"));
+            mStatements.window.insertWindow.setFloat(7, windowRS.getFloat("canvas_pos_x"));
+            mStatements.window.insertWindow.setFloat(8, windowRS.getFloat("canvas_pos_y"));
+            mStatements.window.insertWindow.setFloat(9, windowRS.getFloat("canvas_width"));
+            mStatements.window.insertWindow.setFloat(10, windowRS.getFloat("canvas_height"));
+            mStatements.window.insertWindow.setTimestamp(11, windowRS.getTimestamp("date_creation"));
+            mStatements.window.insertWindow.executeUpdate();
+        }
+        mStatements.window.insertWindow.close();
+        windowRS.close();
+
+        return getProject(newProject.getInt("pid"));
+    }
+
     //TODO: Incomplete until relationships are complete
     public int deleteProject(int pid) throws JSONException, SQLException{
         int retval = 0;
 
+        //Gathers and deletes all associated windows
         mStatements.window.selectWindowByPid.setInt(1, pid);
         ResultSet windowRS = mStatements.window.selectWindowByPid.executeQuery();
         while (windowRS.next()) {
@@ -119,6 +151,18 @@ public class ProjectManager {
         mStatements.window.deleteWindowByWid.close();
         windowRS.close();
 
+        //Gathers and deletes all user-project relationships
+        mStatements.uprelationship.selectRelationshipByPid.setInt(1, pid);
+        ResultSet relationshipRS =  mStatements.uprelationship.selectRelationshipByPid.executeQuery();
+        while (relationshipRS.next()) {
+            mStatements.uprelationship.deleteRelationship.setInt(1, relationshipRS.getInt("uid"));
+            mStatements.uprelationship.deleteRelationship.setInt(2, pid);
+            retval += mStatements.uprelationship.deleteRelationship.executeUpdate();
+        }
+        mStatements.uprelationship.deleteRelationship.close();
+        relationshipRS.close();
+
+        //Deletes project from project table
         mDeleteProjectByPidPS.setInt(1, pid);
         retval += mDeleteProjectByPidPS.executeUpdate();
         mDeleteProjectByPidPS.close();

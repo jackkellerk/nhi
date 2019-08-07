@@ -10,15 +10,21 @@
 // mode_change.png made by Cursor Creative from https://www.flaticon.com/
 // screenshot.png made by https://www.flaticon.com/authors/freepik
 // move.png made made by https://www.flaticon.com/authors/icongeek26
-var zoom_background = PIXI.Texture.from('./Images/lowmag_test.jpg');
-var temp = PIXI.Texture.from('./Images/lowmag_test.jpg');
-// create a new new texture from image
-var testimg = new PIXI.Sprite(zoom_background);
 const cancel_button = PIXI.Sprite.from('./Images/cancel_icon.png');
 const mode_button = PIXI.Sprite.from('./Images/mode_change.png');
 const screenshot = PIXI.Sprite.from('./Images/screenshot.png');
 const move = PIXI.Sprite.from('./Images/move.png');
 
+// create a new new texture from image
+var temp = PIXI.Texture.from('./Images/lowmag_test.jpg');
+var zoom_background = PIXI.Texture.from('./Images/lowmag_test.jpg');
+var testimg = new PIXI.Sprite(zoom_background);
+
+// set the origin of sprite to the cetner using anchor
+// (0, 0) means origin is top left
+// (0.5, 0.5) menas origin is center
+// (1, 1) means origin is bottom left
+// testimg.anchor.set(0.5);
 
 // containers for button, guide text, and LMSIContainer to hold everything
 var LMSIContainer = new PIXI.Container();
@@ -31,13 +37,12 @@ const LMSIgraphics = new PIXI.Graphics();
 // initialize cropImage
 var cropImage = new PIXI.Graphics();
 
-// variable for screenot (crop)
-// var cropImage = new PIXI.Graphics();
-
 // variable to save PIXI.Point for cropping
 var testPoint = new PIXI.Point(0, 0);
 var testPointEnd = new PIXI.Point(0, 0);
 var curImagePosition = new PIXI.Point(0, 0);
+var tempPoints = new PIXI.Point(0, 0);
+var worldPoint = new PIXI.Point(0, 0);
 
 // variable for viewport
 var viewport = null;
@@ -109,7 +114,7 @@ screenshot.width = 20;
 screenshot.height = 20;
 screenshot.x = cancel_button.x + cancel_button.width / 4 + (cancel_button.width / 2 - screenshot.width) / 2;
 screenshot.y = cancel_button.y + cancel_button.height + cancel_button.y + cancel_button.height / 4 + (cancel_button.width / 2 - screenshot.width) / 2;
-screenshot.alpha = 0;   // 0 because default mode is move
+screenshot.alpha = 0; // 0 because default mode is move
 
 move.width = 25;
 move.height = 25;
@@ -123,12 +128,12 @@ move.alpha = 1;
  */
 function LMSI(imageSource, _wid, _pid) {
 
-    
+
     wid = _wid;
     pid = _pid;
 
     setBackground(imageSource);
-    
+
     // calls pixi-viewport
     viewport = new PIXI.extras.Viewport({
         screenWidth: window.innerWidth,
@@ -142,11 +147,24 @@ function LMSI(imageSource, _wid, _pid) {
     // activate mouse/touch gestures for viewport
     viewport
         .drag()
-            .on('drag-start', (screen, world) => console.log(screen, viewport.world))
-            .on('drag-end', (screen, world) => console.log(screen, viewport.world))
         .pinch()
         .wheel()
         .decelerate();
+
+    // test printlns - to adjust coordinates bewteen screen and world
+    viewport
+        .drag()
+        .on('drag-start', (screen, world) => {
+            console.log("Screen & Viewport: ");
+            console.log(screen, viewport);
+            console.log("Screen & Viewport in JSON:");
+            console.dir("Screen World: " + screen.world);
+            console.log("Viewport transform: " + viewport.transform.postition);
+            console.dir("Viewport transform (dir): " + viewport.transform);
+        })
+        .on('drag-end', (screen, world) => console.log(screen, world))
+        .wheel()
+        .on('wheel-scroll', (screen, world) => console.log(screen, viewport.world));
 
     // add resize() eventLisetenr for viewport, when resize event fires
     window.addEventListener('resize', () => viewport.resize(window.innerWidth, window.innerHeight));
@@ -206,39 +224,65 @@ function LMSI(imageSource, _wid, _pid) {
 function drawPoint(event) {
     if (!cancel_draw) { //Checks if user clicked on cancel button
 
-
         if (!drawing) { //Checks what phase of line create user is in
 
-            
+            // test printlns
+            console.log("Viewport worldTransform: " + viewport.transform.position.scope._x);
+            console.log("Screen & Viewport: ");
+            console.log(screen, viewport);
+
             // Updates starting point with toWorld()
             testPoint = viewport.toWorld(event.data.global.x, event.data.global.y);
 
+            // save it to tempPoint
+            tempPoint = testPoint;
+
+            // save Worldpoint
+            worldPoint  = new PIXI.Point(viewport.transform.position._x, viewport.transform.position._y);
+            console.log("WorldPoint: " + worldPoint.x + "," + viewport.transform.position._y);
+
+            if (worldPoint.x < 0 || worldPoint.y < 0) {
+                console.log("World is not in 4th quadrant!");
+                // testPoint.x += viewport.transform.position._x;
+                // testPoint.y += viewport.transform.position._y;
+            }
+
+            // add adjust
+            // testPoint += viewport.toWorld(viewport.transform.position_x, viewport.transform.position._y);
+            // testPoint.x += viewport.transform.position._x;
+            // testPoint.y += viewport.transform.position._y;
+
             // check if point is on the image
-            if (testPoint.x < 0 || testPoint.y < 0 || testPoint.x > testimg.width || testPoint.y > testimg.height) {
-                // nothing happens;
-            }
-            else {
-                // Clears current graphics on screen
-                graphics.clear();
-                // cropImage.clear();
-                viewport.mask = null;
-
-                // Constructs starting point
-                graphics.beginFill(0xFFFFFF);
-                graphics.drawRect(testPoint.x - 5, testPoint.y - 5, 10, 10);
-                graphics.endFill();
-
-                viewport.addChild(graphics);
-
-                // Changes drawing value 
-                drawing = true;
+            // if (testPoint.x < 0 || testPoint.y < 0 || testPoint.x > testimg.width || testPoint.y > testimg.height) {
+            //     // nothing happens;
+            // } else {
                 
-                //Updates text and cancel button
-                guideText.text = 'Select the ending point of rectangle. Cancel to reset.';
-                
-                // alpha of cancle button
-                cancel_button.alpha = 1;
-            }
+            // }
+
+            // Clears current graphics on screen
+            graphics.clear();
+            // cropImage.clear();
+            viewport.mask = null;
+
+            // Constructs starting point
+            graphics.beginFill(0xFFFFFF);
+            graphics.drawRect(testPoint.x - 5, testPoint.y - 5, 10, 10);
+            graphics.endFill();
+
+            viewport.addChild(graphics);
+
+            // Changes drawing value 
+            drawing = true;
+
+            //Updates text and cancel button
+            guideText.text = 'Select the ending point of rectangle. Cancel to reset.';
+
+            // alpha of cancle button
+            cancel_button.alpha = 1;
+
+            // test println
+            console.log("Event.data.global (mouse) 1st: " + event.data.global.x + ", " + event.data.global.y);
+            console.log("testPoint: " + testPoint.x + ", " + testPoint.y);
 
         } //end drawing if
         else {
@@ -246,13 +290,63 @@ function drawPoint(event) {
             // update ending point with toWorld()
             testPointEnd = viewport.toWorld(event.data.global.x, event.data.global.y);
 
+            // add adjust
+            // testPointEnd.x += viewport.transform.position._x;
+            // testPointEnd.y += viewport.transform.position._y;
+
             // check if point is on the image
-            if (testPointEnd.x < 0 || testPointEnd.y < 0 || testPointEnd.x > testimg.width || testPointEnd.y > testimg.height) {
-                // nothing happens;
-            }
-            else {
-                
-                //Draws end point
+            // if (testPointEnd.x < 0 || testPointEnd.y < 0 || testPointEnd.x > testimg.width || testPointEnd.y > testimg.height) {
+            //     // nothing happens;
+            // } else {
+
+            //     //Draws end point
+            //     graphics.beginFill(0xFFFFFF);
+            //     graphics.drawRect(testPointEnd.x - 5, testPointEnd.y - 5, 10, 10);
+            //     graphics.endFill()
+
+            //     //Constructs line from saved starting point to current end point
+            //     graphics.lineStyle(1, 0xFFFFFF).moveTo(testPoint.x, testPoint.y);
+
+            //     // draw rectangle from current starting point and endpoint
+            //     // points: starting (x,y) on canvas
+            //     // event.data.global: ending (x,y) on canvas
+            //     // event.data.global - points = width / height of rectangle
+            //     graphics.drawRect(testPoint.x, testPoint.y, testPointEnd.x - tempPoint.x, testPointEnd.y -
+            //         tempPoint.y);
+
+            //     // set cropImage, which is PIXI.Graphics to mask image on screen
+            //     cropImage.drawRect(testPoint.x, testPoint.y, testPointEnd.x - tempPoint.x, testPointEnd.y -
+            //         tempPoint.y);
+
+            //     cropImage.renderable = true;
+            //     cropImage.cacheAsBitmap = true;
+
+            //     viewport.mask = cropImage;
+
+            //     // test to crop without cropImage
+            //     // 1st try
+            //     // var screenshotImg = new PIXI.Texture(zoom_background, new PIXI.Rectangle(testPoint.x, testPoint.y, testPointEnd.x - testPoint.x, testPointEnd.y -
+            //     //     testPoint.y));
+            //     // console.log(screenshotImg);
+            //     // testimg.texture = screenshotImg;
+
+            //     //Changes draw value and updates other information
+            //     drawing = false;
+
+            //     guideText.text = 'Copy of the selected area of image created.';
+
+            //     // test println
+            //     var tempP = viewport.toScreen(event.data.global.x, event.data.global.y);
+            //     console.log("Cropped: " + testPoint.x + " " + testPoint.y + " , " + testPointEnd.x + " " + testPointEnd.y);
+            //     console.log("testimg w & h: " + testimg.width + ", " + testimg.height);
+            //     console.log("Event.data.global (mouse) 2nd: " + event.data.global.x + event.data.global.y);
+            //     console.log("testPoint: " + testPointEnd.x + ", " + testPointEnd.y);
+            //     console.log("Event.data.global toScreen() (mouse): " + tempP.x + ", " + tempP.y);
+            //     console.log("testimg position: " + testimg.position.x + ", " + testimg.position.y);
+            //     console.log("Viewport worldTransform: " + viewport.transform.position._x);
+            // }
+
+                 //Draws end point
                 graphics.beginFill(0xFFFFFF);
                 graphics.drawRect(testPointEnd.x - 5, testPointEnd.y - 5, 10, 10);
                 graphics.endFill()
@@ -264,29 +358,43 @@ function drawPoint(event) {
                 // points: starting (x,y) on canvas
                 // event.data.global: ending (x,y) on canvas
                 // event.data.global - points = width / height of rectangle
-                graphics.drawRect(testPoint.x, testPoint.y, testPointEnd.x - testPoint.x, testPointEnd.y -
-                    testPoint.y);
+                graphics.drawRect(testPoint.x, testPoint.y, testPointEnd.x - tempPoint.x, testPointEnd.y -
+                    tempPoint.y);
 
+                var cropImage = new PIXI.Graphics();
+                
                 // set cropImage, which is PIXI.Graphics to mask image on screen
-                cropImage.drawRect(testPoint.x, testPoint.y, testPointEnd.x - testPoint.x, testPointEnd.y -
-                    testPoint.y);
+                cropImage.drawRect(testPoint.x, testPoint.y, testPointEnd.x - tempPoint.x, testPointEnd.y -
+                    tempPoint.y);
                     
+                viewport.addChild(cropImage);
+
                 cropImage.renderable = true;
                 cropImage.cacheAsBitmap = true;
 
                 viewport.mask = cropImage;
 
+                // test to crop without cropImage
+                // 1st try
+                // var screenshotImg = new PIXI.Texture(zoom_background, new PIXI.Rectangle(testPoint.x, testPoint.y, testPointEnd.x - testPoint.x, testPointEnd.y -
+                //     testPoint.y));
+                // console.log("new Img:" + screenshotImg);
+                // testimg.texture = screenshotImg;
+
                 //Changes draw value and updates other information
                 drawing = false;
-                
+
                 guideText.text = 'Copy of the selected area of image created.';
 
                 // test println
+                var tempP = viewport.toScreen(event.data.global.x, event.data.global.y);
                 console.log("Cropped: " + testPoint.x + " " + testPoint.y + " , " + testPointEnd.x + " " + testPointEnd.y);
                 console.log("testimg w & h: " + testimg.width + ", " + testimg.height);
+                console.log("Event.data.global (mouse) 2nd: " + event.data.global.x + event.data.global.y);
+                console.log("testPoint: " + testPointEnd.x + ", " + testPointEnd.y);
+                console.log("Event.data.global toScreen() (mouse): " + tempP.x + ", " + tempP.y);
                 console.log("testimg position: " + testimg.position.x + ", " + testimg.position.y);
-                console.log("testimg position: " + viewport.position.x + ", " + testimg.position.y);
-            }
+                console.log("Viewport worldTransform: " + viewport.transform.position._x);
 
             // test crop
             // temp.frame = cropImage.drawRect(testPoint.x, testPoint.y, testPointEnd.x - testPoint.x, testPointEnd.y -
@@ -308,7 +416,7 @@ function cancelDraw(event) {
 
     // cropImage.clear();
     viewport.mask = null;
-    
+
     cancel_draw = true;
     drawing = false;
     guideText.text = 'Select two points on a image to crop.';
@@ -320,7 +428,7 @@ function cancelDraw(event) {
 function cancelUp(event) {
     // Resets cancel value
     cancel_draw = false;
-    
+
     // restore alpha of cancle button, since there is no graphics on screen to cancel
     cancel_button.alpha = 0.33;
 } // end cancel up
@@ -350,7 +458,7 @@ function modeChange(event) {
         viewport.pausePlugin('pinch');
         viewport.pausePlugin('wheel');
         viewport.pausePlugin('decelerate');
-    
+
         // resume gestures for click & cancel
         viewport.on('pointerdown', drawPoint);
 
@@ -407,7 +515,7 @@ function setBackground(imageSource) {
 
         _imageSource = imageSource;
         _imageOrigin_w = _imageSource.width;
-        _imageOrigin_h = _imageSource.height;;        
+        _imageOrigin_h = _imageSource.height;;
     }
     // if imageSource is in base64
     else if (base64Matcher.test(imageSource)) {
@@ -422,8 +530,7 @@ function setBackground(imageSource) {
         if (wid == null) {
             this.zoom_background = PIXI.Texture.from(tempTexture);
             this.testimg = new PIXI.Sprite(this.zoom_background);
-        }
-        else {
+        } else {
             PIXI.Texture.addTextureToCache(tempTexture, "LMSI" + wid);
 
             // to retrieve the texture it would be a case of
@@ -431,8 +538,7 @@ function setBackground(imageSource) {
             this.zoom_background = PIXI.Texture.from(finalBase64Sprite);
             this.testimg = new PIXI.Sprite(this.zoom_background);
         }
-    }
-    else {
+    } else {
         _imageSource = imageSource;
         _imageOrigin_w = _imageSource.width;
         _imageOrigin_h = _imageSource.height;
@@ -453,8 +559,7 @@ function onButtonUp() {
     this.alpha = 1;
     if (this.isOver) {
         // this.texture = textureButtonOver;
-    }
-    else {
+    } else {
         // this.texture = textureButton;
     }
 }

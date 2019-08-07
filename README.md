@@ -1,4 +1,11 @@
 ## Contributors
+- Brian Chen (Instructor)
+- Agustin Mendoza
+- Anna Thomas
+- Desai Xie
+- Eddie Sohn 
+- Jack Kellerk
+- Travis Barnes
 - Xuewei Wang (Backend and Database)
 - add yourself here
 

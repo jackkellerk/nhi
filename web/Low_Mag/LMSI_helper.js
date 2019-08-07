@@ -20,12 +20,6 @@ var temp = PIXI.Texture.from('./Images/lowmag_test.jpg');
 var zoom_background = PIXI.Texture.from('./Images/lowmag_test.jpg');
 var testimg = new PIXI.Sprite(zoom_background);
 
-// set the origin of sprite to the cetner using anchor
-// (0, 0) means origin is top left
-// (0.5, 0.5) menas origin is center
-// (1, 1) means origin is bottom left
-// testimg.anchor.set(0.5);
-
 // containers for button, guide text, and LMSIContainer to hold everything
 var LMSIContainer = new PIXI.Container();
 var buttonContainer = new PIXI.Container();
@@ -33,9 +27,6 @@ var guideTextContainer = new PIXI.Container();
 
 // graphics for buttonBox
 const LMSIgraphics = new PIXI.Graphics();
-
-// initialize cropImage
-var cropImage = new PIXI.Graphics();
 
 // variable to save PIXI.Point for cropping
 var testPoint = new PIXI.Point(0, 0);
@@ -128,7 +119,6 @@ move.alpha = 1;
  */
 function LMSI(imageSource, _wid, _pid) {
 
-
     wid = _wid;
     pid = _pid;
 
@@ -168,16 +158,6 @@ function LMSI(imageSource, _wid, _pid) {
 
     // add resize() eventLisetenr for viewport, when resize event fires
     window.addEventListener('resize', () => viewport.resize(window.innerWidth, window.innerHeight));
-
-    // test printlns
-    console.log("Viewport viewport.plugins['drag']: " + viewport.plugins['drag']);
-    console.log("Viewport viewport.plugins['drag'].parent.x: " + viewport.plugins['drag'].parent.x);
-    console.log("Viewport viewport.plugins['drag'].moved: " + viewport.plugins['drag'].moved);
-
-    // resize image as size of viewport
-    // testimg.width = window.innerWidth;
-    // testimg.height = window.innerWidth; 
-    // testimg.position.set(0, 0);
 
     // add background image to viewport
     viewport.addChild(testimg);
@@ -227,7 +207,6 @@ function drawPoint(event) {
         if (!drawing) { //Checks what phase of line create user is in
 
             // test printlns
-            console.log("Viewport worldTransform: " + viewport.transform.position.scope._x);
             console.log("Screen & Viewport: ");
             console.log(screen, viewport);
 
@@ -241,6 +220,7 @@ function drawPoint(event) {
             worldPoint  = new PIXI.Point(viewport.transform.position._x, viewport.transform.position._y);
             console.log("WorldPoint: " + worldPoint.x + "," + viewport.transform.position._y);
 
+            // if would is not in 4th quadrant...
             if (worldPoint.x < 0 || worldPoint.y < 0) {
                 console.log("World is not in 4th quadrant!");
                 // testPoint.x += viewport.transform.position._x;
@@ -290,60 +270,10 @@ function drawPoint(event) {
             // update ending point with toWorld()
             testPointEnd = viewport.toWorld(event.data.global.x, event.data.global.y);
 
-            // add adjust
-            // testPointEnd.x += viewport.transform.position._x;
-            // testPointEnd.y += viewport.transform.position._y;
-
             // check if point is on the image
             // if (testPointEnd.x < 0 || testPointEnd.y < 0 || testPointEnd.x > testimg.width || testPointEnd.y > testimg.height) {
             //     // nothing happens;
             // } else {
-
-            //     //Draws end point
-            //     graphics.beginFill(0xFFFFFF);
-            //     graphics.drawRect(testPointEnd.x - 5, testPointEnd.y - 5, 10, 10);
-            //     graphics.endFill()
-
-            //     //Constructs line from saved starting point to current end point
-            //     graphics.lineStyle(1, 0xFFFFFF).moveTo(testPoint.x, testPoint.y);
-
-            //     // draw rectangle from current starting point and endpoint
-            //     // points: starting (x,y) on canvas
-            //     // event.data.global: ending (x,y) on canvas
-            //     // event.data.global - points = width / height of rectangle
-            //     graphics.drawRect(testPoint.x, testPoint.y, testPointEnd.x - tempPoint.x, testPointEnd.y -
-            //         tempPoint.y);
-
-            //     // set cropImage, which is PIXI.Graphics to mask image on screen
-            //     cropImage.drawRect(testPoint.x, testPoint.y, testPointEnd.x - tempPoint.x, testPointEnd.y -
-            //         tempPoint.y);
-
-            //     cropImage.renderable = true;
-            //     cropImage.cacheAsBitmap = true;
-
-            //     viewport.mask = cropImage;
-
-            //     // test to crop without cropImage
-            //     // 1st try
-            //     // var screenshotImg = new PIXI.Texture(zoom_background, new PIXI.Rectangle(testPoint.x, testPoint.y, testPointEnd.x - testPoint.x, testPointEnd.y -
-            //     //     testPoint.y));
-            //     // console.log(screenshotImg);
-            //     // testimg.texture = screenshotImg;
-
-            //     //Changes draw value and updates other information
-            //     drawing = false;
-
-            //     guideText.text = 'Copy of the selected area of image created.';
-
-            //     // test println
-            //     var tempP = viewport.toScreen(event.data.global.x, event.data.global.y);
-            //     console.log("Cropped: " + testPoint.x + " " + testPoint.y + " , " + testPointEnd.x + " " + testPointEnd.y);
-            //     console.log("testimg w & h: " + testimg.width + ", " + testimg.height);
-            //     console.log("Event.data.global (mouse) 2nd: " + event.data.global.x + event.data.global.y);
-            //     console.log("testPoint: " + testPointEnd.x + ", " + testPointEnd.y);
-            //     console.log("Event.data.global toScreen() (mouse): " + tempP.x + ", " + tempP.y);
-            //     console.log("testimg position: " + testimg.position.x + ", " + testimg.position.y);
-            //     console.log("Viewport worldTransform: " + viewport.transform.position._x);
             // }
 
                  //Draws end point
@@ -361,7 +291,7 @@ function drawPoint(event) {
                 graphics.drawRect(testPoint.x, testPoint.y, testPointEnd.x - tempPoint.x, testPointEnd.y -
                     tempPoint.y);
 
-                var cropImage = new PIXI.Graphics();
+                let cropImage = new PIXI.Graphics();
                 
                 // set cropImage, which is PIXI.Graphics to mask image on screen
                 cropImage.drawRect(testPoint.x, testPoint.y, testPointEnd.x - tempPoint.x, testPointEnd.y -
@@ -376,10 +306,10 @@ function drawPoint(event) {
 
                 // test to crop without cropImage
                 // 1st try
-                // var screenshotImg = new PIXI.Texture(zoom_background, new PIXI.Rectangle(testPoint.x, testPoint.y, testPointEnd.x - testPoint.x, testPointEnd.y -
-                //     testPoint.y));
-                // console.log("new Img:" + screenshotImg);
-                // testimg.texture = screenshotImg;
+                var screenshotImg = new PIXI.Texture(zoom_background, new PIXI.Rectangle(testPoint.x, testPoint.y, testPointEnd.x - testPoint.x, testPointEnd.y -
+                    testPoint.y));
+                console.log(screenshotImg);
+                testimg.texture = screenshotImg;
 
                 //Changes draw value and updates other information
                 drawing = false;
@@ -390,8 +320,7 @@ function drawPoint(event) {
                 var tempP = viewport.toScreen(event.data.global.x, event.data.global.y);
                 console.log("Cropped: " + testPoint.x + " " + testPoint.y + " , " + testPointEnd.x + " " + testPointEnd.y);
                 console.log("testimg w & h: " + testimg.width + ", " + testimg.height);
-                console.log("Event.data.global (mouse) 2nd: " + event.data.global.x + event.data.global.y);
-                console.log("testPoint: " + testPointEnd.x + ", " + testPointEnd.y);
+                console.log("Event.data.global (mouse): " + event.data.global.x + ", "+ event.data.global.y);
                 console.log("Event.data.global toScreen() (mouse): " + tempP.x + ", " + tempP.y);
                 console.log("testimg position: " + testimg.position.x + ", " + testimg.position.y);
                 console.log("Viewport worldTransform: " + viewport.transform.position._x);

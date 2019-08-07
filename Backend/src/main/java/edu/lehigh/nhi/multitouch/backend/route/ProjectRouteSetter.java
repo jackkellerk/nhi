@@ -113,18 +113,18 @@ public final class ProjectRouteSetter {
 
             // delete project.
             RouteSetter.setRoute(RequestType.DELETE, "/p/:pid", (request, response) -> {
-              //  return RouteSetter.preprocessSessionCheck(request, response, encryption, (uid, sessionKey) -> {
+                return RouteSetter.preprocessSessionCheck(request, response, encryption, (uid, sessionKey) -> {
                     return RouteSetter.preprocessPathParam(request, response, new String[] { "pid" }, (params) -> {
                         int pid = (int)params[0];
-               //         if (!db.checkProjectOwnership(uid, pid)) {
-                //            return StructuredResponse.getErrorResponse(ErrorHandler.PRIVILAGE.NO_RIGHT_TO_ACCESS_PROJECT);
-                //        }
+                        if (!db.checkProjectOwnership(uid, pid)) {
+                            return StructuredResponse.getErrorResponse(ErrorHandler.PRIVILAGE.NO_RIGHT_TO_ACCESS_PROJECT);
+                        }
                         int num_items_deleted = db.project.deleteProject(pid);
                         JSONObject retval = new JSONObject();
                         retval.put("num_itemss_deleted", num_items_deleted);
                         return new StructuredResponse(retval).toJson().toString();
                     });
-               // });
+                });
             });
     }
 }

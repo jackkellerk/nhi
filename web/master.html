@@ -1,4 +1,4 @@
-<!--Version: 18 // Please raise the number every time you make an edit-->
+<!--Version: 19 // Please raise the number every time you make an edit-->
 <!--Last Edited By: Eddie Sohn // Change to your name after every edit-->
 <html>
     <head>
@@ -70,11 +70,10 @@
         <script src="Line_Intensity_v2/line.js"></script>
         <script src="Line_Intensity_v2/point.js"></script>
         
-        <!-- Low Magnification Screening / Imaging (Zoom, pinch, crop, etc) Dependencies -->
+        <!-- Zoom Dependencies -->
         <script src="./pixi-viewport.js" type="text/javascript"></script>
-        <script src="Low_Mag/LMSI_helper.js"></script>
-        <!-- <script src="Low_Mag/LMSI_function.js"></script> -->
-        <!-- <script src="Low_Mag/LMSI.js"></script> -->
+        <script src="Zoom/Zoom_variable.js"></script>
+        <script src="Zoom/Zoom.js"></script>
     </head>
     <!--Determines whether Mouse Button is down or not using jQuery (this is for Multi-block)-->
     <script>
@@ -160,8 +159,7 @@
                 }
                 else if(currentActivity == 'Zoom')
                 {
-                    // Low_Mag/LMSI_function.js
-                    var zoom = LMSI();
+                    var testZoom = new Zoom(null, 0, 0);
                     changeActivityButton();
                 }
                 else if(currentActivity == 'Multispectrum')

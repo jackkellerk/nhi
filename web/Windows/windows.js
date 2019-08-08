@@ -342,8 +342,8 @@ function startWindows(){
   window1.tool1.interactive = true;
   window1.tool1.on('pointerdown', function(){
     clearWindow(window1);
-    window1.container.addChild(LMSIContainer);
-    LMSIContainer.mask = window1.windowRect;
+    window1.container.addChild(zoom.LMSIContainer);
+    zoom.LMSIContainer.mask = window1.windowRect;
     window1.tool1.x += 5;
   });
   

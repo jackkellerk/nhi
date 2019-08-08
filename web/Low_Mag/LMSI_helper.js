@@ -31,9 +31,7 @@ const LMSIgraphics = new PIXI.Graphics();
 // variable to save PIXI.Point for cropping
 var testPoint = new PIXI.Point(0, 0);
 var testPointEnd = new PIXI.Point(0, 0);
-var curImagePosition = new PIXI.Point(0, 0);
-var tempPoints = new PIXI.Point(0, 0);
-var worldPoint = new PIXI.Point(0, 0);
+var tempPoint = new PIXI.Point(0, 0);
 
 // variable for viewport
 var viewport = null;
@@ -216,28 +214,10 @@ function drawPoint(event) {
             // save it to tempPoint
             tempPoint = testPoint;
 
-            // save Worldpoint
-            worldPoint  = new PIXI.Point(viewport.transform.position._x, viewport.transform.position._y);
-            console.log("WorldPoint: " + worldPoint.x + "," + viewport.transform.position._y);
-
-            // if would is not in 4th quadrant...
-            if (worldPoint.x < 0 || worldPoint.y < 0) {
-                console.log("World is not in 4th quadrant!");
-                // testPoint.x += viewport.transform.position._x;
-                // testPoint.y += viewport.transform.position._y;
-            }
-
             // add adjust
             // testPoint += viewport.toWorld(viewport.transform.position_x, viewport.transform.position._y);
             // testPoint.x += viewport.transform.position._x;
             // testPoint.y += viewport.transform.position._y;
-
-            // check if point is on the image
-            // if (testPoint.x < 0 || testPoint.y < 0 || testPoint.x > testimg.width || testPoint.y > testimg.height) {
-            //     // nothing happens;
-            // } else {
-                
-            // }
 
             // Clears current graphics on screen
             graphics.clear();
@@ -270,12 +250,6 @@ function drawPoint(event) {
             // update ending point with toWorld()
             testPointEnd = viewport.toWorld(event.data.global.x, event.data.global.y);
 
-            // check if point is on the image
-            // if (testPointEnd.x < 0 || testPointEnd.y < 0 || testPointEnd.x > testimg.width || testPointEnd.y > testimg.height) {
-            //     // nothing happens;
-            // } else {
-            // }
-
                  //Draws end point
                 graphics.beginFill(0xFFFFFF);
                 graphics.drawRect(testPointEnd.x - 5, testPointEnd.y - 5, 10, 10);
@@ -292,23 +266,24 @@ function drawPoint(event) {
                     tempPoint.y);
 
                 let cropImage = new PIXI.Graphics();
+
+                // tempPoint = viewport.toScreen(testPoint);
+                // let tempPoint2  = viewport.toScreen(testPointEnd);
                 
-                // set cropImage, which is PIXI.Graphics to mask image on screen
-                cropImage.drawRect(testPoint.x, testPoint.y, testPointEnd.x - tempPoint.x, testPointEnd.y -
-                    tempPoint.y);
-                    
                 viewport.addChild(cropImage);
 
-                cropImage.renderable = true;
-                cropImage.cacheAsBitmap = true;
+                // set cropImage, which is PIXI.Graphics to mask image on screen
+                // cropImage.drawRect(testPoint.x, testPoint.y, testPointEnd.x - tempPoint.x, testPointEnd.y -
+                //     tempPoint.y);
+                    
+                // cropImage.renderable = true;
+                // cropImage.cacheAsBitmap = true;
 
-                viewport.mask = cropImage;
+                // viewport.mask = cropImage;
 
-                // test to crop without cropImage
-                // 1st try
+                // swap background with cropped texture
                 var screenshotImg = new PIXI.Texture(zoom_background, new PIXI.Rectangle(testPoint.x, testPoint.y, testPointEnd.x - testPoint.x, testPointEnd.y -
                     testPoint.y));
-                console.log(screenshotImg);
                 testimg.texture = screenshotImg;
 
                 //Changes draw value and updates other information
@@ -317,13 +292,16 @@ function drawPoint(event) {
                 guideText.text = 'Copy of the selected area of image created.';
 
                 // test println
-                var tempP = viewport.toScreen(event.data.global.x, event.data.global.y);
+                var tempP = viewport.toWorld(event.data.global.x, event.data.global.y);
                 console.log("Cropped: " + testPoint.x + " " + testPoint.y + " , " + testPointEnd.x + " " + testPointEnd.y);
                 console.log("testimg w & h: " + testimg.width + ", " + testimg.height);
                 console.log("Event.data.global (mouse): " + event.data.global.x + ", "+ event.data.global.y);
                 console.log("Event.data.global toScreen() (mouse): " + tempP.x + ", " + tempP.y);
                 console.log("testimg position: " + testimg.position.x + ", " + testimg.position.y);
                 console.log("Viewport worldTransform: " + viewport.transform.position._x);
+
+                // graphics.clear() because to box offests in scaled images
+                graphics.clear();
 
             // test crop
             // temp.frame = cropImage.drawRect(testPoint.x, testPoint.y, testPointEnd.x - testPoint.x, testPointEnd.y -

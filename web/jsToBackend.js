@@ -11,7 +11,7 @@ function loginToBackend()
     // converts the username into json
     var username = userTextBox.text;
     var password = loginPassword;
-    var convertToJSON = {"username": username, "password": password};
+    var convertToJSON = {"email": username, "password": password};
 
     $.ajax({
         method: 'POST',
@@ -26,7 +26,7 @@ function loginToBackend()
         success: function(callback) {
             if(callback.errorCode != 0)
             {
-                alert("Incorrect Username or Password");
+                alert("Incorrect Email or Password");
                 return;
             }
             uid = callback.data.uid;
@@ -74,6 +74,10 @@ function signUpBackend()
             withCredentials: true
         },
         success: function(callback) {
+            if(callback.errorCode != 0)
+            {
+                 alert("User already exist!");
+            }
             uid = callback.data.uid;
             session_key = callback.data.session_key;
             userTextBox.text = username;
@@ -101,12 +105,14 @@ function gatherUserSettings()
             withCredentials: true
         },
         success: function(callback) {
-            if(callback.errorCode != 0)
+            if(callback.errorCode == 703)
             {
                 alert("Error loading the user settings!");
             }
+            else{
             userSettingsResponse = callback.data;
             createUIProjects();
+            }
         },
         error: function(xhr, status, error) {
             alert("Internal Server Error: 500");

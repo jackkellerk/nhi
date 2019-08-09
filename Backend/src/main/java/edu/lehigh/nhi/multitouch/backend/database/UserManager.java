@@ -13,7 +13,7 @@ public class UserManager {
     @SuppressWarnings("unused")
     private final DatabaseManager mManager;
     private final Statements mStatements;
-    private final PreparedStatement mSelectUserByUsernamePS, mInsertUserSimplePS, mInsertUserFullPS, mSelectPidByUidPS,
+    private final PreparedStatement mSelectUserByUsernamePS, mSelectUserByEmailPS, mInsertUserSimplePS, mInsertUserFullPS, mSelectPidByUidPS,
             mUpdateUserPS;
 
     protected UserManager(DatabaseManager manager) throws SQLException {
@@ -24,13 +24,14 @@ public class UserManager {
         mInsertUserFullPS = mStatements.user.insertUserFull;
         mSelectPidByUidPS = mStatements.user.selectPidByUid;
         mUpdateUserPS = mStatements.user.updateUserSettings;
+        mSelectUserByEmailPS = mStatements.user.selectUserByEmail;
     }
 
-    public String getPassword(String username) throws SQLException {
+    public String getPassword(String email) throws SQLException {
         // TODO: use hashed password
         String actualPassword = null;
-        mSelectUserByUsernamePS.setString(1, username);
-        ResultSet rs = mSelectUserByUsernamePS.executeQuery();
+        mSelectUserByEmailPS.setString(1, email);
+        ResultSet rs = mSelectUserByEmailPS.executeQuery();
         if (rs.next())
             actualPassword = rs.getString("password");
         rs.close();
@@ -40,6 +41,16 @@ public class UserManager {
     public int getUidByUsername(String username) throws SQLException {
         mSelectUserByUsernamePS.setString(1, username);
         ResultSet rs = mSelectUserByUsernamePS.executeQuery();
+        int retval = -1;
+        if (rs.next())
+            retval = rs.getInt("id");
+        rs.close();
+        return retval;
+    }
+
+    public int getUidByEmail(String email) throws SQLException {
+        mSelectUserByEmailPS.setString(1, email);
+        ResultSet rs = mSelectUserByEmailPS.executeQuery();
         int retval = -1;
         if (rs.next())
             retval = rs.getInt("id");

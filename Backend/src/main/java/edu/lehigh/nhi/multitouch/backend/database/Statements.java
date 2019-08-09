@@ -62,11 +62,12 @@ class Statements {
     }
 
     protected class User {
-        protected final PreparedStatement selectUserByUsername, selectUserByUid, insertUserSimple, insertUserFull,
+        protected final PreparedStatement selectUserByUsername,  selectUserByEmail, selectUserByUid, insertUserSimple, insertUserFull,
                 selectPidByUid, updateUserSettings;
 
         private User() throws SQLException {
             selectUserByUsername = mMySQLConnection.prepareStatement("select * from users where username = ?");
+            selectUserByEmail = mMySQLConnection.prepareStatement("select * from users where email = ?");
             selectUserByUid = mMySQLConnection.prepareStatement("select * from users where id = ?");
             insertUserSimple = mMySQLConnection
                     .prepareStatement("INSERT INTO users (username, password, email) VALUES (?, ?, ?)");

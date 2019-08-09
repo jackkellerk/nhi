@@ -146,7 +146,7 @@ class NewProject{
     
     static goToSources(){
         newProjectProperties = NewProject.processNewProjectAnswers();
-        postNewProject("new proj", app.screen.width, app.screen.height, newProjectProperties, "Lehigh", [1, 2]);  // An Ajax "POST" call to backend
+        //postNewProject("new proj", app.screen.width, app.screen.height, newProjectProperties, "Lehigh", [1, 2]);  // An Ajax "POST" call to backend
         
         currentActivity = activityArray[4];
         updateActivity();

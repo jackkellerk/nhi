@@ -177,7 +177,7 @@ class WorkWindow{
 
         // Low Spectrum Magnification Imaging
         //LMSI();
-        LMSIContainer.scale.x = LMSIContainer.scale.y = 0.7;
+        /* LMSIContainer.scale.x = LMSIContainer.scale.y = 0.7;
         LMSIContainer.position.x = app.screen.width*0.25;
         LMSIContainer.position.y = 20;
 
@@ -197,7 +197,7 @@ class WorkWindow{
         LI_showAll(LIContainer);
         LIContainer.scale.x = LIContainer.scale.y = 0.73;
         LIContainer.position.x = this.xPositionWindow + 5;
-        LIContainer.position.y = this.yPositionWindow + 23;
+        LIContainer.position.y = this.yPositionWindow + 23; */
 
 
         // This is to set the position
@@ -208,10 +208,10 @@ class WorkWindow{
 }
 
 function clearWindow(window) {
-    window.container.removeChild(LMSIContainer);
+    /* window.container.removeChild(LMSIContainer);
     window.container.removeChild(MSContainer);
     window.container.removeChild(MBContainer);
-    window.container.removeChild(LIContainer);
+    window.container.removeChild(LIContainer); */
 
     if (window.tool1.x > window.tool2.x) { 
         window.tool1.x -= 5;

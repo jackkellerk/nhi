@@ -74,6 +74,16 @@
         <script src="./pixi-viewport.js" type="text/javascript"></script>
         <script src="Zoom/Zoom_variable.js"></script>
         <script src="Zoom/Zoom.js"></script>
+
+        <!--ThreeJS Dependencies-->
+        <script src="https://rawgit.com/mrdoob/three.js/master/build/three.js"></script>
+        <script src="https://rawgit.com/mrdoob/three.js/master/examples/js/controls/OrbitControls.js"></script>
+        <script src="https://rawgit.com/mrdoob/three.js/master/examples/js/libs/stats.min.js"></script>
+        <script src="https://rawgit.com/mrdoob/three.js/master/examples/js/renderers/Projector.js"></script>
+        <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+        <script src="ThreeJS/createScene.js"></script>
+        <script src="ThreeJS/OBJLoader.js"></script>
+
     </head>
     <!--Determines whether Mouse Button is down or not using jQuery (this is for Multi-block)-->
     <script>
@@ -147,6 +157,8 @@
                 {
                     // function in windows.js in Windows folder
                     startWindows();
+                    // Create a threejs canvas
+                    initThreeJS();
                 }
                 else if(currentActivity == 'NewProject')
                 {

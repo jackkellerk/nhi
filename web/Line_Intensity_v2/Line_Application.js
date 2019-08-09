@@ -110,10 +110,10 @@ class LineApplication{
  * Each of these UI elements have functions tied to specific 
  * interactions.
  */
-LI_showAll(app) {
+LI_showAll() {
     this.windowContainer.addChild(this.LI_backgroundImage);
-    this.LI_backgroundImage.width = app.screen.width;
-    this.LI_backgroundImage.height = app.screen.height;
+    this.LI_backgroundImage.width = this.windowContainer.width;
+    this.LI_backgroundImage.height = this.windowContainer.height;
 
     this.windowContainer.addChild(this.LI_cancel_button);
 
@@ -127,14 +127,14 @@ LI_showAll(app) {
 
     this.windowContainer.addChild(this.LI_mainText);
     this.LI_mainText.alpha = 1;
-    this.LI_mainText.x = app.screen.width / 2 - 250;
+    this.LI_mainText.x = this.windowContainer.width / 2 - 250;
     this.LI_mainText.y = 0;
 
     this.windowContainer.addChild(this.LI_graphics);
     this.windowContainer.addChild(this.LI_graphs);
 
-    this.LI_boundary_tlx = app.screen.width / 2;
-    this.LI_boundary_tly = app.screen.height / 2;
+    this.LI_boundary_tlx = this.windowContainer.width / 2;
+    this.LI_boundary_tly = this.windowContainer.height / 2;
     this.LI_backgroundImage.interactive = true;
     this.LI_backgroundImage.on("pointerdown", this.doDrawPoint);
     this.LI_backgroundImage.name = this;

@@ -63,6 +63,7 @@
         <!--Line Integral Dependencies-->
         <script src="Line_Intensity_v2/text_styles.js"></script>
         <script src="Line_Intensity_v2/line_intensity_file.js"></script>
+        <script src="Line_Intensity_v2/Line_Application.js"></script>
         <script src="Line_Intensity_v2/edited_graphs.js"></script>
         <script src="Line_Intensity_v2/bring_to_front.js"></script>
         <script src="Line_Intensity_v2/change_text.js"></script>
@@ -145,7 +146,11 @@
                 if(currentActivity == 'Welcome')
                 {
                     startPreLogin();
-
+                   // var container = new PIXI.Container();
+                    //var firstapp = new Line_Application(container);
+                    //app.stage.addChild(container);
+                    //container.scale.x = container.scale.y = 0.73;
+                   // firstapp.LI_showAll();
                     // showPrelogin();
                 }
                 else if(currentActivity == 'AllProjects')

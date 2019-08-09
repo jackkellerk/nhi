@@ -80,6 +80,12 @@ public final class ProjectRouteSetter {
                             if (retval == null)
                                 return StructuredResponse
                                         .getErrorResponse(ErrorHandler.UNKOWN.INSERTION_NO_UPDATE_UNKNOWN);
+                            
+                            // Add to ProjectSource after pid is known.
+                            int pid = retval.getInt("pid");
+                            for (int i = 0; i < sources.length(); i++) {
+                                db.projectSourceManager.insertProjectSource(pid, sources.getInt(i));
+                            }
 
                             return StructuredResponse.getResponse(retval);
                         });

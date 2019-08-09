@@ -11,6 +11,7 @@ class Statements {
     protected User user;
     protected Source source;
     protected UPRelationship uprelationship;
+    protected ProjectSource projectSource;
 
     protected class Common {
         protected final PreparedStatement selectLastInsertion, checkProjectOwnership, getPidByWid;
@@ -99,6 +100,15 @@ class Statements {
         }
     }
 
+    protected class ProjectSource {
+        protected final PreparedStatement insertProjectSource;
+
+        private ProjectSource() throws SQLException{
+            insertProjectSource = mMySQLConnection.prepareStatement("insert into project_source (pid, sid) values (?, ?)");
+        }
+    }
+
+
     private static Statements INSTANCE;
 
     private Statements() throws SQLException {
@@ -111,6 +121,7 @@ class Statements {
         window = new Window();
         source = new Source();
         uprelationship = new UPRelationship();
+        projectSource = new ProjectSource();
     }
 
     protected synchronized static Statements getInstance() throws SQLException {

@@ -109,6 +109,14 @@ function startWindows(){
   w_saveMenu.leftButton.on('mouseout', function(){ w_saveMenu.leftButton.alpha = 0.7; });
   w_saveMenu.leftButton.on('pointerdown', function(){
     currentActivity = activityArray[1];
+    container = null;
+    scene = null;
+    camera = null;
+    controls = null;
+    renderer = null;
+    angle = 0;
+    radius = 500;
+    canvas.remove();
     alphaTransform(sprite, 0.0, 10 )
     positionTransform(0, a_titleContainer.y, a_titleContainer, 10)
     positionTransform(0, a_settingsContainer.y, a_settingsContainer, 10)
@@ -539,60 +547,7 @@ function startWindows(){
 
  // ------------------------------------- 3D Model Window -----------------------------------------
 
-  var firstImage = true;
-  var window3d = new SpecialWindow("Images/3D-test.jpg");
-  window3d.drawWindow();
 
-  window3d.tool1.interactive = true;
-  window3d.tool1.on('pointerdown', function(){
-    if (firstImage) {
-      window3d.refreshImage("Images/3D-test2.jpg");
-      firstImage = false;
-    }
-    else if (!firstImage) {
-      window3d.refreshImage("Images/3D-test.jpg");
-      firstImage = true;
-    }
-  });
-
-  window3d.closeWindowMenu.close.interactive = true;
-  window3d.closeWindowMenu.close.on('mouseover', function(){ window3d.closeWindowMenu.close.alpha = 0.7; });
-  window3d.closeWindowMenu.close.on('mouseout', function(){ window3d.closeWindowMenu.close.alpha = 0.4; });
-  window3d.closeWindowMenu.close.on('pointerdown', function(){
-    app.stage.removeChild(window3d.closeWindowMenu.container);
-  });
-
-  window3d.closeWindowMenu.leftButton.interactive = true;
-  window3d.closeWindowMenu.leftButton.on('mouseover', function(){ window3d.closeWindowMenu.leftButton.alpha = 1; });
-  window3d.closeWindowMenu.leftButton.on('mouseout', function(){ window3d.closeWindowMenu.leftButton.alpha = 0.7; });
-  window3d.closeWindowMenu.leftButton.on('pointerdown', function(){
-    app.stage.removeChild(window3d.closeWindowMenu.container);
-    app.stage.removeChild(window3d.container);
-    Acc = 0;
-  });
-
-  window3d.closeWindowMenu.rightButton.interactive = true;
-  window3d.closeWindowMenu.rightButton.on('mouseover', function(){ window3d.closeWindowMenu.rightButton.alpha = 1; });
-  window3d.closeWindowMenu.rightButton.on('mouseout', function(){ window3d.closeWindowMenu.rightButton.alpha = 0.7; });
-  window3d.closeWindowMenu.rightButton.on('pointerdown', function(){
-    app.stage.removeChild(window3d.closeWindowMenu.container);
-  });
-
-  window3d.closeIcon.interactive = true;
-  window3d.closeIcon.on('mouseover', function(){ window3d.closeIcon.alpha = 1; });
-  window3d.closeIcon.on('mouseout', function(){ window3d.closeIcon.alpha = 0.8; });
-  window3d.closeIcon.on('pointerdown', function(){
-    app.stage.addChild(window3d.closeWindowMenu.container); 
-  });
-
-  window3d.minIcon.interactive = true;
-  window3d.minIcon.on('mouseover', function(){ window3d.minIcon.alpha = 1; });
-  window3d.minIcon.on('mouseout', function(){ window3d.minIcon.alpha = 0.8; });
-  window3d.minIcon.on('pointerdown', function(){
-    window3d.isOpen = false;
-    app.stage.removeChild(window3d.container);
-    app.stage.removeChild(tintBg); 
-  });
 
 }
 

@@ -28,11 +28,11 @@ public final class UserRouteSetter {
 
         // log in
         RouteSetter.setRoute(RequestType.POST, "/login", (request, response) -> {
-            return RouteSetter.preprocessJSONValueGet(request, response, new String[] { "username", "password" },
+            return RouteSetter.preprocessJSONValueGet(request, response, new String[] { "email", "password" },
                     new Type[] { Type.STRING, Type.STRING }, (vals) -> {
-                        String username = (String) vals[0];
+                        String email = (String) vals[0];
                         String password = (String) vals[1];
-                        String actualPassword = db.user.getPassword(username);
+                        String actualPassword = db.user.getPassword(email);
 
                         if (actualPassword == null) {
                             return StructuredResponse.getErrorResponse(ErrorHandler.PRIVILAGE.LOGIN_FAILED,
@@ -44,7 +44,7 @@ public final class UserRouteSetter {
                                     "Password invalid. ");
                         }
 
-                        int uid = db.user.getUidByUsername(username);
+                        int uid = db.user.getUidByEmail(email);
                         String sessionKey = encryption.addSessionkey(uid);
                         JSONObject dataJs = new JSONObject();
                         dataJs.put("session_key", sessionKey);
@@ -62,16 +62,20 @@ public final class UserRouteSetter {
                     new Type[] { Type.STRING, Type.STRING, Type.STRING, Type.STRING, Type.STRING }, (vals) -> {
                         String username = (String) vals[0], password = (String) vals[1], email = (String) vals[2],
                                 legalName = (String) vals[3], institution = (String) vals[4];
-                        if (db.user.insertUser(username, password, email, legalName, institution) < 1) {
-                            return StructuredResponse.getErrorResponse(ErrorHandler.UNKOWN.INSERTION_NO_UPDATE_UNKNOWN);
-                        }
-
-                        int uid = db.user.getUidByUsername(username);
-                        String sessionKey = encryption.addSessionkey(uid);
-                        JSONObject dataJs = new JSONObject();
-                        dataJs.put("session_key", sessionKey);
-                        dataJs.put("uid", uid);
-                        return StructuredResponse.getResponse(dataJs);
+                            if(db.user.getUidByEmail(email) < 1){
+                                if (db.user.insertUser(username, password, email, legalName, institution) < 1) {
+                                    return StructuredResponse.getErrorResponse(ErrorHandler.UNKOWN.INSERTION_NO_UPDATE_UNKNOWN);
+                                }
+                                int uid = db.user.getUidByUsername(username);
+                                String sessionKey = encryption.addSessionkey(uid);
+                                JSONObject dataJs = new JSONObject();
+                                dataJs.put("session_key", sessionKey);
+                                dataJs.put("uid", uid);
+                                return StructuredResponse.getResponse(dataJs);
+                            }
+                            else{
+                                return StructuredResponse.getErrorResponse(ErrorHandler.EXISTANSE.USER_EXISTANCE);
+                            }
                     });
         });
 

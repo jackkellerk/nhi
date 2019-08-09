@@ -18,6 +18,7 @@ var freshStart = true;
 // graphics for line and hexagon
 var line = new PIXI.Graphics();
 var ins_mask = new PIXI.Graphics();
+var confirmButton= new PIXI.Graphics();
 var ps_title;
 
 // booleans for institution page
@@ -88,6 +89,81 @@ var afterSelectText;
 var sourcesArray = [];
 var institutionArray = [];
 var sourceDescriptionBoxes = [];
+var selectedSources = [];
+
+/**
+ * startSorucePage sets the background and stage containers required
+ */
+function startSourcePage() {
+    x = app.screen.width / 8;
+    y = app.screen.height / 8;
+    // variables to set border for hexagons
+    x_limit = app.screen.width * 7 / 8;
+    y_limit = app.screen.height * 7 / 8;
+    // set width and height of the backgrond sprite, stage it to the app
+    source_bg.width = app.screen.width;
+    source_bg.height = app.screen.height;
+    app.stage.addChild(source_bg);
+    drawInsInfo();
+
+    // set title
+    ps_title = new PIXI.Text('Institutions', ps_title_style);
+    ps_title.on("pointerdown", moveSources);
+
+    // ps_title = new PIXI.Text('Sources: Lehigh', ps_title_style);
+    ps_title.x =  app.screen.width / 30;
+    ps_title.y = app.screen.height / 30;
+    app.stage.addChild(ps_title);
+
+    // set example texts
+    ps_sampleImage = new PIXI.Text(' ', ps_title_style);
+    ps_sampleImage.x = app.screen.width * (6/8);
+    ps_sampleImage.y = app.screen.height / 50;
+    app.stage.addChild(ps_sampleImage);
+
+    afterSelectText = new PIXI.Text(' ', ps_title_style);
+    afterSelectText.x = app.screen.width * (10/8);
+    afterSelectText.y = app.screen.height / 50;
+    app.stage.addChild(afterSelectText);
+
+    //Up and down arrows for the sources scrolling
+    up_arrow.width = 50;
+    up_arrow.height = 50;
+    up_arrow.x = app.screen.width + 50
+    up_arrow.y = app.screen.height * ( 7/10);
+    down_arrow.width = 50;
+    down_arrow.height = 50;
+    down_arrow.x = app.screen.width + 50;
+    down_arrow.y = app.screen.height * (8/10);
+
+    //Button mechanics for the arrows
+    up_arrow.interactive = true;
+    up_arrow.buttonMode = true;
+    up_arrow.on('pointerdown', upButton);
+    down_arrow.interactive = true;
+    down_arrow.buttonMode = true;
+    down_arrow.on('pointerdown', downButton);
+
+    
+    confirmButton.beginFill(0xFFFFFF);
+    // set the line style to have a width of 5 and set the color to red
+    confirmButton.lineStyle(2, 0x000000);
+    // draw a rectangle
+    confirmButton.drawRect(app.screen.width*(7.5/8), app.screen.height*(0.9/2), 100, 50);
+    confirmButton.x = confirmButton.x + (1000)
+    confirmButton.y = confirmButton.y + (1000)
+    app.stage.addChild(confirmButton);
+
+    confirmButton.interactive = true;
+    confirmButton.buttonMode = true;
+    confirmButton.on('pointerdown', confirmNewProject);
+
+    app.stage.addChild(up_arrow);
+    app.stage.addChild(down_arrow);
+
+    populateSourceArray();
+}
+
 /**
  * 
  * @param numSource 
@@ -155,6 +231,7 @@ function drawSourceInfo(inputText) {
     ps_title.buttonMode = true;
 
     positionTransform(app.screen.width*6/8, afterSelectText.y, afterSelectText, 30)
+    positionTransform(confirmButton.x-1000, confirmButton.y-1000, confirmButton, 30)
 
     afterSelectText.text = inputText
 
@@ -171,64 +248,7 @@ function drawSourceInfo(inputText) {
     ps_sampleText = inputText
 }
 
-/**
- * startSorucePage sets the background and stage containers required
- */
-function startSourcePage() {
-    x = app.screen.width / 8;
-    y = app.screen.height / 8;
-    // variables to set border for hexagons
-    x_limit = app.screen.width * 7 / 8;
-    y_limit = app.screen.height * 7 / 8;
-    // set width and height of the backgrond sprite, stage it to the app
-    source_bg.width = app.screen.width;
-    source_bg.height = app.screen.height;
-    app.stage.addChild(source_bg);
-    drawInsInfo();
 
-    // set title
-    ps_title = new PIXI.Text('Institutions', ps_title_style);
-    ps_title.on("pointerdown", moveSources);
-
-    // ps_title = new PIXI.Text('Sources: Lehigh', ps_title_style);
-    ps_title.x =  app.screen.width / 30;
-    ps_title.y = app.screen.height / 30;
-    app.stage.addChild(ps_title);
-
-    // set example texts
-    ps_sampleImage = new PIXI.Text(' ', ps_title_style);
-    ps_sampleImage.x = app.screen.width * (6/8);
-    ps_sampleImage.y = app.screen.height / 50;
-    app.stage.addChild(ps_sampleImage);
-
-    afterSelectText = new PIXI.Text(' ', ps_title_style);
-    afterSelectText.x = app.screen.width * (10/8);
-    afterSelectText.y = app.screen.height / 50;
-    app.stage.addChild(afterSelectText);
-
-    //Up and down arrows for the sources scrolling
-    up_arrow.width = 50;
-    up_arrow.height = 50;
-    up_arrow.x = app.screen.width + 50
-    up_arrow.y = app.screen.height * ( 7/10);
-    down_arrow.width = 50;
-    down_arrow.height = 50;
-    down_arrow.x = app.screen.width + 50;
-    down_arrow.y = app.screen.height * (8/10);
-
-    //Button mechanics for the arrows
-    up_arrow.interactive = true;
-    up_arrow.buttonMode = true;
-    up_arrow.on('pointerdown', upButton);
-    down_arrow.interactive = true;
-    down_arrow.buttonMode = true;
-    down_arrow.on('pointerdown', downButton);
-
-    app.stage.addChild(up_arrow);
-    app.stage.addChild(down_arrow);
-
-    populateSourceArray();
-}
 
 
 function moveSources(){
@@ -258,6 +278,7 @@ function moveSources(){
     positionTransform(app.screen.width + 50, app.screen.height * (7/10), up_arrow, 30);
     positionTransform(app.screen.width + 50, app.screen.height * (8/10), down_arrow, 30);
     positionTransform(app.screen.width * 10/8, afterSelectText.y, afterSelectText, 30);
+    positionTransform(confirmButton.x+1000, confirmButton.y+1000, confirmButton, 30)
     //alphaTransform(source_infoContainer, 0, 30)
 
 }
@@ -273,6 +294,12 @@ function clickSource(element){
     }
     
     
+}
+
+function confirmNewProject(){
+    if(selectedSources.length == 0){
+        postNewProject("new proj", app.screen.width, app.screen.height, newProjectProperties, "Lehigh", [1, 2]);  // An Ajax "POST" call to backend
+    }
 }
 
 

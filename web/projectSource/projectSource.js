@@ -88,6 +88,7 @@ var afterSelectText;
 var sourcesArray = [];
 var institutionArray = [];
 var sourceDescriptionBoxes = [];
+var selectedSources = [];
 /**
  * 
  * @param numSource 
@@ -224,6 +225,18 @@ function startSourcePage() {
     down_arrow.buttonMode = true;
     down_arrow.on('pointerdown', downButton);
 
+    var confirmButton= new PIXI.Graphics();
+    confirmButton.beginFill(0xFFFFFF);
+    // set the line style to have a width of 5 and set the color to red
+    confirmButton.lineStyle(2, 0x000000);
+    // draw a rectangle
+    confirmButton.drawRect(app.screen.width*(7.5/8), app.screen.height*(0.9/2), 100, 50);
+    app.stage.addChild(confirmButton);
+
+    confirmButton.interactive = true;
+    confirmButton.buttonMode = true;
+    confirmButton.on('pointerdown', confirmNewProject);
+
     app.stage.addChild(up_arrow);
     app.stage.addChild(down_arrow);
 
@@ -273,6 +286,12 @@ function clickSource(element){
     }
     
     
+}
+
+function confirmNewProject(){
+    if(selectedSources.length == 0){
+        postNewProject("new proj", app.screen.width, app.screen.height, newProjectProperties, "Lehigh", [1, 2]);  // An Ajax "POST" call to backend
+    }
 }
 
 

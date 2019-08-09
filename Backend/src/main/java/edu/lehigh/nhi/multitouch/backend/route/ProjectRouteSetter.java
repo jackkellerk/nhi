@@ -75,7 +75,7 @@ public final class ProjectRouteSetter {
                             JSONObject properties = (JSONObject) vals[3];
                             String institution = (String) vals[4];
                             JSONArray sources = (JSONArray) vals[5];
-                            JSONObject retval = db.project.createProject(uid, name, canvas_width, canvas_height);
+                            JSONObject retval = db.project.createProject(uid, name, canvas_width, canvas_height, institution);
 
                             if (retval == null)
                                 return StructuredResponse
@@ -103,13 +103,14 @@ public final class ProjectRouteSetter {
                         return StructuredResponse.getErrorResponse(ErrorHandler.PRIVILAGE.NO_RIGHT_TO_ACCESS_PROJECT);
                     }
                     return RouteSetter.preprocessJSONValueGet(request, response,
-                            new String[] { "name", "thumbnail", "width","height" },
-                            new Type[] { Type.STRING, Type.STRING, Type.FLOAT, Type.FLOAT}, (vals) -> {
+                            new String[] { "name", "thumbnail", "width", "height", "institution" },
+                            new Type[] { Type.STRING, Type.STRING, Type.FLOAT, Type.FLOAT, Type.STRING }, (vals) -> {
                             String name = (String) vals[0];
                             String thumbnail = (String) vals[1];
                             float width = (float) vals[2];
                             float height = (float) vals[3];
-                            int num_rows_updated = db.project.updateProject(pid, name, thumbnail, width, height);
+                            String institution = (String) vals[4];
+                            int num_rows_updated = db.project.updateProject(pid, name, thumbnail, width, height, institution);
                             JSONObject retval = new JSONObject();
                             retval.put("num_rows_updated", num_rows_updated);
                             return new StructuredResponse(retval).toJson().toString();

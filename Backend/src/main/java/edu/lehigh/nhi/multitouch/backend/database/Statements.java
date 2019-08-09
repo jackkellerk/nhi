@@ -80,13 +80,15 @@ class Statements {
     // put request to institution/source/object/image table here.
     protected class Source {
         protected final PreparedStatement selectObjectListBySid, selectHitBoxesByOid, selectImageByIid,
-                selectObjectByOid;
+                selectObjectByOid, selectSourceBySid, selectSourceListBySid;
 
         private Source() throws SQLException{
             selectObjectListBySid = mMySQLConnection.prepareStatement("select * from object where sid = ?");
             selectHitBoxesByOid = mMySQLConnection.prepareStatement("select * from object_hit_box where oid = ?");
             selectImageByIid = mMySQLConnection.prepareStatement("select * from image where iid = ?");
             selectObjectByOid = mMySQLConnection.prepareStatement("select * from object where oid = ?");
+            selectSourceBySid = mMySQLConnection.prepareStatement("select * from source_t where sid = ?");
+            selectSourceListBySid = mMySQLConnection.prepareStatement("select * from source_t");
         }
     }
 

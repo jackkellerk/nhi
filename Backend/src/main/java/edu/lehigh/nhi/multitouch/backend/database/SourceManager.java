@@ -67,5 +67,23 @@ public class SourceManager {
         rs.close();
         return retval;
     }
+    
+    
+    public JSONObject getSourceBySid(int sid) throws SQLException {
+        PreparedStatement ps = mStatements.source.selectSourceBySid;
+        ps.setInt(1, sid);
+        ResultSet rs = ps.executeQuery();
+        JSONObject retval = DatabaseManager.convertToJSONObject(rs);
+        rs.close();
+        return retval;
+    }
+    
+    public JSONArray getSourceList() throws  SQLException {
+        PreparedStatement ps = mStatements.source.selectSourceListBySid;
+        ResultSet rs = ps.executeQuery();
+        JSONArray retval = DatabaseManager.convertToJSONArray(rs);
+        rs.close();
+        return retval;
+    }
 
 }

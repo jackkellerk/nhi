@@ -1,5 +1,7 @@
 package edu.lehigh.nhi.multitouch.backend.route;
 
+import org.json.JSONArray;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -90,5 +92,13 @@ public final class SourceRouteSetter {
                 return StructuredResponse.getErrorResponse(ErrorHandler.IO.SERVING_IMAGE_FILE);
             }
         });
+        
+        RouteSetter.setRoute(RequestType.GET, "/sources", ((request, response) -> {
+           return RouteSetter.preprocessSessionCheck(request, response, encryption, (uid, sessionKey) -> {
+               JSONArray sourceList = db.source.getSourceList();
+               return StructuredResponse.getResponse(sourceList);
+           });
+        }));
+        
     }
 }

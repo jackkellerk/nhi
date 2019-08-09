@@ -7,7 +7,7 @@ var angle = 0;
 var radius = 500;
 
 // standard global variables
-var container, scene, camera, renderer, controls, stats, window3d;
+var container, scene, camera, renderer, controls, stats, window3d, canvas;
 var clock = new THREE.Clock();
 
 // custom global variables
@@ -22,9 +22,9 @@ var projector, mouse = {
 function initThreeJS() {
 
   // Create a canvas
-  var canvas = document.createElement('CANVAS');
-  /* canvas.setAttribute("id", "threejsCanvas");
-  canvas.width = width;
+  canvas = document.createElement('CANVAS');
+  canvas.setAttribute("id", "threejsCanvas");
+  /* canvas.width = width;
   canvas.height = height;
   canvas.style.left = xPositionWindow + "px";
   canvas.style.top = yPositionWindow + "px"; Testing to see if we even need to load in a second canvas */
@@ -249,6 +249,11 @@ function onDocumentMouseMove(event) {
 
 function animate() {
 
+    if(renderer == null)
+    {
+        console.log("this is null");
+        return;
+    }
     var imgData = renderer.domElement.toDataURL("image/jpeg");
     var image = new Image();
     image.src = imgData;

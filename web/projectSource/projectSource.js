@@ -15,6 +15,8 @@ var ins_infoContainer = new PIXI.Container();
 var index = 0;
 var freshStart = true;
 
+var sourcesListResponse;
+
 // graphics for line and hexagon
 var line = new PIXI.Graphics();
 var ins_mask = new PIXI.Graphics();
@@ -95,6 +97,7 @@ var selectedSources = [];
  * startSorucePage sets the background and stage containers required
  */
 function startSourcePage() {
+    getAllSources();
     x = app.screen.width / 8;
     y = app.screen.height / 8;
     // variables to set border for hexagons
@@ -408,6 +411,8 @@ function populateSourceArray() {
     var x_origin = app.screen.width/8;
     var y_origin = app.screen.height/7;
     var current_Id = 1;
+    let stringRepresentation = JSON.stringify(sourcesListResponse)
+    console.log(stringRepresentation)
     for (var i = 0; i < defaultSources.length; i++, y += change) {
         var source_infoContainer = new PIXI.Container();
         var textContainer = new PIXI.Container();

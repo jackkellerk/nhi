@@ -42,13 +42,12 @@ function loginToBackend()
 
 function signUpBackend()
 {
-    var username = SU_userTextBox.text;
     var email = SU_emailTextBox.text;
     var password = signUpPassword;
     var confirmPassword = signUpRePassword;
     var legalName = legalTextBox.text;
     var institution = institutionTextBox.text;
-    var convertToJSON = {"username": username, "password": password, "email": email, "legal_name": legalName, "institution": institution};
+    var convertToJSON = {"password": password, "email": email, "legal_name": legalName, "institution": institution};
 
     if(confirmPassword != password)
     {
@@ -80,7 +79,7 @@ function signUpBackend()
             }
             uid = callback.data.uid;
             session_key = callback.data.session_key;
-            userTextBox.text = username;
+            userTextBox.text = email;
             toProjectSelection();
             currentActivity = "AllProjects";
         },

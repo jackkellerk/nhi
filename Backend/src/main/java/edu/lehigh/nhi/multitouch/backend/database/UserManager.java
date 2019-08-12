@@ -76,9 +76,9 @@ public class UserManager {
     }
 
     // Returns user info
-    public int insertUser(String username, String password, String email, String legalName, String institution)
+    public int insertUser(String password, String email, String legalName, String institution)
             throws SQLException {
-        mInsertUserFullPS.setString(1, username);
+        mInsertUserFullPS.setString(1, "No Username");
         mInsertUserFullPS.setString(2, password);
         mInsertUserFullPS.setString(3, legalName);
         mInsertUserFullPS.setString(4, email);

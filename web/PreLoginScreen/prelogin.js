@@ -200,7 +200,7 @@ function startPreLogin()
     userTextBox.x = login_hex.x-((pl_radius * 2) * .58)/2;
     userTextBox.y = login_hex.y - _text * 5;
     userTextBox.interactiveChildren = true;
-    userTextBox.placeholder = "Username";
+    userTextBox.placeholder = "Email";
     userTextBox.on("keydown",keyDown);
     Inner_Login_UI.addChild(userTextBox);
 
@@ -288,7 +288,7 @@ function startPreLogin()
     
 
     /** Here begins the many text boxes used in the sign up page **/
-    SU_userTextBox = new PIXI.TextInput({
+  /*  SU_userTextBox = new PIXI.TextInput({
         input: {
             fontFamily: 'Tahoma',
             fontSize: _size,
@@ -303,7 +303,7 @@ function startPreLogin()
     SU_userTextBox.y = signup_hex.y - 182;
     SU_userTextBox.interactiveChildren = true;
     SU_userTextBox.placeholder = "Enter Username";
-    signUp_UI.addChild(SU_userTextBox);
+    signUp_UI.addChild(SU_userTextBox);*/
 
     SU_emailTextBox = new PIXI.TextInput({
         input: {

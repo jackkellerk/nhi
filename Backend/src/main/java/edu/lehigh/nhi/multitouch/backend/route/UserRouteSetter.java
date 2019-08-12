@@ -58,15 +58,15 @@ public final class UserRouteSetter {
         RouteSetter.setRoute(RequestType.POST, "/signup", (request, response) -> {
 
             return RouteSetter.preprocessJSONValueGet(request, response,
-                    new String[] { "username", "password", "email", "legal_name", "institution" },
-                    new Type[] { Type.STRING, Type.STRING, Type.STRING, Type.STRING, Type.STRING }, (vals) -> {
-                        String username = (String) vals[0], password = (String) vals[1], email = (String) vals[2],
-                                legalName = (String) vals[3], institution = (String) vals[4];
+                    new String[] { "password", "email", "legal_name", "institution" },
+                    new Type[] { Type.STRING, Type.STRING, Type.STRING, Type.STRING }, (vals) -> {
+                        String password = (String) vals[0], email = (String) vals[1],
+                                legalName = (String) vals[2], institution = (String) vals[3];
                             if(db.user.getUidByEmail(email) < 1){
-                                if (db.user.insertUser(username, password, email, legalName, institution) < 1) {
+                                if (db.user.insertUser(password, email, legalName, institution) < 1) {
                                     return StructuredResponse.getErrorResponse(ErrorHandler.UNKOWN.INSERTION_NO_UPDATE_UNKNOWN);
                                 }
-                                int uid = db.user.getUidByUsername(username);
+                                int uid = db.user.getUidByEmail(email);
                                 String sessionKey = encryption.addSessionkey(uid);
                                 JSONObject dataJs = new JSONObject();
                                 dataJs.put("session_key", sessionKey);

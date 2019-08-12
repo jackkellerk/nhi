@@ -21,7 +21,7 @@ public class WindowManager {
     private final DatabaseManager mManager;
     private final Statements mStatements;
     private final PreparedStatement mSelectWindowByWidPS, mInsertWindowPS, mUpdateWindowPositionPS,
-            mDeleteWindowByWidPS, mUpdateImagePositionPS;
+            mDeleteWindowByWidPS, mUpdateImagePositionPS, mUpdateMinimizedPS;
 
     /** Window structure class being traslated into Json by Gson. */
     @SuppressWarnings("unused")
@@ -33,18 +33,21 @@ public class WindowManager {
         Square image_box;
         Square window_box;
         Date date_creation;
+        boolean minimized;
+
 
         Window() {
 
         }
 
-        Window(int wid, int iid, int pid, String thumbnail, Date date_creation, Square image_box, Square window_box) {
+        Window(int wid, int iid, int pid, String thumbnail, Date date_creation, Square image_box, Square window_box, boolean minimized) {
             this.wid = wid;
             this.iid = iid;
             this.pid = pid;
             this.thumbnail = thumbnail;
             this.image_box = image_box;
             this.window_box = window_box;
+            this.minimized = minimized;
         }
     }
 
@@ -57,6 +60,7 @@ public class WindowManager {
         mUpdateWindowPositionPS = mStatements.window.updateWindowPosition;
         mUpdateImagePositionPS = mStatements.window.updateImagePosition;
         mDeleteWindowByWidPS = mStatements.window.deleteWindowByWid;
+        mUpdateMinimizedPS = mStatements.window.updateMinimized;
     }
 
     public JSONObject getWindow(int wid) throws JSONException, SQLException {
@@ -69,7 +73,7 @@ public class WindowManager {
                     new Square(rs.getFloat("img_pos_x"), rs.getFloat("img_pos_y"), rs.getFloat("img_width"),
                             rs.getFloat("img_height")),
                     new Square(rs.getFloat("canvas_pos_x"), rs.getFloat("canvas_pos_y"), rs.getFloat("canvas_width"),
-                            rs.getFloat("canvas_height")));
+                            rs.getFloat("canvas_height")), rs.getBoolean("minimized"));
             retval = new JSONObject(mGson.toJson(window));
         }
         return retval;
@@ -97,7 +101,14 @@ public class WindowManager {
         return retval;
     }
 
-    public int insertWindow(int pid, int iid, Square image_box, Square window_box) throws SQLException {
+    public int updateMinimized(boolean minimized) throws SQLException {
+        mUpdateMinimizedPS.setBoolean(1, minimized);
+        int retval = mUpdateMinimizedPS.executeUpdate();
+        mUpdateMinimizedPS.close();
+        return retval;
+    }
+
+    public int insertWindow(int pid, int iid, Square image_box, Square window_box, boolean minimized) throws SQLException {
         Window window = new Window();
         window.pid = pid;
         window.iid = iid;
@@ -119,6 +130,7 @@ public class WindowManager {
         mInsertWindowPS.setFloat(9, window_box.width);
         mInsertWindowPS.setFloat(10, window_box.height);
         mInsertWindowPS.setTimestamp(11, DatabaseManager.convertDateToTimestamp(new Date()));
+        mInsertWindowPS.setBoolean(12, minimized);
         return mInsertWindowPS.executeUpdate();
     }
 

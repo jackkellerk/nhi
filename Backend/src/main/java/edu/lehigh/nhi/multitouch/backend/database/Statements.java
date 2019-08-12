@@ -43,19 +43,20 @@ class Statements {
 
     protected class Window {
         protected final PreparedStatement selectWindowByPid, selectWindowByWid, insertWindow, updateWindowPosition,
-                updateImagePosition, deleteWindowByWid;
+                updateImagePosition, updateMinimized, deleteWindowByWid;
 
         private Window() throws SQLException {
             selectWindowByWid = mMySQLConnection.prepareStatement("select * from window_t where wid = ?");
             insertWindow = mMySQLConnection
                     .prepareStatement("insert into window_t(iid, pid, img_pos_x, img_pos_y, img_width, img_height, "
-                            + "canvas_pos_x, canvas_pos_y, canvas_width, canvas_height, date_creation)"
-                            + "values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                            + "canvas_pos_x, canvas_pos_y, canvas_width, canvas_height, date_creation, minimized)"
+                            + "values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
             selectWindowByPid = mMySQLConnection.prepareStatement("select * from window_t where pid = ?");
             updateWindowPosition = mMySQLConnection.prepareStatement(
                     ("update window_t set canvas_pos_x = ?, canvas_pos_y = ?, canvas_width = ?, canvas_height = ? where wid = ?"));
             updateImagePosition = mMySQLConnection.prepareStatement(
                     ("update window_t set img_pos_x = ?, img_pos_y = ?, img_width = ?, img_height = ? where wid = ?"));
+            updateMinimized = mMySQLConnection.prepareStatement(("update window_t set minimized = ? where wid = ?"));
             deleteWindowByWid = mMySQLConnection.prepareStatement("delete from window_t where wid = ?");       
 
         }
@@ -94,12 +95,14 @@ class Statements {
     }
 
     protected class UPRelationship {
-        protected final PreparedStatement insertRelationship, deleteRelationship, selectRelationshipByPid;
+        protected final PreparedStatement insertRelationship, deleteRelationship, selectRelationshipByPid, selectRelationshipByUidPid;
 
         private UPRelationship() throws SQLException{
             insertRelationship = mMySQLConnection.prepareStatement("insert into user_project (uid, pid) values (?, ?)");
             deleteRelationship = mMySQLConnection.prepareStatement("delete from user_project where uid = ? and pid = ?");
             selectRelationshipByPid = mMySQLConnection.prepareStatement("select * from user_project where pid = ?");
+            selectRelationshipByUidPid = mMySQLConnection.prepareStatement("select * from user_project where uid = ? and pid = ?");
+
         }
     }
 

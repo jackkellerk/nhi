@@ -45,7 +45,7 @@ public class ErrorHandler {
     }
 
     public static final class EXISTANSE {
-        public static final int PROJECT_EXISTANCE = 701, IMAGE_FILE_EXISTANCE = 702, USER_EXISTANCE = 703;
+        public static final int PROJECT_EXISTANCE = 701, IMAGE_FILE_EXISTANCE = 702, USER_EXISTANCE = 703, USER_PROJECT_EXISTANCE = 704;
     }
 
     public static final class IO{

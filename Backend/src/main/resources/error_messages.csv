@@ -18,4 +18,5 @@
 701,The project you look for does not exist.
 702,Could not find requesting image file. Check your url.
 703,This user already exists. 
+704,User already has access to project 
 801,Error occurs transfering images. Please try again later.

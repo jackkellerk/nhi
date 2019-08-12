@@ -60,7 +60,7 @@ public final class WindowRouteSetter {
                                             "Failed parsing 'window_box'.");
                                 }
 
-                                if (db.window.insertWindow(pid, iid, imageBox, windowBox) < 1)
+                                if (db.window.insertWindow(pid, iid, imageBox, windowBox,false) < 1)
                                     return StructuredResponse.getErrorResponse(
                                             ErrorHandler.UNKOWN.INSERTION_NO_UPDATE_UNKNOWN,
                                             "Failed insert into table window_t. ");
@@ -85,7 +85,7 @@ public final class WindowRouteSetter {
                             new Type[] { Type.INT }, (vals) -> {
                                 int iid = (int) vals[0];
                                 Square imageBox = Square.DEFAULT_IMAGE, windowBox = Square.DEFAULT_WINDOW;
-                                if (db.window.insertWindow(pid, iid, imageBox, windowBox) < 1)
+                                if (db.window.insertWindow(pid, iid, imageBox, windowBox,false) < 1)
                                     return StructuredResponse.getErrorResponse(
                                             ErrorHandler.UNKOWN.INSERTION_NO_UPDATE_UNKNOWN,
                                             "Failed insert into table window_t. ");
@@ -141,6 +141,27 @@ public final class WindowRouteSetter {
                             float width = (float) vals[2];
                             float height = (float) vals[3];
                             int num_rows_updated = db.window.updateImagePosition(wid, pos_x, pos_y, width, height);
+                            JSONObject retval = new JSONObject();
+                            retval.put("num_rows_updated", num_rows_updated);
+                            return new StructuredResponse(retval).toJson().toString();
+                    });
+                });
+            });
+        });
+
+        // update the posion of image.
+        RouteSetter.setRoute(RequestType.PUT, "/w/:wid/update_min", (request, response) -> {
+            return RouteSetter.preprocessSessionCheck(request, response, encryption, (uid, sessionKey) -> {
+                return RouteSetter.preprocessPathParam(request, response, new String[] { "wid" }, (params) -> {
+                    int wid = (int)params[0];
+                    if (!db.checkWindowOwnership(uid, wid)) {
+                        return StructuredResponse.getErrorResponse(ErrorHandler.PRIVILAGE.NO_RIGHT_TO_ACCESS_PROJECT);
+                    }
+                    return RouteSetter.preprocessJSONValueGet(request, response,
+                            new String[] { "minimized"},
+                            new Type[] { Type.BOOL}, (vals) -> {
+                            boolean min_value = (boolean) vals[0];
+                            int num_rows_updated = db.window.updateMinimized(min_value);
                             JSONObject retval = new JSONObject();
                             retval.put("num_rows_updated", num_rows_updated);
                             return new StructuredResponse(retval).toJson().toString();

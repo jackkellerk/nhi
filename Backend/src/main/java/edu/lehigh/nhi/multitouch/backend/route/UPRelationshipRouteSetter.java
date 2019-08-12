@@ -29,14 +29,50 @@ public final class UPRelationshipRouteSetter {
          */
 
         // create new user and project relationship.
-        RouteSetter.setRoute(RequestType.POST, "/p/:pid/add_to_project", (request, response) -> {
+        // Adds current user to project
+        RouteSetter.setRoute(RequestType.POST, "/p/:pid/add_self_project", (request, response) -> {
             return RouteSetter.preprocessSessionCheck(request, response, encryption, (uid, sessionKey) -> {
                 return RouteSetter.preprocessPathParam(request, response, new String[] { "pid" }, (params) -> {
                     int pid = params[0];
+                    if(db.uprelationship.relationshipExist(uid,pid)){
+                        return StructuredResponse.getErrorResponse(ErrorHandler.EXISTANSE.USER_PROJECT_EXISTANCE);
+                    }
                     int num_rows_updated = db.uprelationship.createRelationship(uid,pid);
                     JSONObject retval = new JSONObject();
                     retval.put("num_rows_updated", num_rows_updated);
                     return new StructuredResponse(retval).toJson().toString();
+                });
+            });
+        });
+
+         // create new user and project relationship.
+         RouteSetter.setRoute(RequestType.POST, "/p/:pid/add_user_project", (request, response) -> {
+            return RouteSetter.preprocessSessionCheck(request, response, encryption, (uid, sessionKey) -> {
+                return RouteSetter.preprocessPathParam(request, response, new String[] { "pid" }, (params) -> {
+                    int pid = params[0];
+                    if (!db.checkProjectOwnership(uid, pid)) {
+                        return StructuredResponse.getErrorResponse(ErrorHandler.PRIVILAGE.NO_RIGHT_TO_ACCESS_PROJECT);
+                    }
+                    return RouteSetter.preprocessJSONValueGet(request, response,
+                        new String[] { "email"},
+                        new Type[] { Type.STRING }, (vals) -> {
+                            String email = (String) vals[0];
+                            int other_uid = db.user.getUidByEmail(email);
+                        if(other_uid < 1){
+                            if(!db.uprelationship.relationshipExist(other_uid,pid)){
+                                int num_rows_updated = db.uprelationship.createRelationship(other_uid,pid);
+                                JSONObject retval = new JSONObject();
+                                retval.put("num_rows_updated", num_rows_updated);
+                                return new StructuredResponse(retval).toJson().toString();
+                            }
+                            else{
+                                return StructuredResponse.getErrorResponse(ErrorHandler.EXISTANSE.USER_PROJECT_EXISTANCE);
+                            }
+                        }
+                        else{
+                            return StructuredResponse.getErrorResponse(ErrorHandler.EXISTANSE.USER_EXISTANCE);
+                        }
+                    });
                 });
             });
         });

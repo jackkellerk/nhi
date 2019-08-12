@@ -5,7 +5,7 @@ import org.json.JSONObject;
 public class JSONValueGetter {
 
     public enum Type {
-        INT, DOUBLE, FLOAT, STRING, JSONOBJ, JSONARR
+        INT, DOUBLE, FLOAT, STRING, JSONOBJ, JSONARR, BOOL
     }
 
     public static Object getVal(JSONObject jsObj, String key, Type type) {
@@ -22,6 +22,8 @@ public class JSONValueGetter {
             return jsObj.getJSONObject(key);
         case JSONARR:
             return jsObj.getJSONArray(key);
+        case BOOL:
+            return jsObj.getBoolean(key);
         }
         return null;
     }

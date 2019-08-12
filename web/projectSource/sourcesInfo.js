@@ -8,8 +8,8 @@ class Source {
 }
 
 class SourceElement{
-    constructor( container){
-        //this.index = index;
+    constructor( container, id){
+        this.id = id;
         this.container = container;
     }
 }

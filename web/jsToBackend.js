@@ -119,6 +119,34 @@ function gatherUserSettings()
     });
 }
 
+function getAllSources()
+{
+    // This loads the information about the userSettings
+    $.ajax({
+        method: 'GET',
+        contentType: 'application/json',
+        headers: {"uid": uid, "session_key": session_key},
+        url: base_url + '/sources',
+        dataType: 'json',
+        crossDomain: 'true',
+        xhrFields: {
+            withCredentials: true
+        },
+        success: function(callback) {
+            if(callback.errorCode == 703)
+            {
+                alert("Error loading the sources list!");
+            }
+            else{
+            sourcesListResponse = callback.data;
+            }
+        },
+        error: function(xhr, status, error) {
+            alert("Internal Server Error: 500");
+        }
+    });
+}
+
 // name: String, canvasWidth: float, canvasHeight: float
 function postNewProject(name, canvasWidth, canvasHeight, properties, institution, sources)
 {

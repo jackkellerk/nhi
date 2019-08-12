@@ -31,11 +31,11 @@ class Statements {
         private Project() throws SQLException {
             selectProjectByPid = mMySQLConnection.prepareStatement("select * from project_t where pid = ?");
             insertProject = mMySQLConnection.prepareStatement(
-                    "insert into project_t(name, date_creation, canvas_width, canvas_height, institution) values(?, ?, ?, ?, ?)");
+                    "insert into project_t(name, date_creation, canvas_width, canvas_height, properties, institution) values(?, ?, ?, ?, ?, ?)");
             selectProjectsByUid = mMySQLConnection
                     .prepareStatement("select * from user_project natural join project_t where uid = ?");
             updateProjectByPid = mMySQLConnection.prepareStatement(
-                ("update project_t set name = ?, thumbnail = ?, canvas_width = ?, canvas_height = ?, institution = ? where pid = ?"));
+                ("update project_t set name = ?, thumbnail = ?, canvas_width = ?, canvas_height = ?, properties = ?, institution = ? where pid = ?"));
             deleteProjectByPid = mMySQLConnection.prepareStatement("delete from project_t where pid = ?");       
                 
         }

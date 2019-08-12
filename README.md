@@ -92,7 +92,17 @@ end of Quick Tutorial.
 
 
 ### Project Settings Pages
-
+- Desai Xie:
+- A set of questions originated from the internal presentation of initial thoughts of NHI made by 
+Christopher Marvel.
+- Questions are enclosed in hexagons. Question hexagons are side by side from left to right. The hexagons 
+to the left and the right of the centered one will have a slice of them shown on the sides of the screen. Clicking 
+on an option will shift all hexagons to the left, while clicking on the back button (an isosceles triangle 
+pointing to the left) will shift all hexagons to the right. Clicking on an option of the last question 
+hexagon will redirect to the institution page.
+- All answers of the questions are remembered in *newProjectProperties*, a JSON array of JSON objects: 
+{*option*: String, *choices*: JSONArray of Strings}. *newProjectProperties* is eventually passed in the 
+function *postNewProject*, an AJAX POST call to route */project/create*.
 
 
 
@@ -110,7 +120,8 @@ end of Quick Tutorial.
 
 
 ### Backend (jsToBackend.js)
-
+- Desai Xie:
+- *postNewProject*, an AJAX POST call to route */project/create*. 
 
 
 

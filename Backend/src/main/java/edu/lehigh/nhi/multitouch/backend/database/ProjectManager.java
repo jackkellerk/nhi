@@ -84,12 +84,13 @@ public class ProjectManager {
         return retval;
     }
 
-    public JSONObject createProject(int uid, String name, float canvas_width, float canvas_height, String institution) throws SQLException {
+    public JSONObject createProject(int uid, String name, float canvas_width, float canvas_height, String properties, String institution) throws SQLException {
         mInsertProjectPS.setString(1, name);
         mInsertProjectPS.setTimestamp(2, DatabaseManager.convertDateToTimestamp(new Date()));
         mInsertProjectPS.setFloat(3, canvas_width);
         mInsertProjectPS.setFloat(4, canvas_height);
-        mInsertProjectPS.setString(5, institution);
+        mInsertProjectPS.setString(5, properties);
+        mInsertProjectPS.setString(6, institution);
         if (mInsertProjectPS.executeUpdate() > 0) {
             int pid;
             if ((pid = mManager.getLastInsertedId()) > 0){
@@ -102,13 +103,14 @@ public class ProjectManager {
         return null;
     }
 
-    public int updateProject(int pid, String name, String thumbnail, float width, float height, String institution) throws SQLException {
+    public int updateProject(int pid, String name, String thumbnail, float width, float height, String properties, String institution) throws SQLException {
         mUpdateProjectPS.setString(1, name);
         mUpdateProjectPS.setString(2, thumbnail);
         mUpdateProjectPS.setFloat(3, width);
         mUpdateProjectPS.setFloat(4, height);
-        mUpdateProjectPS.setString(5, institution);
-        mUpdateProjectPS.setInt(6, pid);
+        mUpdateProjectPS.setString(5, properties);
+        mUpdateProjectPS.setString(6, institution);
+        mUpdateProjectPS.setInt(7, pid);
         int retval = mUpdateProjectPS.executeUpdate();
         mUpdateProjectPS.close();
         return retval;
@@ -116,7 +118,7 @@ public class ProjectManager {
 
     public JSONObject copyProject(int pid, int uid) throws SQLException{
         JSONObject oldProject = getProject(pid);
-        JSONObject newProject = createProject(uid, oldProject.getString("name") + " COPY", oldProject.getFloat("canvas_width"), oldProject.getFloat("canvas_height"), oldProject.getString("institution"));
+        JSONObject newProject = createProject(uid, oldProject.getString("name") + " COPY", oldProject.getFloat("canvas_width"), oldProject.getFloat("canvas_height"), oldProject.getString("properties"), oldProject.getString("institution"));
         
         //Gathers and copies all associated windows
         mStatements.window.selectWindowByPid.setInt(1, pid);

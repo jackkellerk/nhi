@@ -289,50 +289,32 @@ function clickSource(element){
     var start = element.container.getChildAt(1).alpha
     if ( start == 0){
         element.container.getChildAt(1).alpha =1;
+        selectedSources.push(element.id)
     } else {
         element.container.getChildAt(1).alpha =0;
+        for( var i = 0; i < selectedSources.length; i++){ 
+            if ( selectedSources[i] === element.id) {
+              selectedSources.splice(i, 1); 
+              i--;
+            }
+         }
     }
-    
+    console.log("Start")
+    selectedSources.forEach(element => {
+        console.log(element)
+    });
+    console.log("End")
     
 }
 
 function confirmNewProject(){
+    var jsonString = JSON.stringify(selectedSources);
+    console.log(jsonString);
     if(selectedSources.length == 0){
-        postNewProject("new proj", app.screen.width, app.screen.height, newProjectProperties, "Lehigh", [1, 2]);  // An Ajax "POST" call to backend
+        postNewProject("new proj", app.screen.width, app.screen.height, newProjectProperties, "Lehigh", jsonString);  // An Ajax "POST" call to backend
     }
 }
 
-
-/**
- * ps_prevUp() shows previous source page.
- */
-function ps_prevUp() {
-
-}
-
-
-/**
- * ps_nextUp() shows next source page.
- */
-function ps_nextUp() {
-
-}
-
-
-/**
- * ps_pointerDown make pressed button visually more focused
- */
-function ps_pointerDown() {
-    this.alpha = 0.5;
-}
-
-
-/**
- * ps_pointerOut make button lighter when not pressed (outside)
- */
-function ps_pointerOut() {
-    this.alpha = 1;
-}
 
 
 function changeSourceName(input){
@@ -425,6 +407,7 @@ function populateSourceArray() {
     var change = (80 * 2 + 4 * 2)
     var x_origin = app.screen.width/8;
     var y_origin = app.screen.height/7;
+    var current_Id = 1;
     for (var i = 0; i < defaultSources.length; i++, y += change) {
         var source_infoContainer = new PIXI.Container();
         var textContainer = new PIXI.Container();
@@ -555,11 +538,12 @@ function populateSourceArray() {
         source_infoContainer.addChild(hexContainer);
         source_infoContainer.x = app.stage.width + 10;
 
-        var newSource = new SourceElement(source_infoContainer);
+        var newSource = new SourceElement(source_infoContainer, current_Id);
         sourcesArray.push(newSource);
         app.stage.addChild(source_infoContainer);
 
         y_origin += app.screen.height/4;
+        current_Id++;
     }
 
     sourcesArray.forEach(element => {

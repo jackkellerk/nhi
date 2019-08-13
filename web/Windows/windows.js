@@ -347,11 +347,13 @@ function startWindows(){
     .on('pointermove', updateMousePositionWindow);
 
 
+  let myZoom = new Zoom("Images/sinteredMetal.png", 1, 1);
+
   window1.tool1.interactive = true;
   window1.tool1.on('pointerdown', function(){
     clearWindow(window1);
-    window1.container.addChild(zoom.LMSIContainer);
-    zoom.LMSIContainer.mask = window1.windowRect;
+    window1.container.addChild(myZoom.LMSIContainer);
+    myZoom.LMSIContainer.mask = window1.windowRect;
     window1.tool1.x += 5;
   });
   

@@ -188,108 +188,19 @@ function createUIProjects()
     
 
 
-
-    // Project 1
-
-    let p1A = new Hexagon({x: 476.12, y: initialHex.getCenterLowerRight(0).y}, 0, 80);
-        p1A.graphics.alpha = 0.8;
-        p1A.draw(0x909090);
-    app.stage.removeChild(p1A.container);
-    a_p1Container.addChild(p1A.container);
-
-    p1_image = new PIXI.Sprite.fromImage("Images/LineIntegral.jpg");
-        p1_image.width = 700;
-        p1_image.height = 500;
-        p1_image.position.x = p1A.x - 400;
-        p1_image.position.y = p1A.y - 300;
-    a_p1Container.addChild(p1_image);
-
-    var p1Hex = new PIXI.Graphics();
-        p1Hex.beginFill(0x000000);
-        p1Hex.drawPolygon([69.282,0, 138.564,40, 207.846,0, 277.128,40, 277.128,120, 207.846,160, 207.846,240, 138.564,280, 69.282,240, 69.282,160, 0,120, 0,40]);
-        p1Hex.endFill();
-        p1Hex.x = 198;
-        p1Hex.y = p1A.y - 200;
-    p1_image.mask = p1Hex;
-    a_p1Container.addChild(p1Hex);
-
-    let p1Info = new PIXI.Graphics();
-        p1Info.beginFill(0x000000);
-        p1Info.drawPolygon([69.282,0, 138.564,40, 207.846,0, 277.128,40, 277.128,120, 207.846,160, 207.846,240, 138.564,280, 69.282,240, 69.282,160, 0,120, 0,40]);
-        p1Info.endFill();
-        p1Info.x = p1Hex.x;
-        p1Info.y = p1Hex.y;
-        p1Info.alpha = 0.5;
-    a_p1InfoContainer.addChild(p1Info);
-
-    var p1HexOutline = new PIXI.Graphics();
-        p1HexOutline.lineStyle(1.5, 0x909090, 1.5);
-        p1HexOutline.drawPolygon([69.282,0, 138.564,40, 207.846,0, 277.128,40, 277.128,120, 346.41,160, 346.41,240, 277.128,280, 207.846,240, 138.564,280, 69.282,240, 69.282,160, 0,120, 0,40]);
-        p1HexOutline.x = p1Hex.x;
-        p1HexOutline.y = p1Hex.y;
-    a_p1InfoContainer.addChild(p1HexOutline);
-
-    let details = "Last Edited\n\n         Whitaker Laboratory\n         Lehigh University\n         06/25/19\n         13:23"
-    let p1Details = new PIXI.Text(details, {fill: "#ffffff", fontFamily: "Arial", fontWeight: "bold", fontSize: 14, lineHeight: 20});
-        p1Details.position.x = p1Hex.x + 50;
-        p1Details.position.y = p1Hex.y + 60;
-    a_p1InfoContainer.addChild(p1Details);
-
-    let p1Titletxt = "Project 1";
-    let p1TitleMetrics = PIXI.TextMetrics.measureText(p1Titletxt, a_projecttitlestyle);
-    let p1Title = new PIXI.Text(p1Titletxt, a_projecttitlestyle);
-        p1Title.position.x = p1A.x - p1TitleMetrics.width/2;
-        p1Title.position.y = p1A.y - 32;
-    a_p1Container.addChild(p1Title);
-
-    let p1Select = new PIXI.Graphics();
-        p1Select.beginFill(0xFFFFFF);
-        p1Select.drawRoundedRect(p1A.x-46,p1A.y+10, 92,22, 2);
-        p1Select.endFill();
-        p1Select.alpha = 0.75;
-        p1Select.buttonMode = true;
-        p1Select.interactive = true;
-        p1Select.on('mouseover', function(){
-            p1Select.alpha = 1;
-            app.stage.addChild(a_p1InfoContainer);
-        });
-        p1Select.on('mouseout', function(){
-            p1Select.alpha = 0.75;
-        });
-        p1Select.on('pointerdown', a_project1Select);
-    a_p1Container.addChild(p1Select);
-    //app.stage.addChild(p1Select);
-
-    let projectSelecttxt = "Open";
-    let projectSelectMetrics = PIXI.TextMetrics.measureText(projectSelecttxt, a_projectselectstyle);
-    let p1SelectTitle = new PIXI.Text(projectSelecttxt, a_projectselectstyle);
-        p1SelectTitle.position.x = p1A.x - projectSelectMetrics.width/2;
-        p1SelectTitle.position.y = p1A.y+11;
-    a_p1Container.addChild(p1SelectTitle);
-
-    app.stage.addChild(a_p1Container);
-    a_p1Container.alpha = 0.8;
-    a_p1Container.interactive = true;
-    a_p1Container.on('mouseover', function(){ app.stage.addChild(a_p1InfoContainer); });
-    a_p1Container.on('mouseout', function(){ app.stage.removeChild(a_p1InfoContainer); });
-
-    if (isTouch) {
-        a_p1Container.scale.x = a_p1Container.scale.y = 0.3375;
-        a_p1Container.x = a_p1Container.x + 461;
-        a_p1Container.y = a_p1Container.y + 86;
-
-        a_p1InfoContainer.scale.x = a_p1InfoContainer.scale.y = 0.3375;
-        a_p1InfoContainer.x = a_p1InfoContainer.x + 461;
-        a_p1InfoContainer.y = a_p1InfoContainer.y + 86;
-    }
-
-
+    let project1 = new Project("AKT Ceramics", "Images/LineIntegral.jpg", 476.12, initialHex.getCenterLowerRight(0).y);
+    // initial Hex is from a_drawHex.js
+    project1.select.on('pointerdown', function(){
+        currentActivity = activityArray[2];
+        moveLeftProjectSelection();
+        setTimeout('updateActivity()', 200); 
+    });
 
 
 
     // New Project
 
-    let newP = new Hexagon({x:p1A.getCenterUpperRight(279).x, y: p1A.getCenterUpperRight(0).y}, 0, 80);
+    let newP = new Hexagon({x:project1.infoHex.getCenterUpperRight(279).x, y: project1.infoHex.getCenterUpperRight(0).y}, 0, 80);
         newP.graphics.lineStyle(3, 0x909090, 3);
         newP.graphics.buttonMode = true;
         newP.graphics.interactive = true;
@@ -398,8 +309,6 @@ function a_generateTextBox(x, y, w)
 function moveLeftProjectSelection(){
     positionTransform(-1000, a_titleContainer.y, a_titleContainer, 10)
     positionTransform(-1000, a_settingsContainer.y, a_settingsContainer, 10)
-    positionTransform(-1000, a_p1InfoContainer.y, a_p1InfoContainer, 10)
-    positionTransform(-1000, maskContainer.y, maskContainer, 10)
-    positionTransform(-1000, a_p1Container.y, a_p1Container, 10)
+    //positionTransform(-1000, project1.container.y, project1.container, 10)
     //blurTransform(app.stage, 1.0, 10)
 }

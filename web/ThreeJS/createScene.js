@@ -63,7 +63,7 @@ container.appendChild(renderer.domElement);
   // EVENTS
 
   // CONTROLS
-  controls = new THREE.OrbitControls(camera, renderer.domElement);
+  controls = new THREE.OrbitControls(camera/*, renderer.domElement */);
   // STATS
   /* stats = new Stats();
   stats.domElement.style.position = 'absolute';
@@ -258,9 +258,9 @@ function animate() {
     var image = new Image();
     image.src = imgData;
     console.log("framerate");
-    camera.position.x = radius * Math.cos( angle );  
+    /* camera.position.x = radius * Math.cos( angle );  
 camera.position.z = radius * Math.sin( angle );
-angle += 0.01;
+angle += 0.01; */
     window3d.refreshImage(image);
   
   requestAnimationFrame(animate);

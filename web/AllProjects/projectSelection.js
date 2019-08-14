@@ -1,6 +1,6 @@
 let a_titlestyle = new PIXI.TextStyle({fill: "#d3d3d3", fontFamily: "Helvetica", fontSize: 32, letterSpacing: 3});
 let a_subtitlestyle = new PIXI.TextStyle({fill: "#d3d3d3", fontFamily: "Helvetica", fontSize: 24, letterSpacing: 3});
-const a_projecttitlestyle = new PIXI.TextStyle({fill: "#ffffff", fontFamily: "Helvetica", fontSize: 18, letterSpacing: 1.5});
+const a_projecttitlestyle = new PIXI.TextStyle({fill: "#ffffff", fontFamily: "Helvetica", fontSize: 16, letterSpacing: 1.5});
 const a_projectselectstyle = new PIXI.TextStyle({fill: "#000000", fontFamily: "Arial", fontWeight: "bold", fontSize: 14, letterSpacing:1.5});
 
 var a_titleContainer = new PIXI.Container();
@@ -188,8 +188,15 @@ function createUIProjects()
     
 
 
-    let project1 = new Project("AKT Ceramics", "Images/LineIntegral.jpg", 476.12, initialHex.getCenterLowerRight(0).y);
-    // initial Hex is from a_drawHex.js
+    let project1 = new Project("AKT Ceramics", "Images/LineIntegral.jpg", 0);
+
+    project1.select.on('mouseover', function(){
+        project1.select.alpha = 1;
+        app.stage.addChild(project1.container);
+    });
+    project1.select.on('mouseout', function(){
+       project1.select.alpha = 0.75;
+    });
     project1.select.on('pointerdown', function(){
         currentActivity = activityArray[2];
         moveLeftProjectSelection();
@@ -197,35 +204,27 @@ function createUIProjects()
     });
 
 
+    let project2 = new Project("AKT Metals", "Images/lowmag_test.jpg", 1);
+    
+    project2.select.on('mouseover', function(){
+        project2.select.alpha = 1;
+        app.stage.addChild(project2.container);
+    });
+    project2.select.on('mouseout', function(){
+       project2.select.alpha = 0.75;
+    });
+    project2.select.on('pointerdown', function(){
+        currentActivity = activityArray[2];
+        moveLeftProjectSelection();
+        setTimeout('updateActivity()', 200); 
+    });
 
-    // New Project
 
-    let newP = new Hexagon({x:project1.infoHex.getCenterUpperRight(279).x, y: project1.infoHex.getCenterUpperRight(0).y}, 0, 80);
-        newP.graphics.lineStyle(3, 0x909090, 3);
-        newP.graphics.buttonMode = true;
-        newP.graphics.interactive = true;
-        newP.graphics.on('mouseover', function(){ plusIcon.alpha = 0.8; });
-        newP.graphics.on('mouseout', function(){ plusIcon.alpha = 0.6; });
-        newP.graphics.on('pointerdown', a_newPSelect);
-    newP.draw(0x909090, 0.8); // fill color + opacity/alpha
-    app.stage.removeChild(newP.container);
-    newProjectContainer.addChild(newP.container);
+    project2.newProject();
 
-    let plusIcon = new PIXI.Sprite.from("Images/plus-icon.png");
-    plusIcon.width = 65;
-    plusIcon.height = 65;
-    plusIcon.position.x = newP.x-33;
-    plusIcon.position.y = newP.y-33;
-    plusIcon.alpha = 0.6;
-    newProjectContainer.addChild(plusIcon);
 
-    if (isTouch) {
-        newProjectContainer.scale.x = newProjectContainer.scale.y = 0.3375;
-        newProjectContainer.x = newProjectContainer.x + 461;
-        newProjectContainer.y = newProjectContainer.y + 86;
-    }
-    app.stage.addChild(newProjectContainer);
 
+    
 
 
 
@@ -267,16 +266,7 @@ function a_SettingsSelect()
 //Agustin: edits to a_project1Select() and a_newPSelect() for small transformations
 function a_project1Select()
 {
-    currentActivity = activityArray[2];
-    moveLeftProjectSelection();
-    setTimeout('updateActivity()', 200); 
-}
 
-function a_newPSelect()
-{
-    currentActivity = activityArray[3];
-    moveLeftProjectSelection()
-    setTimeout('updateActivity()', 200); 
 }
 
 function a_generateTextLine(x, y, w, lineWidth){

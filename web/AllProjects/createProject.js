@@ -1,8 +1,11 @@
 class Project {
 
-    constructor(name, imagePath, x, y) {
+    constructor(name, imagePath, count) {
         this.container = new PIXI.Container();
         let infoContainer = new PIXI.Container();
+
+        let x = initialHex.x + 485 + count*417;
+        let y = initialHex.getCenterLowerRight(0).y;
 
         this.infoHex = new Hexagon({x, y}, 0, 80);
         this.infoHex.graphics.alpha = 0.8;
@@ -21,7 +24,7 @@ class Project {
             shape.beginFill(0x000000);
             shape.drawPolygon([69.282,0, 138.564,40, 207.846,0, 277.128,40, 277.128,120, 207.846,160, 207.846,240, 138.564,280, 69.282,240, 69.282,160, 0,120, 0,40]);
             shape.endFill();
-            shape.x = 198;
+            shape.x = 198 + count*417;
             shape.y = this.infoHex.y - 200;
         image.mask = shape;
         this.container.addChild(shape);
@@ -30,8 +33,8 @@ class Project {
             infoShape.beginFill(0x000000);
             infoShape.drawPolygon([69.282,0, 138.564,40, 207.846,0, 277.128,40, 277.128,120, 207.846,160, 207.846,240, 138.564,280, 69.282,240, 69.282,160, 0,120, 0,40]);
             infoShape.endFill();
-            infoShape.x = 198;
-            infoShape.y = 182;
+            infoShape.x = shape.x;
+            infoShape.y = shape.y; //app.screen.height/3.5 - 80;
             infoShape.alpha = 0.5;
         infoContainer.addChild(infoShape);
 
@@ -61,14 +64,6 @@ class Project {
             //this.select.alpha = 0.75;
             this.select.buttonMode = true;
             this.select.interactive = true;
-            this.select.on('mouseover', function(){
-                this.select.alpha = 1;
-                app.stage.addChild(this.container);
-            });
-            this.select.on('mouseout', function(){
-               // this.select.alpha = 0.75;
-            });
-
         this.container.addChild(this.select);
         //app.stage.addChild(select);
 
@@ -101,7 +96,37 @@ class Project {
 
 
 
+    }
 
+    newProject() {
+        
+        this.newProjectContainer = new PIXI.Container();
+
+        let newP = new Hexagon({x:this.infoHex.getCenterUpperRight(279).x, y: this.infoHex.getCenterUpperRight(0).y}, 0, 80);
+        newP.graphics.lineStyle(3, 0x909090, 3);
+        newP.graphics.buttonMode = true;
+        newP.graphics.interactive = true;
+        newP.graphics.on('mouseover', function(){ plusIcon.alpha = 0.8; });
+        newP.graphics.on('mouseout', function(){ plusIcon.alpha = 0.6; });
+        newP.graphics.on('pointerdown', a_newPSelect.bind(this));
+        newP.draw(0x909090, 0.8);
+        app.stage.removeChild(newP.container);
+        this.newProjectContainer.addChild(newP.container);
+
+        let plusIcon = new PIXI.Sprite.from("Images/plus-icon.png");
+        plusIcon.width = 65;
+        plusIcon.height = 65;
+        plusIcon.position.x = newP.x-33;
+        plusIcon.position.y = newP.y-33;
+        plusIcon.alpha = 0.6;
+        this.newProjectContainer.addChild(plusIcon);
+
+        if (isTouch) {
+            this.newProjectContainer.scale.x = this.newProjectContainer.scale.y = 0.3375;
+            this.newProjectContainer.x = this.newProjectContainer.x + 461;
+            this.newProjectContainer.y = this.newProjectContainer.y + 86;
+        }
+        app.stage.addChild(this.newProjectContainer);
 
     }
 
@@ -111,4 +136,13 @@ class Project {
 
 
 
+
+
+}
+
+function a_newPSelect()
+{
+    currentActivity = activityArray[3];
+    moveLeftProjectSelection()
+    setTimeout('updateActivity()', 200); 
 }

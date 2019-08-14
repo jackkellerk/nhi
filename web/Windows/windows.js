@@ -351,7 +351,6 @@ function startWindows(){
     .on('pointermove', updateMousePositionWindow);
 
 
-  //let myZoom = new Zoom("Images/sinteredMetal.png", 1, 1);
 
   window1.tool1.interactive = true;
   window1.tool1.on('pointerdown', function(){
@@ -360,8 +359,6 @@ function startWindows(){
     //myZoom.LMSIContainer.mask = window1.windowRect;
     window1.tool1.x += 5;
   });
-
-
 
 
   window1.tool2.interactive = true;
@@ -377,7 +374,6 @@ function startWindows(){
   window1.tool3.on('pointerdown', function(){
     clearWindow(window1);
     //window1.container.addChild(container);
-    //container.mask = window1.windowBorder;    //window1.container.addChild(MBContainer);
     //MBContainer.mask = window1.windowRect;
     window1.tool3.x += 5;
   });
@@ -385,8 +381,8 @@ function startWindows(){
   window1.tool4.interactive = true;
   window1.tool4.on('pointerdown', function(){
     clearWindow(window1);
-    //window1.container.addChild(LIContainer);
-    //LIContainer.mask = window1.windowRect;
+    window1.container.addChild(window1.LIContainer);
+    window1.LIContainer.mask = window1.windowRect;
     window1.tool4.x += 5;
   });
 
@@ -403,7 +399,7 @@ function startWindows(){
   window1.closeWindowMenu.leftButton.on('pointerdown', function(){
     app.stage.removeChild(window1.closeWindowMenu.container);
     app.stage.removeChild(window1.container);
-    //w_container.removeChild(window2Hex.container);
+    windowHexes.removeChild(window1Hex.container);
     Acc = 0;
   });
 
@@ -442,7 +438,7 @@ function startWindows(){
   });
 
 
-  /* ------------------------------------- Window 2 -----------------------------------------
+  // ------------------------------------- Window 2 -----------------------------------------
 
   window1.inFront = false;
 
@@ -469,32 +465,32 @@ function startWindows(){
   window2.tool1.interactive = true;
   window2.tool1.on('pointerdown', function(){
     clearWindow(window2);
-    window2.container.addChild(LMSIContainer);
-    LMSIContainer.mask = window2.windowRect;
+    //window2.container.addChild(window2.LMSIContainer);
+    //window1.LMSIContainer.mask = window2.windowRect;
     window2.tool1.x += 5;
   });
   
   window2.tool2.interactive = true;
   window2.tool2.on('pointerdown', function(){
     clearWindow(window2);
-    window2.container.addChild(MSContainer);
-    MSContainer.mask = window2.windowRect;
+    window2.container.addChild(window2.MSContainer);
+    window2.MSContainer.mask = window2.windowRect;
     window2.tool2.x += 5;
   });
 
   window2.tool3.interactive = true;
   window2.tool3.on('pointerdown', function(){
     clearWindow(window2);
-    window2.container.addChild(MBContainer);
-    MBContainer.mask = window2.windowRect;
+    //window2.container.addChild(window2.MBContainer);
+    //window2.MBContainer.mask = window2.windowRect;
     window2.tool3.x += 5;
   });
 
   window2.tool4.interactive = true;
   window2.tool4.on('pointerdown', function(){
     clearWindow(window2);
-    window2.container.addChild(LIContainer);
-    LIContainer.mask = window2.windowRect;
+    window2.container.addChild(window2.LIContainer);
+    window2.LIContainer.mask = window2.windowRect;
     window2.tool4.x += 5;
   });
 
@@ -511,7 +507,7 @@ function startWindows(){
   window2.closeWindowMenu.leftButton.on('pointerdown', function(){
     app.stage.removeChild(window2.closeWindowMenu.container);
     app.stage.removeChild(window2.container);
-    //w_container.removeChild(window2Hex.container);
+    windowHexes.removeChild(window2Hex.container);
     Acc = 0;
   });
 
@@ -542,18 +538,15 @@ function startWindows(){
   });
 
   //manually triggers tool1 to be displayed from the start
-  window2.tool3.emit('pointerdown');
+  window2.tool4.emit('pointerdown');
 
   window2Hex.graphics.on('pointerdown', function(){
-    app.stage.addChild(window2.container);
     window2.isOpen = true;
+    app.stage.addChild(window2.container);
     window2Hex.visible = false;
   });
 
-  window1.minIcon.emit('pointerdown');
-  window2.minIcon.emit('pointerdown');
 
-*/
 
 
 
@@ -599,13 +592,13 @@ function w_WindowSelect(window, windowHex)
 function blurBg()
 {
   for (var i=0; i<app.stage.children.length; i++){
-    blurTransform(app.stage.getChildAt(i), 1.0, 10);
+    //blurTransform(app.stage.getChildAt(i), 1.0, 10);
   }
 }
 
 function unblurBg()
 {
   for (var i=0; i<app.stage.children.length; i++){
-    blurTransform(app.stage.getChildAt(i), 0.5, 10);
+    //blurTransform(app.stage.getChildAt(i), 0.5, 10);
   }
 }

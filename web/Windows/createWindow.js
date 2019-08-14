@@ -192,13 +192,15 @@ class WorkWindow{
         /*startMultiblock();
         MBContainer.scale.x = MBContainer.scale.y = 0.70;
         MBContainer.position.x = this.xPositionWindow;
-        MBContainer.position.y = this.yPositionWindow + 20;
+        MBContainer.position.y = this.yPositionWindow + 20; */
 
         // Line-Intensity Analysis
-        LI_showAll(LIContainer);
-        LIContainer.scale.x = LIContainer.scale.y = 0.73;
-        LIContainer.position.x = this.xPositionWindow + 5;
-        LIContainer.position.y = this.yPositionWindow + 23; */
+        this.LIContainer = new PIXI.Container();
+        //this.LIContainer.scale.x = this.LIContainer.scale.y = 0.97;
+        this.LIContainer.width = 1.3*h-10;
+        this.LIContainer.y += 23;
+        let myLineIntensity = new LineApplication(this.LIContainer);
+        myLineIntensity.LI_showAll();
 
 
         // This is to set the position

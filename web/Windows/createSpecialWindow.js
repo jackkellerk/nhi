@@ -4,6 +4,9 @@ class SpecialWindow{
     {
         this.imagePath = imagePath;
         this.image = new PIXI.Sprite.from(imagePath);
+        this.image.position.x = 0;
+        this.image.position.y = 0;
+        this.image.height = 0.73125*h - 30;
 
         this.isOpen = true;
         this.windowName = "3D Model Window";
@@ -17,6 +20,9 @@ class SpecialWindow{
         w = app.screen.width;
         h = app.screen.height;
 
+        //coolDown
+        this.coolDownTexture = PIXI.Texture.from("Images/cooldown.png");
+
         /*
         this.createPositionX = x; //(w*0.25-3);
         this.createPositionY = y; //0;
@@ -25,7 +31,6 @@ class SpecialWindow{
         this.xPositionWindow = this.createPositionX;
         this.yPositionWindow = this.createPositionY;
         */
-
     }
 
     drawWindow(fill=0xDCDCDC)
@@ -98,20 +103,25 @@ class SpecialWindow{
 
         // This is to set the position
         this.container.position.set(80, 80); //this.xPositionWindow, 0 - this.yPositionWindow);
-
+        this.container.addChild(this.image);
     }
 
     refreshImage(imagePath)
     {
-        /* const newTexture = PIXI.Texture.from(imagePath);
-        this.image.texture = newTexture;
-        this.image.destroy();
+        this.image.texture = PIXI.Texture.from(imagePath);
+        //this.image.texture = null;
+        /* this.image.destroy();
         this.image = new PIXI.Sprite.from(imagePath);
         this.image.position.x = 0;
         this.image.position.y = 0;
         this.image.height = 0.73125*h - 30;
         this.container.addChild(this.image);
         this.image.mask = this.windowRect; */
+    }
+
+    coolDownImage()
+    {
+        this.image.texture = this.coolDownTexture;
     }
 
 }

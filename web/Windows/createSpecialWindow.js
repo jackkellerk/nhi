@@ -30,26 +30,6 @@ class SpecialWindow{
 
     drawWindow(fill=0xDCDCDC)
     {
-        // ------------------------- Tool Icons -------------------------
-
-        this.tool1.lineStyle(2, 0xdddddd, 2);
-        this.tool1.beginFill(0xdcdcdc);
-        this.tool1.drawRoundedRect(-10,0, 55, 45, 3);
-        this.tool1.endFill();
-        this.tool1.buttonMode = true;
-        this.tool1.x = 0 + this.width; //this.xPositionWindow + this.width;
-        this.tool1.y = 0 + 25; //this.yPositionWindow + 25;
-        this.container.addChild(this.tool1);
-
-        var nextIcon = new PIXI.Sprite.from("Images/next_icon.png");
-            nextIcon.width = 40;
-            nextIcon.height = 40;
-            nextIcon.x = 3;
-            nextIcon.y = 2;
-        this.tool1.addChild(nextIcon);
-
-
-
         // ------------------------- Window Graphics -------------------------
 
         // This is the thing we click on to drag the window around the screen
@@ -123,13 +103,15 @@ class SpecialWindow{
 
     refreshImage(imagePath)
     {
+        /* const newTexture = PIXI.Texture.from(imagePath);
+        this.image.texture = newTexture;
         this.image.destroy();
         this.image = new PIXI.Sprite.from(imagePath);
         this.image.position.x = 0;
         this.image.position.y = 0;
         this.image.height = 0.73125*h - 30;
         this.container.addChild(this.image);
-        this.image.mask = this.windowRect;
+        this.image.mask = this.windowRect; */
     }
 
 }

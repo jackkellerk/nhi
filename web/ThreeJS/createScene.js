@@ -182,18 +182,6 @@ container.appendChild(renderer.domElement);
   window3d = new SpecialWindow("Images/3D-test.jpg");
   window3d.drawWindow();
 
-  window3d.tool1.interactive = true;
-  window3d.tool1.on('pointerdown', function(){
-    if (firstImage) {
-      window3d.refreshImage("Images/3D-test2.jpg");
-      firstImage = false;
-    }
-    else if (!firstImage) {
-      window3d.refreshImage("Images/3D-test.jpg");
-      firstImage = true;
-    }
-  });
-
   window3d.closeWindowMenu.close.interactive = true;
   window3d.closeWindowMenu.close.on('mouseover', function(){ window3d.closeWindowMenu.close.alpha = 0.7; });
   window3d.closeWindowMenu.close.on('mouseout', function(){ window3d.closeWindowMenu.close.alpha = 0.4; });
@@ -208,13 +196,6 @@ container.appendChild(renderer.domElement);
     app.stage.removeChild(window3d.closeWindowMenu.container);
     app.stage.removeChild(window3d.container);
     Acc = 0;
-  });
-
-  window3d.closeWindowMenu.rightButton.interactive = true;
-  window3d.closeWindowMenu.rightButton.on('mouseover', function(){ window3d.closeWindowMenu.rightButton.alpha = 1; });
-  window3d.closeWindowMenu.rightButton.on('mouseout', function(){ window3d.closeWindowMenu.rightButton.alpha = 0.7; });
-  window3d.closeWindowMenu.rightButton.on('pointerdown', function(){
-    app.stage.removeChild(window3d.closeWindowMenu.container);
   });
 
   window3d.closeIcon.interactive = true;
@@ -233,8 +214,12 @@ container.appendChild(renderer.domElement);
     app.stage.removeChild(tintBg); 
   });
 
-
   animate();
+  setTimeout(function() {var imgData = renderer.domElement.toDataURL("image/jpeg");
+  var image = new Image();
+  image.src = imgData;
+  window3d.refreshImage(image);}, 200);
+  
 }
 
 function onDocumentMouseMove(event) {
@@ -258,10 +243,13 @@ function animate() {
     var image = new Image();
     image.src = imgData;
     console.log("framerate");
-    /* camera.position.x = radius * Math.cos( angle );  
-camera.position.z = radius * Math.sin( angle );
-angle += 0.01; */
-    window3d.refreshImage(image);
+    
+    if(down || scrollUp || scrollDown)
+    {
+      window3d.refreshImage(image);
+      scrollUp = false;
+      scrollDown = false;
+    }
   
   requestAnimationFrame(animate);
   render();

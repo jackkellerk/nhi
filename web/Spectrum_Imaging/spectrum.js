@@ -6,7 +6,9 @@ TODO: make all locations and sized be according to container's height
 class Spectrum{
     
     /*
-    container: contains the whole activity. Its height is used to locate the buttons.
+    container: contains the whole activity.
+    height: height of container. will be used to locate the buttons.
+    width: currently not used.
      */
     constructor(container, width, height){
         this.container = container;

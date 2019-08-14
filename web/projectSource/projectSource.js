@@ -313,8 +313,8 @@ function clickSource(element){
 function confirmNewProject(){
     var jsonString = JSON.stringify(selectedSources);
     console.log(jsonString);
-    if(selectedSources.length == 0){
-        postNewProject("new proj", app.screen.width, app.screen.height, newProjectProperties, "Lehigh", jsonString);  // An Ajax "POST" call to backend
+    if(selectedSources.length != 0){
+        postNewProject("new proj", app.screen.width, app.screen.height, newProjectProperties, "Lehigh", selectedSources);  // An Ajax "POST" call to backend
     }
 }
 

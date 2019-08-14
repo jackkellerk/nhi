@@ -328,9 +328,10 @@ function startWindows(){
   blurTransform(app.stage, 0.5, 10);
 
 
+
   // ------------------------------------- Window 1 -----------------------------------------
 
-  var window1 = new WorkWindow("Window 2");
+  var window1 = new WorkWindow("Window 1");
   window1.container.interactive = true;
   window1.container.on('pointerdown', function(){
     if (!window1.inFront) {
@@ -359,28 +360,33 @@ function startWindows(){
     //myZoom.LMSIContainer.mask = window1.windowRect;
     window1.tool1.x += 5;
   });
-  
+
+
+
+
   window1.tool2.interactive = true;
   window1.tool2.on('pointerdown', function(){
     clearWindow(window1);
-    window1.container.addChild(MSContainer);
-    MSContainer.mask = window1.windowRect;
+    window1.container.addChild(window1.MScontainer);
+    window1.MScontainer.mask = window1.windowRect;
     window1.tool2.x += 5;
   });
+  
 
   window1.tool3.interactive = true;
   window1.tool3.on('pointerdown', function(){
     clearWindow(window1);
-    window1.container.addChild(MBContainer);
-    MBContainer.mask = window1.windowRect;
+    //window1.container.addChild(container);
+    //container.mask = window1.windowBorder;    //window1.container.addChild(MBContainer);
+    //MBContainer.mask = window1.windowRect;
     window1.tool3.x += 5;
   });
 
   window1.tool4.interactive = true;
   window1.tool4.on('pointerdown', function(){
     clearWindow(window1);
-    window1.container.addChild(LIContainer);
-    LIContainer.mask = window1.windowRect;
+    //window1.container.addChild(LIContainer);
+    //LIContainer.mask = window1.windowRect;
     window1.tool4.x += 5;
   });
 
@@ -435,15 +441,12 @@ function startWindows(){
     window1Hex.visible = false;
   });
 
-  let window1MS = new 
 
-
-
-  // ------------------------------------- Window 2 -----------------------------------------
+  /* ------------------------------------- Window 2 -----------------------------------------
 
   window1.inFront = false;
 
-  var window2 = new WorkWindow("Window 1", x=0, y=0);
+  var window2 = new WorkWindow("Window 2", x=0, y=0);
   window2.container.interactive = true;
   window2.container.on('pointerdown', function(){
     if (!window2.inFront) {
@@ -550,9 +553,7 @@ function startWindows(){
   window1.minIcon.emit('pointerdown');
   window2.minIcon.emit('pointerdown');
 
-
-
- // ------------------------------------- 3D Model Window -----------------------------------------
+*/
 
 
 

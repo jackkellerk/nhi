@@ -174,21 +174,22 @@ class WorkWindow{
         work window. (see below)
         The tool buttons attached to the work window add the specified container
         to the work window container upon click/touch. */
+        
 
         // Low Spectrum Magnification Imaging
         //LMSI();
         /* LMSIContainer.scale.x = LMSIContainer.scale.y = 0.7;
         LMSIContainer.position.x = app.screen.width*0.25;
-        LMSIContainer.position.y = 20;
+        LMSIContainer.position.y = 20;*/
 
         // Multi-Spectrum Imaging
-        startSpectrum()
-        MSContainer.scale.x = MSContainer.scale.y = 0.70;
-        MSContainer.position.x = this.xPositionWindow;
-        MSContainer.position.y = this.yPositionWindow + 20;
+        this.MScontainer = new PIXI.Container();
+        this.MScontainer.y += 20;
+        let spectrumActivity = new Spectrum(this.MScontainer, 1.3*h-10, 0.73125*h-30, "Images/sinteredMetal.png");
+
 
         // Multi-Block Analysis
-        startMultiblock();
+        /*startMultiblock();
         MBContainer.scale.x = MBContainer.scale.y = 0.70;
         MBContainer.position.x = this.xPositionWindow;
         MBContainer.position.y = this.yPositionWindow + 20;

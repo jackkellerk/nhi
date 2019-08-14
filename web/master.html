@@ -87,12 +87,24 @@
     </head>
     <!--Determines whether Mouse Button is down or not using jQuery (this is for Multi-block)-->
     <script>
-    var down = false;
+        // These functions are for reference when something happens whether to render the ThreeJS canvas or not for performance purposes. Feel free to use them too.
+    var down = false; // Determines whether the left mouse button is pressed or not
     $(document).mousedown(function() {
             down = true;
         }).mouseup(function() {
             down = false;  
         });
+
+        var scrollUp = false;// determine if you scroll in
+        var scrollDown = false;// determine if you scroll out
+        $(window).bind('mousewheel', function(event) {
+    if (event.originalEvent.wheelDelta > 0) {
+        scrollUp = true;
+    }
+    else if(event.originalEvent.wheelDelta < 0){
+        scrollDown = true;
+    }
+});
     </script>
     <body>
         <!--Main javascript method-->

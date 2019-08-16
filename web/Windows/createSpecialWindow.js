@@ -1,9 +1,13 @@
+
+// similar to createWindow but specifically made for window with 3d model
 class SpecialWindow{
 
     constructor(imagePath)
     {
+        // initial image displayed in window
         this.imagePath = imagePath;
         this.image = new PIXI.Sprite.from(imagePath);
+
         this.image.position.x = 0;
         this.image.position.y = 0;
         this.image.height = 0.73125*h - 30;
@@ -33,6 +37,7 @@ class SpecialWindow{
         */
     }
 
+    // call mySpecialWindow.drawWindow() to draw window to screen
     drawWindow(fill=0xDCDCDC)
     {
         // ------------------------- Window Graphics -------------------------
@@ -66,7 +71,7 @@ class SpecialWindow{
 
         // ------------------------- Close Menu -------------------------
 
-
+        // container sizes and positions are modified for multitouch screen (if isTouch boolean evaluates to true)
         if (isTouch) {
             w_menuCloseContainer.scale.x = w_menuCloseContainer.scale.y = 0.5;
             w_menuCloseContainer.x = w_menuCloseContainer.x + 300;
@@ -77,6 +82,7 @@ class SpecialWindow{
         this.closeWindowMenu.graphics.lineStyle(5, 0xdddddd, 3);
         this.closeWindowMenu.drawPopup(0x7f7f7f, 2);
         
+        // 'x' button to close window. clicking button prompts "would you like to close this window" popup 
         this.closeIcon = new PIXI.Sprite.from("Images/cancel-icon.png");
         this.closeIcon.width = 24;
         this.closeIcon.height = 24;
@@ -86,6 +92,7 @@ class SpecialWindow{
         this.closeIcon.alpha = 0.8;
         this.container.addChild(this.closeIcon);
         
+        // button to minimize window
         this.minIcon = new PIXI.Sprite.from("Images/minimize-icon.png");
         this.minIcon.width = 22;
         this.minIcon.height = 20;
@@ -106,6 +113,7 @@ class SpecialWindow{
         this.container.addChild(this.image);
     }
 
+    // function is called to change displayed image in window (called regularly for animated effect)
     refreshImage(imagePath)
     {
         this.image.texture = PIXI.Texture.from(imagePath);
@@ -119,6 +127,7 @@ class SpecialWindow{
         this.image.mask = this.windowRect; */
     }
 
+    // Jack Kellerk
     coolDownImage()
     {
         this.image.texture = this.coolDownTexture;

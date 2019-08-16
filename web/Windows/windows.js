@@ -14,7 +14,7 @@ var windowHexes = new PIXI.Container();
 // PIXI Text style
 var w_style = {fontFamily: 'Arial', fontSize: 15, fill: 0xFFFFFF};
 
-
+// starts window drawing process
 function startWindows(){
 
   var w = app.screen.width;
@@ -29,6 +29,7 @@ function startWindows(){
         sprite.width = app.screen.width;
         sprite.height = app.screen.height;
   app.stage.addChild(sprite);
+
 
 
   if (w/h > 5) // in case of multi touch screen in CITL
@@ -440,7 +441,7 @@ function startWindows(){
 
   // ------------------------------------- Window 2 -----------------------------------------
 
-  window1.inFront = false;
+  window1.inFront = false; // because the last drawn window is always in front of screen
 
   var window2 = new WorkWindow("Window 2", x=0, y=0, imagePath="Images/sinteredMetal");
   window2.container.interactive = true;
@@ -552,7 +553,7 @@ function startWindows(){
 
 }
 
-
+// menu select function. different functionality based on "hide menu" value etc. darkens bg with tingBg sprite
 function w_MenuSelect()
 {
   if(w_hideCC == 1)
@@ -581,6 +582,7 @@ function w_MenuSelect()
   }
 }
 
+// function called when window hex is selected. opens specified window
 function w_WindowSelect(window, windowHex)
 {
   app.stage.addChild(window.container);

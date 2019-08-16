@@ -1,7 +1,9 @@
+
+// class for work windows. customizable window name, position, image to be worked on, and sprite's image format
 class WorkWindow{
 
     constructor(windowName, x=0, y=0, image, spriteOnly=false) {
-        this.isOpen = true;
+        this.isOpen = true;  // to determine which one of multiple windows is in front of screen
         this.inFront = true;
         this.windowName = windowName;
         this.container = new PIXI.Container();
@@ -12,11 +14,13 @@ class WorkWindow{
         if (spriteOnly) { this.sprite = new PIXI.Sprite(image); } // image is a texture
         else { this.sprite = new PIXI.Sprite.from(image); } // "image" is a path
 
+        // initializing tool buttons as graphics
         this.tool1 = new PIXI.Graphics();
         this.tool2 = new PIXI.Graphics();
         this.tool3 = new PIXI.Graphics();
         this.tool4 = new PIXI.Graphics();
 
+        // initialize interactive + dragable window border
         this.windowBorder = new PIXI.Graphics();
 
         w = app.screen.width;
@@ -233,6 +237,7 @@ class WorkWindow{
 
 }
 
+// function to reset all buttons to original position before emitting the next tool + clearing window tools
 function clearWindow(window) {
     window.container.removeChild(this.ZoomContainer);
     window.container.removeChild(this.MScontainer);

@@ -79,7 +79,7 @@ class Zoom {
             this.zoom_bg_sprite = bg_sprite;
             this._imageOrigin_w = this.zoom_bg_sprite.width;
             this._imageOrigin_h = this.zoom_bg_sprite.height;
-        }
+        }/*
         // if imageSource is a dir to an image
         else if (str.indexOf("/") >= 0 && str.indexOf("./") >= 0) {
             this.zoom_bg_texture = PIXI.Texture.from(imageSource);
@@ -87,7 +87,7 @@ class Zoom {
             // get orignal width and height of the image
             this._imageOrigin_w = imageSource.width;
             this._imageOrigin_h = imageSource.height;
-        }
+        }*/
         // if imageSource is in base64
         else if (base64Matcher.test(imageSource)) {
             var tempImg = new Image();
@@ -159,7 +159,7 @@ class Zoom {
         this.LMSIContainer.addChild(this.cropGraphics);
 
         // Sets the app to be interactable and allows drawPoint function to be called
-        // LMSIContainer.interactive = true;
+        //this.LMSIContainer.interactive = true;
         app.stage.addChild(this.LMSIContainer);
         app.renderer.render(this.LMSIContainer);
     }
@@ -236,7 +236,21 @@ class Zoom {
                 // swap background with cropped texture
                 let screenshotImg = new PIXI.Texture(this.zoom_bg_texture, new PIXI.Rectangle(this.startPoint.x, this.startPoint.y, this.endPoint.x - this.startPoint.x, this.endPoint.y -
                     this.startPoint.y));
-                this.zoom_bg_sprite.texture = screenshotImg;
+/*
+                let imgDataZoom = CanvasRenderer.view.toDataURL("image/jpeg");
+                var imageZoom = new Image();
+                imageZoom.src = imgDataZoom;
+                */
+                let mySprite = new PIXI.Sprite(screenshotImg);
+                
+                // added by A.Thomas 8/14/19 2:02pm
+                var newWindow = new WorkWindow("Window NEW", x=0, y=0, screenshotImg, true);
+                    newWindow.container.interactive = true;
+                    newWindow.drawWindow();
+                    newWindow.tool2.emit('pointerdown');
+                
+
+                //this.zoom_bg_sprite.texture = screenshotImg;
 
                 //Changes draw value and updates other information
                 this.drawing = false;

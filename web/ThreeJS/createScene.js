@@ -24,16 +24,10 @@ function initThreeJS() {
   // Create a canvas
   canvas = document.createElement('CANVAS');
   canvas.setAttribute("id", "threejsCanvas");
-  /* canvas.width = width;
-  canvas.height = height;
-  canvas.style.left = xPositionWindow + "px";
-  canvas.style.top = yPositionWindow + "px"; Testing to see if we even need to load in a second canvas */
 
   // SCENE
   scene = new THREE.Scene();
   // CAMERA
-  var SCREEN_WIDTH = window.innerWidth,
-    SCREEN_HEIGHT = window.innerHeight;
   var VIEW_ANGLE = 45,
     ASPECT = SCREEN_WIDTH / SCREEN_HEIGHT,
     NEAR = 0.1,
@@ -64,12 +58,6 @@ container.appendChild(renderer.domElement);
 
   // CONTROLS
   controls = new THREE.OrbitControls(camera/*, renderer.domElement */);
-  // STATS
-  /* stats = new Stats();
-  stats.domElement.style.position = 'absolute';
-  stats.domElement.style.bottom = '0px';
-  stats.domElement.style.zIndex = 100;
-  container.appendChild(stats.domElement); */
   // LIGHT
   var light = new THREE.PointLight(0xffffff);
   light.position.set(0, 250, 0);
@@ -104,9 +92,6 @@ container.appendChild(renderer.domElement);
   var cubeMaterial = new THREE.MeshBasicMaterial({
     color: 0x000088
   });
-  /* var wireframeMaterial = new THREE.MeshBasicMaterial({
-    color: 0x000088, wireframe = true
-  }); */
 
   // OBJLOADER
   var loader = new THREE.OBJLoader();
@@ -162,12 +147,6 @@ container.appendChild(renderer.domElement);
   ////////////
   // CUSTOM //
   ////////////
-  /* var cubeGeometry = new THREE.CubeGeometry(50, 50, 50);
-  
-  cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
-  cube.position.set(0, 26, 0);
-  cube.name = "cube";
-  scene.add(cube); */
 
   // initialize object to perform world/screen calculations
   projector = new THREE.Projector();
@@ -223,10 +202,6 @@ container.appendChild(renderer.domElement);
 }
 
 function onDocumentMouseMove(event) {
-  // the following line would stop any other event handler from firing
-  // (such as the mouse's TrackballControls)
-  // event.preventDefault();
-
   // update the mouse variable
   mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
   mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
@@ -239,11 +214,13 @@ function animate() {
         console.log("this is null");
         return;
     }
+    // This is where we capture the canvas' image
     var imgData = renderer.domElement.toDataURL("image/jpeg");
     var image = new Image();
     image.src = imgData;
     console.log("framerate");
     
+    // Only render when the user does something with the mouse, otherwise ThreeJS lags!
     if(down || scrollUp || scrollDown)
     {
       window3d.refreshImage(image);
@@ -308,6 +285,7 @@ function update() {
   //stats.update();
 }
 
+// Helper function for update();
 function changeScene()
 {
   if(intersecting)
@@ -349,6 +327,7 @@ function changeScene()
   }
 }
 
+// Renderer for ThreeJS
 function render() {
   renderer.render(scene, camera);
 }

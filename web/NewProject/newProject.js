@@ -2,8 +2,6 @@
 TODO: Make textStyle in captionFactory customizable
 TODO: change fontSize according to hexagon size
 TODO: Text don't go off the hexagon (auto-wrapping)
-TODO: Cancel
-TODO: onHover color change. Option square color change
  */
 class NewProject{
     
@@ -26,7 +24,7 @@ class NewProject{
         contents.push(new QuestionPage({
             questionTitle: 'Choose your proficiency:',
             availableOptions: [{
-                content: 'Negligible',
+                content: 'Novice',
                 onClick: shiftToNextPrompt
             }, {
                 /*
@@ -54,20 +52,26 @@ class NewProject{
         contents.push(new QuestionPage({
             questionTitle: 'What is your scientific objective?',
             availableOptions: [{
-                content: 'Grain boundary structure/chemistry',
-                onClick: shiftToNextPrompt
+                    content: 'Grain boundary structure/chemistry',
+                    onClick: shiftToNextPrompt
+                }, {
+                    content: 'Identify second phases',
+                    onClick: shiftToNextPrompt
+                }, {
+                    content: 'Search for rare events',
+                    onClick: shiftToNextPrompt
             }],
-            unavailableOptions: ['identify second phases', 'search for rare events', 'Other'],
+            unavailableOptions: ['Other'],
             fill: Hexagon.getHexColor("white"),
             fontSize: 23
         }));
         contents.push(new QuestionPage({
             questionTitle: 'To optimize the data acquisition \nworkflow, you may want to ...',
             availableOptions: [{
-                content: 'confirm',
+                content: 'Confirm',
                 onClick: NewProject.goToSources
             }],
-            choices: ['Operate microscope at 200 kV', 'Set probe current to 150 pA', 'Set detector collection angles', 'Etc.'],
+            choices: ['Operate microscope at 200 kV', 'Set probe current to 150 pA', 'Set detector collection angles'],
             fill: Hexagon.getHexColor("white"),
             fontSize: 23
         }));
@@ -119,6 +123,11 @@ class NewProject{
             }
             returnIcons[NewProject.currentHexagon].visible = true;
             NewProject.currentHexagon ++;
+            
+            newProjectAnswers.push({option: clickedOption, choices: selectedChoices});
+            console.log(newProjectAnswers);
+            clickedOption = null;
+            selectedChoices = [];
         }
     
         function shiftToLastPrompt(clickedIndex){
@@ -131,6 +140,9 @@ class NewProject{
                 NewProject.currentHexagon --;
                 returnIcons[NewProject.currentHexagon].visible = false;
             }
+            
+            newProjectAnswers.pop();
+            console.log(newProjectAnswers);
         }
     }
     

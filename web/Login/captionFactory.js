@@ -7,7 +7,7 @@ function Title(options) {
         fontSize: options.fontSize || 36,
         fontFamily: options.fontFamily || 'Arial Black',
         fontVariant: options.fontVariant || 'small-caps',
-        fill: options.fill || Hexagon.getHexColor("black")
+        fill: options.fill
     });
 }
 Title.prototype.display = function (container) {

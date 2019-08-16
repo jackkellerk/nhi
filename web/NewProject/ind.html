@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>New Project</title>
+  <link rel="stylesheet" href="../masterStyleSheet.css">
+  <script src="../pixi.min.js"></script>
+  <script src="../hexagon.js"></script>
+<!--  <script src="Windows/makeBg.js"></script>-->
+  <script src="../transitions.js"></script>
+  <script src="../globalVariables.js"></script>
+  <script src="newProject.js"></script>
+  <script src="captionFactory.js"></script>
+  <script src="../Spectrum_Imaging/spectrum.js"></script>
+</head>
+<body>
+
+<script>
+    // Instantiate PIXI JS (from example)
+    let type = "WebGL";
+    if(!PIXI.utils.isWebGLSupported())
+    {
+        type = "canvas";
+    }
+    PIXI.utils.sayHello(type);
+    
+    let app = new PIXI.Application({
+        width: window.innerWidth,
+        height: window.innerHeight,
+        antialias: true,
+        transparent: false,
+        autoResize: true,
+        resolution: devicePixelRatio,
+        backgroundColor: 0x1099bb
+    });
+    
+    document.body.appendChild(app.view);
+    window.addEventListener('resize', resize);
+
+    function resize()
+    {
+        const parent = app.view.parentNode;
+        app.renderer.resize(parent.clientWidth, parent.clientHeight);
+    }
+    NewProject.startProjects();
+    
+    // let container = new PIXI.Container();
+    // let spectrumActivity = new Spectrum(container, app.screen.width, app.screen.height);
+    // app.stage.addChild(container);
+    function createGradTexture() {
+        // adjust it if somehow you need better quality for very very big images
+        const quality = 256;
+        const canvas = document.createElement('canvas');
+        canvas.width = quality;
+        canvas.height = 1;
+    
+        const ctx = canvas.getContext('2d');
+    
+        // use canvas2d API to create gradient
+        const grd = ctx.createLinearGradient(0, 0, quality, 0);
+        grd.addColorStop(0, 'rgba(0, 0, 0, 1)');
+        grd.addColorStop(1, 'rgba(41, 79, 79, 1)');
+    
+        ctx.fillStyle = grd;
+        ctx.fillRect(0, 0, quality, 1);
+    
+        return PIXI.Texture.from(canvas);
+    }
+
+</script>
+</body>
+</html>

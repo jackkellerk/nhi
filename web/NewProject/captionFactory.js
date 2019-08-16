@@ -1,5 +1,6 @@
 //Factory design pattern for sentences
 //constructors below SHOULD NOT be directly called.
+// TODO: Rewrite the fake classes into ES6 classes. Thus let newProject shiftToNextPrompt to be able to clear the selected choices.
 function Title(options) {
     this.content = options.content;
     // console.log(this.content);
@@ -24,7 +25,6 @@ Title.prototype.clear = function () {
 
 
 
-let clickedOption;
 function AvailableOption(options) {
     this.content = options.content;
     this.style = new PIXI.TextStyle({
@@ -45,9 +45,6 @@ function AvailableOption(options) {
     
     function onClickAvailableOption(content){
         clickedOption = content;
-        newProjectAnswers.push({option: clickedOption, choices: selectedChoices});
-        clickedOption = null;
-        selectedChoices = [];
         
         options.onClick();
     }
@@ -89,12 +86,11 @@ UnavailableOption.prototype.clear = function () {
 
 
 
-const checkboxCheckedTexture = new PIXI.Texture.from('Images/checkbox_checked.png');
+const checkboxCheckedTexture = new PIXI.Texture.from('Images/checkbox_checked_white.png');
 const checkboxCheckedSelectedTexture = new PIXI.Texture.from('Images/checkbox_checked_selected.png');
-const checkboxUncheckedTexture = new PIXI.Texture.from('Images/checkbox_unchecked.png');
+const checkboxUncheckedTexture = new PIXI.Texture.from('Images/checkbox_unchecked_white.png');
 const checkboxUncheckedSelectedTexture = new PIXI.Texture.from('Images/checkbox_unchecked_selected.png');
 
-let selectedChoices = [];
 
 function Choice(options) {
     let text = new PIXI.Text(options.content, new PIXI.TextStyle({
@@ -102,12 +98,20 @@ function Choice(options) {
         fontSize: options.fontSize || 30
     }));
     this.optionContainer = new PIXI.Container();
+    this.optionContainer.content = options.content;
     text.x = 40;
     this.optionContainer.buttonMode = true;
     this.optionContainer.interactive = true;
-    this.optionContainer.on('pointerdown', function(){ checkboxOnPointerDown(options.content); })
-        .on('pointerover', checkboxOnPointerOver)
-        .on('pointerout', checkboxOnPointerOut);
+    // this.optionContainer.on('pointerdown', checkboxOnPointerDown)
+    //         .on('pointerup', function(){ checkboxOnPointerUp(options.content); })
+    //         .on('pointerupoutside', checkboxOnPointerUp)
+    //     .on('pointerover', checkboxOnPointerOver)
+    //     .on('pointerout', checkboxOnPointerOut);
+    this.optionContainer.on('pointerdown', checkboxOnPointerDown)
+            .on('pointerup', checkboxOnPointerUp)
+            .on('pointerupoutside', checkboxOnPointerUp)
+            .on('pointerover', checkboxOnPointerOver)
+            .on('pointerout', checkboxOnPointerOut);
     this.optionContainer.isChecked = false;
     let checkbox = new PIXI.Sprite(checkboxUncheckedTexture);
     this.optionContainer.addChild(checkbox);
@@ -115,45 +119,79 @@ function Choice(options) {
     checkbox.width = 30;
     checkbox.height = 30;
     checkbox.y = 2;
-    // checkbox.tint = 0x333333;
+    // checkbox.tint = 0xb3b3b3;
     checkbox.interactive = true;
-    function checkboxOnPointerDown(content) {
-        // this.isdown = true;
-        // this.isdown = false;
+    
+    function checkboxOnPointerDown() {
+        this.isdown = true;
+    }
+    
+    // function checkboxOnPointerUp(content) {
+    //     this.isdown = false;
+    //     if (this.isOver) {
+    //         if (this.isChecked) {
+    //             checkbox.texture = checkboxUncheckedSelectedTexture;
+    //             this.isChecked = false;
+    //             selectedChoices = selectedChoices.filter(e => e !== content);  // remove content from the array
+    //         } else {
+    //             checkbox.texture = checkboxCheckedSelectedTexture;
+    //             this.isChecked = true;
+    //             selectedChoices.push(content);
+    //         }
+    //     } else {
+    //         if (this.isChecked) {
+    //             checkbox.texture = checkboxCheckedTexture;
+    //             selectedChoices = selectedChoices.filter(e => e !== content);  // remove content from the array
+    //         } else {
+    //             checkbox.texture = checkboxUncheckedTexture;
+    //             selectedChoices.push(content);
+    //         }
+    //     }
+    // }
+    function checkboxOnPointerUp() {
+        this.isdown = false;
         if (this.isOver) {
             if (this.isChecked) {
                 checkbox.texture = checkboxUncheckedSelectedTexture;
                 this.isChecked = false;
-                selectedChoices = selectedChoices.filter(e => e !== content);  // remove content from the array
+                selectedChoices = selectedChoices.filter(e => e !== this.content);  // remove content from the array
+                console.log(`removed ${this.content}`)
             } else {
                 checkbox.texture = checkboxCheckedSelectedTexture;
                 this.isChecked = true;
-                selectedChoices.push(content);
+                selectedChoices.push(this.content);
+                console.log(`Added ${this.content}`)
             }
         } else {
             if (this.isChecked) {
-                checkbox.texture = checkboxUncheckedTexture;
-                this.isChecked = false;
-                selectedChoices = selectedChoices.filter(e => e !== content);  // remove content from the array
-            } else {
                 checkbox.texture = checkboxCheckedTexture;
-                this.isChecked = true;
-                selectedChoices.push(content);
+                selectedChoices = selectedChoices.filter(e => e !== this.content);  // remove content from the array
+                console.log(`removed ${this.content}`)
+            } else {
+                checkbox.texture = checkboxUncheckedTexture;
+                selectedChoices.push(this.content);
+                console.log(`Added ${this.content}`)
             }
         }
     }
-
+    
     function checkboxOnPointerOver() {
         this.isOver = true;
+        if (this.isdown) {
+            return;
+        }
         if (this.isChecked) {
             checkbox.texture = checkboxCheckedSelectedTexture;
         } else {
             checkbox.texture = checkboxUncheckedSelectedTexture;
         }
     }
-
+    
     function checkboxOnPointerOut() {
         this.isOver = false;
+        if (this.isdown) {
+            return;
+        }
         if (this.isChecked) {
             checkbox.texture = checkboxCheckedTexture;
         } else {
@@ -261,7 +299,7 @@ function onButtonUp() {
     this.isdown = false;
     if (this.isOver) {
         this.style.fill = 0x808080;
-        this.onClick();
+        // this.onClick();
     } else {
         this.style.fill = 0xffffff;
     }

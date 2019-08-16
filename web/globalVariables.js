@@ -60,6 +60,8 @@ var richText;
 
 
 /* Start of global variables for New Project */
+let clickedOption;
+let selectedChoices = [];
 let newProjectAnswers = [];  // each element in the array is {option: "", choices: ["", ...]}
 let newProjectProperties;  // processed JSON object of newProjectAnswers
 /* End of global variables for New Project */

@@ -1,8 +1,6 @@
 /*
-TODO: make all locations and sized be according to container's height
  */
 
-// let colors = ['white', 'black', 'yellow', 'red', 'green', 'orange', 'blue', 'grey', 'purple'];
 class Spectrum{
     
     /*
@@ -30,7 +28,6 @@ class Spectrum{
         return (colors.length >= 3) ? '0x' + (((1 << 24) + (colors[0] << 16) + (colors[1] << 8) + colors[2]).toString(16).substr(1)) : false;
     }
     
-// actions: [pointerdown, pointerup, mouseover, mouseout]
     //icon: Sprite
     static createButton(x, y, height, width, clickAction, icon=null, text=null)
     {

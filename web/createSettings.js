@@ -10,7 +10,7 @@ var s_container = new PIXI.Container();
 function createSettings(title="Settings", container, fieldCount)
 {
     s_container = container;
-    this.fieldCount = fieldCount;
+    this.fieldCount = fieldCount; // helps determine size of window
 
     w = app.screen.width;
     h = app.screen.height;
@@ -65,6 +65,7 @@ function createSettings(title="Settings", container, fieldCount)
 
 }
 
+// allows for customizable fields + number of fields
 function s_addField(fieldName, fieldContent, fieldNo, iconType=1)
 {
     let addUserMode = false;
@@ -116,6 +117,7 @@ function s_addField(fieldName, fieldContent, fieldNo, iconType=1)
         s_container.removeChild(fieldTextbox);
     }
 
+    // icon type (edit or add icon) depends on value of iconType in s_addField() function call
     let editIcon = new PIXI.Sprite.from("Images/edit-icon.png");
     if (iconType>1) { editIcon = new PIXI.Sprite.from("Images/add-icon.png"); }
     editIcon.width = 30;
@@ -159,6 +161,7 @@ function s_addField(fieldName, fieldContent, fieldNo, iconType=1)
 
 }
 
+// creates textbox for given field at specified coordinates
 function s_textbox(myX, myY)
 {   
     if(myX<0) {
@@ -176,6 +179,7 @@ function s_textbox(myX, myY)
 
 }
 
+// option to call this function to add a logout button (e.g. in user settings in project selection screen)
 function s_addLogoutButton()
 {
     // log out button

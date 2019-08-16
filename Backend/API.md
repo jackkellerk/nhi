@@ -38,7 +38,7 @@ This document should detail the Backend API used in this project. The routes det
 
     Header Information: {"uid": INT, "session_key": STRING}
 
-    Body Information: { "name": STRING, "canvas_width": FLOAT, "canvas_height": FLOAT}
+    Body Information: { "name": STRING, "canvas_width": FLOAT, "canvas_height": FLOAT, "properties": JSONOBJ, "institution": STRING, "sources": JSONARR}
 
     Return Value: JSON object that contains project information
 
@@ -200,7 +200,7 @@ This document should detail the Backend API used in this project. The routes det
 
     Header Information: {"uid": INT, "session_key": STRING}
 
-    Body Information: { "username": STRING, "password": STRING, "email": STRING, 
+    Body Information: { "password": STRING, "email": STRING, 
     "legal_name": STRING, "institution": STRING }
 
     Return Value: Number of rows updated
@@ -212,7 +212,7 @@ This document should detail the Backend API used in this project. The routes det
 
     Header Information: None
 
-    Body Information: { "username": STRING, "password": STRING}
+    Body Information: { "email": STRING, "password": STRING}
 
     Return Value: Returns JSON object containing uid(user id) and the session key
 
@@ -223,7 +223,7 @@ This document should detail the Backend API used in this project. The routes det
 
     Header Information: None
 
-    Body Information: { "username": STRING, "password": STRING, "email": STRING, 
+    Body Information: { "password": STRING, "email": STRING, 
     "legal_name": STRING, "institution": STRING }
 
     Return Value: Returns JSON object containing uid(user id) and the session key
@@ -233,7 +233,7 @@ Work in progress
 
 ## User_Project(relationship):
 ### Add User to Project
-    URL: /p/:pid/add_to_project (pid = project id)
+    URL: /p/:pid/add_self_project (pid = project id)
 
     Request Type: POST
 
@@ -242,6 +242,21 @@ Work in progress
     Body Information: None
 
     Return Value: Number of rows updated
+    
+    Extra: This is used only to add the current login in user to a project
+    
+### Add other User to Project
+    URL: /p/:pid/add_user_project (pid = project id)
+
+    Request Type: POST
+
+    Header Information: {"uid": INT, "session_key": STRING}
+
+    Body Information: { "email": STRING}
+
+    Return Value: Number of rows updated
+    
+    Extra: This is used only to add other users to a project
 
 ### Remove User From Project
     URL: /p/:pid/remove_from_project (pid = project id)

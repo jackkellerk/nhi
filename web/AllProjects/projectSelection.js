@@ -24,7 +24,7 @@ var userSettingsResponse; // valid uses of userSettingsResponse are: userSetting
 
 function startAllProjects()
 {
-    gatherUserSettings();
+    gatherUserSettings(); // backend call
 }
 
 function createUIProjects()
@@ -46,7 +46,7 @@ function createUIProjects()
     app.stage.addChild(sprite);
 
 
-
+    // some variable change if multitouch screen ratio detected (then isTouch boolean is set to TRUE)
     if ((app.screen.width)/(app.screen.height) > 5) // in case of multi touch screen in CITL
     {
         isTouch = true;
@@ -61,6 +61,7 @@ function createUIProjects()
         hexSize = 80;
     }
 
+    // draws background hexagon grid
     a_drawHexGrid(isTouch);
 
 
@@ -126,6 +127,7 @@ function createUIProjects()
 
     // User Settings
 
+    // this is used to have a black background for the image
     let userSettingsCirlce = new PIXI.Graphics();
     userSettingsCirlce.beginFill(0xFFFFFF);
     userSettingsCirlce.drawCircle(57, 54, 22.5);
@@ -177,6 +179,7 @@ function createUIProjects()
         passwordString += "*";
     }
 
+    // create new settings window by callling createSettings. add one field at a time by calling s_addField(fieldName, value, which no. field, true for 'add icon' instead of 'plus')
     createSettings("User Settings", a_settingsContainer, 5);
     s_addField("Name", userSettingsResponse.legalname, 1);
     s_addField("Institution", userSettingsResponse.institution, 2, true);
@@ -187,7 +190,7 @@ function createUIProjects()
 
     
 
-
+    // create new Project instance
     let project1 = new Project("AKT Ceramics", "Images/LineIntegral.jpg", 0);
 
     project1.select.on('mouseover', function(){
@@ -204,6 +207,7 @@ function createUIProjects()
     });
 
 
+    // create new Project instance
     let project2 = new Project("AKT Metals", "Images/lowmag_test.jpg", 1);
     
     project2.select.on('mouseover', function(){
@@ -219,7 +223,7 @@ function createUIProjects()
         setTimeout('updateActivity()', 200); 
     });
 
-
+    // calling newProject on a project draws the "new project" plus icon to the right of given project
     project2.newProject();
 
 
@@ -269,6 +273,7 @@ function a_project1Select()
 
 }
 
+// function to generate line under search box
 function a_generateTextLine(x, y, w, lineWidth){
     let line = new PIXI.Graphics();
     line.lineStyle(lineWidth, 0xFFFFFF)
@@ -277,6 +282,7 @@ function a_generateTextLine(x, y, w, lineWidth){
     a_searchContainer.addChild(line);
 }
 
+// function to generate textbox for search box
 function a_generateTextBox(x, y, w)
 {
     let box = new PIXI.Graphics();

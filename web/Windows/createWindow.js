@@ -1,6 +1,6 @@
 class WorkWindow{
 
-    constructor(windowName, x=0, y=0) {
+    constructor(windowName, x=0, y=0, image, spriteOnly=false) {
         this.isOpen = true;
         this.inFront = true;
         this.windowName = windowName;
@@ -8,6 +8,9 @@ class WorkWindow{
         this.windowRect = new PIXI.Graphics();
         this.width = 1.3*h;
         this.height = 0.73125*h;
+        this.sprite = new PIXI.Sprite();
+        if (spriteOnly) { this.sprite = new PIXI.Sprite(image); } // image is a texture
+        else { this.sprite = new PIXI.Sprite.from(image); } // "image" is a path
 
         this.tool1 = new PIXI.Graphics();
         this.tool2 = new PIXI.Graphics();
@@ -177,15 +180,22 @@ class WorkWindow{
         
 
         // Low Spectrum Magnification Imaging
-        //LMSI();
-        /* LMSIContainer.scale.x = LMSIContainer.scale.y = 0.7;
-        LMSIContainer.position.x = app.screen.width*0.25;
-        LMSIContainer.position.y = 20;*/
+        let myZoom = new Zoom(null, 0, 0);
+        myZoom.LMSIContainer.scale.x = myZoom.LMSIContainer.scale.y = 0.9;
+        myZoom.LMSIContainer.y += 20;
+        myZoom.LMSIContainer.mask = this.windowRect;
+        this.container.addChild(myZoom.LMSIContainer);
+        //this.ZoomContainer = myZoom.LMSIContainer;
+        //this.ZoomContainer.scale.x = this.ZoomContainer.scale.y = 0.9;
+        //this.ZoomContainer.y += 20;
+        //this.ZoomContainer.mask = this.windowRect;
+
+
 
         // Multi-Spectrum Imaging
         this.MScontainer = new PIXI.Container();
         this.MScontainer.y += 20;
-        let spectrumActivity = new Spectrum(this.MScontainer, 1.3*h-10, 0.73125*h-30, "Images/sinteredMetal.png");
+        let mySpectrum = new Spectrum(this.MScontainer, 1.3*h-10, 0.73125*h-30, this.sprite);
 
 
         // Multi-Block Analysis
@@ -208,13 +218,26 @@ class WorkWindow{
 
     }
 
+    clearWindow(event) {
+        this.container.removeChild(this.ZoomContainer);
+        this.container.removeChild(this.MScontainer);
+        //this.container.removeChild(this.MBContainer);
+        this.container.removeChild(this.LIContainer);
+
+        this.tool1.x = this.xPositionWindow + this.width;
+        this.tool2.x = this.xPositionWindow + this.width;
+        this.tool3.x = this.xPositionWindow + this.width;
+        this.tool4.x = this.xPositionWindow + this.width;
+
+    }
+
 }
 
 function clearWindow(window) {
-    /* window.container.removeChild(LMSIContainer);
-    window.container.removeChild(MSContainer);
-    window.container.removeChild(MBContainer);
-    window.container.removeChild(LIContainer); */
+    window.container.removeChild(this.ZoomContainer);
+    window.container.removeChild(this.MScontainer);
+    //this.container.removeChild(this.MBContainer);
+    window.container.removeChild(this.LIContainer);
 
     if (window.tool1.x > window.tool2.x) { 
         window.tool1.x -= 5;

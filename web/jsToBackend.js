@@ -17,7 +17,7 @@ function loginToBackend()
         method: 'POST',
         contentType: 'application/json',
         data: JSON.stringify(convertToJSON),
-        url: base_url + '/login', // change to 8080 if this doesnt work
+        url: base_url + '/login',
         dataType: 'json',
         crossDomain: 'true',
         xhrFields: {

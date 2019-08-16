@@ -2,6 +2,7 @@
 TODO: Make textStyle in captionFactory customizable
 TODO: change fontSize according to hexagon size
 TODO: Text don't go off the hexagon (auto-wrapping)
+TODO: new page for entering name of new project
  */
 class NewProject{
     
@@ -157,6 +158,11 @@ class NewProject{
     }
     
     static goToSources(){
+        newProjectAnswers.push({option: clickedOption, choices: selectedChoices});
+        console.log(newProjectAnswers);
+        clickedOption = null;
+        selectedChoices = [];
+        
         newProjectProperties = NewProject.processNewProjectAnswers();
         //postNewProject("new proj", app.screen.width, app.screen.height, newProjectProperties, "Lehigh", [1, 2]);  // An Ajax "POST" call to backend
         

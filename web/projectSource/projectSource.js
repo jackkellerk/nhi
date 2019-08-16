@@ -1,43 +1,3 @@
-class Institution{
-    constructor(institution, index, container){
-        this.institution = institution;
-        this.index = index;
-        this.container = container;
-    }
-
-    getIns(){
-        return this.institution;
-    }
-}
-
-// containers to hold image and information about microscopes in source page
-var ins_infoContainer = new PIXI.Container();
-var index = 0;
-var freshStart = true;
-
-var sourcesListResponse;
-
-// graphics for line and hexagon
-var line = new PIXI.Graphics();
-var ins_mask = new PIXI.Graphics();
-var confirmButton= new PIXI.Graphics();
-var ps_title;
-
-// booleans for institution page
-var totalIns = 0;
-var defaultIns = 3;
-
-// booleans for sources page to determine whether next page is required
-var nextpage = false;
-var numPage = 0;
-var totalSource = 0;
-var reaminingSource = 0;
-var defaultLines = 6; // default number of lines to display
-
-// names and images for institution & sources
-var insArr = new Array (10);
-var insHexArr = new Array (10);
-
 //console.log("Length: " + defaultSources.length);
 //Creates style used by text. It is currently unnecessary but more of an example
 const ps_title_style = new PIXI.TextStyle({
@@ -67,6 +27,8 @@ const ps_caption_style = new PIXI.TextStyle({
 var source_bg = new PIXI.Sprite.from('Images/projectSource_test.jpg');
 var up_arrow = new PIXI.Sprite.from('Images/up_arrow.png')
 var down_arrow = new PIXI.Sprite.from('Images/down_arrow.png')
+var back_arrow = new PIXI.Sprite.from('Images/left_arrow.png')
+var confirm_button = new PIXI.Sprite.from('Images/confirmation-icon-0.jpg')
 //var selected_Icon = new PIXI.Sprite.from('Images/selected_icon.jpg')
 
 
@@ -74,20 +36,19 @@ var down_arrow = new PIXI.Sprite.from('Images/down_arrow.png')
 // x_limit: x coordinates of the screen, set in startSourcePage()
 // x_infostarts/ends: start and end x coordinates of infobox
 var x, y;
-var x_limit;
-var y_limit;
-var x_infostarts;
-var x_infoends;
-var y_infostarts;
-// var y_infoends;
 
 var ps_sampleText;
 var ps_sampleImage;
 var afterSelectText;
+var ps_title;
+
+var index = 0;
+
+// booleans for institution page
+var totalIns = 0;
+var defaultIns = 3;
 
 // array for commands
-//var ps_buttonCommands = [];
-
 var sourcesArray = [];
 var institutionArray = [];
 var sourceDescriptionBoxes = [];
@@ -100,9 +61,7 @@ function startSourcePage() {
     getAllSources();
     x = app.screen.width / 8;
     y = app.screen.height / 8;
-    // variables to set border for hexagons
-    x_limit = app.screen.width * 7 / 8;
-    y_limit = app.screen.height * 7 / 8;
+
     // set width and height of the backgrond sprite, stage it to the app
     source_bg.width = app.screen.width;
     source_bg.height = app.screen.height;
@@ -134,10 +93,21 @@ function startSourcePage() {
     up_arrow.height = 50;
     up_arrow.x = app.screen.width + 50
     up_arrow.y = app.screen.height * ( 7/10);
+    //
     down_arrow.width = 50;
     down_arrow.height = 50;
     down_arrow.x = app.screen.width + 50;
     down_arrow.y = app.screen.height * (8/10);
+    //
+    back_arrow.width = 50;
+    back_arrow.height = 50;
+    back_arrow.x = app.screen.width/20
+    back_arrow.y = app.screen.height/20
+    //
+    confirm_button.width = 50;
+    confirm_button.height = 50;
+    confirm_button.x = app.screen.width*(19/20)
+    confirm_button.y = app.screen.height/2
 
     //Button mechanics for the arrows
     up_arrow.interactive = true;
@@ -146,23 +116,20 @@ function startSourcePage() {
     down_arrow.interactive = true;
     down_arrow.buttonMode = true;
     down_arrow.on('pointerdown', downButton);
+    back_arrow.interactive = true;
+    back_arrow.buttonMode = true;
+    back_arrow.on('pointerdown', goBackToQuestions);
+    confirm_button.interactive = true;
+    confirm_button.buttonMode = true;
+    confirm_button.on('pointerdown', confirmNewProject);
 
-    
-    confirmButton.beginFill(0xFFFFFF);
-    // set the line style to have a width of 5 and set the color to red
-    confirmButton.lineStyle(2, 0x000000);
-    // draw a rectangle
-    confirmButton.drawRect(app.screen.width*(7.5/8), app.screen.height*(0.9/2), 100, 50);
-    confirmButton.x = confirmButton.x + (1000)
-    confirmButton.y = confirmButton.y + (1000)
-    app.stage.addChild(confirmButton);
+    confirm_button.x += 1000;
 
-    confirmButton.interactive = true;
-    confirmButton.buttonMode = true;
-    confirmButton.on('pointerdown', confirmNewProject);
 
     app.stage.addChild(up_arrow);
     app.stage.addChild(down_arrow);
+    app.stage.addChild(back_arrow);
+    app.stage.addChild(confirm_button)
 
     populateSourceArray();
 }
@@ -181,13 +148,13 @@ function drawInsInfo (numIns) {
         totalIns = numSource;
     }
     // Hexagon Info: (all numbers already scaled)
-    x = app.screen.width/6;
+    x = app.screen.width/3;
     y = app.screen.height/3;
     var scale = 2.2
     xChange = 100 * ((scale -2.3) + 1.0);
     showInstitutions(x,y, 2.2);
-    showInstitutions(x + (xChange*4), y, 2.2)
-    showInstitutions(x + (xChange*8), y, 2.2)
+    //showInstitutions(x + (xChange*4), y, 2.2)
+    //showInstitutions(x + (xChange*8), y, 2.2)
     var count = 0;
     institutionArray.forEach( function(element) {
         console.log(count);
@@ -234,7 +201,7 @@ function drawSourceInfo(inputText) {
     ps_title.buttonMode = true;
 
     positionTransform(app.screen.width*6/8, afterSelectText.y, afterSelectText, 30)
-    positionTransform(confirmButton.x-1000, confirmButton.y-1000, confirmButton, 30)
+    positionTransform(confirm_button.x-1000, confirm_button.y, confirm_button, 30)
 
     afterSelectText.text = inputText
 
@@ -281,7 +248,7 @@ function moveSources(){
     positionTransform(app.screen.width + 50, app.screen.height * (7/10), up_arrow, 30);
     positionTransform(app.screen.width + 50, app.screen.height * (8/10), down_arrow, 30);
     positionTransform(app.screen.width * 10/8, afterSelectText.y, afterSelectText, 30);
-    positionTransform(confirmButton.x+1000, confirmButton.y+1000, confirmButton, 30)
+    positionTransform(confirm_Button.x+1000, confirm_Button.y, confirm_Button, 30)
     //alphaTransform(source_infoContainer, 0, 30)
 
 }
@@ -316,6 +283,13 @@ function confirmNewProject(){
     if(selectedSources.length != 0){
         postNewProject("new proj", app.screen.width, app.screen.height, newProjectProperties, "Lehigh", selectedSources);  // An Ajax "POST" call to backend
     }
+    currentActivity = activityArray[1];
+    updateActivity();
+}
+
+function goBackToQuestions(){
+    currentActivity = activityArray[3];
+    updateActivity();
 }
 
 
@@ -411,8 +385,6 @@ function populateSourceArray() {
     var x_origin = app.screen.width/8;
     var y_origin = app.screen.height/7;
     var current_Id = 1;
-    let stringRepresentation = JSON.stringify(sourcesListResponse)
-    console.log(stringRepresentation)
     for (var i = 0; i < defaultSources.length; i++, y += change) {
         var source_infoContainer = new PIXI.Container();
         var textContainer = new PIXI.Container();

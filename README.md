@@ -111,7 +111,7 @@ function *postNewProject*, an AJAX POST call to route */project/create*.
 
 
 
-## Project 1 Page
+### Project 1 Page
 - A. Thomas:
 - project 1 page excl. connection to backend & window mobility
 - Windowing system: transformed individual tool pages to be displayed in a window one at a time
@@ -132,6 +132,14 @@ function *postNewProject*, an AJAX POST call to route */project/create*.
 
 ### hexagon.js & hexDetection.js class
 
+Desai Xie:
+- hexagon.js has a Hexagon class, which constructs hexagons based on provided width or height, and can 
+find you the position of the center of the next hexagon assuming they are the same size, given the 
+width of gap.
+- A hexagon object has graphics field, which is the hexagon itself; the container field is for users
+to add text, buttons, etc.. 
+- A static helper function getHexColor does the job that given a color name, in String, it will return
+its hex representation, in the same way as the client's browser interpret colors in html files.
 
 
 

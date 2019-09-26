@@ -1,8 +1,8 @@
 // MAIN
 
 // Size of window from createWindow.js
-var width = 1.3*screen.height-10;
-var height = 0.73125*screen.height-30;
+var SCREEN_WIDTH = 1.3*screen.height-10;
+var SCREEN_HEIGHT = 0.73125*screen.height-30;
 var angle = 0;
 var radius = 500;
 
@@ -40,7 +40,7 @@ function initThreeJS() {
   renderer = new THREE.WebGLRenderer({
     antialias: true
   });
-  renderer.setSize(width, height);
+  renderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
   container = canvas;
   renderer.shadowMapEnabled = true;
 renderer.shadowMapSoft = true;

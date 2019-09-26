@@ -27,14 +27,14 @@ class SpecialWindow{
         //coolDown
         this.coolDownTexture = PIXI.Texture.from("Images/cooldown.png");
 
-        /*
+        
         this.createPositionX = x; //(w*0.25-3);
         this.createPositionY = y; //0;
 
         // set the initial coords for this window; these variables are in moveWindowAroundScreen.js
         this.xPositionWindow = this.createPositionX;
         this.yPositionWindow = this.createPositionY;
-        */
+        
     }
 
     // call mySpecialWindow.drawWindow() to draw window to screen
@@ -111,12 +111,15 @@ class SpecialWindow{
         // This is to set the position
         this.container.position.set(80, 80); //this.xPositionWindow, 0 - this.yPositionWindow);
         this.container.addChild(this.image);
+
+        this.container.position.set(0 - this.xPositionWindow, 0 - this.yPositionWindow);
     }
 
     // function is called to change displayed image in window (called regularly for animated effect)
     refreshImage(imagePath)
     {
         this.image.texture = PIXI.Texture.from(imagePath);
+        this.image.mask = this.windowRect;
         //this.image.texture = null;
         /* this.image.destroy();
         this.image = new PIXI.Sprite.from(imagePath);

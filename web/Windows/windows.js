@@ -326,13 +326,14 @@ function startWindows(){
 
 
 
-  //blurTransform(app.stage, 0.5, 10);
+  // blurTransform(app.stage, 0.5, 10);
 
 
 
   // ------------------------------------- Window 1 -----------------------------------------
 
-  var window1 = new WorkWindow("Window 1", 0, 0, "Images/sinteredMetal.png");
+  /* var window1 = new WorkWindow("Window 1", 0, 0, "Images/sinteredMetal.png");
+
   window1.container.interactive = true;
   window1.container.on('pointerdown', function(){
     if (!window1.inFront) {
@@ -350,8 +351,6 @@ function startWindows(){
     .on('pointerupoutside', onDragEnd)
     .on('pointermove', onDragMove)
     .on('pointermove', updateMousePositionWindow);
-
-
 
   window1.tool1.interactive = true;
   window1.tool1.on('pointerdown', function(){
@@ -379,7 +378,7 @@ function startWindows(){
     window1.tool3.x += 5;
   });
 
-  window1.tool4.interactive = true;
+  /* window1.tool4.interactive = true;
   window1.tool4.on('pointerdown', function(){
     window1.clearWindow(window1);
     window1.container.addChild(window1.LIContainer);
@@ -436,119 +435,10 @@ function startWindows(){
     window1.isOpen = true;
     app.stage.addChild(window1.container);
     window1Hex.visible = false;
-  });
+  }); */
 
 
-  // ------------------------------------- Window 2 -----------------------------------------
-
-  window1.inFront = false; // because the last drawn window is always in front of screen
-
-  var window2 = new WorkWindow("Window 2", x=0, y=0, imagePath="Images/sinteredMetal");
-  window2.container.interactive = true;
-  window2.container.on('pointerdown', function(){
-    if (!window2.inFront) {
-      app.stage.removeChild(window2.container);
-      app.stage.addChild(window2.container);
-      window2.inFront = true;
-      window1.inFront = false;
-    }});
-  window2.drawWindow();
-  window2.windowBorder.interactive = true;
-  window2.windowBorder.on('pointerdown', onDragStart)
-  .on('pointerdown', getMousePositionBeforeWindow) // This is in Multi-block coord system
-  .on('pointerup', onDragEnd)
-  .on('pointerup', getMousePositionAfterWindow)
-  .on('pointerupoutside', onDragEnd)
-  .on('pointermove', onDragMove)
-  .on('pointermove', updateMousePositionWindow);
-
-
-  window2.tool1.interactive = true;
-  window2.tool1.on('pointerdown', function(){
-    window2.clearWindow(window2);
-    //window2.container.addChild(window2.LMSIContainer);
-    //window1.LMSIContainer.mask = window2.windowRect;
-    window2.tool1.x += 5;
-  });
   
-  window2.tool2.interactive = true;
-  window2.tool2.on('pointerdown', function(){
-    window2.clearWindow(window2);
-    window2.container.addChild(window2.MSContainer);
-    window2.MSContainer.mask = window2.windowRect;
-    window2.tool2.x += 5;
-  });
-
-  window2.tool3.interactive = true;
-  window2.tool3.on('pointerdown', function(){
-    window2.clearWindow(window2);
-    //window2.container.addChild(window2.MBContainer);
-    //window2.MBContainer.mask = window2.windowRect;
-    window2.tool3.x += 5;
-  });
-
-  window2.tool4.interactive = true;
-  window2.tool4.on('pointerdown', function(){
-    window2.clearWindow(window2);
-    window2.container.addChild(window2.LIContainer);
-    window2.LIContainer.mask = window2.windowRect;
-    window2.tool4.x += 5;
-  });
-
-  window2.closeWindowMenu.close.interactive = true;
-  window2.closeWindowMenu.close.on('mouseover', function(){ window2.closeWindowMenu.close.alpha = 0.7; });
-  window2.closeWindowMenu.close.on('mouseout', function(){ window2.closeWindowMenu.close.alpha = 0.4; });
-  window2.closeWindowMenu.close.on('pointerdown', function(){
-    app.stage.removeChild(window2.closeWindowMenu.container);
-  });
-
-  window2.closeWindowMenu.leftButton.interactive = true;
-  window2.closeWindowMenu.leftButton.on('mouseover', function(){ window2.closeWindowMenu.leftButton.alpha = 1; });
-  window2.closeWindowMenu.leftButton.on('mouseout', function(){ window2.closeWindowMenu.leftButton.alpha = 0.7; });
-  window2.closeWindowMenu.leftButton.on('pointerdown', function(){
-    app.stage.removeChild(window2.closeWindowMenu.container);
-    app.stage.removeChild(window2.container);
-    windowHexes.removeChild(window2Hex.container);
-    Acc = 0;
-  });
-
-  window2.closeWindowMenu.rightButton.interactive = true;
-  window2.closeWindowMenu.rightButton.on('mouseover', function(){ window2.closeWindowMenu.rightButton.alpha = 1; });
-  window2.closeWindowMenu.rightButton.on('mouseout', function(){ window2.closeWindowMenu.rightButton.alpha = 0.7; });
-  window2.closeWindowMenu.rightButton.on('pointerdown', function(){
-    app.stage.removeChild(window2.closeWindowMenu.container);
-  });
-
-  window2.closeIcon.interactive = true;
-  window2.closeIcon.on('mouseover', function(){ window2.closeIcon.alpha = 1; });
-  window2.closeIcon.on('mouseout', function(){ window2.closeIcon.alpha = 0.8; });
-  window2.closeIcon.on('pointerdown', function(){
-    app.stage.addChild(window2.closeWindowMenu.container); 
-  });
-
-  window2.minIcon.interactive = true;
-  window2.minIcon.on('mouseover', function(){ window2.minIcon.alpha = 1; });
-  window2.minIcon.on('mouseout', function(){ window2.minIcon.alpha = 0.8; });
-  window2.minIcon.on('pointerdown', function(){
-    window2.isOpen = false;
-    app.stage.removeChild(window2.container);
-    app.stage.removeChild(tintBg); 
-    window2Hex.visible = true;
-    app.stage.addChild(menuButton.container);
-    window2.isOpen = false;
-  });
-
-  //manually triggers tool1 to be displayed from the start
-  window2.tool4.emit('pointerdown');
-
-  window2Hex.graphics.on('pointerdown', function(){
-    window2.isOpen = true;
-    app.stage.addChild(window2.container);
-    window2Hex.visible = false;
-  });
-
-  //window2.minIcon.emit('pointerdown');
-
 
 
 }

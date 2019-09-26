@@ -1,8 +1,10 @@
 
 // class for work windows. customizable window name, position, image to be worked on, and sprite's image format
-class WorkWindow{
+class WorkWindow
+{
 
-    constructor(windowName, x=0, y=0, image, spriteOnly=false) {
+    constructor(windowName, x=0, y=0, image, spriteOnly=false) 
+    {
         this.isOpen = true;  // to determine which one of multiple windows is in front of screen
         this.inFront = true;
         this.windowName = windowName;
@@ -189,10 +191,10 @@ class WorkWindow{
         myZoom.LMSIContainer.y += 20;
         myZoom.LMSIContainer.mask = this.windowRect;
         this.container.addChild(myZoom.LMSIContainer);
-        //this.ZoomContainer = myZoom.LMSIContainer;
-        //this.ZoomContainer.scale.x = this.ZoomContainer.scale.y = 0.9;
-        //this.ZoomContainer.y += 20;
-        //this.ZoomContainer.mask = this.windowRect;
+        this.ZoomContainer = myZoom.LMSIContainer;
+        this.ZoomContainer.scale.x = this.ZoomContainer.scale.y = 0.9;
+        this.ZoomContainer.y += 20;
+        this.ZoomContainer.mask = this.windowRect;
 
 
 

@@ -326,7 +326,7 @@ function startWindows(){
 
 
 
-  blurTransform(app.stage, 0.5, 10);
+  //blurTransform(app.stage, 0.5, 10);
 
 
 

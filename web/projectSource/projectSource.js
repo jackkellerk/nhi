@@ -37,6 +37,8 @@ var confirm_button = new PIXI.Sprite.from('Images/confirmation-icon-0.jpg')
 // x_infostarts/ends: start and end x coordinates of infobox
 var x, y;
 
+var sourceSelectionPlace;
+
 var ps_sampleText;
 var ps_sampleImage;
 var afterSelectText;
@@ -58,6 +60,7 @@ var selectedSources = [];
  * startSorucePage sets the background and stage containers required
  */
 function startSourcePage() {
+    sourceSelectionPlace = 0;
     getAllSources();
     x = app.screen.width / 8;
     y = app.screen.height / 8;
@@ -70,10 +73,10 @@ function startSourcePage() {
 
     // set title
     ps_title = new PIXI.Text('Institutions', ps_title_style);
-    ps_title.on("pointerdown", moveSources);
+    //ps_title.on("pointerdown", moveSources);
 
     // ps_title = new PIXI.Text('Sources: Lehigh', ps_title_style);
-    ps_title.x =  app.screen.width / 30;
+    ps_title.x =  app.screen.width / 10;
     ps_title.y = app.screen.height / 30;
     app.stage.addChild(ps_title);
 
@@ -101,8 +104,8 @@ function startSourcePage() {
     //
     back_arrow.width = 50;
     back_arrow.height = 50;
-    back_arrow.x = app.screen.width/20
-    back_arrow.y = app.screen.height/20
+    back_arrow.x = app.screen.width/30
+    back_arrow.y = app.screen.height/30
     //
     confirm_button.width = 50;
     confirm_button.height = 50;
@@ -197,10 +200,12 @@ function drawSourceInfo(inputText) {
         }
     }
     ps_title.text = "Sources";
-    ps_title.interactive = true;
-    ps_title.buttonMode = true;
+    sourceSelectionPlace = 1;
+    //ps_title.interactive = true;
+    //ps_title.buttonMode = true;
 
-    positionTransform(app.screen.width*6/8, afterSelectText.y, afterSelectText, 30)
+    //positionTransform(app.screen.width*6/8, afterSelectText.y, afterSelectText, 30)
+    afterSelectText.x = app.screen.width *(6/8);
     positionTransform(confirm_button.x-1000, confirm_button.y, confirm_button, 30)
 
     afterSelectText.text = inputText
@@ -239,16 +244,18 @@ function moveSources(){
         } 
     }
     ps_title.text = "Institutions";
-    ps_title.interactive = false;
-    ps_title.buttonMode = false;
+    afterSelectText.x = app.screen.width * (10/8);
+    //ps_title.interactive = false;
+    //ps_title.buttonMode = false;
     //ps_title.on("pointerdown", moveSources);
     sourcesArray.forEach(element => {
         positionTransform(app.screen.width + 200, element.container.y, element.container, 30);
     });
     positionTransform(app.screen.width + 50, app.screen.height * (7/10), up_arrow, 30);
     positionTransform(app.screen.width + 50, app.screen.height * (8/10), down_arrow, 30);
-    positionTransform(app.screen.width * 10/8, afterSelectText.y, afterSelectText, 30);
-    positionTransform(confirm_Button.x+1000, confirm_Button.y, confirm_Button, 30)
+    //positionTransform(app.screen.width * 10/8, afterSelectText.y, afterSelectText, 30);
+    positionTransform(confirm_button.x+1000, confirm_button.y, confirm_button, 30)
+    sourceSelectionPlace = 0;
     //alphaTransform(source_infoContainer, 0, 30)
 
 }
@@ -288,8 +295,15 @@ function confirmNewProject(){
 }
 
 function goBackToQuestions(){
-    currentActivity = activityArray[3];
-    updateActivity();
+    if(sourceSelectionPlace === 0){
+        currentActivity = activityArray[3];
+        institutionArray.length = 0;
+        updateActivity();
+
+    } else if (sourceSelectionPlace === 1){
+        moveSources();
+    }
+
 }
 
 

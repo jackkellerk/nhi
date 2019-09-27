@@ -499,7 +499,7 @@ function showLogin(event){
     positionTransform(0, 0, login_UI, 6);
 
     //blur background
-    blurTransform(login_backgroundImage, 1, 10);
+    //blurTransform(login_backgroundImage, 1, 10);
 
     //Make UI interactive 
     Inner_Login_UI.interactiveChildren = true;
@@ -532,7 +532,7 @@ function hideLogin(event){
     positionTransform(app.screen.width - ((login_UI.width * .1) * 1.2), app.screen.height - ((login_UI.height * .1) * 1.2), login_UI, 15);
 
     //blur background
-    blurTransform(this, 0.5, 10);
+    //blurTransform(this, 0.5, 10);
 
     //Make UI interactive 
     Inner_Login_UI.interactiveChildren = false;

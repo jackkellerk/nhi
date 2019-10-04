@@ -159,7 +159,48 @@ container.appendChild(renderer.domElement);
  // Create window
   var firstImage = true;
   window3d = new SpecialWindow("Images/3D-test.jpg");
+
   window3d.drawWindow();
+
+  window3d.windowBorder.interactive = true;
+  window3d.windowBorder.on('pointerdown', onDragStart)
+    .on('pointerup', onDragEnd)
+    .on('pointerupoutside', onDragEnd)
+    .on('pointermove', onDragMove);
+
+    window3d.tool1.interactive = true;
+    window3d.tool1.on('pointerdown', function(){
+      window3d.clearWindow(window1);
+      window3d.container.addChild(window1.ZoomContainer);
+      window3d.ZoomContainer.mask = window1.windowRect;
+      window3d.tool1.x += 5;
+    });
+  
+  
+    window3d.tool2.interactive = true;
+    window3d.tool2.on('pointerdown', function(){
+      window3d.clearWindow(window1);
+      window3d.container.addChild(window1.MScontainer);
+      window3d.MScontainer.mask = window1.windowRect;
+      window3d.tool2.x += 5;
+    });
+    
+  
+    window3d.tool3.interactive = true;
+    window3d.tool3.on('pointerdown', function(){
+      window3d.clearWindow(window1);
+      //window3d.container.addChild(container);
+      //MBContainer.mask = window1.windowRect;
+      window3d.tool3.x += 5;
+    });
+  
+    window3d.tool4.interactive = true;
+    window3d.tool4.on('pointerdown', function(){
+      window3d.clearWindow(window1);
+      window3d.container.addChild(window1.LIContainer);
+      window3d.LIContainer.mask = window1.windowRect;
+      window3d.tool4.x += 5;
+    });
 
   window3d.closeWindowMenu.close.interactive = true;
   window3d.closeWindowMenu.close.on('mouseover', function(){ window3d.closeWindowMenu.close.alpha = 0.7; });
@@ -193,6 +234,8 @@ container.appendChild(renderer.domElement);
     app.stage.removeChild(tintBg); 
   });
 
+  window3d.clearWindow(window3d);
+
   animate();
   setTimeout(function() {var imgData = renderer.domElement.toDataURL("image/jpeg");
   var image = new Image();
@@ -221,7 +264,7 @@ function animate() {
     console.log("framerate");
     
     // Only render when the user does something with the mouse, otherwise ThreeJS lags!
-    if(down || scrollUp || scrollDown)
+    if((down || scrollUp || scrollDown) && threeJSMove)
     {
       window3d.refreshImage(image);
       scrollUp = false;

@@ -378,7 +378,7 @@ function startWindows(){
     window1.tool3.x += 5;
   });
 
-  /* window1.tool4.interactive = true;
+  window1.tool4.interactive = true;
   window1.tool4.on('pointerdown', function(){
     window1.clearWindow(window1);
     window1.container.addChild(window1.LIContainer);

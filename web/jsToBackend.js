@@ -176,3 +176,55 @@ function postNewProject(name, canvasWidth, canvasHeight, properties, institution
         }
     });
 }
+
+function getCurrentProject(pid)
+{
+    $.ajax({
+        method: 'GET',
+        contentType: 'application/json',
+        headers: {"uid": uid, "session_key": session_key},
+        url: base_url + '/p/' + pid,
+        dataType: 'json',
+        crossDomain: 'true',
+        xhrFields: {
+            withCredentials: true
+        },
+        success: function(callback) {
+            if(callback.errorCode == 703)
+            {
+                alert("Error loading the sources list!");
+            }
+            else{
+                // parse callback.data, which is an JsonObject, the field project contains
+                // pid, name, date_creation, thumbnail (blank since not implemented yet), canvas_width, canvas_height, properties, institution,
+                // the field windows is an JsonArray of windows, each element contains
+                // wid, iid, pid, thumbnail, image_box, window_box, date_creation, minimized
+                // image_box and window_box are two JsonObjects, both contain pos_x, pos_y, width, height
+            }
+        },
+        error: function(xhr, status, error) {
+            alert("Internal Server Error at Ajax GET /project at client: 500");
+        }
+    });
+}
+
+// name: String, canvasWidth: float, canvasHeight: float
+function postNewWindow(pid)
+{
+    $.ajax({
+        method: 'POST',
+        contentType: 'application/json',
+        headers: {"uid": uid, "session_key": session_key},
+        url: base_url + '/p/' + pid + '/new_window_default',
+        dataType: 'json',
+        crossDomain: 'true',
+        xhrFields: {
+            withCredentials: true
+        },
+        success: function(callback) {
+        },
+        error: function(xhr, status, error) {
+            alert("Internal Server Error: 500");
+        }
+    });
+}

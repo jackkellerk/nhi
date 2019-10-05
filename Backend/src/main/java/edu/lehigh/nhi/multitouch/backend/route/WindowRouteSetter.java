@@ -101,7 +101,7 @@ public final class WindowRouteSetter {
             });
         });
 
-        // update the posion of the window.
+        // update the position and size of the window.
         RouteSetter.setRoute(RequestType.PUT, "/w/:wid/update_pos", (request, response) -> {
             return RouteSetter.preprocessSessionCheck(request, response, encryption, (uid, sessionKey) -> {
                 return RouteSetter.preprocessPathParam(request, response, new String[] { "wid" }, (params) -> {
@@ -125,7 +125,7 @@ public final class WindowRouteSetter {
             });
         });
 
-        // update the posion of image.
+        // update the position and size of image.
         RouteSetter.setRoute(RequestType.PUT, "/w/:wid/update_img_pos", (request, response) -> {
             return RouteSetter.preprocessSessionCheck(request, response, encryption, (uid, sessionKey) -> {
                 return RouteSetter.preprocessPathParam(request, response, new String[] { "wid" }, (params) -> {

@@ -332,7 +332,7 @@ function startWindows(){
 
   // ------------------------------------- Window 1 -----------------------------------------
 
-  /* var window1 = new WorkWindow("Window 1", 0, 0, "Images/sinteredMetal.png");
+   var window1 = new WorkWindow("Window 1", 0, 0, "Images/sinteredMetal.png");
 
   window1.container.interactive = true;
   window1.container.on('pointerdown', function(){
@@ -435,7 +435,7 @@ function startWindows(){
     window1.isOpen = true;
     app.stage.addChild(window1.container);
     window1Hex.visible = false;
-  }); */
+  }); 
 
 
   

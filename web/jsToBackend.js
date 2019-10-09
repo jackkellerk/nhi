@@ -119,6 +119,69 @@ function gatherUserSettings()
     });
 }
 
+function getOneProject(project_ID)
+{
+    // This loads the information about the userSettings
+    //var username = userTextBox.text;
+    $.ajax({
+        method: 'GET',
+        contentType: 'application/json',
+        headers: {"uid": uid, "session_key": session_key},
+        url: base_url + '/p/' + project_ID,
+        dataType: 'json',
+        crossDomain: 'true',
+        xhrFields: {
+            withCredentials: true
+        },
+        success: function(callback) {
+            if(callback.errorCode == 703)
+            {
+                alert("Error loading the user settings!");
+            }
+            else{
+            //userSettingsResponse = callback.data;
+            //createUIProjects();
+            console.log(callback)
+            }
+        },
+        error: function(xhr, status, error) {
+            alert("Internal Server Error: 500");
+        }
+    });
+}
+
+function getProjects()
+{
+    // This loads the information about the userSettings
+    //var username = userTextBox.text;
+    $.ajax({
+        method: 'GET',
+        contentType: 'application/json',
+        headers: {"uid": uid, "session_key": session_key},
+        url: base_url + '/project',
+        dataType: 'json',
+        crossDomain: 'true',
+        xhrFields: {
+            withCredentials: true
+        },
+        success: function(callback) {
+            if(callback.errorCode == 703)
+            {
+                alert("Error loading the user settings!");
+            }
+            else{
+            //userSettingsResponse = callback.data;
+            //createUIProjects();
+            console.log(callback)
+            }
+        },
+        error: function(xhr, status, error) {
+            alert("Internal Server Error: 500");
+        }
+    });
+}
+
+
 function getAllSources()
 {
     // This loads the information about the userSettings

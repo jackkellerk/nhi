@@ -209,7 +209,7 @@ LI_drawPoint(event) {
             //Updates starting point
             //  points = [event.data.global.x, event.data.global.y];
             //Creates the starting point for the line
-            this.LI_currentStart = new Point((event.data.global.x - this.windowContainer.x)/this.windowContainer.scale.x, (event.data.global.y - this.windowContainer.y)/this.windowContainer.scale.x, this.windowContainer);
+            this.LI_currentStart = new Point((event.data.global.x - this.windowContainer.x)/this.windowContainer.scale.x , (event.data.global.y - this.windowContainer.y)/this.windowContainer.scale.x, this.windowContainer);
             this.LI_currentStart.image.name = this.LI_pointContainer.length;
             this.LI_currentStart.image.flag = this;
 

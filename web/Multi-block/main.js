@@ -140,8 +140,6 @@
 
             // Add the iconContainer to the stage
             MBContainer.addChild(iconContainer);
-
-
         }
 
 

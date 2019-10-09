@@ -292,6 +292,7 @@ function confirmNewProject(){
     }
     currentActivity = activityArray[1];
     updateActivity();
+    create_project++;
 }
 
 function goBackToQuestions(){

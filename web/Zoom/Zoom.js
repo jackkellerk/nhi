@@ -248,7 +248,26 @@ class Zoom {
                     newWindow.container.interactive = true;
                     newWindow.drawWindow();
                     newWindow.tool2.emit('pointerdown');
-                
+
+                    newWindow.windowBorder.interactive = true;
+                    newWindow.windowBorder.on('pointerdown', onDragStart)
+                        .on('pointerdown', getMousePositionBeforeWindow) // This is in Multi-block coord system
+                        .on('pointerup', onDragEnd)
+                        .on('pointerup', getMousePositionAfterWindow)
+                        .on('pointerupoutside', onDragEnd)
+                        .on('pointermove', onDragMove)
+                        .on('pointermove', updateMousePositionWindow);
+
+                    newWindow.minIcon.interactive = true;
+                    newWindow.minIcon.on('mouseover', function(){ window1.minIcon.alpha = 1; });
+                    newWindow.minIcon.on('mouseout', function(){ window1.minIcon.alpha = 0.8; });
+                    newWindow.minIcon.on('pointerdown', function(){
+                        newWindow.isOpen = false;
+                        app.stage.removeChild(newWindow.container);
+                        app.stage.removeChild(tintBg); 
+                        //window1Hex.visible = true;
+                        app.stage.addChild(menuButton.container);
+                    });
 
                 //this.zoom_bg_sprite.texture = screenshotImg;
 

@@ -103,7 +103,7 @@ function MB_createGraph() {
                         .lineTo(currentX, horizontalDashY);
                     currentX += 2 * horizontalHalfSpacing;
                 }
-                MBContainer..addChild(hTextContainer);
+                MBContainer.addChild(hTextContainer);
 
                 //This takes care of the vertical segements of the graph
                 var verticalRows = 15;

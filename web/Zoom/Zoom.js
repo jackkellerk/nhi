@@ -182,7 +182,7 @@ class Zoom {
             if (!this.drawing) { //Checks what phase of line create user is in
     
                 // Updates starting point with toWorld()
-                this.startPoint = this.viewport.toWorld(event.data.global.x, event.data.global.y);
+                this.startPoint = this.viewport.toWorld(event.data.global.x , event.data.global.y);
     
                 // Clears current graphics on screen
                 this.cropGraphics.clear();
@@ -249,25 +249,39 @@ class Zoom {
                     newWindow.drawWindow();
                     newWindow.tool2.emit('pointerdown');
 
-                    newWindow.windowBorder.interactive = true;
-                    newWindow.windowBorder.on('pointerdown', onDragStart)
-                        .on('pointerdown', getMousePositionBeforeWindow) // This is in Multi-block coord system
-                        .on('pointerup', onDragEnd)
-                        .on('pointerup', getMousePositionAfterWindow)
-                        .on('pointerupoutside', onDragEnd)
-                        .on('pointermove', onDragMove)
-                        .on('pointermove', updateMousePositionWindow);
+                    newWindow.closeWindowMenu.close.interactive = true;
+                    newWindow.closeWindowMenu.close.on('mouseover', function(){ newWindow.closeWindowMenu.close.alpha = 0.7; });
+                    newWindow.closeWindowMenu.close.on('mouseout', function(){ newWindow.closeWindowMenu.close.alpha = 0.4; });
+                    newWindow.closeWindowMenu.close.on('pointerdown', function(){
+                    app.stage.removeChild(newWindow.closeWindowMenu.container);
+                    });
+
+                    newWindow.closeIcon.interactive = true;
+                    newWindow.closeIcon.on('mouseover', function(){ newWindow.closeIcon.alpha = 1; });
+                    newWindow.closeIcon.on('mouseout', function(){ newWindow.closeIcon.alpha = 0.8; });
+                    newWindow.closeIcon.on('pointerdown', function(){
+                    app.stage.addChild(newWindow.closeWindowMenu.container); 
+                    });
 
                     newWindow.minIcon.interactive = true;
-                    newWindow.minIcon.on('mouseover', function(){ window1.minIcon.alpha = 1; });
-                    newWindow.minIcon.on('mouseout', function(){ window1.minIcon.alpha = 0.8; });
+                    newWindow.minIcon.on('mouseover', function(){ newWindow.minIcon.alpha = 1; });
+                    newWindow.minIcon.on('mouseout', function(){ newWindow.minIcon.alpha = 0.8; });
                     newWindow.minIcon.on('pointerdown', function(){
                         newWindow.isOpen = false;
-                        app.stage.removeChild(newWindow.container);
-                        app.stage.removeChild(tintBg); 
-                        //window1Hex.visible = true;
-                        app.stage.addChild(menuButton.container);
-                    });
+    app.stage.removeChild(newWindow.container);
+    app.stage.removeChild(tintBg); 
+    app.stage.addChild(menuButton.container);
+  });
+
+  newWindow.closeWindowMenu.leftButton.interactive = true;
+  newWindow.closeWindowMenu.leftButton.on('mouseover', function(){ newWindow.closeWindowMenu.leftButton.alpha = 1; });
+  newWindow.closeWindowMenu.leftButton.on('mouseout', function(){ newWindow.closeWindowMenu.leftButton.alpha = 0.7; });
+  newWindow.closeWindowMenu.leftButton.on('pointerdown', function(){
+    app.stage.removeChild(newWindow.closeWindowMenu.container);
+    app.stage.removeChild(newWindow.container);
+    Acc = 0;
+  });
+                
 
                 //this.zoom_bg_sprite.texture = screenshotImg;
 

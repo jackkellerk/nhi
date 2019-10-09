@@ -205,8 +205,18 @@ class WorkWindow
 
 
         // Multi-Block Analysis
-        /*startMultiblock();
-        MBContainer.scale.x = MBContainer.scale.y = 0.70;
+        if(this.windowName != "Window NEW")
+        {
+            this.MBContainer = new PIXI.Container();
+            startMultiblock();
+            MBContainer.scale.x = 0.75;
+            MBContainer.scale.y = 0.72;
+            MBContainer.mask = this.windowRect;
+            this.MBContainer.addChild(MBContainer);
+            this.container.addChild(this.MBContainer);
+        }
+        
+        /* MBContainer.scale.x = MBContainer.scale.y = 0.70;
         MBContainer.position.x = this.xPositionWindow;
         MBContainer.position.y = this.yPositionWindow + 20; */
 
@@ -227,7 +237,7 @@ class WorkWindow
     clearWindow(event) {
         this.container.removeChild(this.ZoomContainer);
         this.container.removeChild(this.MScontainer);
-        //this.container.removeChild(this.MBContainer);
+        this.container.removeChild(this.MBContainer);
         this.container.removeChild(this.LIContainer);
 
         this.tool1.x = this.xPositionWindow + this.width;
@@ -243,7 +253,7 @@ class WorkWindow
 function clearWindow(window) {
     window.container.removeChild(this.ZoomContainer);
     window.container.removeChild(this.MScontainer);
-    //this.container.removeChild(this.MBContainer);
+    this.container.removeChild(this.MBContainer);
     window.container.removeChild(this.LIContainer);
 
     if (window.tool1.x > window.tool2.x) { 

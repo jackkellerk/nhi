@@ -25,6 +25,8 @@ var userSettingsResponse; // valid uses of userSettingsResponse are: userSetting
 function startAllProjects()
 {
     gatherUserSettings(); // backend call
+    getOneProject(76);
+    getProjects();
 }
 
 function createUIProjects()
@@ -207,25 +209,30 @@ function createUIProjects()
     });
 
 
-    // create new Project instance
-    let project2 = new Project("AKT Metals", "Images/lowmag_test.jpg", 1);
+    if(create_project > 0){
+        // create new Project instance
+        let project2 = new Project("AKT Metals", "Images/lowmag_test.jpg", 1);
+        
+        project2.select.on('mouseover', function(){
+            project2.select.alpha = 1;
+            app.stage.addChild(project2.container);
+        });
+        project2.select.on('mouseout', function(){
+        project2.select.alpha = 0.75;
+        });
+        project2.select.on('pointerdown', function(){
+            currentActivity = activityArray[2];
+            moveLeftProjectSelection();
+            setTimeout('updateActivity()', 200); 
+        });
+
+        // calling newProject on a project draws the "new project" plus icon to the right of given project
+        project2.newProject();
+    }
+    else{
+        project1.newProject();
+    }
     
-    project2.select.on('mouseover', function(){
-        project2.select.alpha = 1;
-        app.stage.addChild(project2.container);
-    });
-    project2.select.on('mouseout', function(){
-       project2.select.alpha = 0.75;
-    });
-    project2.select.on('pointerdown', function(){
-        currentActivity = activityArray[2];
-        moveLeftProjectSelection();
-        setTimeout('updateActivity()', 200); 
-    });
-
-    // calling newProject on a project draws the "new project" plus icon to the right of given project
-    project2.newProject();
-
 
 
     

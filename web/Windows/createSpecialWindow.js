@@ -199,7 +199,7 @@ class SpecialWindow{
         
 
         // Low Spectrum Magnification Imaging
-        let myZoom = new Zoom(null, 0, 0);
+        /* let myZoom = new Zoom(null, 0, 0);
         myZoom.LMSIContainer.scale.x = myZoom.LMSIContainer.scale.y = 0.9;
         myZoom.LMSIContainer.y += 20;
         myZoom.LMSIContainer.mask = this.windowRect;
@@ -207,7 +207,7 @@ class SpecialWindow{
         this.ZoomContainer = myZoom.LMSIContainer;
         this.ZoomContainer.scale.x = this.ZoomContainer.scale.y = 0.9;
         this.ZoomContainer.y += 20;
-        this.ZoomContainer.mask = this.windowRect;
+        this.ZoomContainer.mask = this.windowRect; */
 
 
 
@@ -276,34 +276,34 @@ function clearWindow(window)
     }
 }
 
-function onDragStart(event) {
+function onDragStart3D(event) {
     // store a reference to the data
     // the reason for this is because of multitouch
     // we want to track the movement of this particular touch
-    getMousePositionBeforeWindow();
+    getMousePositionBeforeWindow3D();
     this.data = event.data;
     this.parent.pivot.set(0,0);
-    this.parent.position.set(0 - xPositionWindow, 0 - yPositionWindow);
+    this.parent.position.set(0 - xPositionWindow3D, 0 - yPositionWindow3D);
     this.dragging = true;
 }
 
-function onDragEnd(event) {
-    getMousePositionAfterWindow();
+function onDragEnd3D(event) {
+    getMousePositionAfterWindow3D();
     this.dragging = false;
     // set the interaction data to null
     this.data = null;
 }
 
-function onDragMove(event) {
+function onDragMove3D(event) {
     if (this.dragging) {
         /* var newPosition = this.data.getLocalPosition(this.parent);
         this.parent.x = newx;
         this.parent.y = newPosition.y; */
 
         // This ensures the image does not clip
-        this.parent.x = 0 - xPositionWindow - deltaXWindow;
-        this.parent.y = 0 - yPositionWindow - deltaYWindow;
-        updateMousePositionWindow();
+        this.parent.x = 0 - xPositionWindow3D - deltaXWindow3D;
+        this.parent.y = 0 - yPositionWindow3D - deltaYWindow3D;
+        updateMousePositionWindow3D();
     }
 }
 

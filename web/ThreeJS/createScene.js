@@ -158,15 +158,16 @@ container.appendChild(renderer.domElement);
 
  // Create window
   var firstImage = true;
-  window3d = new SpecialWindow("Images/3D-test.jpg");
+  //window3d = new SpecialWindow("Images/3D-test.jpg");
+  window3d = new SpecialWindow("Images/blank.png");
 
   window3d.drawWindow();
 
   window3d.windowBorder.interactive = true;
-  window3d.windowBorder.on('pointerdown', onDragStart)
-    .on('pointerup', onDragEnd)
-    .on('pointerupoutside', onDragEnd)
-    .on('pointermove', onDragMove);
+  window3d.windowBorder.on('pointerdown', onDragStart3D)
+    .on('pointerup', onDragEnd3D)
+    .on('pointerupoutside', onDragEnd3D)
+    .on('pointermove', onDragMove3D);
 
     window3d.tool1.interactive = true;
     window3d.tool1.on('pointerdown', function(){

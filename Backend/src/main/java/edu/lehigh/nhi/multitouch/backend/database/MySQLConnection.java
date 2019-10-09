@@ -9,7 +9,7 @@ import java.sql.*;
 public class MySQLConnection {
 
     // Information of the SQL Server
-    private static final String SQL_URL = "jdbc:mysql://remotemysql.com:3306/1Iz28Ynucw";
+    private static final String SQL_URL = "jdbc:mysql://remotemysql.com:3306/1Iz28Ynucw?autoReconnect=true";
     private static final String SQL_USERNAME = "1Iz28Ynucw";
     private static final String SQL_PASSWORD = "nUAiAivff5";
     private static MySQLConnection INSTANCE = null;

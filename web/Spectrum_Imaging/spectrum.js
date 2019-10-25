@@ -1,6 +1,3 @@
-/*
- */
-
 class Spectrum{
     
     /*
@@ -8,11 +5,11 @@ class Spectrum{
     height: height of container. will be used to locate the buttons.
     width: currently not used.
      */
-    constructor(container, width, height){
+    constructor(container, width, height, sprite){
         this.container = container;
         this.width = width;
         this.height = height;
-        this.metalsprite = new PIXI.Sprite.from('Images/sinteredMetal.png');
+        this.metalsprite = sprite; //new PIXI.Sprite.from('Images/sinteredMetal.png');
         this.container.addChild(this.metalsprite);
         // this.metalsprite.anchor.set(0.5);
         // this.metalsprite.scale.set(2);

@@ -1,24 +1,20 @@
 
-// similar to createWindow but specifically made for window with 3d model
-class SpecialWindow{
+// class for work windows. customizable window name, position, image to be worked on, and sprite's image format
+class WorkWindow
+{
 
-    constructor(imagePath)
+    constructor(windowName, x=0, y=0, image, spriteOnly=false) 
     {
-        // initial image displayed in window
-        this.imagePath = imagePath;
-        this.image = new PIXI.Sprite.from(imagePath);
-
-        this.image.position.x = 0;
-        this.image.position.y = 0;
-        this.image.height = 0.73125*h - 30;
-
-        this.isOpen = true;
-        this.windowName = "3D Model Window";
+        this.isOpen = true;  // to determine which one of multiple windows is in front of screen
+        this.inFront = true;
+        this.windowName = windowName;
         this.container = new PIXI.Container();
         this.windowRect = new PIXI.Graphics();
         this.width = 1.3*h;
         this.height = 0.73125*h;
-        this.windowBorder = new PIXI.Graphics();
+        this.sprite = new PIXI.Sprite();
+        if (spriteOnly) { this.sprite = new PIXI.Sprite(image); } // image is a texture
+        else { this.sprite = new PIXI.Sprite.from(image); } // "image" is a path
 
         // initializing tool buttons as graphics
         this.tool1 = new PIXI.Graphics();
@@ -26,22 +22,23 @@ class SpecialWindow{
         this.tool3 = new PIXI.Graphics();
         this.tool4 = new PIXI.Graphics();
 
+        // initialize interactive + dragable window border
+        this.windowBorder = new PIXI.Graphics();
+
         w = app.screen.width;
         h = app.screen.height;
 
-        
         this.createPositionX = x; //(w*0.25-3);
         this.createPositionY = y; //0;
 
         // set the initial coords for this window; these variables are in moveWindowAroundScreen.js
         this.xPositionWindow = this.createPositionX;
         this.yPositionWindow = this.createPositionY;
-        
+
     }
 
-    // call mySpecialWindow.drawWindow() to draw window to screen
-    drawWindow(fill=0xDCDCDC)
-    {
+    drawWindow(fill=0xDCDCDC) {
+
         // backdrop to tool buttons
         var a_backdrop = new PIXI.Graphics();
             a_backdrop.beginFill(0xdddddd);
@@ -50,6 +47,7 @@ class SpecialWindow{
             a_backdrop.x = this.xPositionWindow + this.width;
             a_backdrop.y = this.yPositionWindow + 27;
         this.container.addChild(a_backdrop);
+
 
         // ------------------------- tool icons -------------------------
 
@@ -117,7 +115,8 @@ class SpecialWindow{
             lineintensityIcon.y = 3;
         this.tool4.addChild(lineintensityIcon);
 
-        // ------------------------- Window Graphics -------------------------
+
+        // ------------------------- window -------------------------
 
         // This is the thing we click on to drag the window around the screen
         this.windowBorder.beginFill(fill);
@@ -125,16 +124,16 @@ class SpecialWindow{
         this.windowBorder.endFill();
         this.windowBorder.pivot.set(0,0);
         this.windowBorder.buttonMode = true;
-        this.windowBorder.position.x = 0; //this.xPositionWindow;
-        this.windowBorder.position.y = 0; //this.yPositionWindow;
+        this.windowBorder.position.x = this.xPositionWindow;
+        this.windowBorder.position.y = this.yPositionWindow;
         this.container.addChild(this.windowBorder);
 
         // window background that masks tools
         this.windowRect.beginFill(0x000000);
         this.windowRect.drawRect(5,25, 1.3*h-10,0.73125*h-30);
         this.windowRect.endFill();
-        this.windowRect.position.x = 0; //this.xPositionWindow;
-        this.windowRect.position.y = 0; //this.yPositionWindow;
+        this.windowRect.position.x = this.xPositionWindow;
+        this.windowRect.position.y = this.yPositionWindow;
         this.container.addChild(this.windowRect);
 
         var windowTitle = new PIXI.Text(this.windowName,{fontFamily: 'Arial', fontSize: 15, fontType: 'bold', fill: 0x000000});
@@ -142,11 +141,7 @@ class SpecialWindow{
         windowTitle.position.y = this.windowRect.y + 4;
         this.container.addChild(windowTitle);
 
-        this.refreshImage(this.imagePath);
 
-        // ------------------------- Close Menu -------------------------
-
-        // container sizes and positions are modified for multitouch screen (if isTouch boolean evaluates to true)
         if (isTouch) {
             w_menuCloseContainer.scale.x = w_menuCloseContainer.scale.y = 0.5;
             w_menuCloseContainer.x = w_menuCloseContainer.x + 300;
@@ -157,22 +152,20 @@ class SpecialWindow{
         this.closeWindowMenu.graphics.lineStyle(5, 0xdddddd, 3);
         this.closeWindowMenu.drawPopup(0x7f7f7f, 2);
         
-        // 'x' button to close window. clicking button prompts "would you like to close this window" popup 
         this.closeIcon = new PIXI.Sprite.from("Images/cancel-icon.png");
         this.closeIcon.width = 24;
         this.closeIcon.height = 24;
-        this.closeIcon.x = 0 + 1.3*h - 30; //this.xPositionWindow + 1.3*h - 30;
-        this.closeIcon.y = 0; //this.yPositionWindow;
+        this.closeIcon.x = this.xPositionWindow + 1.3*h - 30;
+        this.closeIcon.y = this.yPositionWindow;
         this.closeIcon.buttonMode = true;
         this.closeIcon.alpha = 0.8;
         this.container.addChild(this.closeIcon);
         
-        // button to minimize window
         this.minIcon = new PIXI.Sprite.from("Images/minimize-icon.png");
         this.minIcon.width = 22;
         this.minIcon.height = 20;
-        this.minIcon.x = 0 + 1.3*h - 57; //this.xPositionWindow + 1.3*h - 57;
-        this.minIcon.y = 0 + 2; //this.yPositionWindow + 2;
+        this.minIcon.x = this.xPositionWindow + 1.3*h - 57;
+        this.minIcon.y = this.yPositionWindow + 2;
         this.minIcon.buttonMode = true;
         this.minIcon.alpha = 0.8;
         this.container.addChild(this.minIcon);
@@ -181,15 +174,9 @@ class SpecialWindow{
             this.container.scale.x = this.container.scale.y = 0.4;
         }
 
-        // This is to set the position
-        this.container.position.set(80, 80); //this.xPositionWindow, 0 - this.yPositionWindow);
+        app.stage.addChild(this.container);
 
-        // Image placement and stuff
-        this.image.interactive = true;
-        this.image.on('pointerdown', onMoveThreeJS)
-        .on('pointerup', onExitThreeJS)
-        .on('pointerupoutside', onExitThreeJS);
-        this.container.addChild(this.image);
+
 
         /* All tools are put into individual (labeled) global containers 
         upon their start function call. Then the containers are resized to fit the
@@ -199,7 +186,7 @@ class SpecialWindow{
         
 
         // Low Spectrum Magnification Imaging
-        /* let myZoom = new Zoom(null, 0, 0);
+        let myZoom = new Zoom(null, 0, 0);
         myZoom.LMSIContainer.scale.x = myZoom.LMSIContainer.scale.y = 0.9;
         myZoom.LMSIContainer.y += 20;
         myZoom.LMSIContainer.mask = this.windowRect;
@@ -207,43 +194,66 @@ class SpecialWindow{
         this.ZoomContainer = myZoom.LMSIContainer;
         this.ZoomContainer.scale.x = this.ZoomContainer.scale.y = 0.9;
         this.ZoomContainer.y += 20;
-        this.ZoomContainer.mask = this.windowRect; */
+        this.ZoomContainer.mask = this.windowRect;
 
 
 
+        // Multi-Spectrum Imaging
+        this.MScontainer = new PIXI.Container();
+        this.MScontainer.y += 20;
+        let mySpectrum = new Spectrum(this.MScontainer, 1.3*h-10, 0.73125*h-30, this.sprite);
 
+
+        // Multi-Block Analysis
+        if(this.windowName != "Window NEW")
+        {
+            this.MBContainer = new PIXI.Container();
+            startMultiblock();
+            MBContainer.scale.x = 0.75;
+            MBContainer.scale.y = 0.72;
+            MBContainer.mask = this.windowRect;
+            this.MBContainer.addChild(MBContainer);
+            this.container.addChild(this.MBContainer);
+        }
+        
+        /* MBContainer.scale.x = MBContainer.scale.y = 0.70;
+        MBContainer.position.x = this.xPositionWindow;
+        MBContainer.position.y = this.yPositionWindow + 20; */
+
+        // Line-Intensity Analysis
+        this.LIContainer = new PIXI.Container();
+        //this.LIContainer.scale.x = this.LIContainer.scale.y = 0.97;
+        this.LIContainer.width = 1.3*h-10;
+        this.LIContainer.y += 23;
+        let myLineIntensity = new LineApplication(this.LIContainer);
+        myLineIntensity.LI_showAll();
+
+
+        // This is to set the position
         this.container.position.set(0 - this.xPositionWindow, 0 - this.yPositionWindow);
 
-        app.stage.addChild(this.container);
     }
 
-    // function is called to change displayed image in window (called regularly for animated effect)
-    refreshImage(imagePath)
-    {
-        this.image.texture = PIXI.Texture.from(imagePath);
-        this.image.mask = this.windowRect;
+    clearWindow(event) {
+        this.container.removeChild(this.ZoomContainer);
+        this.container.removeChild(this.MScontainer);
+        this.container.removeChild(this.MBContainer);
+        this.container.removeChild(this.LIContainer);
+
+        this.tool1.x = this.xPositionWindow + this.width;
+        this.tool2.x = this.xPositionWindow + this.width;
+        this.tool3.x = this.xPositionWindow + this.width;
+        this.tool4.x = this.xPositionWindow + this.width;
+
     }
 
-    clearWindow(event) 
-    {
-    this.container.removeChild(this.ZoomContainer);
-    this.container.removeChild(this.MScontainer);
-    //this.container.removeChild(this.MBContainer);
-    this.container.removeChild(this.LIContainer);
-
-    this.tool1.x = this.xPositionWindow + this.width;
-    this.tool2.x = this.xPositionWindow + this.width;
-    this.tool3.x = this.xPositionWindow + this.width;
-    this.tool4.x = this.xPositionWindow + this.width;
-    }
 }
 
 // function to reset all buttons to original position before emitting the next tool + clearing window tools
-function clearWindow(window) 
-{
+function clearWindow(window) {
     window.container.removeChild(this.ZoomContainer);
     window.container.removeChild(this.MScontainer);
-    //this.container.removeChild(this.MBContainer);
+    this.container.removeChild(this.MBContainer);
     window.container.removeChild(this.LIContainer);
 
     if (window.tool1.x > window.tool2.x) { 
@@ -257,46 +267,31 @@ function clearWindow(window)
     }
 }
 
-function onDragStart3D(event) {
+function onDragStart(event) {
     // store a reference to the data
     // the reason for this is because of multitouch
     // we want to track the movement of this particular touch
-    getMousePositionBeforeWindow3D();
     this.data = event.data;
     this.parent.pivot.set(0,0);
-    this.parent.position.set(0 - xPositionWindow3D, 0 - yPositionWindow3D);
+    this.parent.position.set(0 - xPositionWindow, 0 - yPositionWindow);
     this.dragging = true;
 }
 
-function onDragEnd3D(event) {
-    getMousePositionAfterWindow3D();
+function onDragEnd(event) {
     this.dragging = false;
     // set the interaction data to null
     this.data = null;
 }
 
-function onDragMove3D(event) {
+function onDragMove(event) {
     if (this.dragging) {
         /* var newPosition = this.data.getLocalPosition(this.parent);
         this.parent.x = newx;
         this.parent.y = newPosition.y; */
 
         // This ensures the image does not clip
-        this.parent.x = 0 - xPositionWindow3D - deltaXWindow3D;
-        this.parent.y = 0 - yPositionWindow3D - deltaYWindow3D;
-        updateMousePositionWindow3D();
+        this.parent.x = 0 - xPositionWindow - deltaXWindow;
+        this.parent.y = 0 - yPositionWindow - deltaYWindow;
     }
 }
 
-function onMoveThreeJS(event)
-{
-    if(!threeJSMove)
-    {
-        threeJSMove = true;
-    }
-}
-
-function onExitThreeJS(event)
-{
-    threeJSMove = false;
-}

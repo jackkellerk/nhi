@@ -342,7 +342,7 @@ function startWindows(){
       window1.inFront = true;
       window2.inFront = false;
     }});
-  window1.drawWindow();
+  window1.drawWindow(0xDCDCDC, "Images/sinteredMetal.png");
   window1.windowBorder.interactive = true;
   window1.windowBorder.on('pointerdown', onDragStart)
     .on('pointerdown', getMousePositionBeforeWindow) // This is in Multi-block coord system
@@ -354,9 +354,9 @@ function startWindows(){
 
   window1.tool1.interactive = true;
   window1.tool1.on('pointerdown', function(){
-    window1.clearWindow(window1);
-    window1.container.addChild(window1.ZoomContainer);
-    window1.ZoomContainer.mask = window1.windowRect;
+    //window1.multiBlockObject.buttonBool(false);
+    //window1.container.addChild(window1.ZoomContainer);
+    //window1.ZoomContainer.mask = window1.windowRect;
     window1.tool1.x += 5;
   });
 

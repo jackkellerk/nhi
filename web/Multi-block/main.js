@@ -202,8 +202,8 @@
             MBContainer.addChild(boxContainer);
             
             // this adds the specific information for the box
-            var newBox = new boxInformation(initialXMousePosition + xPosition, initialYMousePosition + yPosition, width, height);
-            informationBoxArray[informationBoxArray.length] = newBox;
+            //var newBox = new boxInformation(initialXMousePosition + xPosition, initialYMousePosition + yPosition, width, height);
+            //informationBoxArray[informationBoxArray.length] = newBox;
 
 			// Create comparisonRectangles
 			comparisonRectangles();

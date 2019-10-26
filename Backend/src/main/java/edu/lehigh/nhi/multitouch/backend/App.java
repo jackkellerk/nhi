@@ -1,7 +1,7 @@
 package edu.lehigh.nhi.multitouch.backend;
 
+import java.io.Console;
 import java.sql.SQLException;
-import java.util.Arrays;
 import java.util.HashMap;
 
 import edu.lehigh.nhi.multitouch.backend.database.DatabaseManager;
@@ -20,12 +20,13 @@ import spark.Spark;
  * procedures and calculations.
  */
 public class App {
+    public static boolean isTestingMode = true;
+    public static String NHITEST_SQL_PASSWORD = "";
 
     public static void main(String[] args) {
         // System.out.println(Arrays.toString(args));
         HashMap<String, String> argsMap = getArgs(args);
         int port = 4567;
-        Boolean isTestingMode = true;
 
         if (!argsMap.containsKey("port")) {
             System.out.println("No argument read for port number, set port to default (4567).");
@@ -42,9 +43,14 @@ public class App {
         } else {
             String mode = argsMap.get("mode");
             if (mode.equals("test")) {
-                isTestingMode = true;
+                App.isTestingMode = true;
             } else if (mode.equals("deploy")) {
-                isTestingMode = false;
+                App.isTestingMode = false;
+                if (argsMap.containsKey("dbpass")) {
+                    App.NHITEST_SQL_PASSWORD = argsMap.get("dbpass");
+                }else{
+                    printArgumentsErrorMessage();
+                }
             } else {
                 printArgumentsErrorMessage();
             }
@@ -57,7 +63,7 @@ public class App {
         Spark.port(port);
         System.out.println("Set port to: " + port);
 
-        if (!isTestingMode) {
+        if (!App.isTestingMode) {
             System.out.println("Deployment mode. Serving content from 'src/main/resources/web' inside jar.");
             Spark.staticFileLocation("/web");
         } else {

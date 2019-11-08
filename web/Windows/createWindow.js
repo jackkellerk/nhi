@@ -12,6 +12,8 @@ class WorkWindow
         this.windowRect = new PIXI.Graphics();
         this.width = 1.3*h;
         this.height = 0.73125*h;
+        console.log(typeof(image))
+        this.image = image
         this.sprite = new PIXI.Sprite();
         if (spriteOnly) { this.sprite = new PIXI.Sprite(image_src); } // image is a texture
         else { this.sprite = new PIXI.Sprite.from(image_src); } // "image" is a path

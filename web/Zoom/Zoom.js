@@ -5,6 +5,7 @@ class Zoom {
     constructor(imageSource, _wid, _pid) {
 
         // set buttons
+        this.imageSource = imageSource;
         this.cancel_button = cancel;
         this.mode_button = modeSwitch;
         this.screenshot = screenshotIcon;
@@ -71,25 +72,29 @@ class Zoom {
         // set guideText
         this.guideText = new PIXI.Text('Drag, wheel and scroll the image to explore.', LMSIstyle);
 
+        console.log("AAAAAA: " + typeof(imageSource))
         // set background
         // load image to drag (explore) or screenshot
         // if imageSource is null.. load default image
         if (imageSource == null) {
+            console.log("FLAG BBBBBBBBBBBBB for string instanc in zoom")
             this.zoom_bg_texture = bg_texture;
             this.zoom_bg_sprite = bg_sprite;
             this._imageOrigin_w = this.zoom_bg_sprite.width;
             this._imageOrigin_h = this.zoom_bg_sprite.height;
-        }/*
-        // if imageSource is a dir to an image
-        else if (str.indexOf("/") >= 0 && str.indexOf("./") >= 0) {
-            this.zoom_bg_texture = PIXI.Texture.from(imageSource);
+        }
+        //if imageSource is a dir to an image
+        else if (typeof(imageSource) === "string") {
+            console.log("FLAG AAAAAAAAAAAAAAAAAA for string instanc in zoom")
+            this.zoom_bg_texture = new PIXI.Texture.from(imageSource);
             this.zoom_bg_sprite = new PIXI.Sprite(this.zoom_bg_texture);
             // get orignal width and height of the image
             this._imageOrigin_w = imageSource.width;
             this._imageOrigin_h = imageSource.height;
-        }*/
+        }
         // if imageSource is in base64
         else if (base64Matcher.test(imageSource)) {
+            console.log("FLAG CCCCCCCCCCCCCCCCCCCC for string instanc in zoom")
             var tempImg = new Image();
             this.tempImg.src = imageSource;
 
@@ -116,14 +121,15 @@ class Zoom {
         }
         // nothing match. get default image
         else {
-            this.zoom_bg_texture = bg_texture;
-            this.zoom_bg_sprite = bg_sprite;
+            console.log("FLAG DDDDDDDDDDDDD for string instanc in zoom")
+            this.zoom_bg_texture = imageSource;
+            this.zoom_bg_sprite = new PIXI.Sprite(this.zoom_bg_texture);
             this._imageOrigin_w = this.zoom_bg_sprite.width;
             this._imageOrigin_h = this.zoom_bg_sprite.height;
         }
 
         // add background image to viewport
-        //this.viewport.addChild(this.zoom_bg_sprite);
+        this.viewport.addChild(this.zoom_bg_sprite);
         
         // draw rectangle box to put buttons
         this.buttonGraphics.beginFill(0xFFFFFF);
@@ -206,7 +212,17 @@ class Zoom {
             } //end drawing if
             else {
     
-                // update ending point with toWorld()
+               
+
+                // set cropImage, which is PIXI.Graphics to mask image on screen
+                // cropImage.drawRect(this.startPoint.x, this.startPoint.y, this.endPoint.x - this.startPoint.x, this.endPoint.y -
+                //     this.startPoint.y);
+                    
+                // cropImage.renderable = true;
+                // cropImage.cacheAsBitmap = true;
+
+                // viewport.mask = cropImage;
+                     // update ending point with toWorld()
                 this.endPoint = this.viewport.toWorld(event.data.global.x, event.data.global.y);
     
                 //Draws end point
@@ -223,19 +239,20 @@ class Zoom {
                 // event.data.global - points = width / height of rectangle
                 this.cropGraphics.drawRect(this.startPoint.x, this.startPoint.y, this.endPoint.x - this.startPoint.x, this.endPoint.y -
                     this.startPoint.y);
-
-                // set cropImage, which is PIXI.Graphics to mask image on screen
-                // cropImage.drawRect(this.startPoint.x, this.startPoint.y, this.endPoint.x - this.startPoint.x, this.endPoint.y -
-                //     this.startPoint.y);
-                    
-                // cropImage.renderable = true;
-                // cropImage.cacheAsBitmap = true;
-
-                // viewport.mask = cropImage;
-
+                console.log("Start: " + this.startPoint.x + "   " +  this.startPoint.y)
+                console.log("Height: " + Number(this.endPoint.x - this.startPoint.x))
+                console.log("Width: " +  Number(this.endPoint.y -this.startPoint.y))
+                //console.log("endy: " + this.endPoint.y)
                 // swap background with cropped texture
-                let screenshotImg = new PIXI.Texture(this.zoom_bg_texture, new PIXI.Rectangle(this.startPoint.x, this.startPoint.y, this.endPoint.x - this.startPoint.x, this.endPoint.y -
-                    this.startPoint.y));
+                let screenshotImg = new PIXI.Texture(this.zoom_bg_texture, 
+                    new PIXI.Rectangle(0, 
+                        0, 
+                        Number(this.endPoint.x - this.startPoint.x), 
+                        Number(this.endPoint.y - this.startPoint.y)
+                        )
+                    );
+
+                //screenshotImg._updateUvs();
 /*
                 let imgDataZoom = CanvasRenderer.view.toDataURL("image/jpeg");
                 var imageZoom = new Image();
@@ -248,6 +265,15 @@ class Zoom {
                     newWindow.container.interactive = true;
                     newWindow.drawWindow();
                     newWindow.tool2.emit('pointerdown');
+
+                    newWindow.windowBorder.interactive = true;
+                    newWindow.windowBorder.on('pointerdown', onDragStart)
+                        .on('pointerdown', getMousePositionBeforeWindow) // This is in Multi-block coord system
+                        .on('pointerup', onDragEnd)
+                        .on('pointerup', getMousePositionAfterWindow)
+                        .on('pointerupoutside', onDragEnd)
+                        .on('pointermove', onDragMove)
+                        .on('pointermove', updateMousePositionWindow);
 
                     newWindow.closeWindowMenu.close.interactive = true;
                     newWindow.closeWindowMenu.close.on('mouseover', function(){ newWindow.closeWindowMenu.close.alpha = 0.7; });
@@ -267,24 +293,21 @@ class Zoom {
                     newWindow.minIcon.on('mouseover', function(){ newWindow.minIcon.alpha = 1; });
                     newWindow.minIcon.on('mouseout', function(){ newWindow.minIcon.alpha = 0.8; });
                     newWindow.minIcon.on('pointerdown', function(){
-                        newWindow.isOpen = false;
-    app.stage.removeChild(newWindow.container);
-    app.stage.removeChild(tintBg); 
-    app.stage.addChild(menuButton.container);
-  });
+                    newWindow.isOpen = false;
+                        app.stage.removeChild(newWindow.container);
+                        app.stage.removeChild(tintBg); 
+                        app.stage.addChild(menuButton.container);
+                    });
 
-  newWindow.closeWindowMenu.leftButton.interactive = true;
-  newWindow.closeWindowMenu.leftButton.on('mouseover', function(){ newWindow.closeWindowMenu.leftButton.alpha = 1; });
-  newWindow.closeWindowMenu.leftButton.on('mouseout', function(){ newWindow.closeWindowMenu.leftButton.alpha = 0.7; });
-  newWindow.closeWindowMenu.leftButton.on('pointerdown', function(){
-    app.stage.removeChild(newWindow.closeWindowMenu.container);
-    app.stage.removeChild(newWindow.container);
-    Acc = 0;
-  });
-                
-
+                    newWindow.closeWindowMenu.leftButton.interactive = true;
+                    newWindow.closeWindowMenu.leftButton.on('mouseover', function(){ newWindow.closeWindowMenu.leftButton.alpha = 1; });
+                    newWindow.closeWindowMenu.leftButton.on('mouseout', function(){ newWindow.closeWindowMenu.leftButton.alpha = 0.7; });
+                    newWindow.closeWindowMenu.leftButton.on('pointerdown', function(){
+                        app.stage.removeChild(newWindow.closeWindowMenu.container);
+                        app.stage.removeChild(newWindow.container);
+                        Acc = 0;
+                    });
                 //this.zoom_bg_sprite.texture = screenshotImg;
-
                 //Changes draw value and updates other information
                 this.drawing = false;
 
@@ -292,7 +315,7 @@ class Zoom {
 
                 // cropGraphics.clear() because to box offests in scaled images
                 this.cropGraphics.clear();
-    
+                
             } //end else
         } //end cancel if
     } // end draw point

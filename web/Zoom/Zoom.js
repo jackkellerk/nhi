@@ -88,6 +88,36 @@ class Zoom {
             console.log("FLAG AAAAAAAAAAAAAAAAAA for string instanc in zoom")
             this.zoom_bg_texture = new PIXI.Texture.from(imageSource);
             this.zoom_bg_sprite = new PIXI.Sprite(this.zoom_bg_texture);
+
+            // if(this.zoom_bg_texture.baseTexture.hasLoaded){
+                
+            // }
+            // else{
+            //    this.zoom_bg_texture.addListener("update", onTextureUpdate)
+            // }
+
+            // function onTextureUpdate(){
+            //     // this will log the correct width and height as the image has loaded
+            //     if(this.zoom_bg_sprite.width > this.zoom_bg_sprite.height){
+            //         this.zoom_bg_sprite.scale.x = (this.LMSIContainer.width / this.zoom_bg_sprite.width)
+            //         console.log("BOOOOOOOO " + this.LMSIContainer.width / this.zoom_bg_sprite.width )
+            //         this.zoom_bg_sprite.scale.y = (this.LMSIContainer.width / this.zoom_bg_sprite.width)
+            //     } else {
+            //         this.zoom_bg_sprite.scale.x = (this.LMSIContainer.height / this.zoom_bg_sprite.width)
+            //         this.zoom_bg_sprite.scale.y = (this.LMSIContainer.height / this.zoom_bg_sprite.height)
+            //     }
+            // }
+
+            // console.log("BOOOOOOOO " + this.zoom_bg_sprite.width )
+            // console.log("BOOOOOOOO " + this.zoom_bg_sprite.height )
+            // if(this.zoom_bg_sprite.width > this.zoom_bg_sprite.height){
+            //     this.zoom_bg_sprite.scale.x = (this.LMSIContainer.width / this.zoom_bg_sprite.width)
+            //     console.log("BOOOOOOOO " + this.LMSIContainer.width / this.zoom_bg_sprite.width )
+            //     this.zoom_bg_sprite.scale.y = (this.LMSIContainer.width / this.zoom_bg_sprite.width)
+            // } else {
+            //     this.zoom_bg_sprite.scale.x = (this.LMSIContainer.height / this.zoom_bg_sprite.width)
+            //     this.zoom_bg_sprite.scale.y = (this.LMSIContainer.height / this.zoom_bg_sprite.height)
+            // }
             // get orignal width and height of the image
             this._imageOrigin_w = imageSource.width;
             this._imageOrigin_h = imageSource.height;
@@ -168,6 +198,17 @@ class Zoom {
         //this.LMSIContainer.interactive = true;
         app.stage.addChild(this.LMSIContainer);
         app.renderer.render(this.LMSIContainer);
+
+        console.log("BOOOOOOOO " + this.zoom_bg_sprite.width )
+        console.log("BOOOOOOOO " + this.zoom_bg_sprite.height )
+        if(this.zoom_bg_sprite.width > this.zoom_bg_sprite.height){
+            this.zoom_bg_sprite.scale.x = (this.LMSIContainer.width / this.zoom_bg_sprite.width)
+            console.log("BOOOOOOOO " + this.LMSIContainer.width / this.zoom_bg_sprite.width )
+            this.zoom_bg_sprite.scale.y = (this.LMSIContainer.width / this.zoom_bg_sprite.width)
+        } else {
+            this.zoom_bg_sprite.scale.x = (this.LMSIContainer.height / this.zoom_bg_sprite.width)
+            this.zoom_bg_sprite.scale.y = (this.LMSIContainer.height / this.zoom_bg_sprite.height)
+        }
     }
 
     get getWid() {

@@ -198,7 +198,9 @@ class WorkWindow
         this.ZoomContainer = myZoom.LMSIContainer;
         this.ZoomContainer.scale.x = this.ZoomContainer.scale.y = 0.9;
         this.ZoomContainer.y += 20;
-        this.ZoomContainer.mask = this.windowRect;*/
+        this.ZoomContainer.mask = this.windowRect;
+        console.log("BLAHHHHH " +  myZoom.LMSIContainer.height)
+        console.log("BL)))))HHHHH " + myZoom.LMSIContainer.width)
 
 
 

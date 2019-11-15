@@ -12,8 +12,6 @@ class WorkWindow
         this.windowRect = new PIXI.Graphics();
         this.width = 1.3*h;
         this.height = 0.73125*h;
-        console.log(typeof(image))
-        this.image = image
         this.sprite = new PIXI.Sprite();
         if (spriteOnly) { this.sprite = new PIXI.Sprite(image_src); } // image is a texture
         else { this.sprite = new PIXI.Sprite.from(image_src); } // "image" is a path
@@ -198,21 +196,20 @@ class WorkWindow
         this.ZoomContainer = myZoom.LMSIContainer;
         this.ZoomContainer.scale.x = this.ZoomContainer.scale.y = 0.9;
         this.ZoomContainer.y += 20;
-        this.ZoomContainer.mask = this.windowRect;
-        console.log("BLAHHHHH " +  myZoom.LMSIContainer.height)
-        console.log("BL)))))HHHHH " + myZoom.LMSIContainer.width)
+        this.ZoomContainer.mask = this.windowRect;*/
 
+        // The background image to be accessed is instantiated here; To access it in the window functions, do "this.parent.backgroundSprite".
+        this.texture = PIXI.Texture.fromImage(image_src, true);
+        this.texture.baseTexture.scaleMode = PIXI.SCALE_MODES.NEAREST;
+        this.backgroundSprite = new PIXI.Sprite(this.texture);
 
+        // Multi-Block Analysis (The background image is defined as this.multiBlockObject.dragImage)
+        this.currentlySelectedButtonAction = "null";
+        this.multiBlockObject = new MultiBlock(this);
 
         // Multi-Spectrum Imaging
-        /*this.MScontainer = myZoom.LMSIContainer; // new PIXI.Container();
-        this.MScontainer.y += 20;
-        let mySpectrum = new Spectrum(this.MScontainer, 1.3*h-10, 0.73125*h-30, this.sprite);*/
-
-
-        // Multi-Block Analysis (I decided I would base every other tool off of Multi-Block because it is the most complicated tool to implement)
-        this.multiBlockObject = new MultiBlock(image_src, this);
-
+        this.spectrumObject = new Spectrum(this.multiBlockObject.dragImage, this);
+        
         // Line-Intensity Analysis
         //this.LIContainer = new PIXI.Container();
         //this.LIContainer.scale.x = this.LIContainer.scale.y = 0.97;

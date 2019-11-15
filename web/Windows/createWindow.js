@@ -208,7 +208,7 @@ class WorkWindow
         this.multiBlockObject = new MultiBlock(this);
 
         // Multi-Spectrum Imaging
-        this.spectrumObject = new Spectrum(this.multiBlockObject.dragImage, this);
+        this.spectrumObject = new Spectrum(this);
         
         // Line-Intensity Analysis
         //this.LIContainer = new PIXI.Container();

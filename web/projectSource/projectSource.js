@@ -320,13 +320,13 @@ function upButton(){
     if(index == 0 ){ 
         sourcesArray[11].container.y = 0 - (yChange* 12);
         sourcesArray.forEach(element => {
-            positionTransform(element.container.x, element.container.y +yChange, element.container, 7)
+            positionTransform(element.container.x, element.container.y +yChange, element.container, 6)
         });
         index = 11;
     } else if(index > -1){
         sourcesArray[index-1].container.y = 0 - yChange*(index);
         sourcesArray.forEach(element => {
-            positionTransform(element.container.x, element.container.y +yChange, element.container, 7)
+            positionTransform(element.container.x, element.container.y +yChange, element.container, 6)
         });
         index -=1;
     } else {
@@ -342,7 +342,7 @@ function downButton(){
         var newIndex = index-8
         sourcesArray[newIndex].container.y = 0 + ((yChange) * (4-newIndex))
         sourcesArray.forEach(element => {
-            positionTransform(element.container.x, element.container.y -yChange, element.container, 7)
+            positionTransform(element.container.x, element.container.y -yChange, element.container, 6)
         });
         index = 0;
     }else if(index > 7){ 
@@ -350,7 +350,7 @@ function downButton(){
         var newIndex = index-8
         sourcesArray[newIndex].container.y = 0 + ((yChange) * (4-newIndex))
         sourcesArray.forEach(element => {
-            positionTransform(element.container.x, element.container.y -yChange, element.container, 7)
+            positionTransform(element.container.x, element.container.y -yChange, element.container, 6)
         });
         index += 1;
     } else if(index > -1){

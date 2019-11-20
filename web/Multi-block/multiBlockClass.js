@@ -1,17 +1,17 @@
 // Create an instance of the MultiBlock window
 class MultiBlock
 {
-    constructor(background_sprite_path, parent)
+    constructor(parent)
     {
         // Assign the parent
         this.parent = parent;
 
-        /* Instantiate variables (previously stored in globalVariables.js) */
+        // Instantiate variables (previously stored in globalVariables.js)
         this.MBContainer = new PIXI.Container();
         this.MBContainer.scale.x = 0.75; // This number is to make the container fit the WorkWindow
         this.MBContainer.scale.y = 0.72; // This number is to make the container fit the WorkWindow
 
-        /* This is for button selecting and pressing */
+        // This is for button selecting and pressing
         this.currentlySelectedButtonAction = null;
         this.buttonArray = [];
         this.extraIconForButtonArray = [];
@@ -43,15 +43,11 @@ class MultiBlock
         this.instructionContainer = new PIXI.Container();
         /* End of variables from globalVariables */
 
-        // Grab Background Image
-        this.texture = PIXI.Texture.fromImage(background_sprite_path, true);
-        this.texture.baseTexture.scaleMode = PIXI.SCALE_MODES.NEAREST;
-
         // Instantiate the position coordinate system
         this.positionSystem = new Position(0, 0);
 
         // Create draggable image
-        this.dragImage = new PIXI.Sprite(this.texture);
+        this.dragImage = this.parent.backgroundSprite;
         this.dragImage.interactive = true;
         this.dragImage.buttonMode = true;
         this.dragImage.anchor.set(0, 0);
@@ -405,8 +401,9 @@ class MultiBlock
         this.instructionContainer.visible = true;
     }
 
-    buttonBool(bool)
+    UIBool(bool)
     {
         this.buttonContainer.visible = bool;
+        this.iconContainer.visible = bool;
     }
 }

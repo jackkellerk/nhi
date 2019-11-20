@@ -47,8 +47,8 @@ moveIcon.alpha = 1;
 
 // create a new texture from image
 // set background (default image)
-let bg_texture = new PIXI.Texture.from('./Images/lowmag_test.jpg');
-let bg_sprite = new PIXI.Sprite.from(bg_texture);
+// let bg_texture = new PIXI.Texture.from('./Images/lowmag_test.jpg');
+// let bg_sprite = new PIXI.Sprite.from(bg_texture);
 
 // initialzie & define style of guideText
 const LMSIstyle = new PIXI.TextStyle({

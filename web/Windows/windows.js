@@ -354,9 +354,9 @@ function startWindows(){
 
   window1.tool1.interactive = true;
   window1.tool1.on('pointerdown', function(){
-    //window1.multiBlockObject.buttonBool(false);
-    //window1.container.addChild(window1.ZoomContainer);
-    //window1.ZoomContainer.mask = window1.windowRect;
+    window1.clearWindow(window1);
+    window1.multiBlockObject.UIBool(true); // Enable Multi-Block UI
+    window1.spectrumObject.UIBool(false); // Disable Multispectrum
     window1.tool1.x += 5;
   });
 
@@ -364,8 +364,8 @@ function startWindows(){
   window1.tool2.interactive = true;
   window1.tool2.on('pointerdown', function(){
     window1.clearWindow(window1);
-    window1.container.addChild(window1.MScontainer);
-    window1.MScontainer.mask = window1.windowRect;
+    window1.multiBlockObject.UIBool(false); // Disable Multi-Block UI
+    window1.spectrumObject.UIBool(true); // Enable Multispectrum
     window1.tool2.x += 5;
   });
   

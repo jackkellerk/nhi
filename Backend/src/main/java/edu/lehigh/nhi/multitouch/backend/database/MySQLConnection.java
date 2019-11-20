@@ -1,6 +1,7 @@
 package edu.lehigh.nhi.multitouch.backend.database;
 
 import java.sql.*;
+import org.apache.commons.dbcp2.BasicDataSource;
 
 import edu.lehigh.nhi.multitouch.backend.App;
 
@@ -14,18 +15,27 @@ public class MySQLConnection {
     private static final String SQL_URL = "jdbc:mysql://remotemysql.com:3306/1Iz28Ynucw?autoReconnect=true";
     private static final String SQL_USERNAME = "1Iz28Ynucw";
     private static final String SQL_PASSWORD = "nUAiAivff5";
-    private static final String NHITEST_SQL_URL = "jdbc:mariadb://127.0.0.1:3306/nhi?autoReconnect=true";
+    private static final String NHITEST_SQL_URL = "jdbc:mariadb://127.0.0.1:3306/nhi";
     private static final String NHITEST_SQL_USERNAME = "root";
     private static MySQLConnection INSTANCE = null;
     private Connection mConnection;
+    private static BasicDataSource bds = null;
+    private static final int CONN_POOL_SIZE = 5;
 
     private MySQLConnection() throws SQLException {
         if(App.isTestingMode){
             mConnection = DriverManager.getConnection(SQL_URL, SQL_USERNAME, SQL_PASSWORD);
         }else{
             try {
-                Class.forName("org.mariadb.jdbc.Driver");
-                mConnection = DriverManager.getConnection(NHITEST_SQL_URL, NHITEST_SQL_USERNAME, App.NHITEST_SQL_PASSWORD);
+                bds = new BasicDataSource();
+                bds.setDriverClassName("org.mariadb.jdbc.Driver");
+                bds.setUrl(NHITEST_SQL_URL);
+                bds.setUsername(NHITEST_SQL_USERNAME);
+                bds.setPassword(App.NHITEST_SQL_PASSWORD);
+                bds.setInitialSize(CONN_POOL_SIZE);
+                bds.setValidationQuery("select 1 ");
+                bds.setTestOnBorrow(true);
+                mConnection = bds.getConnection();
             }catch(Exception e){
                 e.printStackTrace();
             }

@@ -12,9 +12,9 @@ import edu.lehigh.nhi.multitouch.backend.App;
 public class MySQLConnection {
 
     // Information of the SQL Server
-    private static final String SQL_URL = "jdbc:mysql://remotemysql.com:3306/gTB4eQvrdK?autoReconnect=true";
-    private static final String SQL_USERNAME = "gTB4eQvrdK";
-    private static final String SQL_PASSWORD = "TQZBkeOVMh";
+    private static final String SQL_URL = "jdbc:mysql://remotemysql.com:3306/P6ywmr6VJF?autoReconnect=true";
+    private static final String SQL_USERNAME = "P6ywmr6VJF";
+    private static final String SQL_PASSWORD = "ZNYpshG0wU";
     private static final String NHITEST_SQL_URL = "jdbc:mariadb://127.0.0.1:3306/nhi";
     private static final String NHITEST_SQL_USERNAME = "root";
     private static MySQLConnection INSTANCE = null;

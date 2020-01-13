@@ -3,7 +3,7 @@
 class WorkWindow
 {
 
-    constructor(windowName, x=0, y=0, image, spriteOnly=false) 
+    constructor(windowName, x=0, y=0, image_src, spriteOnly=false) 
     {
         this.isOpen = true;  // to determine which one of multiple windows is in front of screen
         this.inFront = true;
@@ -13,8 +13,8 @@ class WorkWindow
         this.width = 1.3*h;
         this.height = 0.73125*h;
         this.sprite = new PIXI.Sprite();
-        if (spriteOnly) { this.sprite = new PIXI.Sprite(image); } // image is a texture
-        else { this.sprite = new PIXI.Sprite.from(image); } // "image" is a path
+        if (spriteOnly) { this.sprite = new PIXI.Sprite(image_src); } // image is a texture
+        else { this.sprite = new PIXI.Sprite.from(image_src); } // "image" is a path
 
         // initializing tool buttons as graphics
         this.tool1 = new PIXI.Graphics();
@@ -37,7 +37,7 @@ class WorkWindow
 
     }
 
-    drawWindow(fill=0xDCDCDC) {
+    drawWindow(fill, image_src) {
 
         // backdrop to tool buttons
         var a_backdrop = new PIXI.Graphics();
@@ -183,10 +183,12 @@ class WorkWindow
         work window. (see below)
         The tool buttons attached to the work window add the specified container
         to the work window container upon click/touch. */
+
+        // I'm now attempting to put all tools into one container - Jack
         
 
         // Low Spectrum Magnification Imaging
-        let myZoom = new Zoom(null, 0, 0);
+        /*let myZoom = new Zoom(null, 0, 0);
         myZoom.LMSIContainer.scale.x = myZoom.LMSIContainer.scale.y = 0.9;
         myZoom.LMSIContainer.y += 20;
         myZoom.LMSIContainer.mask = this.windowRect;
@@ -194,39 +196,33 @@ class WorkWindow
         this.ZoomContainer = myZoom.LMSIContainer;
         this.ZoomContainer.scale.x = this.ZoomContainer.scale.y = 0.9;
         this.ZoomContainer.y += 20;
-        this.ZoomContainer.mask = this.windowRect;
+        this.ZoomContainer.mask = this.windowRect;*/
 
+        // The background image to be accessed is instantiated here; To access it in the window functions, do "this.parent.backgroundSprite".
+        this.texture = PIXI.Texture.fromImage(image_src, true);
+        this.texture.baseTexture.scaleMode = PIXI.SCALE_MODES.DEFAULT;//NEAREST;
+        this.backgroundSprite = new PIXI.Sprite(this.texture);
+        this.backgroundSpriteMaterial = null;
 
+        // Create the 3D screen
+        this.threeJSPath = "Images/blank.png";
+        currentThreeJSInstance = new ThreeJS(this.threeJSPath, this);
+        this.threeJS = currentThreeJSInstance;
+        createThreeJS();
+
+        // Multi-Block Analysis (The background image is defined as this.multiBlockObject.dragImage)
+        this.multiBlockObject = new MultiBlock(this);
 
         // Multi-Spectrum Imaging
-        this.MScontainer = new PIXI.Container();
-        this.MScontainer.y += 20;
-        let mySpectrum = new Spectrum(this.MScontainer, 1.3*h-10, 0.73125*h-30, this.sprite);
-
-
-        // Multi-Block Analysis
-        if(this.windowName != "Window NEW")
-        {
-            this.MBContainer = new PIXI.Container();
-            startMultiblock();
-            MBContainer.scale.x = 0.75;
-            MBContainer.scale.y = 0.72;
-            MBContainer.mask = this.windowRect;
-            this.MBContainer.addChild(MBContainer);
-            this.container.addChild(this.MBContainer);
-        }
+        this.spectrumObject = new Spectrum(this);
         
-        /* MBContainer.scale.x = MBContainer.scale.y = 0.70;
-        MBContainer.position.x = this.xPositionWindow;
-        MBContainer.position.y = this.yPositionWindow + 20; */
-
         // Line-Intensity Analysis
-        this.LIContainer = new PIXI.Container();
+        //this.LIContainer = new PIXI.Container();
         //this.LIContainer.scale.x = this.LIContainer.scale.y = 0.97;
-        this.LIContainer.width = 1.3*h-10;
-        this.LIContainer.y += 23;
-        let myLineIntensity = new LineApplication(this.LIContainer);
-        myLineIntensity.LI_showAll();
+        //this.LIContainer.width = 1.3*h-10;
+        //this.LIContainer.y += 23;
+        //let myLineIntensity = new LineApplication(this.LIContainer);
+        //myLineIntensity.LI_showAll();
 
 
         // This is to set the position
@@ -235,26 +231,25 @@ class WorkWindow
     }
 
     clearWindow(event) {
-        this.container.removeChild(this.ZoomContainer);
+        /* this.container.removeChild(this.ZoomContainer);
         this.container.removeChild(this.MScontainer);
         this.container.removeChild(this.MBContainer);
-        this.container.removeChild(this.LIContainer);
+        this.container.removeChild(this.LIContainer); */
 
         this.tool1.x = this.xPositionWindow + this.width;
         this.tool2.x = this.xPositionWindow + this.width;
         this.tool3.x = this.xPositionWindow + this.width;
         this.tool4.x = this.xPositionWindow + this.width;
-
     }
 
 }
 
 // function to reset all buttons to original position before emitting the next tool + clearing window tools
 function clearWindow(window) {
-    window.container.removeChild(this.ZoomContainer);
+    /* window.container.removeChild(this.ZoomContainer);
     window.container.removeChild(this.MScontainer);
     this.container.removeChild(this.MBContainer);
-    window.container.removeChild(this.LIContainer);
+    window.container.removeChild(this.LIContainer); */
 
     if (window.tool1.x > window.tool2.x) { 
         window.tool1.x -= 5;

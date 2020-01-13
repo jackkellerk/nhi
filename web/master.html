@@ -85,8 +85,9 @@
         <script src="https://rawgit.com/mrdoob/three.js/master/examples/js/libs/stats.min.js"></script>
         <script src="https://rawgit.com/mrdoob/three.js/master/examples/js/renderers/Projector.js"></script>
         <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
-        <script src="ThreeJS/createScene.js"></script>
+        <!--script src="ThreeJS/createScene.js"></script-->
         <script src="ThreeJS/OBJLoader.js"></script>
+        <script src="ThreeJS/ThreeJS.js"></script>
 
     </head>
     <!--Determines whether Mouse Button is down or not using jQuery (this is for Multi-block)-->
@@ -185,8 +186,6 @@
                 {
                     // function in windows.js in Windows folder
                     startWindows();
-                    // Create a threejs canvas
-                    initThreeJS();
                 }
                 else if(currentActivity == 'NewProject')
                 {

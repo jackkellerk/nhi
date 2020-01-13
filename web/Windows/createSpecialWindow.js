@@ -211,25 +211,6 @@ class SpecialWindow{
 
 
 
-        // Multi-Spectrum Imaging
-        this.MScontainer = new PIXI.Container();
-        this.MScontainer.y += 20;
-        let mySpectrum = new Spectrum(this.MScontainer, 1.3*h-10, 0.73125*h-30, this.sprite);
-
-
-        // Multi-Block Analysis
-        /*startMultiblock();
-        MBContainer.scale.x = MBContainer.scale.y = 0.70;
-        MBContainer.position.x = this.xPositionWindow;
-        MBContainer.position.y = this.yPositionWindow + 20; */
-
-        // Line-Intensity Analysis
-        this.LIContainer = new PIXI.Container();
-        //this.LIContainer.scale.x = this.LIContainer.scale.y = 0.97;
-        this.LIContainer.width = 1.3*h-10;
-        this.LIContainer.y += 23;
-        let myLineIntensity = new LineApplication(this.LIContainer);
-        myLineIntensity.LI_showAll();
 
         this.container.position.set(0 - this.xPositionWindow, 0 - this.yPositionWindow);
 

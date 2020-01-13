@@ -331,7 +331,6 @@ function startWindows(){
 
 
   // ------------------------------------- Window 1 -----------------------------------------
-
   var window1 = new WorkWindow("Window 1", 0, 0, "Images/sinteredMetal.png");
 
   window1.container.interactive = true;
@@ -342,7 +341,7 @@ function startWindows(){
       window1.inFront = true;
       window2.inFront = false;
     }});
-  window1.drawWindow();
+  window1.drawWindow(0xDCDCDC, "Images/sinteredMetal.png");
   window1.windowBorder.interactive = true;
   window1.windowBorder.on('pointerdown', onDragStart)
     .on('pointerdown', getMousePositionBeforeWindow) // This is in Multi-block coord system
@@ -355,8 +354,9 @@ function startWindows(){
   window1.tool1.interactive = true;
   window1.tool1.on('pointerdown', function(){
     window1.clearWindow(window1);
-    window1.container.addChild(window1.ZoomContainer);
-    window1.ZoomContainer.mask = window1.windowRect;
+    window1.multiBlockObject.UIBool(true); // Enable Multi-Block UI
+    window1.spectrumObject.UIBool(false); // Disable Multispectrum
+    window1.threeJS.UIBool(false); // Disable ThreeJS
     window1.tool1.x += 5;
   });
 
@@ -364,8 +364,9 @@ function startWindows(){
   window1.tool2.interactive = true;
   window1.tool2.on('pointerdown', function(){
     window1.clearWindow(window1);
-    window1.container.addChild(window1.MScontainer);
-    window1.MScontainer.mask = window1.windowRect;
+    window1.multiBlockObject.UIBool(false); // Disable Multi-Block UI
+    window1.spectrumObject.UIBool(true); // Enable Multispectrum
+    window1.threeJS.UIBool(false); // Disable ThreeJS
     window1.tool2.x += 5;
   });
   
@@ -436,6 +437,8 @@ function startWindows(){
     app.stage.addChild(window1.container);
     window1Hex.visible = false;
   });
+
+  window1.multiBlockObject.UIBool(false); // Disable Multi-Block UI initially so that ThreeJS is infront right now
 }
 
 // menu select function. different functionality based on "hide menu" value etc. darkens bg with tingBg sprite

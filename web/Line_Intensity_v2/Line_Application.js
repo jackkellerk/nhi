@@ -147,7 +147,7 @@ LI_showAll() {
  * currently used UI elements.
  */
 LI_hideAll() {
-    this.LI_state = "nuetral";
+    this.LI_state = "neutral";
 
     this.LI_clearUp();
 

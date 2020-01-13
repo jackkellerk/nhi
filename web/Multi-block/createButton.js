@@ -14,7 +14,7 @@ var extraIconForButtonArray = [];
  * This makes sure that your button is pressed, and not another button is pressed
  * If you want to see some examples, look at the functions below. If you have any other questions, ask Jack Kellerk.
 */
-function RectButton(x_position, y_position, height, width, action)
+function RectButtonn(x_position, y_position, height, width, action)
 {
     var graphics = new PIXI.Graphics();
     graphics.beginFill(0xFFFFFF, 1); // Color and opacity

@@ -37,7 +37,7 @@ function updateMousePositionWindow(event)
     deltaXWindow = initialMouseXWindow - mouseData.x;
     deltaYWindow = initialMouseYWindow - mouseData.y;
 
-    console.log("xPosition: " + (xPositionWindow + deltaXWindow));
+    //console.log("xPosition: " + (xPositionWindow + deltaXWindow));
     /* this stops the canvas from clipping <= Update this for clipping for the windows later
     if(xPosition + deltaX <= 0)
     {

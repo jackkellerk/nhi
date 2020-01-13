@@ -22,11 +22,6 @@ class Statements {
                     .prepareStatement("select uid from user_project where uid = ? and pid = ?");
             getPidByWid = mMySQLConnection.prepareStatement("select pid from window_t where wid = ?");
         }
-        
-        protected boolean selectLastInsertion(){
-            selectLastInsertion = mMySQLConnection.prepareStatement("select last_insert_id()");
-        
-        }
     }
 
     protected class Project {

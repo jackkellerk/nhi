@@ -331,7 +331,6 @@ function startWindows(){
 
 
   // ------------------------------------- Window 1 -----------------------------------------
-
   var window1 = new WorkWindow("Window 1", 0, 0, "Images/sinteredMetal.png");
 
   window1.container.interactive = true;
@@ -357,6 +356,7 @@ function startWindows(){
     window1.clearWindow(window1);
     window1.multiBlockObject.UIBool(true); // Enable Multi-Block UI
     window1.spectrumObject.UIBool(false); // Disable Multispectrum
+    window1.threeJS.UIBool(false); // Disable ThreeJS
     window1.tool1.x += 5;
   });
 
@@ -366,6 +366,7 @@ function startWindows(){
     window1.clearWindow(window1);
     window1.multiBlockObject.UIBool(false); // Disable Multi-Block UI
     window1.spectrumObject.UIBool(true); // Enable Multispectrum
+    window1.threeJS.UIBool(false); // Disable ThreeJS
     window1.tool2.x += 5;
   });
   
@@ -436,6 +437,8 @@ function startWindows(){
     app.stage.addChild(window1.container);
     window1Hex.visible = false;
   });
+
+  window1.multiBlockObject.UIBool(false); // Disable Multi-Block UI initially so that ThreeJS is infront right now
 }
 
 // menu select function. different functionality based on "hide menu" value etc. darkens bg with tingBg sprite

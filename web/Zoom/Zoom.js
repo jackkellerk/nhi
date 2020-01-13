@@ -159,7 +159,7 @@ class Zoom {
         }
 
         // add background image to viewport
-        this.viewport.addChild(this.zoom_bg_sprite);
+        //this.viewport.addChild(this.zoom_bg_sprite);
         
         // draw rectangle box to put buttons
         this.buttonGraphics.beginFill(0xFFFFFF);

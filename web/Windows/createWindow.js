@@ -200,11 +200,17 @@ class WorkWindow
 
         // The background image to be accessed is instantiated here; To access it in the window functions, do "this.parent.backgroundSprite".
         this.texture = PIXI.Texture.fromImage(image_src, true);
-        this.texture.baseTexture.scaleMode = PIXI.SCALE_MODES.NEAREST;
+        this.texture.baseTexture.scaleMode = PIXI.SCALE_MODES.DEFAULT;//NEAREST;
         this.backgroundSprite = new PIXI.Sprite(this.texture);
+        this.backgroundSpriteMaterial = null;
+
+        // Create the 3D screen
+        this.threeJSPath = "Images/blank.png";
+        currentThreeJSInstance = new ThreeJS(this.threeJSPath, this);
+        this.threeJS = currentThreeJSInstance;
+        createThreeJS();
 
         // Multi-Block Analysis (The background image is defined as this.multiBlockObject.dragImage)
-        this.currentlySelectedButtonAction = "null";
         this.multiBlockObject = new MultiBlock(this);
 
         // Multi-Spectrum Imaging

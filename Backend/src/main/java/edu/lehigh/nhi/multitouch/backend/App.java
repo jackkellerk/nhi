@@ -1,6 +1,5 @@
 package edu.lehigh.nhi.multitouch.backend;
 
-import java.io.Console;
 import java.sql.SQLException;
 import java.util.HashMap;
 

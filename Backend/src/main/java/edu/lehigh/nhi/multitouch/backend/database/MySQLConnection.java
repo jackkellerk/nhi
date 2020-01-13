@@ -12,9 +12,9 @@ import edu.lehigh.nhi.multitouch.backend.App;
 public class MySQLConnection {
 
     // Information of the SQL Server
-    private static final String SQL_URL = "jdbc:mysql://remotemysql.com:3306/1Iz28Ynucw?autoReconnect=true";
-    private static final String SQL_USERNAME = "1Iz28Ynucw";
-    private static final String SQL_PASSWORD = "nUAiAivff5";
+    private static final String SQL_URL = "jdbc:mysql://remotemysql.com:3306/gTB4eQvrdK?autoReconnect=true";
+    private static final String SQL_USERNAME = "gTB4eQvrdK";
+    private static final String SQL_PASSWORD = "TQZBkeOVMh";
     private static final String NHITEST_SQL_URL = "jdbc:mariadb://127.0.0.1:3306/nhi";
     private static final String NHITEST_SQL_USERNAME = "root";
     private static MySQLConnection INSTANCE = null;
@@ -34,6 +34,7 @@ public class MySQLConnection {
                 bds.setPassword(App.NHITEST_SQL_PASSWORD);
                 bds.setInitialSize(CONN_POOL_SIZE);
                 bds.setValidationQuery("select 1 ");
+                bds.setTestWhileIdle(true);
                 bds.setTestOnBorrow(true);
                 mConnection = bds.getConnection();
             }catch(Exception e){

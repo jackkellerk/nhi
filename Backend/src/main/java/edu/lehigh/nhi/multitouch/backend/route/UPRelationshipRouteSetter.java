@@ -10,10 +10,9 @@ import edu.lehigh.nhi.multitouch.backend.StructuredResponse;
 import edu.lehigh.nhi.multitouch.backend.ErrorHandler;
 
 
-
-/**
- * Static class to setup window related routes. Such as looking up/ changing the
- * window_t table, or routes related to tools that are used inside windows.
+/***
+ * This class is used to add additional users to a project. The relationship of creator and its project is added
+ * in ProjectManager.createProject()
  */
 public final class UPRelationshipRouteSetter {
     private UPRelationshipRouteSetter() {
@@ -53,9 +52,7 @@ public final class UPRelationshipRouteSetter {
                     if (!db.checkProjectOwnership(uid, pid)) {
                         return StructuredResponse.getErrorResponse(ErrorHandler.PRIVILAGE.NO_RIGHT_TO_ACCESS_PROJECT);
                     }
-                    return RouteSetter.preprocessJSONValueGet(request, response,
-                        new String[] { "email"},
-                        new Type[] { Type.STRING }, (vals) -> {
+                    return RouteSetter.preprocessJSONValueGet(request, response, new String[] { "email"}, new Type[] { Type.STRING }, (vals) -> {
                             String email = (String) vals[0];
                             int other_uid = db.user.getUidByEmail(email);
                         if(other_uid < 1){

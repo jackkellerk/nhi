@@ -20,34 +20,37 @@ public class WindowManager {
     private final Gson mGson;
     private final DatabaseManager mManager;
     private final Statements mStatements;
-    private final PreparedStatement mSelectWindowByWidPS, mInsertWindowPS, mUpdateWindowPositionPS,
-            mDeleteWindowByWidPS, mUpdateImagePositionPS, mUpdateMinimizedPS;
+    private final PreparedStatement mSelectWindowByWidPS, mCreateWindowPS, mUpdateWindowPositionPS,
+            mDeleteWindowByWidPS, mUpdateImagePositionPS, mUpdateMinimizedPS, mUpdateToolsPS;
 
     /** Window structure class being traslated into Json by Gson. */
     @SuppressWarnings("unused")
     private class Window {
         int wid;
-        int iid;
-        int pid;
         String thumbnail;
+        int iid;
         Square image_box;
+        int pid;
         Square window_box;
         Date date_creation;
         boolean minimized;
+        int spectrum_color;
 
 
         Window() {
 
         }
 
-        Window(int wid, int iid, int pid, String thumbnail, Date date_creation, Square image_box, Square window_box, boolean minimized) {
+        Window(int wid,  String thumbnail, int iid, Square image_box, int pid, Square window_box, Date date_creation, boolean minimized, int spectrum_color) {
             this.wid = wid;
-            this.iid = iid;
-            this.pid = pid;
             this.thumbnail = thumbnail;
+            this.iid = iid;
             this.image_box = image_box;
+            this.pid = pid;
             this.window_box = window_box;
+            this.date_creation = date_creation;
             this.minimized = minimized;
+            this.spectrum_color = spectrum_color;
         }
     }
 
@@ -56,11 +59,12 @@ public class WindowManager {
         mGson = new Gson();
         mStatements = Statements.getInstance();
         mSelectWindowByWidPS = mStatements.window.selectWindowByWid;
-        mInsertWindowPS = mStatements.window.insertWindow;
+        mCreateWindowPS = mStatements.window.createWindow;
         mUpdateWindowPositionPS = mStatements.window.updateWindowPosition;
         mUpdateImagePositionPS = mStatements.window.updateImagePosition;
-        mDeleteWindowByWidPS = mStatements.window.deleteWindowByWid;
         mUpdateMinimizedPS = mStatements.window.updateMinimized;
+        mUpdateToolsPS = mStatements.window.updateTools;
+        mDeleteWindowByWidPS = mStatements.window.deleteWindowByWid;
     }
 
     public JSONObject getWindow(int wid) throws JSONException, SQLException {
@@ -68,12 +72,17 @@ public class WindowManager {
         ResultSet rs = mSelectWindowByWidPS.executeQuery();
         JSONObject retval = new JSONObject();
         if (rs.next()) {
-            Window window = new Window(rs.getInt("wid"), rs.getInt("iid"), rs.getInt("pid"), rs.getString("thumbnail"),
+            Window window = new Window(
+                    rs.getInt("wid"),
+                    rs.getString("thumbnail"),
+                    rs.getInt("iid"),
+                    new Square(rs.getFloat("img_pos_x"), rs.getFloat("img_pos_y"), rs.getFloat("img_width"), rs.getFloat("img_height")),
+                    rs.getInt("pid"),
+                    new Square(rs.getFloat("canvas_pos_x"), rs.getFloat("canvas_pos_y"), rs.getFloat("canvas_width"), rs.getFloat("canvas_height")),
                     rs.getDate("date_creation"),
-                    new Square(rs.getFloat("img_pos_x"), rs.getFloat("img_pos_y"), rs.getFloat("img_width"),
-                            rs.getFloat("img_height")),
-                    new Square(rs.getFloat("canvas_pos_x"), rs.getFloat("canvas_pos_y"), rs.getFloat("canvas_width"),
-                            rs.getFloat("canvas_height")), rs.getBoolean("minimized"));
+                    rs.getBoolean("minimized"),
+                    rs.getInt("spectrum_color")
+            );
             retval = new JSONObject(mGson.toJson(window));
         }
         return retval;
@@ -101,14 +110,25 @@ public class WindowManager {
         return retval;
     }
 
-    public int updateMinimized(boolean minimized) throws SQLException {
+    public int updateMinimized(int wid, boolean minimized) throws SQLException {
         mUpdateMinimizedPS.setBoolean(1, minimized);
+        mUpdateMinimizedPS.setInt(2, wid);
         int retval = mUpdateMinimizedPS.executeUpdate();
         mUpdateMinimizedPS.close();
         return retval;
     }
+    
+    public int updateTools(int wid, int spectrum_color) throws SQLException {
+        mUpdateToolsPS.setInt(1, spectrum_color);
+        mUpdateToolsPS.setInt(2, wid);
+        int retval = mUpdateToolsPS.executeUpdate();
+        mUpdateToolsPS.close();
+        return retval;
+    }
 
-    public int insertWindow(int pid, int iid, Square image_box, Square window_box, boolean minimized) throws SQLException {
+    /** TODO: createWindow with no parameters, only default values? Set default values of columns in database,
+     ** and call this function when frontend's create window button is clicked, then update everything when "save and exit" */
+    public int createWindow(int pid, int iid, Square image_box, Square window_box, boolean minimized) throws SQLException {
         Window window = new Window();
         window.pid = pid;
         window.iid = iid;
@@ -119,19 +139,20 @@ public class WindowManager {
         // window_t(iid, pid, img_pos_x, img_pos_y,img_width, img_height, "+
         // "canvas_pos_x, canvas_pos_y, canvas_width, canvas_height, date_creation)" +
         // "values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-        mInsertWindowPS.setInt(1, iid);
-        mInsertWindowPS.setInt(2, pid);
-        mInsertWindowPS.setFloat(3, image_box.pos_x);
-        mInsertWindowPS.setFloat(4, image_box.pos_y);
-        mInsertWindowPS.setFloat(5, image_box.width);
-        mInsertWindowPS.setFloat(6, image_box.height);
-        mInsertWindowPS.setFloat(7, window_box.pos_x);
-        mInsertWindowPS.setFloat(8, window_box.pos_y);
-        mInsertWindowPS.setFloat(9, window_box.width);
-        mInsertWindowPS.setFloat(10, window_box.height);
-        mInsertWindowPS.setTimestamp(11, DatabaseManager.convertDateToTimestamp(new Date()));
-        mInsertWindowPS.setBoolean(12, minimized);
-        return mInsertWindowPS.executeUpdate();
+        mCreateWindowPS.setString(1, "thumbnail: TODO");
+        mCreateWindowPS.setInt(1, iid);
+        mCreateWindowPS.setInt(2, pid);
+        mCreateWindowPS.setFloat(3, image_box.pos_x);
+        mCreateWindowPS.setFloat(4, image_box.pos_y);
+        mCreateWindowPS.setFloat(5, image_box.width);
+        mCreateWindowPS.setFloat(6, image_box.height);
+        mCreateWindowPS.setFloat(7, window_box.pos_x);
+        mCreateWindowPS.setFloat(8, window_box.pos_y);
+        mCreateWindowPS.setFloat(9, window_box.width);
+        mCreateWindowPS.setFloat(10, window_box.height);
+        mCreateWindowPS.setTimestamp(11, DatabaseManager.convertDateToTimestamp(new Date()));
+        mCreateWindowPS.setBoolean(12, minimized);
+        return mCreateWindowPS.executeUpdate();
     }
 
     public int deleteWindow(int wid) throws JSONException, SQLException {

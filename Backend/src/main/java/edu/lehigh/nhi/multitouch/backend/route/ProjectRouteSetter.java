@@ -63,7 +63,6 @@ public final class ProjectRouteSetter {
         // TODO: Not available now. update the statement to be a procedure call after
         // procedure privilage is granted.
         RouteSetter.setRoute(RequestType.POST, "/project/create", (request, response) -> {
-
             return RouteSetter.preprocessSessionCheck(request, response, encryption, (uid, sessionkey) -> {
                 return RouteSetter.preprocessJSONValueGet(request, response,
                 new String[] { "name", "canvas_width", "canvas_height", "properties", "institution", "sources" },
@@ -94,7 +93,7 @@ public final class ProjectRouteSetter {
         });
 
 
-        // update projects.
+        // update a project.
         RouteSetter.setRoute(RequestType.PUT, "/p/:pid/update", (request, response) -> {
             return RouteSetter.preprocessSessionCheck(request, response, encryption, (uid, sessionKey) -> {
                 return RouteSetter.preprocessPathParam(request, response, new String[] { "pid" }, (params) -> {
@@ -103,8 +102,8 @@ public final class ProjectRouteSetter {
                         return StructuredResponse.getErrorResponse(ErrorHandler.PRIVILAGE.NO_RIGHT_TO_ACCESS_PROJECT);
                     }
                     return RouteSetter.preprocessJSONValueGet(request, response,
-                            new String[] { "name", "thumbnail", "width", "height", "properties", "institution" },
-                            new Type[] { Type.STRING, Type.STRING, Type.FLOAT, Type.FLOAT, Type.JSONOBJ, Type.STRING }, (vals) -> {
+                            new String[] { "name", "thumbnail", "width", "height", "properties", "institution", "spectrum_color" },
+                            new Type[] { Type.STRING, Type.STRING, Type.FLOAT, Type.FLOAT, Type.JSONOBJ, Type.STRING, Type.INT }, (vals) -> {
                             String name = (String) vals[0];
                             String thumbnail = (String) vals[1];
                             float width = (float) vals[2];

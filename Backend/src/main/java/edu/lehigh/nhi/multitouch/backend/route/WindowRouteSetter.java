@@ -28,6 +28,7 @@ public final class WindowRouteSetter {
          */
 
         // create new window of a project.
+        // TODO: need a create window button in front end, and set down the procedures of creating and saving window information
         RouteSetter.setRoute(RequestType.POST, "/p/:pid/new_window", (request, response) -> {
             return RouteSetter.preprocessSessionCheck(request, response, encryption, (uid, sessionKey) -> {
                 return RouteSetter.preprocessPathParam(request, response, new String[] { "pid" }, (params) -> {
@@ -60,7 +61,7 @@ public final class WindowRouteSetter {
                                             "Failed parsing 'window_box'.");
                                 }
 
-                                if (db.window.insertWindow(pid, iid, imageBox, windowBox,false) < 1)
+                                if (db.window.createWindow(pid, iid, imageBox, windowBox,false) < 1)
                                     return StructuredResponse.getErrorResponse(
                                             ErrorHandler.UNKOWN.INSERTION_NO_UPDATE_UNKNOWN,
                                             "Failed insert into table window_t. ");
@@ -85,7 +86,7 @@ public final class WindowRouteSetter {
                             new Type[] { Type.INT }, (vals) -> {
                                 int iid = (int) vals[0];
                                 Square imageBox = Square.DEFAULT_IMAGE, windowBox = Square.DEFAULT_WINDOW;
-                                if (db.window.insertWindow(pid, iid, imageBox, windowBox,false) < 1)
+                                if (db.window.createWindow(pid, iid, imageBox, windowBox,false) < 1)
                                     return StructuredResponse.getErrorResponse(
                                             ErrorHandler.UNKOWN.INSERTION_NO_UPDATE_UNKNOWN,
                                             "Failed insert into table window_t. ");
@@ -101,6 +102,8 @@ public final class WindowRouteSetter {
             });
         });
 
+        // TODO: when and how window information is updated? Upon the click of "save and exit", or upon every
+        // TODO: interaction with the window?
         // update the position and size of the window.
         RouteSetter.setRoute(RequestType.PUT, "/w/:wid/update_pos", (request, response) -> {
             return RouteSetter.preprocessSessionCheck(request, response, encryption, (uid, sessionKey) -> {
@@ -149,7 +152,7 @@ public final class WindowRouteSetter {
             });
         });
 
-        // update the posion of image.
+        // update the minimized status of window.
         RouteSetter.setRoute(RequestType.PUT, "/w/:wid/update_min", (request, response) -> {
             return RouteSetter.preprocessSessionCheck(request, response, encryption, (uid, sessionKey) -> {
                 return RouteSetter.preprocessPathParam(request, response, new String[] { "wid" }, (params) -> {
@@ -161,11 +164,33 @@ public final class WindowRouteSetter {
                             new String[] { "minimized"},
                             new Type[] { Type.BOOL}, (vals) -> {
                             boolean min_value = (boolean) vals[0];
-                            int num_rows_updated = db.window.updateMinimized(min_value);
+                            int num_rows_updated = db.window.updateMinimized(wid, min_value);
                             JSONObject retval = new JSONObject();
                             retval.put("num_rows_updated", num_rows_updated);
                             return new StructuredResponse(retval).toJson().toString();
                     });
+                });
+            });
+        });
+        
+        // TODO: add more tools information to be remembered
+        // update the minimized status of window.
+        RouteSetter.setRoute(RequestType.PUT, "/w/:wid/update_tools", (request, response) -> {
+            return RouteSetter.preprocessSessionCheck(request, response, encryption, (uid, sessionKey) -> {
+                return RouteSetter.preprocessPathParam(request, response, new String[] { "wid" }, (params) -> {
+                    int wid = (int)params[0];
+                    if (!db.checkWindowOwnership(uid, wid)) {
+                        return StructuredResponse.getErrorResponse(ErrorHandler.PRIVILAGE.NO_RIGHT_TO_ACCESS_PROJECT);
+                    }
+                    return RouteSetter.preprocessJSONValueGet(request, response,
+                            new String[] { "spectrum_color"},
+                            new Type[] { Type.INT}, (vals) -> {
+                                int spectrum_color = (int) vals[0];
+                                int num_rows_updated = db.window.updateTools(wid, spectrum_color);
+                                JSONObject retval = new JSONObject();
+                                retval.put("num_rows_updated", num_rows_updated);
+                                return new StructuredResponse(retval).toJson().toString();
+                            });
                 });
             });
         });

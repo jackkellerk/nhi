@@ -11,6 +11,7 @@ class Statements {
     protected User user;
     protected Source source;
     protected UPRelationship uprelationship;
+    protected PWRelationship pwrelationship;
     protected ProjectSource projectSource;
 
     protected class Common {
@@ -42,21 +43,22 @@ class Statements {
     }
 
     protected class Window {
-        protected final PreparedStatement selectWindowByPid, selectWindowByWid, insertWindow, updateWindowPosition,
-                updateImagePosition, updateMinimized, deleteWindowByWid;
+        protected final PreparedStatement selectWindowsByPid, selectWindowByWid, createWindow, updateWindowPosition,
+                updateImagePosition, updateMinimized, updateTools, deleteWindowByWid;
 
         private Window() throws SQLException {
             selectWindowByWid = mMySQLConnection.prepareStatement("select * from window_t where wid = ?");
-            insertWindow = mMySQLConnection
-                    .prepareStatement("insert into window_t(iid, pid, img_pos_x, img_pos_y, img_width, img_height, "
-                            + "canvas_pos_x, canvas_pos_y, canvas_width, canvas_height, date_creation, minimized)"
-                            + "values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-            selectWindowByPid = mMySQLConnection.prepareStatement("select * from window_t where pid = ?");
+            createWindow = mMySQLConnection
+                    .prepareStatement("insert into window_t(thumbnail, iid, img_pos_x, img_pos_y, img_width, img_height, "
+                            + "pid, canvas_pos_x, canvas_pos_y, canvas_width, canvas_height, date_creation, minimized, spectrum_color)"
+                            + "values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            selectWindowsByPid = mMySQLConnection.prepareStatement("select * from window_t where pid = ?");
             updateWindowPosition = mMySQLConnection.prepareStatement(
                     ("update window_t set canvas_pos_x = ?, canvas_pos_y = ?, canvas_width = ?, canvas_height = ? where wid = ?"));
             updateImagePosition = mMySQLConnection.prepareStatement(
                     ("update window_t set img_pos_x = ?, img_pos_y = ?, img_width = ?, img_height = ? where wid = ?"));
             updateMinimized = mMySQLConnection.prepareStatement(("update window_t set minimized = ? where wid = ?"));
+            updateTools = mMySQLConnection.prepareStatement(("update window_t set spectrum_color = ? where wid = ?"));
             deleteWindowByWid = mMySQLConnection.prepareStatement("delete from window_t where wid = ?");       
 
         }
@@ -105,6 +107,18 @@ class Statements {
 
         }
     }
+    
+    protected class PWRelationship {
+        protected final PreparedStatement insertRelationship, deleteRelationship, selectRelationshipByWid, selectRelationshipByPidWid;
+        
+        private PWRelationship() throws SQLException{
+            insertRelationship = mMySQLConnection.prepareStatement("insert into project_window (pid, wid) values (?, ?)");
+            deleteRelationship = mMySQLConnection.prepareStatement("delete from project_window where pid = ? and wid = ?");
+            selectRelationshipByWid = mMySQLConnection.prepareStatement("select * from project_window where wid = ?");
+            selectRelationshipByPidWid = mMySQLConnection.prepareStatement("select * from project_window where pid = ? and wid = ?");
+            
+        }
+    }
 
     protected class ProjectSource {
         protected final PreparedStatement insertProjectSource;
@@ -127,6 +141,7 @@ class Statements {
         window = new Window();
         source = new Source();
         uprelationship = new UPRelationship();
+        pwrelationship = new PWRelationship();
         projectSource = new ProjectSource();
     }
 

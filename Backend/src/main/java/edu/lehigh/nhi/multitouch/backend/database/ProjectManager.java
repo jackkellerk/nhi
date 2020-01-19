@@ -58,9 +58,9 @@ public class ProjectManager {
 
     public JSONObject getProject(int pid) throws SQLException {
         mSelectProjectByPidPS.setInt(1, pid);
-        mStatements.window.selectWindowByPid.setInt(1, pid);
+        mStatements.window.selectWindowsByPid.setInt(1, pid);
         ResultSet projectRS = mSelectProjectByPidPS.executeQuery();
-        ResultSet windowRS = mStatements.window.selectWindowByPid.executeQuery();
+        ResultSet windowRS = mStatements.window.selectWindowsByPid.executeQuery();
         JSONObject retval = null;
         if (projectRS.next()) {
             Project project = new Project();
@@ -121,23 +121,23 @@ public class ProjectManager {
         JSONObject newProject = createProject(uid, oldProject.getString("name") + " COPY", oldProject.getFloat("canvas_width"), oldProject.getFloat("canvas_height"), oldProject.getString("properties"), oldProject.getString("institution"));
         
         //Gathers and copies all associated windows
-        mStatements.window.selectWindowByPid.setInt(1, pid);
-        ResultSet windowRS = mStatements.window.selectWindowByPid.executeQuery();
+        mStatements.window.selectWindowsByPid.setInt(1, pid);
+        ResultSet windowRS = mStatements.window.selectWindowsByPid.executeQuery();
         while (windowRS.next()) {
-            mStatements.window.insertWindow.setInt(1, windowRS.getInt("iid"));
-            mStatements.window.insertWindow.setInt(2, newProject.getInt("pid"));
-            mStatements.window.insertWindow.setFloat(3, windowRS.getFloat("img_pos_x"));
-            mStatements.window.insertWindow.setFloat(4, windowRS.getFloat("img_pos_y"));
-            mStatements.window.insertWindow.setFloat(5, windowRS.getFloat("img_width"));
-            mStatements.window.insertWindow.setFloat(6, windowRS.getFloat("img_height"));
-            mStatements.window.insertWindow.setFloat(7, windowRS.getFloat("canvas_pos_x"));
-            mStatements.window.insertWindow.setFloat(8, windowRS.getFloat("canvas_pos_y"));
-            mStatements.window.insertWindow.setFloat(9, windowRS.getFloat("canvas_width"));
-            mStatements.window.insertWindow.setFloat(10, windowRS.getFloat("canvas_height"));
-            mStatements.window.insertWindow.setTimestamp(11, windowRS.getTimestamp("date_creation"));
-            mStatements.window.insertWindow.executeUpdate();
+            mStatements.window.createWindow.setInt(1, windowRS.getInt("iid"));
+            mStatements.window.createWindow.setInt(2, newProject.getInt("pid"));
+            mStatements.window.createWindow.setFloat(3, windowRS.getFloat("img_pos_x"));
+            mStatements.window.createWindow.setFloat(4, windowRS.getFloat("img_pos_y"));
+            mStatements.window.createWindow.setFloat(5, windowRS.getFloat("img_width"));
+            mStatements.window.createWindow.setFloat(6, windowRS.getFloat("img_height"));
+            mStatements.window.createWindow.setFloat(7, windowRS.getFloat("canvas_pos_x"));
+            mStatements.window.createWindow.setFloat(8, windowRS.getFloat("canvas_pos_y"));
+            mStatements.window.createWindow.setFloat(9, windowRS.getFloat("canvas_width"));
+            mStatements.window.createWindow.setFloat(10, windowRS.getFloat("canvas_height"));
+            mStatements.window.createWindow.setTimestamp(11, windowRS.getTimestamp("date_creation"));
+            mStatements.window.createWindow.executeUpdate();
         }
-        mStatements.window.insertWindow.close();
+        mStatements.window.createWindow.close();
         windowRS.close();
 
         return getProject(newProject.getInt("pid"));
@@ -148,8 +148,8 @@ public class ProjectManager {
         int retval = 0;
 
         //Gathers and deletes all associated windows
-        mStatements.window.selectWindowByPid.setInt(1, pid);
-        ResultSet windowRS = mStatements.window.selectWindowByPid.executeQuery();
+        mStatements.window.selectWindowsByPid.setInt(1, pid);
+        ResultSet windowRS = mStatements.window.selectWindowsByPid.executeQuery();
         while (windowRS.next()) {
             mStatements.window.deleteWindowByWid.setInt(1, windowRS.getInt("wid"));
             retval += mStatements.window.deleteWindowByWid.executeUpdate();

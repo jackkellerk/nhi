@@ -356,7 +356,8 @@ function startWindows(){
     window1.clearWindow(window1);
     window1.multiBlockObject.UIBool(true); // Enable Multi-Block UI
     window1.spectrumObject.UIBool(false); // Disable Multispectrum
-    window1.threeJS.UIBool(false); // Disable ThreeJS
+    window1.zoomObject.UIBool(false);
+    //window1.threeJS.UIBool(false); // Disable ThreeJS
     window1.tool1.x += 5;
   });
 
@@ -366,7 +367,8 @@ function startWindows(){
     window1.clearWindow(window1);
     window1.multiBlockObject.UIBool(false); // Disable Multi-Block UI
     window1.spectrumObject.UIBool(true); // Enable Multispectrum
-    window1.threeJS.UIBool(false); // Disable ThreeJS
+    window1.zoomObject.UIBool(false);
+    //window1.threeJS.UIBool(false); // Disable ThreeJS
     window1.tool2.x += 5;
   });
   
@@ -374,7 +376,10 @@ function startWindows(){
   window1.tool3.interactive = true;
   window1.tool3.on('pointerdown', function(){
     window1.clearWindow(window1);
-    window1.container.addChild(window1.MBContainer);
+    window1.multiBlockObject.UIBool(false);
+    window1.spectrumObject.UIBool(false);
+    window1.zoomObject.UIBool(true);
+    //window1.container.addChild(window1.MBContainer);
     //MBContainer.mask = window1.windowRect;
     window1.tool3.x += 5;
   });
@@ -382,8 +387,8 @@ function startWindows(){
   window1.tool4.interactive = true;
   window1.tool4.on('pointerdown', function(){
     window1.clearWindow(window1);
-    window1.container.addChild(window1.LIContainer);
-    window1.LIContainer.mask = window1.windowRect;
+    // window1.container.addChild(window1.LIContainer);
+    // window1.LIContainer.mask = window1.windowRect;
     window1.tool4.x += 5;
   });
 

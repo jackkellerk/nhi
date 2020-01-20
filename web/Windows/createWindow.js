@@ -199,23 +199,27 @@ class WorkWindow
         this.ZoomContainer.mask = this.windowRect;*/
 
         // The background image to be accessed is instantiated here; To access it in the window functions, do "this.parent.backgroundSprite".
-        this.texture = PIXI.Texture.fromImage(image_src, true);
+        this.texture = new PIXI.Texture.fromImage(image_src, true);
         this.texture.baseTexture.scaleMode = PIXI.SCALE_MODES.DEFAULT;//NEAREST;
         this.backgroundSprite = new PIXI.Sprite(this.texture);
         this.backgroundSpriteMaterial = null;
 
         // Create the 3D screen
-        this.threeJSPath = "Images/blank.png";
-        currentThreeJSInstance = new ThreeJS(this.threeJSPath, this);
-        this.threeJS = currentThreeJSInstance;
-        createThreeJS();
+        // this.threeJSPath = "Images/blank.png";
+        // currentThreeJSInstance = new ThreeJS(this.threeJSPath, this);
+        // this.threeJS = currentThreeJSInstance;
+        // createThreeJS();
 
         // Multi-Block Analysis (The background image is defined as this.multiBlockObject.dragImage)
+        //this.currentlySelectedButtonAction = "null"; //Agustin
         this.multiBlockObject = new MultiBlock(this);
 
         // Multi-Spectrum Imaging
         this.spectrumObject = new Spectrum(this);
-        
+
+        //Agustin: initiating zoom with new design flow
+        this.zoomObject = new ZoomTool(this);
+
         // Line-Intensity Analysis
         //this.LIContainer = new PIXI.Container();
         //this.LIContainer.scale.x = this.LIContainer.scale.y = 0.97;

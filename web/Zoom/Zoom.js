@@ -1,11 +1,11 @@
 'use strict';
 
-class Zoom {
+class ZoomTool {
 
-    constructor(imageSource, _wid, _pid) {
-
+    constructor(parent) {
         // set buttons
-        this.imageSource = imageSource;
+        this.zoom_bg_sprite = parent.backgroundSprite;
+        this.zoom_bg_texture = parent.texture;
         this.cancel_button = cancel;
         this.mode_button = modeSwitch;
         this.screenshot = screenshotIcon;
@@ -47,13 +47,13 @@ class Zoom {
         this.drwaing = false;
 
         // set wid & pid
-        if (_wid != null) {
-            this.wid = _wid;
-        }
-        if (_pid != null) {
-            this.pid = _pid;
-        }
-        this.cid = null;
+        // if (_wid != null) {
+        //     this.wid = _wid;
+        // }
+        // if (_pid != null) {
+        //     this.pid = _pid;
+        // }
+        // this.cid = null;
 
         // set Containers
         // containers for button, guide text, and LMSIContainer to hold everything
@@ -72,94 +72,8 @@ class Zoom {
         // set guideText
         this.guideText = new PIXI.Text('Drag, wheel and scroll the image to explore.', LMSIstyle);
 
-        console.log("AAAAAA: " + typeof(imageSource))
-        // set background
-        // load image to drag (explore) or screenshot
-        // if imageSource is null.. load default image
-        if (imageSource == null) {
-            console.log("FLAG BBBBBBBBBBBBB for string instanc in zoom")
-            this.zoom_bg_texture = bg_texture;
-            this.zoom_bg_sprite = bg_sprite;
-            this._imageOrigin_w = this.zoom_bg_sprite.width;
-            this._imageOrigin_h = this.zoom_bg_sprite.height;
-        }
-        //if imageSource is a dir to an image
-        else if (typeof(imageSource) === "string") {
-            console.log("FLAG AAAAAAAAAAAAAAAAAA for string instanc in zoom")
-            this.zoom_bg_texture = new PIXI.Texture.from(imageSource);
-            this.zoom_bg_sprite = new PIXI.Sprite(this.zoom_bg_texture);
-
-            // if(this.zoom_bg_texture.baseTexture.hasLoaded){
-                
-            // }
-            // else{
-            //    this.zoom_bg_texture.addListener("update", onTextureUpdate)
-            // }
-
-            // function onTextureUpdate(){
-            //     // this will log the correct width and height as the image has loaded
-            //     if(this.zoom_bg_sprite.width > this.zoom_bg_sprite.height){
-            //         this.zoom_bg_sprite.scale.x = (this.LMSIContainer.width / this.zoom_bg_sprite.width)
-            //         console.log("BOOOOOOOO " + this.LMSIContainer.width / this.zoom_bg_sprite.width )
-            //         this.zoom_bg_sprite.scale.y = (this.LMSIContainer.width / this.zoom_bg_sprite.width)
-            //     } else {
-            //         this.zoom_bg_sprite.scale.x = (this.LMSIContainer.height / this.zoom_bg_sprite.width)
-            //         this.zoom_bg_sprite.scale.y = (this.LMSIContainer.height / this.zoom_bg_sprite.height)
-            //     }
-            // }
-
-            // console.log("BOOOOOOOO " + this.zoom_bg_sprite.width )
-            // console.log("BOOOOOOOO " + this.zoom_bg_sprite.height )
-            // if(this.zoom_bg_sprite.width > this.zoom_bg_sprite.height){
-            //     this.zoom_bg_sprite.scale.x = (this.LMSIContainer.width / this.zoom_bg_sprite.width)
-            //     console.log("BOOOOOOOO " + this.LMSIContainer.width / this.zoom_bg_sprite.width )
-            //     this.zoom_bg_sprite.scale.y = (this.LMSIContainer.width / this.zoom_bg_sprite.width)
-            // } else {
-            //     this.zoom_bg_sprite.scale.x = (this.LMSIContainer.height / this.zoom_bg_sprite.width)
-            //     this.zoom_bg_sprite.scale.y = (this.LMSIContainer.height / this.zoom_bg_sprite.height)
-            // }
-            // get orignal width and height of the image
-            this._imageOrigin_w = imageSource.width;
-            this._imageOrigin_h = imageSource.height;
-        }
-        // if imageSource is in base64
-        else if (base64Matcher.test(imageSource)) {
-            console.log("FLAG CCCCCCCCCCCCCCCCCCCC for string instanc in zoom")
-            var tempImg = new Image();
-            this.tempImg.src = imageSource;
-
-            var tempBaseTexture = new PIXI.BaseTexture(tempImg);
-            var tempTexture = new PIXI.Texture(tempBaseTexture);
-
-            // then add to the cache
-            // TODO: use texture Cache
-            if (wid == null) {
-                this.zoom_bg_texture = PIXI.Texture.from(tempTexture);
-                this.zoom_bg_sprite = new PIXI.Sprite(this.zoom_bg_texture);
-            } else {
-                PIXI.Texture.addTextureToCache(tempTexture, "LMSI" + wid);
-
-                // to retrieve the texture it would be a case of
-                var finalBase64Sprite = PIXI.Sprite.fromImage("LMSI" + wid);
-                this.zoom_bg_texture = PIXI.Texture.from(finalBase64Sprite);
-                this.zoom_bg_sprite = new PIXI.Sprite(this.zoom_bg_texture);
-            }
-
-            // get orignal width and height of the image
-            this._imageOrigin_w = imageSource.width;
-            this._imageOrigin_h = imageSource.height;
-        }
-        // nothing match. get default image
-        else {
-            console.log("FLAG DDDDDDDDDDDDD for string instanc in zoom")
-            this.zoom_bg_texture = imageSource;
-            this.zoom_bg_sprite = new PIXI.Sprite(this.zoom_bg_texture);
-            this._imageOrigin_w = this.zoom_bg_sprite.width;
-            this._imageOrigin_h = this.zoom_bg_sprite.height;
-        }
-
         // add background image to viewport
-        //this.viewport.addChild(this.zoom_bg_sprite);
+        this.viewport.addChild(this.zoom_bg_sprite);
         
         // draw rectangle box to put buttons
         this.buttonGraphics.beginFill(0xFFFFFF);

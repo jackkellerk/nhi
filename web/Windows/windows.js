@@ -356,7 +356,7 @@ function startWindows(){
     window1.clearWindow(window1);
     window1.multiBlockObject.UIBool(true); // Enable Multi-Block UI
     window1.spectrumObject.UIBool(false); // Disable Multispectrum
-    window1.threeJS.UIBool(false); // Disable ThreeJS
+    //window1.threeJS.UIBool(false); // Disable ThreeJS
     window1.tool1.x += 5;
   });
 
@@ -366,7 +366,7 @@ function startWindows(){
     window1.clearWindow(window1);
     window1.multiBlockObject.UIBool(false); // Disable Multi-Block UI
     window1.spectrumObject.UIBool(true); // Enable Multispectrum
-    window1.threeJS.UIBool(false); // Disable ThreeJS
+    //window1.threeJS.UIBool(false); // Disable ThreeJS
     window1.tool2.x += 5;
   });
   

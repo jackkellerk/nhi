@@ -205,10 +205,10 @@ class WorkWindow
         this.backgroundSpriteMaterial = null;
 
         // Create the 3D screen
-        this.threeJSPath = "Images/blank.png";
+        /* this.threeJSPath = "Images/blank.png";
         currentThreeJSInstance = new ThreeJS(this.threeJSPath, this);
         this.threeJS = currentThreeJSInstance;
-        createThreeJS();
+        createThreeJS(); */
 
         // Multi-Block Analysis (The background image is defined as this.multiBlockObject.dragImage)
         this.multiBlockObject = new MultiBlock(this);

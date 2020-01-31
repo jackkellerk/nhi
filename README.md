@@ -1,5 +1,5 @@
 ## Contributors
-- Brian Chen (Instructor)
+- Brian Chen (Instructor) hi
 - Agustin Mendoza
 - Anna Thomas
 - Desai Xie

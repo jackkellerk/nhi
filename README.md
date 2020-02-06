@@ -7,6 +7,7 @@
 - Jack Kellerk
 - Travis Barnes
 - Xuewei Wang (Backend and Database)
+- Joss Duff
 - add yourself here
 
 ## Description

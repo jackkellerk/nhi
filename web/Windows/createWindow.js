@@ -37,7 +37,11 @@ class WorkWindow
 
     }
 
-    drawWindow(fill, image_src) {
+    drawWindow(fill, image_src, x, y) {
+
+        // in jsToBackend for demonstration purposes
+        x = examplePositionX;
+        y = examplePositionY;
 
         // backdrop to tool buttons
         var a_backdrop = new PIXI.Graphics();
@@ -226,7 +230,7 @@ class WorkWindow
 
 
         // This is to set the position
-        this.container.position.set(0 - this.xPositionWindow, 0 - this.yPositionWindow);
+        this.container.position.set(0 - this.xPositionWindow + x, 0 - this.yPositionWindow + y);
 
     }
 

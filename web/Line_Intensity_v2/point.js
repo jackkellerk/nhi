@@ -25,7 +25,7 @@ class Point {
      * @param nX the new x coordinate
      * @param nY the new y coordinate
      */
-    changeLocation(nX, nY) {
+    changeLocation(nX, nY, windowContainer) {
         this.clearImage();
         this.x = nX;
         this.y = nY;

@@ -221,6 +221,9 @@ class WorkWindow
         this.zoomObject = new ZoomTool(this);
 
         // Line-Intensity Analysis
+        this.lineObject = new LineApplication(this);
+        this.lineObject.LI_showAll();
+        this.lineObject.UIBool(false);
         //this.LIContainer = new PIXI.Container();
         //this.LIContainer.scale.x = this.LIContainer.scale.y = 0.97;
         //this.LIContainer.width = 1.3*h-10;

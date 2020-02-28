@@ -16,11 +16,11 @@ var LI_boundary_tlx = 0;
 var LI_boundary_tly = 0;
 
 const LI_mainText = new PIXI.Text("Hello", LI_style);
-const LI_backgroundImage = new PIXI.Sprite.from("Images/Picture1.png");
+const LI_backgroundImage = new PIXI.Sprite.from(" ../Images/Picture1.png");
 
 var LI_buttonCommands = [];
 const LI_draw_button = new PIXI.Sprite.
-    from("Images/line_tool_icon.png");
+    from(" ../Images/line_tool_icon.png");
 LI_draw_button.width = 50;
 LI_draw_button.height = 50;
 LI_draw_button.x = 0;
@@ -33,7 +33,7 @@ LI_buttonCommands.push(LI_draw_button);
 
 
 const LI_edit_button = new PIXI.Sprite
-    .from("Images/edit_tool_icon.png");
+    .from(" ../Images/edit_tool_icon.png");
 LI_edit_button.width = 50;
 LI_edit_button.height = 50;
 LI_edit_button.x = 50;
@@ -45,7 +45,7 @@ LI_edit_button.on("pointerupoutside", LI_buttonUpOutside);
 LI_buttonCommands.push(LI_edit_button);
 
 const LI_eraser_button = new PIXI.Sprite
-    .from("Images/eraser_icon.png");
+    .from(" ../Images/eraser_icon.png");
 LI_eraser_button.width = 50;
 LI_eraser_button.height = 50;
 LI_eraser_button.x = 100;
@@ -57,7 +57,7 @@ LI_eraser_button.on("pointerupoutside", LI_buttonUpOutside);
 LI_buttonCommands.push(LI_eraser_button);
 
 const LI_clear_button = new PIXI.Sprite
-    .from("Images/clear_all_icon.png");
+    .from(" ../Images/clear_all_icon.png");
 LI_clear_button.width = 50;
 LI_clear_button.height = 50;
 LI_clear_button.x = 150;
@@ -69,7 +69,7 @@ LI_clear_button.on("pointerupoutside", LI_buttonUpOutside);
 LI_buttonCommands.push(LI_clear_button);
 
 const LI_cancel_button = new PIXI.Sprite
-    .from("Images/cancel_icon.png");
+    .from(" ../Images/cancel_icon.png");
 LI_cancel_button.width = 50;
 LI_cancel_button.height = 50;
 LI_cancel_button.x = 0;

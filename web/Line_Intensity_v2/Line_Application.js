@@ -1,6 +1,7 @@
 class LineApplication{
-    constructor(container) {
-        this.windowContainer = container;
+    constructor(parent) {
+        this.parent = parent;
+        this.windowContainer = new PIXI.Container();;
         this.LI_lineContainer = [];
         this.LI_pointContainer = [];
 
@@ -15,12 +16,13 @@ class LineApplication{
         this.LI_boundary_tlx = 0;
         this.LI_boundary_tly = 0;
 
+        
         this.LI_mainText = new PIXI.Text("Hello", LI_style);
-        this.LI_backgroundImage = new PIXI.Sprite.from("Images/Picture1.png");
+        this.LI_backgroundImage = new PIXI.Sprite.from(" ../Images/Picture1.png");
 
         this.LI_buttonCommands = [];
         this.LI_draw_button = new PIXI.Sprite.
-            from("Images/line_tool_icon.png");
+            from(" ../Images/line_tool_icon.png");
         this.LI_draw_button.width = 50;
         this.LI_draw_button.height = 50;
         this.LI_draw_button.x = 0;
@@ -35,7 +37,7 @@ class LineApplication{
 
 
         this.LI_edit_button = new PIXI.Sprite
-            .from("Images/edit_tool_icon.png");
+            .from(" ../Images/edit_tool_icon.png");
         this.LI_edit_button.width = 50;
         this.LI_edit_button.height = 50;
         this.LI_edit_button.x = 50;
@@ -48,7 +50,7 @@ class LineApplication{
         this.LI_buttonCommands.push(this.LI_edit_button);
 
         this.LI_eraser_button = new PIXI.Sprite
-            .from("Images/eraser_icon.png");
+            .from(" ../Images/eraser_icon.png");
         this.LI_eraser_button.width = 50;
         this.LI_eraser_button.height = 50;
         this.LI_eraser_button.x = 100;
@@ -61,7 +63,7 @@ class LineApplication{
         this.LI_buttonCommands.push(this.LI_eraser_button);
 
         this.LI_clear_button = new PIXI.Sprite
-            .from("Images/clear_all_icon.png");
+            .from(" ../Images/clear_all_icon.png");
         this.LI_clear_button.width = 50;
         this.LI_clear_button.height = 50;
         this.LI_clear_button.x = 150;
@@ -74,7 +76,7 @@ class LineApplication{
         this.LI_buttonCommands.push(this.LI_clear_button);
 
         this.LI_cancel_button = new PIXI.Sprite
-            .from("Images/cancel_icon.png");
+            .from(" ../Images/cancel_icon.png");
         this.LI_cancel_button.width = 50;
         this.LI_cancel_button.height = 50;
         this.LI_cancel_button.x = 0;
@@ -93,15 +95,16 @@ class LineApplication{
         this.LI_graphs = new PIXI.Graphics();
         this.LI_graphs.buttonMode = true;
         this.LI_graphs.interactive = true;
-        this.LI_graphs
+        /*this.LI_graphs
             .on("pointerdown", LI_onDragGraphStart)
             .on("pointerup", LI_onDragGraphEnd)
             .on("pointerupoutside", LI_onDragGraphEnd)
-            .on("pointermove", LI_onDragGraphMove);
+            .on("pointermove", LI_onDragGraphMove);*/
 
         this.endPoint;
         this.lineImage;
         this.polyPts;
+        this.parnet.container.addChild(this.windowContainer);
 }
 /**
  * Show All allows use of the line intensity application by 
@@ -112,12 +115,15 @@ class LineApplication{
  */
 LI_showAll() {
     this.windowContainer.addChild(this.LI_backgroundImage);
-    this.LI_backgroundImage.width = this.windowContainer.width;
-    this.LI_backgroundImage.height = this.windowContainer.height;
+    console.log("Container width2: " + this.windowContainer.screen_width);
+    console.log("Container height2: " + this.windowContainer.screen_height);
+    this.LI_backgroundImage.width = this.windowContainer.screen_width;
+    this.LI_backgroundImage.height = this.windowContainer.screen_height;
 
     this.windowContainer.addChild(this.LI_cancel_button);
 
     var bcLength = this.LI_buttonCommands.length;
+    console.log("buttons: " + bcLength);
     for (var i = 0; i < bcLength; i++) {
         this.windowContainer.addChild(this.LI_buttonCommands[i]);
         this.LI_buttonCommands[i].alpha = 1;
@@ -127,14 +133,15 @@ LI_showAll() {
 
     this.windowContainer.addChild(this.LI_mainText);
     this.LI_mainText.alpha = 1;
-    this.LI_mainText.x = this.windowContainer.width / 2 - 250;
+    this.LI_mainText.x = this.windowContainer.screen_width / 2;
     this.LI_mainText.y = 0;
+    console.log("Main text: " + this.LI_mainText.text);
 
     this.windowContainer.addChild(this.LI_graphics);
     this.windowContainer.addChild(this.LI_graphs);
 
-    this.LI_boundary_tlx = this.windowContainer.width / 2;
-    this.LI_boundary_tly = this.windowContainer.height / 2;
+    this.LI_boundary_tlx = this.windowContainer.screen_width / 2;
+    this.LI_boundary_tly = this.windowContainer.screen_height / 2;
     this.LI_backgroundImage.interactive = true;
     this.LI_backgroundImage.on("pointerdown", this.doDrawPoint);
     this.LI_backgroundImage.name = this;
@@ -234,10 +241,10 @@ LI_drawPoint(event) {
        lineImage.buttonMode = true;
        lineImage.data = this;
        lineImage
-           .on("pointerdown", this.doLineSelect);
-           /*.on("pointerup", this.LI_onDragLineEnd)
-           .on("pointerupoutside", this.LI_onDragLineEnd)
-           .on("pointermove", this.LI_onDragLineMove);*/
+           .on("pointerdown", this.doLineSelect)
+           .on("pointerup", this.doDragLineEnd)
+           .on("pointerupoutside", this.doDragLineEnd)
+           .on("pointermove", this.doDragLineMove);
        //Creates the hit area of said line graphic
        if (this.LI_currentStart.x > this.endPoint.x) {
            this.polyPts = [this.LI_currentStart.x - 5, this.LI_currentStart.y - 5, this.LI_currentStart.x + 5, this.LI_currentStart.y + 5, this.endPoint.x + 5, this.endPoint.y + 5, this.endPoint.x - 5, this.endPoint.y - 5];
@@ -310,7 +317,7 @@ LI_endDraw() {
     this.LI_showButtons();
     //  points = [0, 0];
     this.LI_currentStart = -1;
-    setMainText(LI_mainText, 0, LI_lineContainer);
+    setMainText(this.LI_mainText, 0, this.LI_lineContainer);
     this.windowContainer.interactive = false;
 }
 
@@ -365,6 +372,7 @@ doClearUp(){
 LI_clearUp() {
    // 
    var lcLength = this.LI_lineContainer.length;
+   console.log("Length of Line Container Before: " + this.LI_lineContainer.length);
     for (var i = 0; i < lcLength; i++) {
         var line = this.LI_lineContainer[i];
         if (line == this.LI_currentLine) {
@@ -377,10 +385,11 @@ LI_clearUp() {
             this.LI_currentLine = -1;
         }
         line.removeLine();
-        LI_erasePoint(line.startPoint);
-        LI_erasePoint(line.endPoint);
+        this.LI_erasePoint(line.startPoint);
+        this.LI_erasePoint(line.endPoint);
     }
     this.LI_lineContainer = [];
+    console.log("Length of Line Container After: " + this.LI_lineContainer.length);
     setMainText(this.LI_mainText, 0, this.LI_lineContainer);
     //  }
 }
@@ -391,13 +400,14 @@ doEraseUp(){
 }
 
 LI_eraseUp() {
-    setMainText(LI_mainText, 3, LI_lineContainer);
+    setMainText(this.LI_mainText, 3, this.LI_lineContainer);
     this.LI_hideButtons();
     this.LI_state = "erase";
 }
 
 LI_eraseLine(line) {
     var index = line.name;
+    console.log("Deleted Line: " + index);
     this.LI_lineContainer.splice(index, 1);
     for (var i = 0; i < this.LI_lineContainer.length; i++) {
         this.LI_lineContainer[i].name = i;
@@ -494,17 +504,17 @@ LI_onDragPointMove(image) {
             if (newPosition.x < 0) {
                 changeX = 0;
             }
-            else if (newPosition.x >= this.windowContainer.width) {
-                changeX = this.windowContainer.width;
+            else if (newPosition.x >= this.windowContainer.screen_width) {
+                changeX = this.windowContainer.screen_width;
             }
 
             if (newPosition.y < 0) {
                 changeY = 0;
             }
-            else if (newPosition.y >= this.windowContainer.height) {
-                changeY = this.windowContainer.height;
+            else if (newPosition.y >= this.windowContainer.screen_height) {
+                changeY = this.windowContainer.screen_height;
             }
-            this.LI_pointContainer[image.name].changeLocation(changeX, changeY);
+            this.LI_pointContainer[image.name].changeLocation(changeX, changeY, this.windowContainer);
             this.LI_pointContainer[image.name].owner.clearImage();
             this.LI_pointContainer[image.name].owner.resetImage(this.windowContainer);
             this.LI_pointContainer[image.name].resetImage(this.windowContainer);
@@ -521,10 +531,12 @@ LI_onDragPointMove(image) {
 
 
 doLineSelect(event){
+    console.log("Do Line Select");
     this.data.LI_lineSelect(event,this);
 }
 
 LI_lineSelect(event,lineImage) {
+    console.log("LI Line Select");
     if (this.LI_state == "neutral") {   //Will display the information of said line
         this.LI_currentLine = this.LI_lineContainer[lineImage.name];
         createGraph(this.LI_graphs, this.LI_currentLine, this.LI_boundary_tlx,
@@ -555,6 +567,84 @@ LI_lineSelect(event,lineImage) {
         lineImage.dragy = (event.data.global.y - this.windowContainer.y)/this.windowContainer.scale.y;
     }
 }
+
+doDragLineEnd(event){
+    console.log("Do Drag Line End");
+    this.data.LI_onDragLineEnd(event,this);
+}
+//Drag line
+LI_onDragLineEnd(event, lineImage) {
+    if (this.LI_state == "edit") {
+        lineImage.alpha = 1;
+        this.LI_lineContainer[lineImage.name].clearImage();
+        this.LI_lineContainer[lineImage.name].resetImage(this.windowContainer);
+        this.LI_lineContainer[lineImage.name].startPoint.image.alpha = 1;
+        this.LI_lineContainer[lineImage.name].startPoint.resetImage(this.windowContainer);
+        this.LI_lineContainer[lineImage.name].endPoint.image.alpha = 1;
+        this.LI_lineContainer[lineImage.name].endPoint.resetImage(this.windowContainer);
+        this.LI_lineContainer[lineImage.name].displayDetails(this.windowContainer);
+        lineImage.dragging = false;
+        updateGraph(this.LI_graphs, this.LI_currentLine, this.LI_boundary_tlx, this.LI_boundary_tly);
+        this.windowContainer.addChild(this.LI_graphs);
+
+        lineImage.eventData = null;
+    }
+}
+
+doDragLineMove(event){
+    console.log("Do Drag Line Move");
+    this.data.LI_onDragLineMove(event,this);
+}
+LI_onDragLineMove(event, lineImage) {
+    if (this.LI_state == "edit") {
+        if (lineImage.dragging) {
+            const newPosition = lineImage.eventData.getLocalPosition(lineImage.parent);
+            var move = true;
+            var changeX = newPosition.x - lineImage.dragx;
+            var changeY = newPosition.y - lineImage.dragy;
+
+            if (this.LI_lineContainer[lineImage.name].startPoint.x + changeX < 0) {
+                changeX = 0 - this.LI_lineContainer[lineImage.name].startPoint.x;
+            }
+            else if (this.LI_lineContainer[lineImage.name].endPoint.x + changeX < 0) {
+                changeX = 0 - this.LI_lineContainer[lineImage.name].endPoint.x;
+            }
+            else if (this.LI_lineContainer[lineImage.name].startPoint.x + changeX >= app.screen.width) {
+                changeX = app.screen.width - (this.LI_lineContainer[lineImage.name].startPoint.x);
+            }
+            else if (this.LI_lineContainer[lineImage.name].endPoint.x + changeX >= app.screen.width) {
+                changeX = app.screen.width - (this.LI_lineContainer[lineImage.name].endPoint.x);
+            }
+
+            if (this.LI_lineContainer[lineImage.name].startPoint.y + changeY < 0) {
+                changeY = 0 - this.LI_lineContainer[lineImage.name].startPoint.y;
+            }
+            else if (this.LI_lineContainer[lineImage.name].endPoint.Y + changeY < 0) {
+                changeY = 0 - this.LI_lineContainer[lineImage.name].endPoint.Y;
+
+            }
+            else if (this.LI_lineContainer[lineImage.name].startPoint.y + changeY >= app.screen.height) {
+                changeY = app.screen.height - (this.LI_lineContainer[lineImage.name].startPoint.y);
+
+            }
+            else if (this.LI_lineContainer[lineImage.name].endPoint.y + changeY >= app.screen.height) {
+                changeY = app.screen.height - (this.LI_lineContainer[lineImage.name].endPoint.y);
+            }
+
+            if (move) {
+                this.LI_lineContainer[lineImage.name].startPoint.changeLocation(this.LI_lineContainer[lineImage.name].startPoint.x + changeX, this.LI_lineContainer[lineImage.name].startPoint.y + changeY, this.windowContainer);
+                this.LI_lineContainer[lineImage.name].endPoint.changeLocation(this.LI_lineContainer[lineImage.name].endPoint.x + changeX, this.LI_lineContainer[lineImage.name].endPoint.y + changeY, this.windowContainer);
+                lineImage.dragx = newPosition.x;
+                lineImage.dragy = newPosition.y;
+                this.LI_lineContainer[lineImage.name].clearImage();
+                this.LI_lineContainer[lineImage.name].resetImage(this.windowContainer);
+                this.LI_lineContainer[lineImage.name].fetchInformation();
+                updateGraph(this.LI_graphs, this.LI_currentLine, this.LI_boundary_tlx, this.LI_boundary_tly);
+            }
+        }
+    }
+}
+
 
 setMainText(pixiText, flag, lines) {
     if (flag == 0) {
@@ -587,5 +677,10 @@ bringToFront(image) {
         parent.removeChild(image);
         parent.addChild(image);
     }
+}
+
+UIBool(bool)
+{
+    this.windowContainer.visible = bool;
 }
 }

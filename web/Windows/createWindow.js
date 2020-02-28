@@ -37,7 +37,11 @@ class WorkWindow
 
     }
 
-    drawWindow(fill, image_src) {
+    drawWindow(fill, image_src, x, y) {
+
+        // in jsToBackend for demonstration purposes
+        x = examplePositionX;
+        y = examplePositionY;
 
         // backdrop to tool buttons
         var a_backdrop = new PIXI.Graphics();
@@ -205,10 +209,17 @@ class WorkWindow
         this.backgroundSpriteMaterial = null;
 
         // Create the 3D screen
+<<<<<<< HEAD
         // this.threeJSPath = "Images/blank.png";
         // currentThreeJSInstance = new ThreeJS(this.threeJSPath, this);
         // this.threeJS = currentThreeJSInstance;
         // createThreeJS();
+=======
+        /* this.threeJSPath = "Images/blank.png";
+        currentThreeJSInstance = new ThreeJS(this.threeJSPath, this);
+        this.threeJS = currentThreeJSInstance;
+        createThreeJS(); */
+>>>>>>> 23b5a82dd669af5cb7d7f2fcbbab5093f7309056
 
         // Multi-Block Analysis (The background image is defined as this.multiBlockObject.dragImage)
         //this.currentlySelectedButtonAction = "null"; //Agustin
@@ -233,7 +244,7 @@ class WorkWindow
 
 
         // This is to set the position
-        this.container.position.set(0 - this.xPositionWindow, 0 - this.yPositionWindow);
+        this.container.position.set(0 - this.xPositionWindow + x, 0 - this.yPositionWindow + y);
 
     }
 

@@ -1,0 +1,12 @@
+bring_to_front - In situations where you may have images placed on top of one another this will help bring those behind into the
+		 front.  This occurs by finding the parent of the given image, then the image is removed and then readded to the
+		 parent which effectively places the image on top of everything else
+change_text - used to simplify the process of changing the main text by taking in a number which will dictate what will be shown
+	      as a result.  This helps in changing states from neutral to drawing for example
+edited_graphs & graphs- create graph function constructs the visual representation of the data collected by the line details function. 
+			A graph is handmade using rectangles, lines, and text.
+line - Object used to represent a line on the screen.  Its major components consists of a start and end point objects, a graphic
+       used as its visual representation, a name(index number) and the background image used to gather data
+Line_Application - functions for the user to interact with and update the current line
+point - object used to represent a point on a line, specifically either the start or end point.  The object holds an x and y 
+	coordinates along with a graphic used to indicate itself

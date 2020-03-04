@@ -1,0 +1,4 @@
+prelogin - Contains the quotes seen on the screen pre-login and front end formatting for this screen including the login hex.
+	   Also has the variable password.
+
+Pixi.js is an open-source 2D engine used on the frontend to make animated websites

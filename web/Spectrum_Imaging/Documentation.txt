@@ -1,0 +1,1 @@
+newSpectrum - Spectrum Imaging options with buttons correlating to red, green, blue, or original

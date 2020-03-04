@@ -1,2 +1,3 @@
-captionFactory - Factory design pattern for sentences.  Constructors in here SHOULD NOT be directly called.
+captionFactory - Factory design pattern for sentences.  Constructors in here SHOULD NOT be directly called
+
 login - function startLoginPage guides the user throught the new project menu or lets them select a projects

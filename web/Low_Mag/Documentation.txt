@@ -1,0 +1,12 @@
+Low Magnification Screening / Imaging (LMSI)
+
+LMSI - Contains class LMSI.  Constructs window with an image and allows the user to manipulate the window by dragging and 
+       drawPoint function.
+
+LMSI_function - Contains function LMSI.  Constructs window with an image and allows the user to manipulate the window by 
+		dragging and drawPoint function.
+
+LMSI_helper - initialize images to be used.  Sets cancel button and mode change button.  Icons to show current mode 
+	      (screenshot and move).  Contains function LMSI to activate gestures, add viewport, buttons, and sprites on 
+	      LMSIContainer.  Contains function drawPoint which is a help function for drawing rectangle area on image to
+	      crop.

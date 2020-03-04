@@ -1,0 +1,6 @@
+captionFactory - Factory design pattern for sentences.  Constructors in here SHOULD NOT be directly called.
+
+ind - calls scripts pixi.min.js, hexagon.js, transition.js, globalVariables.js, newProject.js, captionFactory.js, 
+      and /Spectrum_Imaging/spectrum.js
+
+newProject - creates background and new project prompt.

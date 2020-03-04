@@ -1,3 +1,5 @@
 createProject - creates new projects for project selection screen
+
 a_drawHex - creates the hexagon grid screen
+
 projectSelection - makes calls to a_drawHex and createProject and adds text and formatting to create the Project Select screen

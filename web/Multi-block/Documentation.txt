@@ -1,0 +1,33 @@
+boxInformation - This is an OOP object to hold the information for the pixel calculations.
+
+createButton - this is for button selecting and pressing.  
+
+	       To use, write 'var button = new RectButton(x_position, y_position, height, width, action);'  "action" is supposed
+	       to be a string describing the action of the button (this is custom made by you).  Once you create your button,
+	       add '.on('pointerdown', yourFunction);' to the list of .on's in this file.  Add yourFunctionName() to where ever
+	       you want and program its function.
+
+	       When programming your functionality, make sure the first line of your function starts with 
+	       'if(currentlySelectedButtonAction != 'yourAction') return;'  This makes sure that your button is pressed, and not
+	       another button is pressed.  If you want to see some examples, look at the functions below.  If you have any other
+	       questions, ask Jack Kellerk.
+
+createGraph - Contains function MB_createGraph() and text styles for information concerning line data.
+
+createMultiBlock - Contains class MultiBlockTool and within is constructor(imagePath, myX, myY, myWidth, my Height).
+
+main - Function startMultiblock gets background image and creates a draggable image, the welcome GUI, the big red circle, the 
+       welcome text, the instruction text, and the 'got it' text.  Also creates button functionality GUI (drag button, rotate 
+       button, highlight button, assistance button, icons for each button) and creates rotateImage, pen icon, questionMark 
+       image, image to drag, and the highlight image to highlight.  Function highlightStart(event) is a start function to 
+       create rectangles.  Function comparisonRectangles() creates comparisonRectangles.  Also has functions to rotateImage and
+       functionality to enable or disable the welcome page.
+
+moveAroundCanvas - this is for moving around the canvas.  This is dependent upon Pixi.js.
+
+multiBlockClass - creates an instance of the MultiBlock window
+
+positionClass - constructor sets initial x and y positions along with the initial x and y positions of the mouse to calculate
+		the change in mouse movement.
+
+rectButton - class RectButton creates button objects for Multi-Block

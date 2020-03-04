@@ -1,0 +1,4 @@
+projectSource - creates page with options for school microscope sources when creating new project.
+
+sourceInfo - has Source constructor(name, image, info1, info2) where name is the name of the microscope and info1 and info2
+	     contain technical specifications.  This is where the information on each microscope is held.

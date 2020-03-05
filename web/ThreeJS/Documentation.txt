@@ -1,0 +1,5 @@
+Three.js is a library used to create and display animated 3D graphics in a web browser
+
+OBJLoader - creates and textures 3D objects.  author mrdoob https://github.com/mrdoob/three.js/blob/dev/examples/js/loaders/OBJLoader.js
+
+createScene - creates a virtual camera and loads in 3D objects

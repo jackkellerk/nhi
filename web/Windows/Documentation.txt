@@ -1,0 +1,11 @@
+createWindow - class for work windows.  Customizable window name, position, image to be worked on, and sprite's image format.
+
+createSpecialWindow - similar to createWindow but specifically made for window with 3D model.
+
+moveWindowAroundScreen - code for moving a window around the screen.
+
+moveWindowAroundScreen3D - same as moveWindowAroundScreen but takes an array of open windows as windowArray3D instead of windowArray.
+
+w_drawHex - creates a hex grid at given coordinates.
+
+windows - Starts window drawing process.  Includes menu, save, settings, and hide menu buttons.

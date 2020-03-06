@@ -2,7 +2,6 @@
 
 //get the hosting url.
 var base_url = location.protocol + '//' + location.host;
-console.log(base_url);
 var uid;
 var session_key;
 

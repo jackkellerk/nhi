@@ -18,7 +18,7 @@ public class LineManager {
     private final Gson gson;
     private final Statements mStatements;
     private final DatabaseManager mManager;
-    private final PreparedStatement mInsertLinePS, mDeleteLinePS, mSelectLinePs, mSelectAllLinePS;
+    private final PreparedStatement mInsertLinePS, mDeleteLinePS, mSelectLinePs, mSelectAllLinePS, mUpdateLinePS;
 
     /** Project structure class being traslated into Json by Gson. */
     @SuppressWarnings("unused")
@@ -52,15 +52,16 @@ public class LineManager {
         mDeleteLinePS = mStatements.line.deleteLine;
         mSelectLinePs = mStatements.line.selectLineByLidWid;
         mSelectAllLinePS = mStatements.line.selectLineByWid;
+        mUpdateLinePS = mStatements.line.updateLine;
     }
 
-    public int createRelationship(int lid, int wid, int x1, int y1, int x2, int y2) throws SQLException {
+    public int createLine(int lid, int wid, double x1, double y1, double x2, double y2) throws SQLException {
         mInsertLinePS.setFloat(1, lid);
         mInsertLinePS.setFloat(2, wid);
-        mInsertLinePS.setFloat(3, x1);
-        mInsertLinePS.setFloat(4, y1);
-        mInsertLinePS.setFloat(5, x2);
-        mInsertLinePS.setFloat(6, y2);
+        mInsertLinePS.setDouble(3, x1);
+        mInsertLinePS.setDouble(4, y1);
+        mInsertLinePS.setDouble(5, x2);
+        mInsertLinePS.setDouble(6, y2);
         return mInsertLinePS.executeUpdate();
     }
 
@@ -104,9 +105,20 @@ public class LineManager {
         return retval;
     }
 
+    public int updateLine(int lid, int wid, double x1, double y1, double x2, double y2) throws SQLException {
+        mUpdateLinePS.setFloat(1, lid);
+        mUpdateLinePS.setFloat(2, wid);
+        mUpdateLinePS.setDouble(3, x1);
+        mUpdateLinePS.setDouble(4, y1);
+        mUpdateLinePS.setDouble(5, x2);
+        mUpdateLinePS.setDouble(6, y2);
+        int retval = mUpdateLinePS.executeUpdate();
+        mUpdateLinePS.close();
+        return retval;
+    }
 
-    public int deleteRelationship(int pid, int wid) throws SQLException {
-        mDeleteLinePS.setFloat(1, pid);
+    public int deleteLine(int lid, int wid) throws SQLException {
+        mDeleteLinePS.setFloat(1, lid);
         mDeleteLinePS.setFloat(2, wid);
         return mDeleteLinePS.executeUpdate();
     }

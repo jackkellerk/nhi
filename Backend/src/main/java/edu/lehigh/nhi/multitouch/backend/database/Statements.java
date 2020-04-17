@@ -66,14 +66,14 @@ class Statements {
     }
 
     protected class Line {
-        protected final PreparedStatement insertLine, deleteLine, selectLineByWid, selectLineByLidWid;
+        protected final PreparedStatement insertLine, deleteLine, selectLineByWid, selectLineByLidWid, updateLine;
         
         private Line() throws SQLException{
             insertLine = mMySQLConnection.prepareStatement("insert into line_t (lid, wid, x1, y1, x2, y2) values (?, ?, ?, ?, ?, ?)");
             deleteLine = mMySQLConnection.prepareStatement("delete from line_t where lid = ? and wid = ?");
             selectLineByWid = mMySQLConnection.prepareStatement("select * from line_t where wid = ?");
             selectLineByLidWid = mMySQLConnection.prepareStatement("select * from line_t where lid = ? and wid = ?");
-            
+            updateLine = mMySQLConnection.prepareStatement("update line_t set x1 = ?, y1 = ?, x2 = ?, y2 = ? where wid = ? and lid = ?");
         }
     }
 

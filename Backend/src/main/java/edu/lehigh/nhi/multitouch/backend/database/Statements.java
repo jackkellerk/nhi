@@ -13,6 +13,7 @@ class Statements {
     protected UPRelationship uprelationship;
     protected PWRelationship pwrelationship;
     protected ProjectSource projectSource;
+    protected Line line;
 
     protected class Common {
         protected final PreparedStatement selectLastInsertion, checkProjectOwnership, getPidByWid;
@@ -61,6 +62,18 @@ class Statements {
             updateTools = mMySQLConnection.prepareStatement(("update window_t set spectrum_color = ? where wid = ?"));
             deleteWindowByWid = mMySQLConnection.prepareStatement("delete from window_t where wid = ?");       
 
+        }
+    }
+
+    protected class Line {
+        protected final PreparedStatement insertLine, deleteLine, selectLineByWid, selectLineByLidWid;
+        
+        private Line() throws SQLException{
+            insertLine = mMySQLConnection.prepareStatement("insert into line_t (lid, wid, x1, y1, x2, y2) values (?, ?, ?, ?, ?, ?)");
+            deleteLine = mMySQLConnection.prepareStatement("delete from line_t where lid = ? and wid = ?");
+            selectLineByWid = mMySQLConnection.prepareStatement("select * from line_t where wid = ?");
+            selectLineByLidWid = mMySQLConnection.prepareStatement("select * from line_t where lid = ? and wid = ?");
+            
         }
     }
 

@@ -1,7 +1,9 @@
 class LineApplication{
     constructor(parent) {
-        this.parent = parent;
-        this.windowContainer = new PIXI.Container();;
+        //this.parent = parent;
+       // this.windowContainer = new PIXI.Container();
+       this.windowContainer = parent;
+    
         this.LI_lineContainer = [];
         this.LI_pointContainer = [];
 
@@ -104,7 +106,7 @@ class LineApplication{
         this.endPoint;
         this.lineImage;
         this.polyPts;
-        this.parnet.container.addChild(this.windowContainer);
+     //   this.parnet.container.addChild(this.windowContainer);
 }
 /**
  * Show All allows use of the line intensity application by 

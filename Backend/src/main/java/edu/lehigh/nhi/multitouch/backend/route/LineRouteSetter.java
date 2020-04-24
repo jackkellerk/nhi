@@ -54,7 +54,8 @@ public final class LineRouteSetter {
                         return StructuredResponse.getErrorResponse(ErrorHandler.PRIVILAGE.NO_RIGHT_TO_ACCESS_PROJECT);
                     }
                     JSONArray lineArray = db.line.getAllLines(wid);
-                    return StructuredResponse.getResponse(lineArray);
+                    //return StructuredResponse.getResponse(lineArray);
+                    return lineArray;
                 });
             });
         });
@@ -72,8 +73,9 @@ public final class LineRouteSetter {
                             new Type[] { Type.INT }, (vals) -> {
                             int lid = (int) vals[0];
                             JSONObject lineObject = db.line.getLine(lid, wid);
-                            return StructuredResponse.getResponse(lineObject);
-                    });
+                            //return StructuredResponse.getResponse(lineObject);
+                            return lineObject;
+                        });
                 });
             });
         });

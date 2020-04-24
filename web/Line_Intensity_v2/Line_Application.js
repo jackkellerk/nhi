@@ -281,7 +281,7 @@ LI_drawPoint(event) {
 
        createGraph(this.LI_graphs, this.LI_currentLine, this.LI_boundary_tlx, this.LI_boundary_tly);  //Creates a graph from said line*/
        this.windowContainer.addChild(this.LI_graphs);
-       this.LI_lineContainer.push(this.LI_currentLine);    //Adds this line to the area of lines
+       this.LI_lineContainer.push(this.LI_currentLine);    //Adds this line to the array of lines
        this.LI_drawing = false;    //Ends the LI_drawing LI_state
        this.LI_endDraw();
 

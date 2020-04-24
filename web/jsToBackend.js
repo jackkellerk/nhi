@@ -294,6 +294,131 @@ function getListOfProjects()
     });
 }
 
+//Creating new line
+function postNewLine(lid, x1, y1, x2, y2)
+{
+    var convertToJSON = {"lid": lid, "x1": x1, "y1": y1, "x2": x2, "y2": y2};
+    //Here a :wid is needed in the url. There's only one window in the database so this id is hard coded
+    $.ajax({
+        method: 'POST',
+        contentType: 'application/json',
+        headers: {"uid": uid, "session_key": session_key},
+        data: JSON.stringify(convertToJSON),
+        url: base_url + "/w/" + 31 + "/new_line",
+        dataType: 'json',
+        crossDomain: 'true',
+        xhrFields: {
+            withCredentials: true
+        },
+        success: function(callback) {
+        },
+        error: function(xhr, status, error) {
+            alert("Internal Server Error: 500");
+        }
+    });
+}
+
+//updates line
+function updateLine(lid, x1, y1, x2, y2)
+
+    //Here a :wid is needed in the url. There's only one window in the database so this id is hard coded
+    var convertToJSON = {"lid": lid, "x1": x1, "y1": y1, "x2": x2, "y2": y2};
+    $.ajax({
+        method: 'PUT',
+        contentType: 'application/json',
+        headers: {"uid": uid, "session_key": session_key},
+        data: JSON.stringify(convertToJSON),
+        url: base_url + "/w/" + 31 + "/update_line",
+        dataType: 'json',
+        crossDomain: 'true',
+        xhrFields: {
+            withCredentials: true
+        },
+        success: function(callback) {
+            console.log(callback.data);
+        },
+        error: function(xhr, status, error) {
+            alert("Internal Server Error: 500");
+        }
+    });
+}
+
+//Delete line
+function deleteLine(lid)
+{
+    //Here a :wid is needed in the url. There's only one window in the database so this id is hard coded
+    var convertToJSON = {"lid": lid};
+    $.ajax({
+        method: 'DELETE',
+        contentType: 'application/json',
+        headers: {"uid": uid, "session_key": session_key},
+        data: JSON.stringify(convertToJSON),
+        url: base_url + "/w/" + 31 + "/remove_line",
+        dataType: 'json',
+        crossDomain: 'true',
+        xhrFields: {
+            withCredentials: true
+        },
+        success: function(callback) {
+            console.log(callback.data);
+        },
+        error: function(xhr, status, error) {
+            alert("Internal Server Error: 500");
+        }
+    });
+}
+
+//Gathers the desired line
+function getLine(lid)
+{
+    //Here a :wid is needed in the url. There's only one window in the database so this id is hard coded
+    var convertToJSON = {"lid": lid};
+    $.ajax({
+        method: 'GET',
+        contentType: 'application/json',
+        headers: {"uid": uid, "session_key": session_key},
+        data: JSON.stringify(convertToJSON),
+        url: base_url + "/w/" + 31 + "/line",
+        dataType: 'json',
+        crossDomain: 'true',
+        xhrFields: {
+            withCredentials: true
+        },
+        success: function(callback) {
+            return callback.data;
+        },
+        error: function(xhr, status, error) {
+            alert("Internal Server Error: 500");
+        }
+    });
+}
+
+
+//Collects all lines associated with the window
+function getAllLines()
+{
+    //Here a :wid is needed in the url. There's only one window in the database so this id is hard coded
+    $.ajax({
+        method: 'GET',
+        contentType: 'application/json',
+        headers: {"uid": uid, "session_key": session_key},
+        url: base_url + '/w/' + 31 + '/all_lines',
+        dataType: 'json',
+        crossDomain: 'true',
+        xhrFields: {
+            withCredentials: true
+        },
+        success: function(callback) 
+        {
+            return callback.data;
+        },
+        error: function(xhr, status, error) 
+        {
+            alert("Internal Server Error at Ajax GET /project at client: 500");
+        }
+    });
+}
+
 function getProject()
 {
     while(listOfProjectIDs.length > 0)

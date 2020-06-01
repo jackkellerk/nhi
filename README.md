@@ -8,6 +8,7 @@
 - Travis Barnes
 - Xuewei Wang (Backend and Database)
 - Joss Duff
+- Emily Asadoorian
 - add yourself here
 
 ## Description

@@ -10,6 +10,7 @@
 - Joss Duff
 - Emily Asadoorian
 - Jitong Ding
+- Surui Huang
 - add yourself here
 
 ## Description

@@ -9,6 +9,7 @@
 - Xuewei Wang (Backend and Database)
 - Joss Duff
 - Emily Asadoorian
+- Jitong Ding
 - add yourself here
 
 ## Description

@@ -29,7 +29,7 @@ public class DatabaseManager {
     public final WindowManager window;
     public final ProjectManager project;
     public final SourceManager source;
-    public final LineManager line;
+    //public final LineManager line;
     public final UPRelationshipManager uprelationship;
     public final ProjectSourceManager projectSourceManager;
 
@@ -40,7 +40,7 @@ public class DatabaseManager {
         window = new WindowManager(this);
         project = new ProjectManager(this);
         source = new SourceManager(this);
-        line = new LineManager(this);
+        //line = new LineManager(this);
         uprelationship = new UPRelationshipManager(this);
         projectSourceManager = new ProjectSourceManager(this);
     }

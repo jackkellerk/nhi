@@ -313,13 +313,14 @@ function postNewLine(lid, x1, y1, x2, y2)
         success: function(callback) {
         },
         error: function(xhr, status, error) {
-            alert("Internal Server Error: 500");
+            alert("Internal Server Error: 5000");
         }
     });
 }
 
 //updates line
 function updateLine(lid, x1, y1, x2, y2)
+{
 
     //Here a :wid is needed in the url. There's only one window in the database so this id is hard coded
     var convertToJSON = {"lid": lid, "x1": x1, "y1": y1, "x2": x2, "y2": y2};
@@ -338,7 +339,7 @@ function updateLine(lid, x1, y1, x2, y2)
             console.log(callback.data);
         },
         error: function(xhr, status, error) {
-            alert("Internal Server Error: 500");
+            alert("Internal Server Error: 5000");
         }
     });
 }

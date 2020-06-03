@@ -25,8 +25,8 @@ var userSettingsResponse; // valid uses of userSettingsResponse are: userSetting
 function startAllProjects()
 {
     gatherUserSettings(); // backend call
-    getOneProject(76);
-    getProjects();
+    // getOneProject(76);
+    // getProjects(); TODO: Find out what is happening here
 }
 
 function createUIProjects()

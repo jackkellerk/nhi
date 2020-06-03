@@ -1,3 +1,4 @@
+
 package edu.lehigh.nhi.multitouch.backend.route;
 
 import org.json.JSONArray;
@@ -63,6 +64,7 @@ public final class ProjectRouteSetter {
         // TODO: Not available now. update the statement to be a procedure call after
         // procedure privilage is granted.
         RouteSetter.setRoute(RequestType.POST, "/project/create", (request, response) -> {
+
             return RouteSetter.preprocessSessionCheck(request, response, encryption, (uid, sessionkey) -> {
                 return RouteSetter.preprocessJSONValueGet(request, response,
                 new String[] { "name", "canvas_width", "canvas_height", "properties", "institution", "sources" },
@@ -74,17 +76,11 @@ public final class ProjectRouteSetter {
                             JSONObject properties = (JSONObject) vals[3];
                             String institution = (String) vals[4];
                             JSONArray sources = (JSONArray) vals[5];
-                            JSONObject retval = db.project.createProject(uid, name, canvas_width, canvas_height, properties.toString(), institution);
+                            JSONObject retval = db.project.createProject(uid, name, canvas_width, canvas_height);
 
                             if (retval == null)
                                 return StructuredResponse
                                         .getErrorResponse(ErrorHandler.UNKOWN.INSERTION_NO_UPDATE_UNKNOWN);
-                            
-                            // Add to ProjectSource after pid is known.
-                            int pid = retval.getInt("pid");
-                            for (int i = 0; i < sources.length(); i++) {
-                                db.projectSourceManager.insertProjectSource(pid, sources.getInt(i));
-                            }
 
                             return StructuredResponse.getResponse(retval);
                         });
@@ -93,7 +89,7 @@ public final class ProjectRouteSetter {
         });
 
 
-        // update a project.
+        // update projects.
         RouteSetter.setRoute(RequestType.PUT, "/p/:pid/update", (request, response) -> {
             return RouteSetter.preprocessSessionCheck(request, response, encryption, (uid, sessionKey) -> {
                 return RouteSetter.preprocessPathParam(request, response, new String[] { "pid" }, (params) -> {
@@ -102,15 +98,13 @@ public final class ProjectRouteSetter {
                         return StructuredResponse.getErrorResponse(ErrorHandler.PRIVILAGE.NO_RIGHT_TO_ACCESS_PROJECT);
                     }
                     return RouteSetter.preprocessJSONValueGet(request, response,
-                            new String[] { "name", "thumbnail", "width", "height", "properties", "institution", "spectrum_color" },
-                            new Type[] { Type.STRING, Type.STRING, Type.FLOAT, Type.FLOAT, Type.JSONOBJ, Type.STRING, Type.INT }, (vals) -> {
+                            new String[] { "name", "thumbnail", "width","height" },
+                            new Type[] { Type.STRING, Type.STRING, Type.FLOAT, Type.FLOAT}, (vals) -> {
                             String name = (String) vals[0];
                             String thumbnail = (String) vals[1];
                             float width = (float) vals[2];
                             float height = (float) vals[3];
-                            JSONObject properties = (JSONObject) vals[4];
-                            String institution = (String) vals[5];
-                            int num_rows_updated = db.project.updateProject(pid, name, thumbnail, width, height, properties.toString(), institution);
+                            int num_rows_updated = db.project.updateProject(pid, name, thumbnail, width, height);
                             JSONObject retval = new JSONObject();
                             retval.put("num_rows_updated", num_rows_updated);
                             return new StructuredResponse(retval).toJson().toString();

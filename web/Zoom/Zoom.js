@@ -4,6 +4,7 @@ class ZoomTool {
 
     constructor(parent) {
         // set buttons
+        this.parent = parent
         this.zoom_bg_sprite = parent.backgroundSprite;
         this.zoom_bg_texture = parent.texture;
         this.cancel_button = cancel;
@@ -11,6 +12,7 @@ class ZoomTool {
         this.screenshot = screenshotIcon;
         this.move = moveIcon;
 
+        this.cancel_button.y
         // actiave eventHandler for buttons        
         this.mode_button
             .on('pointerdown', this.modeChange.bind(this))
@@ -77,7 +79,7 @@ class ZoomTool {
         
         // draw rectangle box to put buttons
         this.buttonGraphics.beginFill(0xFFFFFF);
-        this.buttonGraphics.drawRect(5, 5, 60, 115);
+        this.buttonGraphics.drawRect(5, 25, 60, 140);
         this.buttonGraphics.endFill();
 
         // add buttons and buttonGraphics to buttonContainer
@@ -123,6 +125,9 @@ class ZoomTool {
             this.zoom_bg_sprite.scale.x = (this.LMSIContainer.height / this.zoom_bg_sprite.width)
             this.zoom_bg_sprite.scale.y = (this.LMSIContainer.height / this.zoom_bg_sprite.height)
         }
+
+        this.LMSIContainer.mask = this.parent.windowRect;
+        this.parent.container.addChild(this.LMSIContainer);
     }
 
     get getWid() {

@@ -78,7 +78,7 @@ public class App {
 
         try {
             db = new DatabaseManager();
-            // ProjectRouteSetter.setRoutes(db, encryption);
+            ProjectRouteSetter.setRoutes(db, encryption);
             UserRouteSetter.setRoutes(db, encryption);
             WindowRouteSetter.setRoutes(db, encryption);
             SourceRouteSetter.setRoutes(db, encryption);

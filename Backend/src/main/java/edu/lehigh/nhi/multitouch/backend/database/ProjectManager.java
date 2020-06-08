@@ -3,13 +3,14 @@ package edu.lehigh.nhi.multitouch.backend.database;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Date;
 
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
+import org.json.JSONObject; 
 
 /**
  * Manage project_t table in the batabase. IMPORTANT: only include changes to
@@ -47,14 +48,25 @@ public class ProjectManager {
         mDeleteProjectByPidPS = mStatements.project.deleteProjectByPid;
     }
 
+    //Function return the list of the all projects
     public JSONArray getProjectList(int uid) throws SQLException {
+        JSONArray jsonArray = new JSONArray(); 
+        ArrayList<Integer> projectId = new ArrayList<Integer>();
         PreparedStatement statement = mStatements.project.selectProjectsByUid;
         statement.setInt(1, uid);
         ResultSet rs = statement.executeQuery();
-        JSONArray retval = DatabaseManager.convertToJSONArray(rs);
+        while(rs.next()){//Get one user's all of projects
+            int userId = rs.getInt("uid");
+            int projId = rs.getInt("pid");
+            projectId.add(projId);
+        }
+        for(int i = 0; i < projectId.size();++i){
+            jsonArray.put(getProject(projectId.get(i)));
+        }
         rs.close();
-        return retval;
+        return jsonArray;
     }
+
 
     public JSONObject getProject(int pid) throws SQLException {
         mSelectProjectByPidPS.setInt(1, pid);

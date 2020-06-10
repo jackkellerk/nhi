@@ -1,3 +1,4 @@
+
 package edu.lehigh.nhi.multitouch.backend.route;
 
 import org.json.JSONArray;
@@ -59,90 +60,93 @@ public final class ProjectRouteSetter {
             });
         });
 
-//         // create a project.
-//         // TODO: Not available now. update the statement to be a procedure call after
-//         // procedure privilage is granted.
-//         RouteSetter.setRoute(RequestType.POST, "/project/create", (request, response) -> {
+        // create a project.
+        // TODO: Not available now. update the statement to be a procedure call after
+        // procedure privilage is granted.
+        RouteSetter.setRoute(RequestType.POST, "/project/create", (request, response) -> {
 
-//             return RouteSetter.preprocessSessionCheck(request, response, encryption, (uid, sessionkey) -> {
-//                 return RouteSetter.preprocessJSONValueGet(request, response,
-//                 new String[] { "name", "canvas_width", "canvas_height", "properties", "institution", "sources" },
-//                 new Type[] { Type.STRING, Type.FLOAT, Type.FLOAT, Type.JSONOBJ, Type.STRING, Type.JSONARR }, (vals) -> {
+            return RouteSetter.preprocessSessionCheck(request, response, encryption, (uid, sessionkey) -> {
+                return RouteSetter.preprocessJSONValueGet(request, response,
+                new String[] { "name", "canvas_width", "canvas_height", "properties", "institution", "sources" },
+                new Type[] { Type.STRING, Type.FLOAT, Type.FLOAT, Type.JSONOBJ, Type.STRING, Type.JSONARR }, (vals) -> {
 
-//                             String name = (String) vals[0];
-//                             float canvas_width = (float) vals[1];
-//                             float canvas_height = (float) vals[2];
-//                             JSONObject properties = (JSONObject) vals[3];
-//                             String institution = (String) vals[4];
-//                             JSONArray sources = (JSONArray) vals[5];
-//                             JSONObject retval = db.project.createProject(uid, name, canvas_width, canvas_height);
+                            String name = (String) vals[0];
+                            float canvas_width = (float) vals[1];
+                            float canvas_height = (float) vals[2];
+                            JSONObject propertiesObj = (JSONObject) vals[3];
+                            String properties = propertiesObj.toString();
+                            String institution = (String) vals[4];
+                            JSONArray sources = (JSONArray) vals[5];
+                            JSONObject retval = db.project.createProject(uid, name, canvas_width, canvas_height, properties, institution);
 
-//                             if (retval == null)
-//                                 return StructuredResponse
-//                                         .getErrorResponse(ErrorHandler.UNKOWN.INSERTION_NO_UPDATE_UNKNOWN);
+                            if (retval == null)
+                                return StructuredResponse
+                                        .getErrorResponse(ErrorHandler.UNKOWN.INSERTION_NO_UPDATE_UNKNOWN);
 
-//                             return StructuredResponse.getResponse(retval);
-//                         });
+                            return StructuredResponse.getResponse(retval);
+                        });
 
-//             });
-//         });
+            });
+        });
 
 
-//         // update projects.
-//         RouteSetter.setRoute(RequestType.PUT, "/p/:pid/update", (request, response) -> {
-//             return RouteSetter.preprocessSessionCheck(request, response, encryption, (uid, sessionKey) -> {
-//                 return RouteSetter.preprocessPathParam(request, response, new String[] { "pid" }, (params) -> {
-//                     int pid = (int)params[0];
-//                     if (!db.checkProjectOwnership(uid, pid)) {
-//                         return StructuredResponse.getErrorResponse(ErrorHandler.PRIVILAGE.NO_RIGHT_TO_ACCESS_PROJECT);
-//                     }
-//                     return RouteSetter.preprocessJSONValueGet(request, response,
-//                             new String[] { "name", "thumbnail", "width","height" },
-//                             new Type[] { Type.STRING, Type.STRING, Type.FLOAT, Type.FLOAT}, (vals) -> {
-//                             String name = (String) vals[0];
-//                             String thumbnail = (String) vals[1];
-//                             float width = (float) vals[2];
-//                             float height = (float) vals[3];
-//                             int num_rows_updated = db.project.updateProject(pid, name, thumbnail, width, height);
-//                             JSONObject retval = new JSONObject();
-//                             retval.put("num_rows_updated", num_rows_updated);
-//                             return new StructuredResponse(retval).toJson().toString();
-//                     });
-//                 });
-//             });
-//         });
+        // update projects.
+        RouteSetter.setRoute(RequestType.PUT, "/p/:pid/update", (request, response) -> {
+            return RouteSetter.preprocessSessionCheck(request, response, encryption, (uid, sessionKey) -> {
+                return RouteSetter.preprocessPathParam(request, response, new String[] { "pid" }, (params) -> {
+                    int pid = (int)params[0];
+                    if (!db.checkProjectOwnership(uid, pid)) {
+                        return StructuredResponse.getErrorResponse(ErrorHandler.PRIVILAGE.NO_RIGHT_TO_ACCESS_PROJECT);
+                    }
+                    return RouteSetter.preprocessJSONValueGet(request, response,
+                            new String[] { "name", "thumbnail", "width","height", "properties", "institution" },
+                            new Type[] { Type.STRING, Type.STRING, Type.FLOAT, Type.FLOAT, Type.STRING, Type.STRING}, (vals) -> {
+                            String name = (String) vals[0];
+                            String thumbnail = (String) vals[1];
+                            float width = (float) vals[2];
+                            float height = (float) vals[3];
+                            String properties = (String) vals[4];
+                            String institution = (String) vals[5];
+                            int num_rows_updated = db.project.updateProject(pid, name, thumbnail, width, height, properties, institution);
+                            JSONObject retval = new JSONObject();
+                            retval.put("num_rows_updated", num_rows_updated);
+                            return new StructuredResponse(retval).toJson().toString();
+                    });
+                });
+            });
+        });
 
-//         // update projects.
-//         RouteSetter.setRoute(RequestType.POST, "/p/:pid/copy", (request, response) -> {
-//             return RouteSetter.preprocessSessionCheck(request, response, encryption, (uid, sessionKey) -> {
-//                 return RouteSetter.preprocessPathParam(request, response, new String[] { "pid" }, (params) -> {
-//                     int pid = (int)params[0];
-//                     if (!db.checkProjectOwnership(uid, pid)) {
-//                         return StructuredResponse.getErrorResponse(ErrorHandler.PRIVILAGE.NO_RIGHT_TO_ACCESS_PROJECT);
-//                     }
-//                     JSONObject retval = db.project.copyProject(pid,uid);
-//                     if (retval == null){
-//                         return StructuredResponse.getErrorResponse(ErrorHandler.UNKOWN.INSERTION_NO_UPDATE_UNKNOWN);
-//                     }
-//                     return StructuredResponse.getResponse(retval);
-//                     });
-//                 });
-//             });
+        // update projects.
+        RouteSetter.setRoute(RequestType.POST, "/p/:pid/copy", (request, response) -> {
+            return RouteSetter.preprocessSessionCheck(request, response, encryption, (uid, sessionKey) -> {
+                return RouteSetter.preprocessPathParam(request, response, new String[] { "pid" }, (params) -> {
+                    int pid = (int)params[0];
+                    if (!db.checkProjectOwnership(uid, pid)) {
+                        return StructuredResponse.getErrorResponse(ErrorHandler.PRIVILAGE.NO_RIGHT_TO_ACCESS_PROJECT);
+                    }
+                    JSONObject retval = db.project.copyProject(pid,uid);
+                    if (retval == null){
+                        return StructuredResponse.getErrorResponse(ErrorHandler.UNKOWN.INSERTION_NO_UPDATE_UNKNOWN);
+                    }
+                    return StructuredResponse.getResponse(retval);
+                    });
+                });
+            });
 
-//             // delete project.
-//             RouteSetter.setRoute(RequestType.DELETE, "/p/:pid", (request, response) -> {
-//                 return RouteSetter.preprocessSessionCheck(request, response, encryption, (uid, sessionKey) -> {
-//                     return RouteSetter.preprocessPathParam(request, response, new String[] { "pid" }, (params) -> {
-//                         int pid = (int)params[0];
-//                         if (!db.checkProjectOwnership(uid, pid)) {
-//                             return StructuredResponse.getErrorResponse(ErrorHandler.PRIVILAGE.NO_RIGHT_TO_ACCESS_PROJECT);
-//                         }
-//                         int num_items_deleted = db.project.deleteProject(pid);
-//                         JSONObject retval = new JSONObject();
-//                         retval.put("num_itemss_deleted", num_items_deleted);
-//                         return new StructuredResponse(retval).toJson().toString();
-//                     });
-//                 });
-//             });
-//     }
-// }
+            // delete project.
+            RouteSetter.setRoute(RequestType.DELETE, "/p/:pid", (request, response) -> {
+                return RouteSetter.preprocessSessionCheck(request, response, encryption, (uid, sessionKey) -> {
+                    return RouteSetter.preprocessPathParam(request, response, new String[] { "pid" }, (params) -> {
+                        int pid = (int)params[0];
+                        if (!db.checkProjectOwnership(uid, pid)) {
+                            return StructuredResponse.getErrorResponse(ErrorHandler.PRIVILAGE.NO_RIGHT_TO_ACCESS_PROJECT);
+                        }
+                        int num_items_deleted = db.project.deleteProject(pid);
+                        JSONObject retval = new JSONObject();
+                        retval.put("num_itemss_deleted", num_items_deleted);
+                        return new StructuredResponse(retval).toJson().toString();
+                    });
+                });
+            });
+    }
+}

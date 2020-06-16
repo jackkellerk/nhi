@@ -1,0 +1,21 @@
+Pixi is an open-source 2D engine used on the frontend to make animated websites
+
+createSettings - creates settings menu and allows for customizable fields and number of fields
+
+globalVariables - list of variables
+
+hexagon - PIXI hexagon function for hexagon creation
+
+hexDetection - detects if hexagons overlap at all
+
+jsToBackend - for connection to the backend.  Send username, passoword, email, user projects, and user settings to the backend.
+
+popupMenu - creates pop up menu
+
+routesForBackend - for connection to the backend for the window variables
+
+transition - function positionTransform creates an animation for moving an object to any (x,y) coordinate.  Function scaleTransform
+	     creates an animation for scaling an object up.  Function alphaTransform creates an animation for changing the alpha
+	     variable of an object up.  Function blurTransform creates an animation for blurring an object.
+
+master - 

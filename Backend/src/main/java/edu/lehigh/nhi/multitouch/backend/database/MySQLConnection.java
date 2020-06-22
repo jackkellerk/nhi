@@ -12,8 +12,8 @@ import edu.lehigh.nhi.multitouch.backend.App;
 public class MySQLConnection {
 
     // Information of the SQL Server
-    private static final String SQL_URL = "jdbc:mysql://db4free.net:3306/nhisqlserver?autoReconnect=true";
-    private static final String SQL_USERNAME = "nhisqladmin";
+    private static final String SQL_URL = "jdbc:mysql://nhitest.lehigh.edu:3306/nhi";
+    private static final String SQL_USERNAME = "remoteConnect";
     private static final String SQL_PASSWORD = "password";
     private static final String NHITEST_SQL_URL = "jdbc:mariadb://127.0.0.1:3306/nhi";
     private static final String NHITEST_SQL_USERNAME = "root";
@@ -24,7 +24,17 @@ public class MySQLConnection {
 
     private MySQLConnection() throws SQLException {
         if(App.isTestingMode){
-            mConnection = DriverManager.getConnection(SQL_URL, SQL_USERNAME, SQL_PASSWORD);
+            bds = new BasicDataSource();
+                bds.setDriverClassName("org.mariadb.jdbc.Driver");
+                bds.setUrl(SQL_URL);
+                bds.setUsername(SQL_USERNAME);
+                bds.setPassword(SQL_PASSWORD);
+                bds.setInitialSize(CONN_POOL_SIZE);
+                bds.setValidationQuery("select 1 ");
+                bds.setTestWhileIdle(true);
+                bds.setTestOnBorrow(true);
+                mConnection = bds.getConnection();
+            //mConnection = DriverManager.getConnection(SQL_URL, SQL_USERNAME, SQL_PASSWORD);
         }else{
             try {
                 bds = new BasicDataSource();

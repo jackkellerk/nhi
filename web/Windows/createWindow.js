@@ -5,6 +5,7 @@ class WorkWindow
 
     constructor(windowName, x=0, y=0, image_src, spriteOnly=false) 
     {
+        this.spriteOnly = spriteOnly;
         this.isOpen = true;  // to determine which one of multiple windows is in front of screen
         this.inFront = true;
         this.windowName = windowName;
@@ -13,6 +14,9 @@ class WorkWindow
         this.width = 1.3*h;
         this.height = 0.73125*h;
         this.sprite = new PIXI.Sprite();
+        this.backgroundSprite =0;
+        this.image_src = image_src;
+        this.texture = 0;
         if (spriteOnly) { this.sprite = new PIXI.Sprite(image_src); } // image is a texture
         else { this.sprite = new PIXI.Sprite.from(image_src); } // "image" is a path
 
@@ -202,10 +206,17 @@ class WorkWindow
         this.ZoomContainer.y += 20;
         this.ZoomContainer.mask = this.windowRect;*/
 
+        if (this.spriteOnly) { 
+            this.backgroundSprite = new PIXI.Sprite(image_src); 
+            } // image is a texture
+        else { 
+            this.texture = new PIXI.Texture.fromImage(this.image_src, true);
+            this.texture.baseTexture.scaleMode = PIXI.SCALE_MODES.DEFAULT;//NEAREST;
+            this.backgroundSprite = new PIXI.Sprite(this.texture); 
+        } 
+
         // The background image to be accessed is instantiated here; To access it in the window functions, do "this.parent.backgroundSprite".
-        this.texture = new PIXI.Texture.fromImage(image_src, true);
-        this.texture.baseTexture.scaleMode = PIXI.SCALE_MODES.DEFAULT;//NEAREST;
-        this.backgroundSprite = new PIXI.Sprite(this.texture);
+        
         this.backgroundSpriteMaterial = null;
 
         // Create the 3D screen

@@ -340,7 +340,7 @@ function startWindows(){
       app.stage.addChild(window1.container);
       window1.inFront = true;
       window2.inFront = false;
-    }});
+    }}); 
   window1.drawWindow(0xDCDCDC, "Images/sinteredMetal.png");
   window1.windowBorder.interactive = true;
   window1.windowBorder.on('pointerdown', onDragStart)

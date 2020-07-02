@@ -1,7 +1,7 @@
 # PyNHI Documentation
 -----
 ## Setup
-Good news, creating custom image analysis scripts for the interface is very easy if you know some Python! Don't worry if you don't know Python, it is not hard to pick up! Before we examine any examples, make sure you install Python. After you have done that, install the nhi package and the Pillow package using pip in the command line:
+Good news, creating custom image analysis scripts for the interface is very easy if you know some Python! Don't worry if you don't know Python, it is not hard to pick up! Before we examine any examples, make sure you install [Python](https://www.python.org/downloads/). After you have done that, install the nhi package and the Pillow package using pip in the command line:
     `> pip install Pillow`
     `> pip install nhi`
 
@@ -45,7 +45,12 @@ Ok, now let's run through some basic examples!
     `> python example.py`
     
     As you run the script, in your command line, you will see a progress bar or percentages showing you the script's progress. At the end, it will display "Done". You can then look into the same directory as your Python script and see example.png, your updated image!
+    
+2. Can't find what you want to do in one of our examples? No problem! Try Google searching "Python [whatever you want to do to your image]" and something should show up (typically from Stack Overflow). Have fun!
 
 # FAQ
 - Why am I seeing "Error; Make sure image is a PIL image. When running the script on the interface ensure that you are not overriding the path parameter!" in the interface?
-    -  You are having an error in your nhi.output function. As the error states, ensure that your first parameter is of type PIL image and that you haven't edited the path parameter. Example: `nhi.output(image)`
+    -  You are having an error in your nhi.output function. As the error states, ensure that your first parameter is of type PIL image and that you haven't edited the path parameter. Example: `nhi.output(image)
+
+# Contact
+- Jack Kellerk (jjk322@lehigh.edu)

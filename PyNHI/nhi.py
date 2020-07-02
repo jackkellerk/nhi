@@ -1,7 +1,6 @@
 # nhi.py uses Python 3.5+
 # PIL is a dependency of nhi
 from PIL import Image
-import numpy as np
 import sys
 
 # This function can be used to update the user on the completion of the code in the interface
@@ -23,12 +22,16 @@ def progress(percentage):
     image is an image represented as a PIL Image;
     new_window is a varaible to specify whether the frontend will either (False): update the existing window's image or (True): instantiate a new window;
     path is a variable to represent the path to save the image;
-    file_extension is a variable to represent what to save the image as (.png, .jpg, .tiff, etc.);
-    color is a variable to specify whether the image should be either colorized or greyscale ('RGB', 'L') """
+    file_extension is a variable to represent what to save the image as (.png, .jpg, .tiff, etc.) """
 
-def output(image, new_window=False, path=sys.argv[-1], file_extension='.png', color='RGB'):
-    image.save(path + file_extension)
-    if new_window:
-        print("Done, create new window")
-    else:
-        print("Done")
+def output(image, new_window=False, path=sys.argv[-1], file_extension='.png'):
+    try:
+        image.save(path + file_extension)
+        if new_window and path != sys.argv[-1]:
+            print("Done, create new window, debugging")
+        elif path != sys.argv[-1]:
+            print("Done, debugging")
+        else:
+            print("Done")
+    except:
+        print("Error; Make sure image is a PIL image. When running the script on the interface ensure that you are not overriding the path parameter!")

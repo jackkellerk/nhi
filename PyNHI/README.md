@@ -3,7 +3,7 @@
 ## Setup
 Good news, creating custom image analysis scripts for the interface is very easy if you know some Python! Don't worry if you don't know Python, it is not hard to pick up! Before we examine any examples, make sure you install [Python](https://www.python.org/downloads/). After you have done that, install the nhi package and the Pillow package using pip in the command line:
     `> pip install Pillow`
-    `> pip install nhi`
+    `> pip install nhi-python`
 
 ## Use of functions
 When writing scripts, it is important to be cognizant of the two functions in the nhi package: 1) nhi.progress and 2) nhi.output. The progress function accepts either an integer or a float as the sole parameter; it updates the user in the interface on your script's progress. You can either stagger the progress function throughout your code or use it in a for loop --- you can see some examples down below. You can write a custom script without using the progress functon, however, you cannot write a script without the output function! The output function has one mandatory parameter of PIL image type; the other parameters are 1) new_window, 2) path, and 3) file_extension. *new_window* is a boolean that specifies whether a new window should be created in the interface with the resulting image. *path* is a string that specifies the location on the computer where your image will be saved. __N.B. while running your custom script in the interface, path should not be changed! It is for debugging purposes only!__ *file_extension* is a string specifing the file format the image will be saved in (png, jpg, tif).

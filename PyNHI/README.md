@@ -50,7 +50,7 @@ Ok, now let's run through some basic examples!
 
 # FAQ
 - Why am I seeing "Error; Make sure image is a PIL image. When running the script on the interface ensure that you are not overriding the path parameter!" in the interface?
-    -  You are having an error in your nhi.output function. As the error states, ensure that your first parameter is of type PIL image and that you haven't edited the path parameter. Example: `nhi.output(image)
+    -  You are having an error in your nhi.output function. As the error states, ensure that your first parameter is of type PIL image and that you haven't edited the path parameter. Example: `nhi.output(image)`
 
 # Contact
 - Jack Kellerk (jjk322@lehigh.edu)

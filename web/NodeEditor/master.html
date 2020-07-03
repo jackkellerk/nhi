@@ -1,0 +1,216 @@
+<html>
+    <head>
+        <title>Node Editor</title>
+
+        <!-- Dependencies-->
+        <script src="pixi.min.js"></script>
+    </head>
+    <body>
+        <script>
+            var renderer = PIXI.autoDetectRenderer(screen.width, screen.height, { antialias: true });
+            renderer.view.width = screen.width - 15;
+            renderer.view.height = screen.height - 130;
+            document.body.appendChild(renderer.view);
+
+            var stage = new PIXI.Container();    
+            stage.interactive = true;
+
+            var mousePosition = renderer.plugins.interaction.mouse.global;
+
+            // Add background image
+            gridImage = new PIXI.Sprite.from("./background.png");
+            gridImage.height = renderer.screen.height * 3.5;
+            gridImage.width = renderer.screen.height * 3.5;
+            stage.addChild(gridImage);
+
+            // Add nodes
+            var graphics = new PIXI.Sprite.from("./output.png");
+            graphics.interactive = true;
+            graphics.height = 256;
+            graphics.width = 256;
+            graphics.alpha = 0.8;
+            stage.addChild(graphics);    
+
+            // setup events
+            graphics
+                .on('mousedown', onDragStart)
+                .on('touchstart', onDragStart)
+                .on('mouseup', onDragEnd)
+                .on('mouseupoutside', onDragEnd)
+                .on('touchend', onDragEnd)
+                .on('touchendoutside', onDragEnd)
+                .on('mousemove', onDragMove)
+                .on('touchmove', onDragMove);
+
+            var graphics2 = new PIXI.Sprite.from("./input.png");
+            graphics2.interactive = true;
+            graphics2.height = 256;
+            graphics2.width = 256;
+            graphics2.alpha = 0.8;
+            stage.addChild(graphics2);    
+
+            // setup events
+            graphics2
+                .on('mousedown', onDragStart)
+                .on('touchstart', onDragStart)
+                .on('mouseup', onDragEnd)
+                .on('mouseupoutside', onDragEnd)
+                .on('touchend', onDragEnd)
+                .on('touchendoutside', onDragEnd)
+                .on('mousemove', onDragMove)
+                .on('touchmove', onDragMove);
+
+            var endNode = new PIXI.Sprite.from("./gamma.png");
+            endNode.interactive = true;
+            endNode.height = 256;
+            endNode.width = 256;
+            endNode.alpha = 0.8;
+            stage.addChild(endNode);    
+
+            // setup events
+            endNode
+                .on('mousedown', onDragStart)
+                .on('touchstart', onDragStart)
+                .on('mouseup', onDragEnd)
+                .on('mouseupoutside', onDragEnd)
+                .on('touchend', onDragEnd)
+                .on('touchendoutside', onDragEnd)
+                .on('mousemove', onDragMove)
+                .on('touchmove', onDragMove);
+
+            var searchNode = new PIXI.Sprite.from("./search.png");
+            searchNode.interactive = false;
+            searchNode.width = 256;
+            searchNode.height = 512;
+            searchNode.position.x = 100;
+            searchNode.alpha = 0;
+            stage.addChild(searchNode);
+
+            var p = false;
+            var l = false;
+
+            window.onkeydown = function(e) 
+            {
+                if(e.keyCode == 32 && searchNode.alpha == 0)
+                {
+                    searchNode.alpha = 1;
+                    searchNode.position.x = mousePosition.x - 128;
+                    searchNode.position.y = mousePosition.y;
+                }
+                else if(e.keyCode == 32 && searchNode.alpha == 1)
+                {
+                    searchNode.alpha = 0;
+                }
+                else if(e.keyCode == 80)
+                {
+                    p = !p;
+                    l = false;
+                }
+                else if(e.keyCode == 76)
+                {
+                    l = !l;
+                    p = false;
+                }
+                else
+                {
+                    l = false;
+                    p = false;
+                }
+            }
+
+            var graphicsLine = new PIXI.Graphics();
+            stage.addChild(graphicsLine);
+
+            var graphicsLine2 = new PIXI.Graphics();
+            stage.addChild(graphicsLine2);
+
+            var mousedownID = -1;  //Global ID of mouse down interval
+            var oldMousePosX = 0;
+            var oldMousePosY = 0;
+            function mousedown(event) 
+            {
+                if(mousedownID==-1)  //Prevent multimple loops!
+                    mousedownID = setInterval(whilemousedown, 5 /*execute every 100ms*/);
+
+                oldMousePosX = mousePosition.x;
+                oldMousePosY = mousePosition.y;
+            }
+
+            function mouseup(event) {
+                if(mousedownID!=-1) {  //Only stop if exists
+                    clearInterval(mousedownID);
+                    mousedownID=-1;
+                }
+
+                oldMousePosX = 0;
+                oldMousePosY = 0;
+            }
+            function whilemousedown() {
+                if(p)
+                {
+                    graphicsLine.clear();
+                    graphicsLine.lineStyle(10, 0x00D40F)
+                        .moveTo(oldMousePosX,oldMousePosY)
+                        .lineTo(mousePosition.x, mousePosition.y);
+                }
+                else if(l)
+                {
+                    graphicsLine2.clear();
+                    graphicsLine2.lineStyle(10, 0x00D40F)
+                        .moveTo(oldMousePosX,oldMousePosY)
+                        .lineTo(mousePosition.x, mousePosition.y);
+                }
+            }
+            //Assign events
+            document.addEventListener("mousedown", mousedown);
+            document.addEventListener("mouseup", mouseup);
+            //Also clear the interval when user leaves the window with mouse
+            document.addEventListener("mouseout", mouseup);
+
+            function onDragStart(event)
+            {
+                if(p || l)
+                    return;
+                // store a reference to the data
+                // the reason for this is because of multitouch
+                // we want to track the movement of this particular touch
+                this.data = event.data;
+                this.alpha = 0.7;
+                this.dragging = true;
+            }
+
+            function onDragEnd()
+            {
+                if(p || l)
+                    return;
+                this.alpha = 0.8;
+
+                this.dragging = false;
+
+                // set the interaction data to null
+                this.data = null;
+            }
+
+            function onDragMove()
+            {
+                if(p || l)
+                    return;
+                if (this.dragging)
+                {
+                    var newPosition = this.data.getLocalPosition(this.parent);
+                    this.position.x = newPosition.x - 128;
+                    this.position.y = newPosition.y;
+                }
+            }
+
+            // run the render loop
+            animate();
+
+            function animate() 
+            {
+                renderer.render(stage);
+                requestAnimationFrame( animate );
+            }
+        </script>
+    </body>
+</html>

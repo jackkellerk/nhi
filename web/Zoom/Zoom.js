@@ -11,7 +11,7 @@ class ZoomTool {
         this.mode_button = modeSwitch;
         this.screenshot = screenshotIcon;
         this.move = moveIcon;
-
+        this.screenshotImg;
         this.cancel_button.y
         // actiave eventHandler for buttons        
         this.mode_button
@@ -204,24 +204,11 @@ class ZoomTool {
                 console.log("Width: " +  Number(this.endPoint.y -this.startPoint.y))
                 //console.log("endy: " + this.endPoint.y)
                 // swap background with cropped texture
-                let screenshotImg = new PIXI.Texture(this.zoom_bg_texture, 
-                    new PIXI.Rectangle(0, 
-                        0, 
-                        Number(this.endPoint.x - this.startPoint.x), 
-                        Number(this.endPoint.y - this.startPoint.y)
-                        )
-                    );
+                
 
                 //screenshotImg._updateUvs();
-/*
-                let imgDataZoom = CanvasRenderer.view.toDataURL("image/jpeg");
-                var imageZoom = new Image();
-                imageZoom.src = imgDataZoom;
-                */
-                let mySprite = new PIXI.Sprite(screenshotImg);
-                
-                // added by A.Thomas 8/14/19 2:02pm
-                var newWindow = new WorkWindow("Window NEW", x=0, y=0, screenshotImg, true);
+                this.loadTexture(this).then(function(source){
+                    var newWindow = new WorkWindow("Window NEW", x=0, y=0, source.screenshotImg, true);
                     newWindow.container.interactive = true;
                     newWindow.drawWindow();
                     newWindow.tool2.emit('pointerdown');
@@ -269,16 +256,38 @@ class ZoomTool {
                     });
                 //this.zoom_bg_sprite.texture = screenshotImg;
                 //Changes draw value and updates other information
-                this.drawing = false;
+                source.drawing = false;
 
-                this.guideText.text = 'Copy of the selected area of image created.';
+                source.guideText.text = 'Copy of the selected area of image created.';
 
                 // cropGraphics.clear() because to box offests in scaled images
-                this.cropGraphics.clear();
+                source.cropGraphics.clear();
+                })
+/*
+                let imgDataZoom = CanvasRenderer.view.toDataURL("image/jpeg");
+                var imageZoom = new Image();
+                imageZoom.src = imgDataZoom;
+                */
+                //let mySprite = new PIXI.Sprite(screenshotImg);
+                
+                // added by A.Thomas 8/14/19 2:02pm
+                
                 
             } //end else
         } //end cancel if
     } // end draw point
+
+
+    async loadTexture(){
+        this.screenshotImg = new PIXI.Texture(this.zoom_bg_texture, 
+            new PIXI.Rectangle(0, 
+                0, 
+                Number(this.endPoint.x - this.startPoint.x), 
+                Number(this.endPoint.y - this.startPoint.y)
+                )
+            );
+        return Promise.resolve(this)
+    }
     
     /**
      *  called when cancel_button is fired.

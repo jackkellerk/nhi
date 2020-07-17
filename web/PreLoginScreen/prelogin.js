@@ -93,6 +93,8 @@ function startPreLogin() {
   if (addCheck) {
   }
 
+  uploadImage();
+
   //Back drop for the pre/login screen and when clicked on will reveal the login screen
   //array of images to be used as backdrop for the pre/login screens.  Add images by adding the path to the array below
   //right now these are just images found on google

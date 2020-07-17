@@ -56,6 +56,8 @@ function startLoginPage() {
 
     chooseProjectPage.display(app.stage);
 
+    uploadImage();
+
     // var checkbox = new Choice({content: '123'});
 
     // app.stage.addChild(checkbox.optionContainer);

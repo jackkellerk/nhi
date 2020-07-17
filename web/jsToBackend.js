@@ -88,6 +88,30 @@ function signUpBackend()
     });
 }
 
+function uploadImage(fileName, fileData, user, project){
+    var convertToJSON = {"fileName": fileName, "fileData" : fileData,
+        "user" : user, "project" : project};
+    var uid = 8;
+    var sessionkey = "test_session_key";
+    $.ajax({
+        method: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify(convertToJSON),
+        headers: {"uid": uid, "session_key": sessionkey},
+        url: location.protocol + '//' + location.host   + '/i/upload',
+        crossDomain: 'true',
+        xhrFields: {
+            withCredentials: true
+        },
+        success: function(callback) {
+            console.log(callback)
+        },
+        error: function(xhr, status, error) {
+            alert("Internal Server Error: 500");
+        }
+    });
+}
+
 function gatherUserSettings()
 {
     // This loads the information about the userSettings

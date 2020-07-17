@@ -4,7 +4,7 @@
   <title>Example for Getting Image by AJEX</title>
 
   <!--Dependencies-->
-
+  <script src="jsToBackend.js"></script>
   <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 </head>
 
@@ -14,19 +14,68 @@
   <script>
     var uid = 8;
     var sessionkey = "test_session_key";
-    var filename = "1.jpg";
-    var institution = "demo";
+    var filename = "microscopy.jpg";
+    var username = "agm321";
+    var project = "project_1"
     //create the image
     var i = new Image();
-    var url = location.protocol + '//' + location.host + "/i/" + institution + "/" + filename + "?uid=" + uid + "&session_key=" + sessionkey;
+    var url =  location.protocol + '//' + location.host + "/i/" + username + "/" +  project + "/" + filename + "?uid=" + uid + "&session_key=" + sessionkey;
     console.log(url);
-    i.src = url;
-    i.onload = onload;
-
+    var dataURL;
+    i.data = "";
+    var canvas;
     //show the image after it is loaded. You might want to make it a Pixi Sprike to use it later.
-    onload = function () {
+    i.src = url;
+    i.onload =  function (dataURL) {
       $('#container').append(i);
+      var canvas = document.createElement('CANVAS');
+      var ctx = canvas.getContext('2d');
+      
+      canvas.height = this.naturalHeight;
+      canvas.width = this.naturalWidth;
+      ctx.drawImage(this, 0, 0);
+      dataURL = canvas.toDataURL("image/jpg");
+      console.log(dataURL)
+      i.data = dataURL
+      //return dataURL;
     }
+
+    //console.log(i.onload);
+
+    i.onclick = function( username, project){
+      username = "agm321";
+      project = "project_1"
+      console.log(i.data)
+      var data = i.data
+      uploadImage("microscopy", data.toString(), username, project)
+    }
+
+    // function toDataURL(src, callback, outputFormat) {
+    //   var img = new Image();
+    //   img.crossOrigin = 'Anonymous';
+    //   img.onload = function() {
+    //     var canvas = document.createElement('CANVAS');
+    //     var ctx = canvas.getContext('2d');
+    //     var dataURL;
+    //     canvas.height = this.naturalHeight;
+    //     canvas.width = this.naturalWidth;
+    //     ctx.drawImage(this, 0, 0);
+    //     dataURL = canvas.toDataURL(outputFormat);
+    //     callback(dataURL);
+    //   };
+    //   img.src = src;
+    //   if (img.complete || img.complete === undefined) {
+    //     img.src = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==";
+    //     img.src = src;
+    //   }
+    // }
+
+    // toDataURL(
+    //   'https://www.gravatar.com/avatar/d50c83cc0c6523b4d3f6085295c953e0...............',
+    //   function(dataUrl) {
+    //     console.log('RESULT:', dataUrl)
+    //   }
+    // )
   </script>
 </body>
 

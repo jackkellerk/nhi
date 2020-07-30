@@ -1,8 +1,10 @@
 package edu.lehigh.nhi.multitouch.backend.database;
 
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,6 +16,7 @@ public class SourceManager {
     @SuppressWarnings("unused")
     private final DatabaseManager mManager;
     private final Statements mStatements;
+    Date date_creation;
 
     protected SourceManager(DatabaseManager manager) throws SQLException {
         mManager = manager;
@@ -32,6 +35,16 @@ public class SourceManager {
     public JSONObject getSimpleObject(int oid) throws SQLException {
         PreparedStatement ps = mStatements.source.selectObjectByOid;
         ps.setInt(1, oid);
+        ResultSet rs = ps.executeQuery();
+        JSONObject retval = DatabaseManager.convertToJSONObject(rs);
+        rs.close();
+        return retval;
+    }
+
+    public JSONObject insertProjectImagePaths(String source) throws SQLException {
+        PreparedStatement ps = mStatements.source.insertImagePath;
+        ps.setTimestamp(1, new Timestamp(System.currentTimeMillis()));
+        ps.setString(2, source);
         ResultSet rs = ps.executeQuery();
         JSONObject retval = DatabaseManager.convertToJSONObject(rs);
         rs.close();
@@ -84,6 +97,10 @@ public class SourceManager {
         JSONArray retval = DatabaseManager.convertToJSONArray(rs);
         rs.close();
         return retval;
+    }
+
+    public Timestamp convertDateToTimestamp(Date date) {
+        return new Timestamp(date.getTime());
     }
 
 }

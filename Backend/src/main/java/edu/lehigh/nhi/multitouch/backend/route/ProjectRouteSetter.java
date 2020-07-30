@@ -79,9 +79,15 @@ public final class ProjectRouteSetter {
                             JSONArray sources = (JSONArray) vals[5];
                             JSONObject retval = db.project.createProject(uid, name, canvas_width, canvas_height, properties, institution);
 
-                            if (retval == null)
+                            if (retval == null){
                                 return StructuredResponse
                                         .getErrorResponse(ErrorHandler.UNKOWN.INSERTION_NO_UPDATE_UNKNOWN);
+                            }
+                            for (int i = 0; i < sources.length(); i++ ){
+                                String source = (String) sources.get(i);
+                                JSONObject imageRes = db.source.insertProjectImagePaths(source);
+                                retval.put("Insert ImageRes", imageRes);
+                            }
 
                             return StructuredResponse.getResponse(retval);
                         });

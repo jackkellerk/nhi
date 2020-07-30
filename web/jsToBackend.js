@@ -236,7 +236,12 @@ function getAllSources()
 function postNewProject(name, canvasWidth, canvasHeight, properties, institution, sources)
 {
     // let newProjectSettings = {newProjectSettings: data};
-    let responseData = {name: name, canvas_width: canvasWidth, canvas_height: canvasHeight, properties: properties, institution: institution, sources: sources};
+    let responseData = {name: name, 
+        canvas_width: canvasWidth, 
+        canvas_height: canvasHeight, 
+        properties: properties, 
+        institution: institution, 
+        sources: sources};
     $.ajax({
         method: 'POST',
         contentType: 'application/json',

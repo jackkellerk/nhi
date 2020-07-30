@@ -264,18 +264,27 @@ function moveSources(){
 function clickSource(element){
     //console.log(element.container.getChildAt(1).alpha)
     var start = element.container.getChildAt(1).alpha
-    if ( start == 0){
-        element.container.getChildAt(1).alpha =1;
-        selectedSources.push(element.id)
-    } else {
-        element.container.getChildAt(1).alpha =0;
-        for( var i = 0; i < selectedSources.length; i++){ 
-            if ( selectedSources[i] === element.id) {
-              selectedSources.splice(i, 1); 
-              i--;
-            }
-         }
-    }
+
+    /**
+     * Uncomment for when we edit our app to have users choose a starting image
+     */
+
+    // if ( start == 0){
+    //     element.container.getChildAt(1).alpha =1;
+    //     selectedSources.push(element.id)
+    // } else {
+    //     element.container.getChildAt(1).alpha =0;
+    //     for( var i = 0; i < selectedSources.length; i++){ 
+    //         if ( selectedSources[i] === element.id) {
+    //           selectedSources.splice(i, 1); 
+    //           i--;
+    //         }
+    //      }
+    // }
+    var uid = 8;
+    var sessionkey = "test_session_key";
+    var url = "/i/demo/Sample_project/microscopy.jpg" 
+    selectedSources.push(url)
     console.log("Start")
     selectedSources.forEach(element => {
         console.log(element)

@@ -69,3 +69,7 @@ let newProjectProperties;  // processed JSON object of newProjectAnswers
 
 var threeJSMove = false;
 var currentThreeJSInstance = null;
+
+/* Start of global variables for Backend project list */
+var project_list = null;
+/* End of global variables for Backend project list */

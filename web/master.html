@@ -124,6 +124,7 @@
 
             let app = new PIXI.Application({ 
                     width: window.innerWidth,
+                    //height: window.innerHeight,
                     height: window.innerHeight,
                     antialias: true,
                     transparent: false,
@@ -131,7 +132,12 @@
                     resolution: devicePixelRatio,
                     backgroundColor: 0x000000 
             });
-
+           
+            const graphic = new PIXI.Graphics()
+	                .beginFill(0xFF0000)
+                    .drawRect(0, 0, 200, 200);
+           
+            
             const gradTexture = createGradTexture();
 
             const sprite = new PIXI.Sprite(gradTexture);
@@ -179,41 +185,48 @@
                 }
                 else if(currentActivity == 'AllProjects')
                 {
-
                     startAllProjects();
                 }
                 else if(currentActivity == 'Windows')
-                {
+                {   
+                    resize();
                     // function in windows.js in Windows folder
                     startWindows();
                 }
                 else if(currentActivity == 'NewProject')
                 {
+                    resize();
                     NewProject.startProjects();
                 }
                 else if(currentActivity == 'Source')
                 {
+                    resize();
                     startSourcePage();
                 }
                 else if(currentActivity == 'Zoom')
                 {
+                    resize();
                     var testZoom = new Zoom(null, 0, 0);
                 }
                 else if(currentActivity == 'Multispectrum')
                 {
+                    resize();
                     startSpectrum();
                 }
                 else if(currentActivity == 'Tilting')
                 {
+                    resize();
                     Tilting.startTilting();
                 }
                 else if(currentActivity == 'Multi-block')
                 {
+                    resize();
                     // this function is in main.js in Multi-block folder. This function generates the UI for my activity
                     startMultiblock();
                 }
                 else if(currentActivity == 'Line')
                 {
+                    resize();
                     LI_showAll();
                 }
 

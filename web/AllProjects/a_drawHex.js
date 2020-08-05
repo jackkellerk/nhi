@@ -12,7 +12,8 @@ function a_drawHexGrid()
 
   // coordinates of initial hexagon center (change throughout function)
   var hex_x = -10;
-  var hex_y = app.screen.height/3.5; //(app.screen.height - (max_y*hexSize*1.4875))/2 + 60;
+  //var hex_y = (app.screen.height)/3.5; //(app.screen.height - (max_y*hexSize*1.4875))/2 + 60;
+  var hex_y = window.innerHeight/3.5;
 
   initialHex = new Hexagon({x:hex_x, y:hex_y}, 0, 80);
 

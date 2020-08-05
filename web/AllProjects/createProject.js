@@ -6,10 +6,13 @@ class Project {
         this.container = new PIXI.Container();
         let infoContainer = new PIXI.Container();
 
+        // get which level will the project be 
+        var verticalShift = Math.floor(count/3);
         // initial hex is the initially drawn hex in top left corner of hex grid (see a_drawHex.js)
-        let x = initialHex.x + 485 + count*417;
-        let y = initialHex.getCenterLowerRight(0).y;
-
+        let x = initialHex.x + 485 + (count%3)*417;
+        let y = initialHex.getCenterLowerRight(0).y + verticalShift*253;
+        //edited to adjust the position
+        
         // bottom left hexagon of each project with general info (not extra info)
         this.infoHex = new Hexagon({x, y}, 0, 80);
         this.infoHex.graphics.alpha = 0.8;
@@ -30,7 +33,7 @@ class Project {
             shape.beginFill(0x000000);
             shape.drawPolygon([69.282,0, 138.564,40, 207.846,0, 277.128,40, 277.128,120, 207.846,160, 207.846,240, 138.564,280, 69.282,240, 69.282,160, 0,120, 0,40]);
             shape.endFill();
-            shape.x = 198 + count*417;
+            shape.x = 198 + (count%3)*417;
             shape.y = this.infoHex.y - 200;
         image.mask = shape;
         this.container.addChild(shape);
@@ -55,6 +58,10 @@ class Project {
 
         // text included in info Shape
         let detailtxt = "Last Edited\n\n         Whitaker Laboratory\n         Lehigh University\n         06/25/19\n         13:23"
+        if(count !=0){
+            //display backend project 
+            detailtxt = project_list[count-1][1]["name"] +"\n\n         " + project_list[count-1][1]["institution"]+ "\n         "+ project_list[count-1][1]["date_creation"] + "\n         pid: "+ project_list[count-1][1]["pid"]
+        }
         let details = new PIXI.Text(detailtxt, {fill: "#ffffff", fontFamily: "Arial", fontWeight: "bold", fontSize: 14, lineHeight: 20});
             details.position.x = shapeOutline.x + 50;
             details.position.y = shapeOutline.y + 60;

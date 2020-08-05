@@ -11,7 +11,8 @@ var a_p1InfoContainer = new PIXI.Container();
 var maskContainer = new PIXI.Container();
 var newProjectContainer = new PIXI.Container(); 
 var a_searchContainer = new PIXI.Container();
-
+//var a_projectListContainer = new PIXI.Container();
+   
 var a_tintBg = new PIXI.Graphics();
 
 // misc
@@ -31,10 +32,12 @@ function startAllProjects()
 
 function createUIProjects()
 {
-
+    
     // background from gradient texture
-
+    resizeProjectWindow();
+    
     const gradTexture = createGradTexture();
+    
     
     //Agustin: alpaha transform to 0.0 on the login background image. Setting stage to 0.0 alpha
     app.stage.x = app.width;
@@ -45,10 +48,11 @@ function createUIProjects()
     const sprite = new PIXI.Sprite(gradTexture);
           sprite.width = app.screen.width;
           sprite.height = app.screen.height;
+          //sprite.height = 1077;
     app.stage.addChild(sprite);
 
-
     // some variable change if multitouch screen ratio detected (then isTouch boolean is set to TRUE)
+
     if ((app.screen.width)/(app.screen.height) > 5) // in case of multi touch screen in CITL
     {
         isTouch = true;
@@ -67,6 +71,7 @@ function createUIProjects()
     a_drawHexGrid(isTouch);
 
 
+
     // Title
 
     var spacing = 35; // spacing between title and subtitle
@@ -80,14 +85,16 @@ function createUIProjects()
     let titleMetrics = PIXI.TextMetrics.measureText(titletxt, a_titlestyle);
     const title = new PIXI.Text(titletxt, a_titlestyle);
     title.position.x = (app.screen.width - titleMetrics.width)/2;
-    title.position.y = app.screen.height/25;
+    //title.position.y = app.screen.height/25;
+    title.position.y = window.innerHeight/25;
     a_titleContainer.addChild(title);
   
     let subtitletxt = "or create a New Project to begin";
     let subtitleMetrics = PIXI.TextMetrics.measureText(subtitletxt, a_subtitlestyle);
     const subtitle = new PIXI.Text(subtitletxt, a_subtitlestyle);
           subtitle.position.x = (app.screen.width - subtitleMetrics.width)/2;
-          subtitle.position.y = app.screen.height/25 + spacing;
+          //subtitle.position.y = app.screen.height/25 + spacing;
+          subtitle.position.y =window.innerHeight/25 + spacing;
     a_titleContainer.addChild(subtitle);
   
     app.stage.addChild(a_titleContainer);
@@ -124,9 +131,6 @@ function createUIProjects()
     app.stage.addChild(a_searchContainer);
 
 
-
-
-
     // User Settings
 
     // this is used to have a black background for the image
@@ -152,7 +156,8 @@ function createUIProjects()
     a_settIconContainer.addChild(userSettingsHex.container);
 
     a_settIconContainer.addChild(userSettingsCirlce);
-
+    
+    
     let userSettingsIcon = new PIXI.Sprite.fromImage("Images/profile-settings.png");
         userSettingsIcon.width = 47;
         userSettingsIcon.height = 47;
@@ -175,11 +180,13 @@ function createUIProjects()
     a_tintBg.interactive = true;
     a_settingsContainer.addChild(a_tintBg);
 
-    var passwordString = "";
+    
+    var passwordString = "*";
     for(var i = 0; i < userSettingsResponse.password.length; i++)
     {
         passwordString += "*";
     }
+    
 
     // create new settings window by callling createSettings. add one field at a time by calling s_addField(fieldName, value, which no. field, true for 'add icon' instead of 'plus')
     createSettings("User Settings", a_settingsContainer, 5);
@@ -190,9 +197,29 @@ function createUIProjects()
     s_addField("Email", userSettingsResponse.email, 5);
     s_addLogoutButton();
 
+  
+    for(var i in project_list)
+    {
+       
+        let project1 = new Project("AKT Ceramics", "Images/LineIntegral.jpg", i);
+        
+        project1.select.on('mouseover', function(){
+            project1.select.alpha = 1;
+            app.stage.addChild(project1.container);
+        });
+        project1.select.on('mouseout', function(){
+        project1.select.alpha = 0.75;
+        });
+        project1.select.on('pointerdown', function(){
+            currentActivity = activityArray[2];
+            moveLeftProjectSelection();
+            setTimeout('updateActivity()', 200); 
+        });
+        //project1.newProject();
     
-
-    // create new Project instance
+    }
+   
+   
     let project1 = new Project("AKT Ceramics", "Images/LineIntegral.jpg", 0);
 
     project1.select.on('mouseover', function(){
@@ -208,7 +235,8 @@ function createUIProjects()
         setTimeout('updateActivity()', 200); 
     });
 
-
+    
+    
     if(create_project > 0){
         // create new Project instance
         let project2 = new Project("AKT Metals", "Images/lowmag_test.jpg", 1);
@@ -230,15 +258,12 @@ function createUIProjects()
         project2.newProject();
     }
     else{
+    
         project1.newProject();
+        
     }
     
-
-
     
-
-
-
 
 
     // inside Hexagon.draw();
@@ -259,6 +284,9 @@ function createUIProjects()
 
 
 }
+
+
+
 
 function a_SettingsSelect()
 {
@@ -308,10 +336,17 @@ function a_generateTextBox(x, y, w)
 }
 
 
+
 //Agustin: Edit to move some elements. Some hexagons are not being altered at the moment
 function moveLeftProjectSelection(){
     positionTransform(-1000, a_titleContainer.y, a_titleContainer, 10)
     positionTransform(-1000, a_settingsContainer.y, a_settingsContainer, 10)
     //positionTransform(-1000, project1.container.y, project1.container, 10)
     //blurTransform(app.stage, 1.0, 10)
+}
+
+function resizeProjectWindow(){
+    var x = Math.ceil((project_list.length)/6) -1;
+    //console.log(x);
+    app.renderer.resize(window.innerWidth,(x* (window.innerHeight)));
 }

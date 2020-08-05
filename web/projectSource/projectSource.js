@@ -65,6 +65,7 @@ function startSourcePage() {
     x = app.screen.width / 8;
     y = app.screen.height / 8;
 
+
     // set width and height of the backgrond sprite, stage it to the app
     source_bg.width = app.screen.width;
     source_bg.height = app.screen.height;

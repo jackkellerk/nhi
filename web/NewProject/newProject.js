@@ -15,7 +15,8 @@ class NewProject{
     }
     
     static createNewProjectPrompt(){
-        let h = app.screen.height;
+        //let h = app.screen.height;
+        let h = window.innerHeight; //changed to innerHeight because app.screen.height is offscreen
         let w = app.screen.width;
         let numPrompts = 4;
         let prompts = [];

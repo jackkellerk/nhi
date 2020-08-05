@@ -133,7 +133,8 @@ function gatherUserSettings()
             }
             else{
             userSettingsResponse = callback.data;
-            createUIProjects();
+            console.log(callback.data)
+            //createUIProjects();
             }
         },
         error: function(xhr, status, error) {
@@ -193,10 +194,17 @@ function getProjects()
                 alert("Error loading the user settings!");
             }
             else{
-            //userSettingsResponse = callback.data;
-            //createUIProjects();
+            
             console.log(callback)
-            }
+            //project_list is an object that has 2D array containing all projects info
+            project_list = Object.entries((callback.data).array);
+            //console.log(project_list);
+            //userSettingsResponse = callback.data;
+            createUIProjects();
+            
+            
+            //end     
+            }    
         },
         error: function(xhr, status, error) {
             alert("Internal Server Error: 500");

@@ -13,7 +13,8 @@ function createSettings(title="Settings", container, fieldCount)
     this.fieldCount = fieldCount; // helps determine size of window
 
     w = app.screen.width;
-    h = app.screen.height;
+    //h = app.screen.height;
+    h = window.innerHeight; //height of screen will chaneg based on the project displayed, but setting box wants the regular size 
     corner_x = (w - 0.9*h)/2;
     corner_y = (h-150-fieldCount*40)/2;
 

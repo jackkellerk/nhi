@@ -283,6 +283,7 @@ function clickSource(element){
     // }
     var uid = 8;
     var sessionkey = "test_session_key";
+    var d = new Date();
     var url = "/i/demo/Sample_project/microscopy.jpg" 
     selectedSources.push(url)
     console.log("Start")
@@ -296,8 +297,17 @@ function clickSource(element){
 function confirmNewProject(){
     var jsonString = JSON.stringify(selectedSources);
     console.log(jsonString);
+    var today = new Date();
+    var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+    var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+    var dateTime = date+'_'+time;
+    console.log(dateTime)
+    var project_name = "NewProject_" + dateTime;
+    // d.toLocaleString().replace(", ", "_").replace("/ AM| PM/g", "");
+    //+ d.getMonth+"/"+d.getDate+"/"+d.getFullYear+ "_"+d.getHours+":"+d.getMinutes+":"+d.getSeconds;
+    //onsole.log (project_name)
     if(selectedSources.length != 0){
-        postNewProject("new proj", app.screen.width, app.screen.height, newProjectProperties, "Lehigh", selectedSources);  // An Ajax "POST" call to backend
+        postNewProject(project_name, app.screen.width, app.screen.height, newProjectProperties, "Lehigh", selectedSources);  // An Ajax "POST" call to backend
     }
     currentActivity = activityArray[1];
     updateActivity();

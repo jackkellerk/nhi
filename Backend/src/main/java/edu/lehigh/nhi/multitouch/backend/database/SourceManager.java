@@ -1,89 +1,118 @@
 package edu.lehigh.nhi.multitouch.backend.database;
 
+import java.io.File;
+import java.io.IOException;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
+import java.sql.Timestamp;
+
+import org.apache.commons.io.FileUtils;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 public class SourceManager {
     @SuppressWarnings("unused")
     private final DatabaseManager mManager;
     private final Statements mStatements;
+    Date date_creation;
 
-    protected SourceManager(DatabaseManager manager) throws SQLException {
+    protected SourceManager(final DatabaseManager manager) throws SQLException {
         mManager = manager;
         mStatements = Statements.getInstance();
     }
 
-    public JSONArray getObjectList(int sid) throws SQLException {
-        PreparedStatement ps = mStatements.source.selectObjectListBySid;
+    public JSONArray getObjectList(final int sid) throws SQLException {
+        final PreparedStatement ps = mStatements.source.selectObjectListBySid;
         ps.setInt(1, sid);
-        ResultSet rs = ps.executeQuery();
-        JSONArray retval = DatabaseManager.convertToJSONArray(rs);
+        final ResultSet rs = ps.executeQuery();
+        final JSONArray retval = DatabaseManager.convertToJSONArray(rs);
         rs.close();
         return retval;
     }
 
-    public JSONObject getSimpleObject(int oid) throws SQLException {
-        PreparedStatement ps = mStatements.source.selectObjectByOid;
+    public JSONObject getSimpleObject(final int oid) throws SQLException {
+        final PreparedStatement ps = mStatements.source.selectObjectByOid;
         ps.setInt(1, oid);
-        ResultSet rs = ps.executeQuery();
-        JSONObject retval = DatabaseManager.convertToJSONObject(rs);
+        final ResultSet rs = ps.executeQuery();
+        final JSONObject retval = DatabaseManager.convertToJSONObject(rs);
         rs.close();
         return retval;
     }
 
-    public JSONObject getDetailedObject(int oid) throws SQLException {
-        JSONObject retval = getSimpleObject(oid);
-        JSONArray hitBoxList = getHitboxesByOid(oid);
+    public JSONObject insertProjectImagePaths(final String source) throws SQLException {
+        final PreparedStatement ps = mStatements.source.insertImagePath;
+        ps.setTimestamp(1, new Timestamp(System.currentTimeMillis()));
+        ps.setString(2, source);
+        final ResultSet rs = ps.executeQuery();
+        final JSONObject retval = DatabaseManager.convertToJSONObject(rs);
+        rs.close();
+        return retval;
+    }
+
+    public static int copyFile(File from, File to) throws IOException {
+        FileUtils.copyFile(from, to); 
+        File tmpDir = new File("/var/tmp");
+        boolean exists = tmpDir.exists();
+        if (!exists){
+            return 0;
+        } else {
+            return 1;
+        }
+    }
+
+    public JSONObject getDetailedObject(final int oid) throws SQLException {
+        final JSONObject retval = getSimpleObject(oid);
+        final JSONArray hitBoxList = getHitboxesByOid(oid);
         for (int i = 0; i < hitBoxList.length(); i++) {
-            JSONObject hitBox = hitBoxList.getJSONObject(i);
-            int iid = hitBox.getInt("iid");
+            final JSONObject hitBox = hitBoxList.getJSONObject(i);
+            final int iid = hitBox.getInt("iid");
             hitBox.put("image", getImageByIid(iid));
         }
         retval.put("hit_box_list", hitBoxList);
         return retval;
     }
 
-    public JSONArray getHitboxesByOid(int oid) throws SQLException {
-        PreparedStatement ps = mStatements.source.selectHitBoxesByOid;
+    public JSONArray getHitboxesByOid(final int oid) throws SQLException {
+        final PreparedStatement ps = mStatements.source.selectHitBoxesByOid;
         ps.setInt(1, oid);
-        ResultSet rs = ps.executeQuery();
-        JSONArray retval = DatabaseManager.convertToJSONArray(rs);
+        final ResultSet rs = ps.executeQuery();
+        final JSONArray retval = DatabaseManager.convertToJSONArray(rs);
         rs.close();
         return retval;
     }
 
-    public JSONObject getImageByIid(int iid) throws SQLException {
-        PreparedStatement ps = mStatements.source.selectImageByIid;
+    public JSONObject getImageByIid(final int iid) throws SQLException {
+        final PreparedStatement ps = mStatements.source.selectImageByIid;
         ps.setInt(1, iid);
-        ResultSet rs = ps.executeQuery();
-        JSONObject retval = DatabaseManager.convertToJSONObject(rs);
+        final ResultSet rs = ps.executeQuery();
+        final JSONObject retval = DatabaseManager.convertToJSONObject(rs);
         rs.close();
         return retval;
     }
     
     
-    public JSONObject getSourceBySid(int sid) throws SQLException {
-        PreparedStatement ps = mStatements.source.selectSourceBySid;
+    public JSONObject getSourceBySid(final int sid) throws SQLException {
+        final PreparedStatement ps = mStatements.source.selectSourceBySid;
         ps.setInt(1, sid);
-        ResultSet rs = ps.executeQuery();
-        JSONObject retval = DatabaseManager.convertToJSONObject(rs);
+        final ResultSet rs = ps.executeQuery();
+        final JSONObject retval = DatabaseManager.convertToJSONObject(rs);
         rs.close();
         return retval;
     }
     
     public JSONArray getSourceList() throws  SQLException {
-        PreparedStatement ps = mStatements.source.selectSourceListBySid;
-        ResultSet rs = ps.executeQuery();
-        JSONArray retval = DatabaseManager.convertToJSONArray(rs);
+        final PreparedStatement ps = mStatements.source.selectSourceListBySid;
+        final ResultSet rs = ps.executeQuery();
+        final JSONArray retval = DatabaseManager.convertToJSONArray(rs);
         rs.close();
         return retval;
+    }
+
+    public Timestamp convertDateToTimestamp(final Date date) {
+        return new Timestamp(date.getTime());
     }
 
 }

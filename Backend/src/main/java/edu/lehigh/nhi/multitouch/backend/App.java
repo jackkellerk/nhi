@@ -33,7 +33,8 @@ public class App {
             try {
                 port = Integer.parseInt(argsMap.get("port"));
             } catch (NumberFormatException e) {
-                printArgumentsErrorMessage();
+                int place = 4;
+                printArgumentsErrorMessage(place);
             }
         }
 
@@ -48,10 +49,12 @@ public class App {
                 if (argsMap.containsKey("dbpass")) {
                     App.NHITEST_SQL_PASSWORD = argsMap.get("dbpass");
                 }else{
-                    printArgumentsErrorMessage();
+                    int place = 3;
+                    printArgumentsErrorMessage(place);
                 }
             } else {
-                printArgumentsErrorMessage();
+                int place = 2;
+                printArgumentsErrorMessage(place);
             }
         }
 
@@ -98,7 +101,8 @@ public class App {
         for (String arg : args) {
             String[] pair = arg.split(":");
             if (pair.length != 2) {
-                printArgumentsErrorMessage();
+                int place = 1;
+                printArgumentsErrorMessage(place);
             }
             // System.out.println(pair[0] + ":" + pair[1]);
             retval.put(pair[0], pair[1]);
@@ -106,13 +110,14 @@ public class App {
         return retval;
     }
 
-    private static void printArgumentsErrorMessage() {
+    private static void printArgumentsErrorMessage(int place) {
         StringBuilder sb = new StringBuilder();
         sb.append("command line arguments is not valid.\n");
         sb.append("Optional args (ordering does not mater):\n");
         sb.append("mode:<mode>\tmode could be 'deploy' or 'test'. Default to 'test'.\n");
         sb.append("port:<port>\tport should be a integer. Default to 4567.\n");
         sb.append("quiting...\n");
+        sb.append(place);
         System.err.println(sb.toString());
         System.exit(1);
     }

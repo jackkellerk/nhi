@@ -1,5 +1,6 @@
 package edu.lehigh.nhi.multitouch.backend.database;
 
+import java.io.File;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;

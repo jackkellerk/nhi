@@ -1,6 +1,13 @@
 
 package edu.lehigh.nhi.multitouch.backend.route;
 
+import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -9,6 +16,7 @@ import edu.lehigh.nhi.multitouch.backend.ErrorHandler;
 import edu.lehigh.nhi.multitouch.backend.JSONValueGetter.Type;
 import edu.lehigh.nhi.multitouch.backend.StructuredResponse;
 import edu.lehigh.nhi.multitouch.backend.database.DatabaseManager;
+import edu.lehigh.nhi.multitouch.backend.database.SourceManager;
 
 /**
  * Static class for creating routes related to projects. IMPORTANT: routes only
@@ -67,9 +75,8 @@ public final class ProjectRouteSetter {
 
             return RouteSetter.preprocessSessionCheck(request, response, encryption, (uid, sessionkey) -> {
                 return RouteSetter.preprocessJSONValueGet(request, response,
-                new String[] { "name", "canvas_width", "canvas_height", "properties", "institution", "sources" },
-                new Type[] { Type.STRING, Type.FLOAT, Type.FLOAT, Type.JSONOBJ, Type.STRING, Type.JSONARR }, (vals) -> {
-
+                    new String[] { "name", "canvas_width", "canvas_height", "properties", "institution", "sources" },
+                        new Type[] { Type.STRING, Type.FLOAT, Type.FLOAT, Type.JSONOBJ, Type.STRING, Type.JSONARR }, (vals) -> {
                             String name = (String) vals[0];
                             float canvas_width = (float) vals[1];
                             float canvas_height = (float) vals[2];
@@ -78,14 +85,48 @@ public final class ProjectRouteSetter {
                             String institution = (String) vals[4];
                             JSONArray sources = (JSONArray) vals[5];
                             JSONObject retval = db.project.createProject(uid, name, canvas_width, canvas_height, properties, institution);
-
-                            if (retval == null)
+                            if (retval == null){
                                 return StructuredResponse
                                         .getErrorResponse(ErrorHandler.UNKOWN.INSERTION_NO_UPDATE_UNKNOWN);
+                            }
+                            //If row got inserted, make directory 
+                            String path = "../images/" + uid + "/" +  name;
+                            File file = new File(path);
+                            boolean bool = file.mkdir();
+                            if(bool){
 
+                                ///project directory got made, time to copy files and insert paths to table
+                                System.out.println("Directory created successfully");
+                                for (int i = 0; i < sources.length(); i++ ){
+
+                                    ///Creating filepath with date 
+                                    String source = (String) sources.get(i);
+                                    String[] fileNameParts = source.split("//.");
+                                    String pattern = "MM/dd/yyyy HH:mm:ss";
+                                    DateFormat df = new SimpleDateFormat(pattern);
+                                    Date today = new Date();        
+                                    String todayAsString = df.format(today);
+                                    String newPath = fileNameParts[0] +"-"+ todayAsString + fileNameParts[1];
+    
+                                    ///Time to copy the image file over to new path 
+                                    String origPath = "../images/" + fileNameParts[0] + "." + fileNameParts[1];
+                                    File origFile = new File(origPath);
+                                    File newFile = new File(newPath);
+                                    int copyResult = SourceManager.copyFile(origFile, newFile);
+                                    if(copyResult != 0){
+                                        //Image was copied over, time to insert into the table of our paths
+                                        System.out.println("Image copy created successfully");
+                                        JSONObject imageRes = db.source.insertProjectImagePaths(newPath);
+                                        retval.put("Insert ImageRes", imageRes);
+                                    }else{
+                                        System.out.println("Sorry couldn’t create image copy specified directory. Image index: " + i);
+                                    }                            
+                                }
+                            }else{
+                                System.out.println("Sorry couldn’t create specified directory");
+                            }
                             return StructuredResponse.getResponse(retval);
                         });
-
             });
         });
 

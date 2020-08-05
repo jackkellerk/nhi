@@ -1,5 +1,7 @@
 package edu.lehigh.nhi.multitouch.backend.route;
 
+import java.io.File;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -71,6 +73,15 @@ public final class UserRouteSetter {
                                 JSONObject dataJs = new JSONObject();
                                 dataJs.put("session_key", sessionKey);
                                 dataJs.put("uid", uid);
+                                String path = "../images/" +  uid;
+                                File file = new File(path);
+                                //Creating the directory
+                                boolean bool = file.mkdir();
+                                if(bool){
+                                    System.out.println("Directory created successfully");
+                                }else{
+                                    System.out.println("Sorry couldn’t create specified directory");
+                                }
                                 return StructuredResponse.getResponse(dataJs);
                             }
                             else{

@@ -5,6 +5,10 @@ var base_url = location.protocol + '//' + location.host;
 var uid;
 var session_key;
 
+/**
+ * LOGIN AND ACCOUNT AJAX REQUESTS
+ */
+
 function loginToBackend()
 {
     // converts the username into json
@@ -88,30 +92,6 @@ function signUpBackend()
     });
 }
 
-function uploadImage(fileName, fileData, user, project){
-    var convertToJSON = {"fileName": fileName, "fileData" : fileData,
-        "user" : user, "project" : project};
-    var uid = 8;
-    var sessionkey = "test_session_key";
-    $.ajax({
-        method: 'POST',
-        contentType: 'application/json',
-        data: JSON.stringify(convertToJSON),
-        headers: {"uid": uid, "session_key": sessionkey},
-        url: location.protocol + '//' + location.host   + '/i/upload',
-        crossDomain: 'true',
-        xhrFields: {
-            withCredentials: true
-        },
-        success: function(callback) {
-            console.log(callback)
-        },
-        error: function(xhr, status, error) {
-            alert("Internal Server Error: 500");
-        }
-    });
-}
-
 function gatherUserSettings()
 {
     // This loads the information about the userSettings
@@ -141,6 +121,49 @@ function gatherUserSettings()
             alert("Internal Server Error: 500");
         }
     });
+}
+
+/**
+ * PORJECT RELATED AJAX REQUESTS
+ */
+
+function getProject()
+{
+    while(listOfProjectIDs.length > 0)
+    {
+        $.ajax({
+            method: 'GET',
+            contentType: 'application/json',
+            headers: {"uid": uid, "session_key": session_key},
+            url: base_url + '/p/' + listOfProjectIDs[listOfProjectIDs.length - 1],
+            dataType: 'json',
+            crossDomain: 'true',
+            xhrFields: {
+                withCredentials: true
+            },
+            success: function(callback) 
+            {
+                if(callback.errorCode == 703)
+                {
+                    alert("Error loading the sources list!");
+                }
+                else
+                {
+                    // parse callback.data, which is an JsonObject, the field project contains
+                    // pid, name, date_creation, thumbnail (blank since not implemented yet), canvas_width, canvas_height, properties, institution,
+                    // the field windows is an JsonArray of windows, each element contains
+                    // wid, iid, pid, thumbnail, image_box, window_box, date_creation, minimized
+                    // image_box and window_box are two JsonObjects, both contain pos_x, pos_y, width, height
+
+                    // Also remove the last element of the array
+                }
+            },
+            error: function(xhr, status, error) 
+            {
+                alert("Internal Server Error at Ajax GET /project at client: 500");
+            }
+        });
+    }
 }
 
 function getOneProject(project_ID)
@@ -244,7 +267,12 @@ function getAllSources()
 function postNewProject(name, canvasWidth, canvasHeight, properties, institution, sources)
 {
     // let newProjectSettings = {newProjectSettings: data};
-    let responseData = {name: name, canvas_width: canvasWidth, canvas_height: canvasHeight, properties: properties, institution: institution, sources: sources};
+    let responseData = {name: name, 
+        canvas_width: canvasWidth, 
+        canvas_height: canvasHeight, 
+        properties: properties, 
+        institution: institution, 
+        sources: sources};
     $.ajax({
         method: 'POST',
         contentType: 'application/json',
@@ -269,31 +297,6 @@ function postNewProject(name, canvasWidth, canvasHeight, properties, institution
         }
     });
 }
-
-// name: String, canvasWidth: float, canvasHeight: float
-function postNewWindow(pid)
-{
-    $.ajax({
-        method: 'POST',
-        contentType: 'application/json',
-        headers: {"uid": uid, "session_key": session_key},
-        url: base_url + '/p/' + pid + '/new_window_default',
-        dataType: 'json',
-        crossDomain: 'true',
-        xhrFields: {
-            withCredentials: true
-        },
-        success: function(callback) {
-        },
-        error: function(xhr, status, error) {
-            alert("Internal Server Error: 500");
-        }
-    });
-}
-
-var listOfProjectIDs = [];
-var examplePositionX = 300;
-var examplePositionY = 300;
 
 function getListOfProjects()
 {
@@ -325,6 +328,37 @@ function getListOfProjects()
         }
     });
 }
+
+/**
+ * WORKSPACE RELATE AJAX REQUESTS (RELATING TO TOOLS AND WINDOWS OF A PROJECT)
+ */
+
+// name: String, canvasWidth: float, canvasHeight: float
+function postNewWindow(pid)
+{
+    $.ajax({
+        method: 'POST',
+        contentType: 'application/json',
+        headers: {"uid": uid, "session_key": session_key},
+        url: base_url + '/p/' + pid + '/new_window_default',
+        dataType: 'json',
+        crossDomain: 'true',
+        xhrFields: {
+            withCredentials: true
+        },
+        success: function(callback) {
+        },
+        error: function(xhr, status, error) {
+            alert("Internal Server Error: 500");
+        }
+    });
+}
+
+var listOfProjectIDs = [];
+var examplePositionX = 300;
+var examplePositionY = 300;
+
+
 
 //Creating new line
 function postNewLine(lid, x1, y1, x2, y2)
@@ -452,41 +486,51 @@ function getAllLines()
     });
 }
 
-function getProject()
-{
-    while(listOfProjectIDs.length > 0)
-    {
-        $.ajax({
-            method: 'GET',
-            contentType: 'application/json',
-            headers: {"uid": uid, "session_key": session_key},
-            url: base_url + '/p/' + listOfProjectIDs[listOfProjectIDs.length - 1],
-            dataType: 'json',
-            crossDomain: 'true',
-            xhrFields: {
-                withCredentials: true
-            },
-            success: function(callback) 
-            {
-                if(callback.errorCode == 703)
-                {
-                    alert("Error loading the sources list!");
-                }
-                else
-                {
-                    // parse callback.data, which is an JsonObject, the field project contains
-                    // pid, name, date_creation, thumbnail (blank since not implemented yet), canvas_width, canvas_height, properties, institution,
-                    // the field windows is an JsonArray of windows, each element contains
-                    // wid, iid, pid, thumbnail, image_box, window_box, date_creation, minimized
-                    // image_box and window_box are two JsonObjects, both contain pos_x, pos_y, width, height
+/**
+ * IMAGE RELATED AJAX REQUESTS 
+ */
 
-                    // Also remove the last element of the array
-                }
-            },
-            error: function(xhr, status, error) 
-            {
-                alert("Internal Server Error at Ajax GET /project at client: 500");
-            }
-        });
-    }
+function uploadImage(fileName, fileData, user, project){
+    var convertToJSON = {"fileName": fileName, "fileData" : fileData,
+        "user" : user, "project" : project};
+    var uid = 8;
+    var sessionkey = "test_session_key";
+    $.ajax({
+        method: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify(convertToJSON),
+        headers: {"uid": uid, "session_key": sessionkey},
+        url: location.protocol + '//' + location.host   + '/i/upload',
+        crossDomain: 'true',
+        xhrFields: {
+            withCredentials: true
+        },
+        success: function(callback) {
+            console.log(callback)
+        },
+        error: function(xhr, status, error) {
+            alert("Internal Server Error: 500");
+        }
+    });
+}
+
+function testDirectories(){
+    var uid = 8;
+    var sessionkey = "test_session_key";
+    $.ajax({
+        method: 'POST',
+        contentType: 'application/json',
+        headers: {"uid": uid, "session_key": sessionkey},
+        url: location.protocol + '//' + location.host   + '/i/checkimages'+ "?uid=" + uid + "&session_key=" + sessionkey,
+        crossDomain: 'true',
+        xhrFields: {
+            withCredentials: true
+        },
+        success: function(callback) {
+            console.log(callback)
+        },
+        error: function(xhr, status, error) {
+            alert("Internal Server Error: 500");
+        }
+    });
 }

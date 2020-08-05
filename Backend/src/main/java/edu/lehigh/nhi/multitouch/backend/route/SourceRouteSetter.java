@@ -172,28 +172,28 @@ public final class SourceRouteSetter {
 
             // printing out the system directory 
             System.out.println("Working Directory = " + System.getProperty("user.dir"));
-            try { 
+            // try { 
                 
-                String names = " ";
-                // Create a file object 
-                final File f = new File("C:/Users/agust/Documents/nhi/images/demo"); 
+            //     String names = " ";
+            //     // Create a file object 
+            //     final File f = new File("C:/Users/agust/Documents/nhi/images/demo"); 
       
-                // Get all the names of the files present 
-                // in the given directory 
-                final File[] files = f.listFiles(); 
+            //     // Get all the names of the files present 
+            //     // in the given directory 
+            //     final File[] files = f.listFiles(); 
       
-                System.out.println("Files are:"); 
+            //     System.out.println("Files are:"); 
       
-                // Display the names of the files 
-                for (int i = 0; i < files.length; i++) { 
-                    System.out.println(files[i].getName()); 
-                    names = names +" " + files[i].getName();
-                } 
-                return names;
-            } 
-            catch (final Exception e) { 
-                System.err.println(e.getMessage()); 
-            } 
+            //     // Display the names of the files 
+            //     for (int i = 0; i < files.length; i++) { 
+            //         System.out.println(files[i].getName()); 
+            //         names = names +" " + files[i].getName();
+            //     } 
+            //     return names;
+            // } 
+            // catch (final Exception e) { 
+            //     System.err.println(e.getMessage()); 
+            // } 
             return("Working Directory = " + System.getProperty("user.dir"));
             
         });

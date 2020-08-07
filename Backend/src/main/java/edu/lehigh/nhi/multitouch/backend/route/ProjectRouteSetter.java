@@ -97,31 +97,52 @@ public final class ProjectRouteSetter {
 
                                 ///project directory got made, time to copy files and insert paths to table
                                 System.out.println("Directory created successfully");
+                                System.out.println("Starting Image Copying");
                                 for (int i = 0; i < sources.length(); i++ ){
+                                    
+                                    ///Get right extensions and file paths from request 
+                                    String sourcePath = (String) sources.get(i);
+                                    System.out.println(sourcePath);
+                                    String[] splitByExtension = sourcePath.split("\\.");
+                                    for (int a=0; a < splitByExtension.length ; a ++){
+                                        System.out.println(splitByExtension[a]);
+                                    }
+                                    String filePaths = splitByExtension[0];
+                                    String[] splitPaths = filePaths.split("/");
+                                    int tempLength = splitPaths.length;
+                                    String imageFileName = splitPaths[tempLength-1];
+                                    String imageExtension = splitByExtension[1];
 
-                                    ///Creating filepath with date 
-                                    String source = (String) sources.get(i);
-                                    String[] fileNameParts = source.split("//.");
-                                    String pattern = "MM/dd/yyyy HH:mm:ss";
+                                    ///Create a string to represent the date
+                                    String pattern = "MM-dd-yyyy_HH:mm:ss";
                                     DateFormat df = new SimpleDateFormat(pattern);
                                     Date today = new Date();        
                                     String todayAsString = df.format(today);
-                                    String newPath = fileNameParts[0] +"-"+ todayAsString + fileNameParts[1];
-    
-                                    ///Time to copy the image file over to new path 
-                                    String origPath = "../images/" + fileNameParts[0] + "." + fileNameParts[1];
-                                    File origFile = new File(origPath);
-                                    File newFile = new File(newPath);
-                                    int copyResult = SourceManager.copyFile(origFile, newFile);
-                                    if(copyResult != 0){
-                                        //Image was copied over, time to insert into the table of our paths
+                                    // todayAsString.replaceAll("\\s", "");
+                                    System.out.println(todayAsString);
+
+                                    ///Creating our paths and files
+                                    String newPath = "../images/" + uid + "/" + name + "/" + imageFileName + "_" + todayAsString + "." + imageExtension;
+                                    String origPath = "../images/" + splitByExtension[0] + "." + imageExtension ;
+                                    // File origFile = new File(origPath);
+                                    // File newFile = new File(newPath);
+                                    System.out.println(newPath);
+                                    System.out.println(origPath);
+
+                                    ///Using our copying method from our SourceManager.java file
+                                    try {
+                                        SourceManager.copyFile(origPath, newPath); 
+                                        ////Image was copied over, time to insert into the table of our paths
                                         System.out.println("Image copy created successfully");
                                         JSONObject imageRes = db.source.insertProjectImagePaths(newPath);
-                                        retval.put("Insert ImageRes", imageRes);
-                                    }else{
+                                        retval.put("Insert ImageRes", imageRes);   
+                                    }
+                                    catch (Exception e){
                                         System.out.println("Sorry couldn’t create image copy specified directory. Image index: " + i);
-                                    }                            
+                                        System.out.println(e);
+                                    }                   
                                 }
+                                System.out.println("End of Image Copying");
                             }else{
                                 System.out.println("Sorry couldn’t create specified directory");
                             }

@@ -2,6 +2,10 @@ package edu.lehigh.nhi.multitouch.backend.database;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -52,15 +56,10 @@ public class SourceManager {
         return retval;
     }
 
-    public static int copyFile(File from, File to) throws IOException {
-        FileUtils.copyFile(from, to); 
-        File tmpDir = new File("/var/tmp");
-        boolean exists = tmpDir.exists();
-        if (!exists){
-            return 0;
-        } else {
-            return 1;
-        }
+    public static void copyFile(String source, String dest) throws IOException {
+        Path src = Paths.get(source); 
+        Path destination = Paths.get(dest); 
+        Files.copy(src, destination, StandardCopyOption.REPLACE_EXISTING);    
     }
 
     public JSONObject getDetailedObject(final int oid) throws SQLException {

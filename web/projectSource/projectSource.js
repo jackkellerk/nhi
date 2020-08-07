@@ -285,7 +285,7 @@ function clickSource(element){
     var uid = 8;
     var sessionkey = "test_session_key";
     var d = new Date();
-    var url = "/i/demo/Sample_project/microscopy.jpg" 
+    var url = "demo/Sample_project/microscopy.jpg" 
     selectedSources.push(url)
     console.log("Start")
     selectedSources.forEach(element => {

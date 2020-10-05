@@ -145,6 +145,44 @@ public final class SourceRouteSetter {
             });
         });
 
+        RouteSetter.setRoute(RequestType.POST, "/i/uploadPython", (request, response) -> {
+            return RouteSetter.preprocessJSONValueGet(request, response, new String[] { "text", "image" },
+                    new Type[] { Type.STRING, Type.STRING }, (vals) -> {
+                // We directly request uid and sessionkey from the query parametesr. This is
+                // special because put them in headers requires an ajax call.
+                // Browsers are bad directly dealing with byte arrays, and ajax call returns a
+                // string representation of byte arrage, so ajax call would be a bad practice.
+                final String uidStr = request.queryParams("uid");
+                final String sesStr = request.queryParams("session_key");
+                final String fileData= (String) vals[0];
+                final String url= (String) vals[1];
+                //final String user= (String) vals[2];
+                //final String project = (String) vals[3];
+                if (uidStr == null || sesStr == null) {
+                    return StructuredResponse.getErrorResponse(ErrorHandler.PATH.MISSING_QUERY_PARAM,
+                            "Query parameters needed: uid INT, session_key STRING. ");
+                }
+                int uid = -1;
+                try {
+                    uid = Integer.parseInt(uidStr);
+                } catch (final NumberFormatException e) {
+                    return StructuredResponse.getErrorResponse(ErrorHandler.PATH.PATH_NUM_FORMAT,
+                            "The query parameter uid should be a integer. ");
+                }
+                if (!encryption.checkSessionKey(uid, sesStr)) {
+                    return StructuredResponse.getErrorResponse(ErrorHandler.PRIVILAGE.INVALID_SESSION_KEY);
+                }
+
+                final String imageURL = uploadPython(fileData);
+                //return fileName;
+                System.out.println("-------------------------------------" );
+                // System.out.println(fileName );
+                // System.out.println(user);
+                // System.out.println(project );
+                return url;
+            });
+        });
+
         // check images ****TESTING PURPOSES*****
         RouteSetter.setRoute(RequestType.POST, "/i/checkimages", (request, response) -> {
             // We directly request uid and sessionkey from the query parametesr. This is
@@ -232,5 +270,27 @@ public final class SourceRouteSetter {
             e.printStackTrace();
         }
         return path;
+    }
+
+    public static String uploadPython(final String fileName) throws IOException, GeneralSecurityException{
+        try {
+			File file = new File(fileName+".py");
+			FileWriter fileWriter = new FileWriter(file);
+			fileWriter.write("print(\"This line will be printed.\")");
+
+			fileWriter.flush();
+			fileWriter.close();
+		} catch (IOException e) {
+			e.printStackTrace();
         }
+        return "hi";
+        //String path = "C:/Users/agust/Documents/nhi/images/" +user+ "/" + project+ "/" + fileName +"." + extension;
+        // File file = new File(path);
+        // try (OutputStream outputStream = new BufferedOutputStream(new FileOutputStream(file))) {
+        //     outputStream.write(data);
+        // } catch (IOException e) {
+        //     e.printStackTrace();
+        // }
+        // return path;
+    }
 }

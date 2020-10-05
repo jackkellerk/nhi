@@ -25,6 +25,7 @@ class WorkWindow
         this.tool2 = new PIXI.Graphics();
         this.tool3 = new PIXI.Graphics();
         this.tool4 = new PIXI.Graphics();
+        this.tool5 = new PIXI.Graphics();
 
         // initialize interactive + dragable window border
         this.windowBorder = new PIXI.Graphics();
@@ -50,7 +51,7 @@ class WorkWindow
         // backdrop to tool buttons
         var a_backdrop = new PIXI.Graphics();
             a_backdrop.beginFill(0xdddddd);
-            a_backdrop.drawRect(0,0, 46,175);
+            a_backdrop.drawRect(-20,0,46,219);
             a_backdrop.endFill();
             a_backdrop.x = this.xPositionWindow + this.width;
             a_backdrop.y = this.yPositionWindow + 27;
@@ -61,7 +62,7 @@ class WorkWindow
 
         this.tool1.lineStyle(2, 0xdddddd, 2);
         this.tool1.beginFill(0xdcdcdc);
-        this.tool1.drawRoundedRect(-10,0, 55, 45, 3);
+        this.tool1.drawRoundedRect(-30,0, 55, 45, 3);
         this.tool1.endFill();
         this.tool1.buttonMode = true;
         this.tool1.x = this.xPositionWindow + this.width;
@@ -71,13 +72,13 @@ class WorkWindow
         var zoomIcon = new PIXI.Sprite.from("Images/zoom-icon.png");
             zoomIcon.width = 40;
             zoomIcon.height = 40;
-            zoomIcon.x = 3;
+            zoomIcon.x = -20;
             zoomIcon.y = 2;
         this.tool1.addChild(zoomIcon);
 
         this.tool2.lineStyle(2, 0xdddddd, 2);
         this.tool2.beginFill(0xdcdcdc);
-        this.tool2.drawRoundedRect(-10,0, 55,45, 3);
+        this.tool2.drawRoundedRect(-30,0, 55,45, 3);
         this.tool2.endFill();
         this.tool2.buttonMode = true;
         this.tool2.x = this.tool1.x;
@@ -87,13 +88,13 @@ class WorkWindow
         let spectrumIcon = new PIXI.Sprite.from("Images/color-wheel.png");
             spectrumIcon.width = 35;
             spectrumIcon.height = 35;
-            spectrumIcon.x = 6;
+            spectrumIcon.x = -20;
             spectrumIcon.y = 4;
         this.tool2.addChild(spectrumIcon);
 
         this.tool3.lineStyle(2, 0xdddddd, 2);
         this.tool3.beginFill(0xdcdcdc);
-        this.tool3.drawRoundedRect(-10,0, 55,45, 3);
+        this.tool3.drawRoundedRect(-30,0, 55,45, 3);
         this.tool3.endFill();
         this.tool3.buttonMode = true;
         this.tool3.x = this.tool2.x;
@@ -103,13 +104,13 @@ class WorkWindow
         let multiblockIcon = new PIXI.Sprite.from("Images/multi-block-icon.png");
             multiblockIcon.width = 37;
             multiblockIcon.height = 37;
-            multiblockIcon.x = 5;
+            multiblockIcon.x = -20;
             multiblockIcon.y = 4;
         this.tool3.addChild(multiblockIcon);
 
             this.tool4.lineStyle(2, 0xdddddd, 2);
             this.tool4.beginFill(0xdcdcdc);
-            this.tool4.drawRoundedRect(-10,0, 55,45, 3);
+            this.tool4.drawRoundedRect(-30,0, 55,45, 3);
             this.tool4.endFill();
             this.tool4.buttonMode = true;
             this.tool4.x = this.tool3.x;
@@ -119,9 +120,25 @@ class WorkWindow
         let lineintensityIcon = new PIXI.Sprite.from("Images/line-intensity.png");
             lineintensityIcon.width = 37;
             lineintensityIcon.height = 37;
-            lineintensityIcon.x = 5;
+            lineintensityIcon.x = -20;
             lineintensityIcon.y = 3;
         this.tool4.addChild(lineintensityIcon);
+
+            this.tool5.lineStyle(2, 0xdddddd, 2);
+            this.tool5.beginFill(0xdcdcdc);
+            this.tool5.drawRoundedRect(-30,0, 55,45, 3);
+            this.tool5.endFill();
+            this.tool5.buttonMode = true;
+            this.tool5.x = this.tool4.x;
+            this.tool5.y = this.tool4.y + 45; 
+        this.container.addChild(this.tool5);
+
+        let pythonIcon = new PIXI.Sprite.from("Images/python.png");
+            pythonIcon.width = 74;
+            pythonIcon.height = 42;
+            pythonIcon.x = -37.5;
+            pythonIcon.y = 3;
+        this.tool5.addChild(pythonIcon);
 
 
         // ------------------------- window -------------------------
@@ -262,6 +279,7 @@ class WorkWindow
         this.tool2.x = this.xPositionWindow + this.width;
         this.tool3.x = this.xPositionWindow + this.width;
         this.tool4.x = this.xPositionWindow + this.width;
+        this.tool5.x = this.xPositionWindow + this.width;
     }
 
 }
@@ -279,8 +297,10 @@ function clearWindow(window) {
         window.tool2.x -= 5;
     } else if (window.tool3.x > window.tool4.x) {
         window.tool3.x -= 5;
-    } else if (window.tool4.x > window.tool1.x) {
+    } else if (window.tool4.x > window.tool5.x) {
         window.tool4.x -= 5;
+    } else if (window.tool5.x > window.tool1.x) {
+        window.tool5.x -= 5;
     }
 }
 

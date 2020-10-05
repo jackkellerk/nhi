@@ -1,5 +1,7 @@
 // This is the javascript file I added for the connection to the backend
 
+// '/i/uploadPython' for uploading custom python script
+
 //get the hosting url.
 var base_url = location.protocol + '//' + location.host;
 var uid;
@@ -533,4 +535,79 @@ function testDirectories(){
             alert("Internal Server Error: 500");
         }
     });
+}
+
+// This is called when the python button on the window is clicked
+function uploadCustomPythonScript()
+{
+    var input = document.createElement('input');
+    input.type = 'file';
+
+    // This is the lambda function that is called once the user actually uploads their file
+    input.onchange = e => { 
+        var file = e.target.files[0];
+        var formattedText = "print(\"Images/Picture1.png\")";
+        // TODO: extract text from file and send it in AJAX
+
+        // This is the temporary loading screen that appears when uploading a python script
+        loadingcontainer = new PIXI.Container();
+
+        loadingWindow = new PIXI.Graphics();
+        loadingWindow.beginFill(0x000000);
+        loadingWindow.drawRoundedRect(-10, -10, screen.width, screen.height);
+        loadingWindow.endFill();
+        loadingWindow.alpha = 0.5;
+        loadingWindow.interactive = true;
+        loadingcontainer.addChild(loadingWindow);
+
+        roundedBox = new PIXI.Graphics();
+        roundedBox.beginFill(0xbababa);
+        roundedBox.drawRoundedRect(screen.width / 2.75, screen.height / 5, screen.width / 4, screen.width / 4, 10);
+        roundedBox.endFill();
+        loadingcontainer.addChild(roundedBox);
+
+        let LoadingText = new PIXI.Text('Please wait\n  Loading....', {fontFamily : 'Arial', fontSize: 24, fill: 0x000000, align : 'center'} );
+        LoadingText.x = screen.width / 2.25;
+        LoadingText.y = screen.height / 2.75;
+        loadingcontainer.addChild(LoadingText);
+
+        app.stage.addChild(loadingcontainer);
+
+        // AJAX portion of the upload script
+        var uid = 8;
+        var sessionkey = "test_session_key";
+        var image_url = "Images/sinteredMetal.png" // This is hard coded, make this dynamic later
+        let responseData = { text: formattedText, image: image_url };
+        $.ajax({
+            method: 'POST',
+            contentType: 'application/json',
+            headers: {"uid": uid, "session_key": sessionkey},
+            data: JSON.stringify(responseData),
+            url: base_url + '/i/uploadPython',
+            dataType: 'json',
+            crossDomain: 'true',
+            xhrFields: {
+                withCredentials: true
+            },
+            success: function(callback) {
+                // TODO: Handle the image once it gets it back
+
+                // This removes the loading screen
+                loadingcontainer.parent.removeChild(loadingcontainer);
+            },
+            error: function(xhr, status, error) {
+                alert("Internal Server Error: 500");
+
+                // This removes the loading screen
+                loadingcontainer.parent.removeChild(loadingcontainer);
+            },
+            timeout: 20000 // 20 second time out
+        });
+    }
+
+    input.click();
+
+    // Remove window1 and replace it
+    window1.container.parent.removeChild(window1.container);
+    var window2 = new WorkWindow("Window 1", 0, 0, "Images/Picture1.png");
 }

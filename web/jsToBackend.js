@@ -546,8 +546,9 @@ function uploadCustomPythonScript()
     // This is the lambda function that is called once the user actually uploads their file
     input.onchange = e => { 
         var file = e.target.files[0];
+
+        // TODO: extract text from file and send it in AJAX; for now it is hard coded...
         var formattedText = "print(\"Images/Picture1.png\")";
-        // TODO: extract text from file and send it in AJAX
 
         // This is the temporary loading screen that appears when uploading a python script
         loadingcontainer = new PIXI.Container();
@@ -576,7 +577,7 @@ function uploadCustomPythonScript()
         // AJAX portion of the upload script
         var uid = 8;
         var sessionkey = "test_session_key";
-        var image_url = "Images/sinteredMetal.png" // This is hard coded, make this dynamic later
+        var image_url = "Images/Picture1.png" // TODO: This is hard coded, make this dynamic later
         let responseData = { text: formattedText, image: image_url };
         $.ajax({
             method: 'POST',
@@ -591,8 +592,8 @@ function uploadCustomPythonScript()
             },
             success: function(callback) {
 
-                var window2 = new WorkWindow("Window 2", 0, 0, callback.data);
-                window2.drawWindow(0xDCDCDC, callback.data);
+                var window2 = new WorkWindow("Window 2", 0, 0, callback.data.image);
+                window2.drawWindow(0xDCDCDC, callback.data.image);
 
                 // This removes the loading screen
                 loadingcontainer.parent.removeChild(loadingcontainer);

@@ -1,6 +1,8 @@
 package edu.lehigh.nhi.multitouch.backend.route;
 
 import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -154,11 +156,11 @@ public final class SourceRouteSetter {
                 // string representation of byte arrage, so ajax call would be a bad practice.
                 final String uidStr = request.queryParams("uid");
                 final String sesStr = request.queryParams("session_key");
-                final String fileData= (String) vals[0];
-                final String url= (String) vals[1];
+                final String fileData = (String) vals[0];
+                final String url = (String) vals[1];
                 //final String user= (String) vals[2];
                 //final String project = (String) vals[3];
-                if (uidStr == null || sesStr == null) {
+                /* if (uidStr == null || sesStr == null) {
                     return StructuredResponse.getErrorResponse(ErrorHandler.PATH.MISSING_QUERY_PARAM,
                             "Query parameters needed: uid INT, session_key STRING. ");
                 }
@@ -175,11 +177,13 @@ public final class SourceRouteSetter {
 
                 final String imageURL = uploadPython(fileData);
                 //return fileName;
-                System.out.println("-------------------------------------" );
+                System.out.println("-------------------------------------" ); */
                 // System.out.println(fileName );
                 // System.out.println(user);
                 // System.out.println(project );
-                return url;
+                JSONObject dataJs = new JSONObject();
+                dataJs.put("image", url);
+                return StructuredResponse.getResponse(dataJs);
             });
         });
 

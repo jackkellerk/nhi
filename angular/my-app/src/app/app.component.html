@@ -163,6 +163,14 @@
     border-radius: 0px;
     box-shadow: 0px;
   }
+
+  pdf-viewer {
+    -ms-overflow-style: none;  /* IE and Edge */
+  }
+
+  pdf-viewer::-webkit-scrollbar {
+    display: none;
+  }
 </style>
 
 <!-- Toolbar -->
@@ -191,6 +199,15 @@
       <mat-card-title>Highlighted Paper</mat-card-title>
     </mat-card>
     <mat-card>
+      <mat-card-content>
+        <pdf-viewer src="../assets/bert.pdf"
+              render-text="true"
+              fit-to-page="true"
+              show-all="false"
+              page="1"
+              style="display: block; height: 500px;"
+        ></pdf-viewer>
+      </mat-card-content>
     </mat-card>
   </div>
 

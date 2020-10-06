@@ -45,8 +45,8 @@ class WorkWindow
     drawWindow(fill, image_src, x, y) {
 
         // in jsToBackend for demonstration purposes
-        x = examplePositionX;
-        y = examplePositionY;
+        // x = examplePositionX;
+        // y = examplePositionY;
 
         // backdrop to tool buttons
         var a_backdrop = new PIXI.Graphics();

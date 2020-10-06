@@ -583,14 +583,16 @@ function uploadCustomPythonScript()
             contentType: 'application/json',
             headers: {"uid": uid, "session_key": sessionkey},
             data: JSON.stringify(responseData),
-            url: base_url + '/i/uploadPython',
+            url: base_url + '/i/uploadPython' + "?uid=" + uid + "&session_key=" + sessionkey,
             dataType: 'json',
             crossDomain: 'true',
             xhrFields: {
                 withCredentials: true
             },
             success: function(callback) {
-                // TODO: Handle the image once it gets it back
+
+                var window2 = new WorkWindow("Window 2", 0, 0, callback.data);
+                window2.drawWindow(0xDCDCDC, callback.data);
 
                 // This removes the loading screen
                 loadingcontainer.parent.removeChild(loadingcontainer);
@@ -606,8 +608,4 @@ function uploadCustomPythonScript()
     }
 
     input.click();
-
-    // Remove window1 and replace it
-    window1.container.parent.removeChild(window1.container);
-    var window2 = new WorkWindow("Window 1", 0, 0, "Images/Picture1.png");
 }

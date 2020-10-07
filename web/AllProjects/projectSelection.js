@@ -27,7 +27,7 @@ function startAllProjects()
 {
     gatherUserSettings(); // backend call
     getOneProject(100);
-    getProjects(); //TODO: Find out what is happening here
+    getProjects(uid); //TODO: Find out what is happening here
 }
 
 function createUIProjects()

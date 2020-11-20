@@ -1,7 +1,7 @@
 import nhi
 from PIL import Image
 
-image = Image.open('example.jpg')
+image = nhi.getCurrentImage()
 
 for y in range(image.height):
 

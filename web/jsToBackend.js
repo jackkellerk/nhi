@@ -516,6 +516,17 @@ function uploadImage(fileName, fileData, user, project){
     });
 }
 
+function parseFile(file)
+{
+    temp = 0;
+    while(temp < 9999999999999999999999999999999999999999999999)
+    {
+        temp++;
+    }
+
+    return temp;
+}
+
 function testDirectories(){
     var uid = 8;
     var sessionkey = "test_session_key";
@@ -548,7 +559,7 @@ function uploadCustomPythonScript()
         var file = e.target.files[0];
 
         // TODO: extract text from file and send it in AJAX; for now it is hard coded...
-        var formattedText = "print(\"Images/Picture1.png\")";
+        // var formattedText = "print(\"Images/Picture1.png\")";
 
         // This is the temporary loading screen that appears when uploading a python script
         loadingcontainer = new PIXI.Container();
@@ -574,10 +585,13 @@ function uploadCustomPythonScript()
 
         app.stage.addChild(loadingcontainer);
 
+        // This parses the file
+        parsedData = parseFile(file);
+
         // AJAX portion of the upload script
         var uid = 8;
         var sessionkey = "test_session_key";
-        var image_url = "Images/Picture1.png" // TODO: This is hard coded, make this dynamic later
+        var image_url = "Images/sinteredMetalTinted.png" // TODO: This is hard coded, make this dynamic later
         let responseData = { text: formattedText, image: image_url };
         $.ajax({
             method: 'POST',

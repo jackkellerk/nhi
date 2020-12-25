@@ -516,15 +516,12 @@ function uploadImage(fileName, fileData, user, project){
     });
 }
 
-function parseFile(file)
-{
-    temp = 0;
-    while(temp < 9999999999999999999999999999999999999999999999)
-    {
-        temp++;
-    }
-
-    return temp;
+function wait(ms){
+    var start = new Date().getTime();
+    var end = start;
+    while(end < start + ms) {
+      end = new Date().getTime();
+   }
 }
 
 function testDirectories(){
@@ -548,7 +545,99 @@ function testDirectories(){
     });
 }
 
-// This is called when the python button on the window is clicked
+// This is a variable with a variable fileData.a that has a listener function that calls sendPythonScript() once the variable is changed
+fileData = {
+    aInternal: "",
+    aListener: function(val) {},
+    set a(val) {
+        this.aInternal = val;
+        this.aListener(val);
+    },
+    get a() {
+        return this.aInternal;
+    },
+    registerListener: function(listener) {
+        this.aListener = listener;
+    }
+}
+
+fileData.registerListener(function(val) {
+    askUI();
+});
+
+var variable_dictionary = [];
+
+function parseFile(file)
+{
+    if (file.length === 0) {
+        console.log('No file is selected');
+        return;
+    }
+
+    var reader = new FileReader();
+    reader.onload = function(event) { 
+        var fileInfo = event.target.result;
+        fileInfo = fileInfo.replace(/\n/g, "`n");
+        fileInfo = fileInfo.replace(/\t/g, "`t");
+        fileInfo = fileInfo.replace(/ /g, "`s");
+
+        var start_value = 0;
+        while(fileInfo.indexOf("$NHI_Integer", start_value) > 0)
+        {
+            beginning_var_name = fileInfo.indexOf("$NHI_Integer", start_value);
+            while(fileInfo.substring(beginning_var_name - 2, beginning_var_name) != "`n")
+            {
+                beginning_var_name = beginning_var_name - 1;
+            }
+            is_space = fileInfo.indexOf("=", beginning_var_name) > fileInfo.indexOf("`s", beginning_var_name) && fileInfo.indexOf("`s", beginning_var_name) > 0 ? fileInfo.indexOf("`s", beginning_var_name) : fileInfo.indexOf("=", beginning_var_name);
+            start_value = start_value + fileInfo.indexOf("$NHI_Integer", start_value) + 1;
+            variable_dictionary.push(["Integer", fileInfo.substring(beginning_var_name, is_space), ""])
+        }
+
+        start_value = 0;
+        while(fileInfo.indexOf("$NHI_Float", start_value) > 0)
+        {
+            beginning_var_name = fileInfo.indexOf("$NHI_Float", start_value);
+            while(fileInfo.substring(beginning_var_name - 2, beginning_var_name) != "`n")
+            {
+                beginning_var_name = beginning_var_name - 1;
+            }
+            is_space = fileInfo.indexOf("=", beginning_var_name) > fileInfo.indexOf("`s", beginning_var_name) && fileInfo.indexOf("`s", beginning_var_name) > 0 ? fileInfo.indexOf("`s", beginning_var_name) : fileInfo.indexOf("=", beginning_var_name);
+            start_value = start_value + fileInfo.indexOf("$NHI_Float", start_value) + 1;
+            variable_dictionary.push(["Float", fileInfo.substring(beginning_var_name, is_space), ""])
+        }
+
+        start_value = 0;
+        while(fileInfo.indexOf("$NHI_String", start_value) > 0)
+        {
+            beginning_var_name = fileInfo.indexOf("$NHI_String", start_value);
+            while(fileInfo.substring(beginning_var_name - 2, beginning_var_name) != "`n")
+            {
+                beginning_var_name = beginning_var_name - 1;
+            }
+            is_space = fileInfo.indexOf("=", beginning_var_name) > fileInfo.indexOf("`s", beginning_var_name) && fileInfo.indexOf("`s", beginning_var_name) > 0 ? fileInfo.indexOf("`s", beginning_var_name) : fileInfo.indexOf("=", beginning_var_name);
+            start_value = start_value + fileInfo.indexOf("$NHI_String", start_value) + 1;
+            variable_dictionary.push(["String", fileInfo.substring(beginning_var_name, is_space), ""])
+        }
+
+        start_value = 0;
+        while(fileInfo.indexOf("$NHI_Boolean", start_value) > 0)
+        {
+            beginning_var_name = fileInfo.indexOf("$NHI_Boolean", start_value);
+            while(fileInfo.substring(beginning_var_name - 2, beginning_var_name) != "`n")
+            {
+                beginning_var_name = beginning_var_name - 1;
+            }
+            is_space = fileInfo.indexOf("=", beginning_var_name) > fileInfo.indexOf("`s", beginning_var_name) && fileInfo.indexOf("`s", beginning_var_name) > 0 ? fileInfo.indexOf("`s", beginning_var_name) : fileInfo.indexOf("=", beginning_var_name);
+            start_value = start_value + fileInfo.indexOf("$NHI_Boolean", start_value) + 1;
+            variable_dictionary.push(["Boolean", fileInfo.substring(beginning_var_name, is_space), ""])
+        }
+
+        fileData.a = fileInfo;
+    };
+    reader.readAsText(file);
+}
+
 function uploadCustomPythonScript()
 {
     var input = document.createElement('input');
@@ -557,9 +646,6 @@ function uploadCustomPythonScript()
     // This is the lambda function that is called once the user actually uploads their file
     input.onchange = e => { 
         var file = e.target.files[0];
-
-        // TODO: extract text from file and send it in AJAX; for now it is hard coded...
-        // var formattedText = "print(\"Images/Picture1.png\")";
 
         // This is the temporary loading screen that appears when uploading a python script
         loadingcontainer = new PIXI.Container();
@@ -586,41 +672,134 @@ function uploadCustomPythonScript()
         app.stage.addChild(loadingcontainer);
 
         // This parses the file
-        parsedData = parseFile(file);
-
-        // AJAX portion of the upload script
-        var uid = 8;
-        var sessionkey = "test_session_key";
-        var image_url = "Images/sinteredMetalTinted.png" // TODO: This is hard coded, make this dynamic later
-        let responseData = { text: formattedText, image: image_url };
-        $.ajax({
-            method: 'POST',
-            contentType: 'application/json',
-            headers: {"uid": uid, "session_key": sessionkey},
-            data: JSON.stringify(responseData),
-            url: base_url + '/i/uploadPython' + "?uid=" + uid + "&session_key=" + sessionkey,
-            dataType: 'json',
-            crossDomain: 'true',
-            xhrFields: {
-                withCredentials: true
-            },
-            success: function(callback) {
-
-                var window2 = new WorkWindow("Window 2", 0, 0, callback.data.image);
-                window2.drawWindow(0xDCDCDC, callback.data.image);
-
-                // This removes the loading screen
-                loadingcontainer.parent.removeChild(loadingcontainer);
-            },
-            error: function(xhr, status, error) {
-                alert("Internal Server Error: 500");
-
-                // This removes the loading screen
-                loadingcontainer.parent.removeChild(loadingcontainer);
-            },
-            timeout: 20000 // 20 second time out
-        });
+        parseFile(file);
     }
 
     input.click();
+}
+
+function askUI()
+{
+    loadingcontainer.parent.removeChild(loadingcontainer);
+
+    loadingcontainer = new PIXI.Container();
+
+    loadingWindow = new PIXI.Graphics();
+    loadingWindow.beginFill(0x000000);
+    loadingWindow.drawRoundedRect(-10, -10, screen.width, screen.height);
+    loadingWindow.endFill();
+    loadingWindow.alpha = 0.5;
+    loadingWindow.interactive = true;
+    loadingcontainer.addChild(loadingWindow);
+
+    roundedBox = new PIXI.Graphics();
+    roundedBox.beginFill(0xbababa);
+    roundedBox.drawRoundedRect(screen.width / 16, screen.height / 16, screen.width / 1.2, screen.width / 2.5, 10);
+    roundedBox.endFill();
+    loadingcontainer.addChild(roundedBox);
+
+    // Draw the UI stuff
+    for(var i = 0; i < variable_dictionary.length; i++)
+    {
+        let LoadingText = new PIXI.Text("Type: " + variable_dictionary[i][0] + "\nName: " + variable_dictionary[i][1] + "\n\nValue:", {fontFamily : 'Arial', fontSize: 24, fill: 0x000000, align : 'left'} );
+        LoadingText.x = (screen.width / 12);
+        LoadingText.y = (screen.height / 2.25) - (i * 150);
+        loadingcontainer.addChild(LoadingText);
+
+        let line = new PIXI.Graphics();
+        line.lineStyle(2, 0xffffff);
+        // loadingcontainer.addChild(line);
+
+        userTextBox = new PIXI.TextInput({
+            input: {
+                fontFamily: 'Arial',
+                fontSize: '14pt',
+                padding: '10px',
+                width: '250px',
+                color: '#FFFFFF',
+                letterSpacing: 2
+            }, 
+            box: line
+        });
+        userTextBox.x = (screen.width / 12) + 75;
+        userTextBox.y = (screen.height / 2.25) - (i * 150) + 72.5;
+        userTextBox.interactiveChildren = true;
+        userTextBox.placeholder = "Your value here";
+        loadingcontainer.addChild(userTextBox);
+    }
+
+    roundedSubmitBox = new PIXI.Graphics();
+    roundedSubmitBox.beginFill(0x24AF01);
+    roundedSubmitBox.drawRoundedRect((screen.width / 5) * 3.95, (screen.height / 4) * 2.7, screen.width / 10, screen.width / 20, 10);
+    roundedSubmitBox.endFill();
+    roundedSubmitBox.interactive = true;
+    roundedSubmitBox.buttonMode = true;
+    roundedSubmitBox.click = sendPythonScript;
+    loadingcontainer.addChild(roundedSubmitBox);
+
+    submitText = new PIXI.Text("Submit", {fontFamily : 'Arial', fontSize: 24, fill: 0x000000, align : 'left'} );
+    submitText.x = ((screen.width / 5) * 3.95) + 35;
+    submitText.y = ((screen.height / 4) * 2.7) + 27.5;
+    loadingcontainer.addChild(submitText);
+
+    app.stage.addChild(loadingcontainer);
+}
+
+// This is called when the python button on the window is clicked
+function sendPythonScript()
+{
+    // TODO: extract text from file and send it in AJAX; for now it is hard coded...
+    var formattedText = fileData.a;
+    console.log(formattedText);
+
+    // Format the text
+    for(var i = 0; i < variable_dictionary.length; i++)
+    {
+        if(variable_dictionary[i][0] == "Integer")
+        {  
+            var pos = formattedText.indexOf(variable_dictionary[i][1]) + variable_dictionary[i][1].length 
+
+            if(formattedText.substring(pos, pos + 1) == "=")
+            {
+                // TODO: do the rest of the formatting
+            }
+            else
+            {
+
+            }
+        }
+    }
+
+    // AJAX portion of the upload script
+    var uid = 8;
+    var sessionkey = "test_session_key";
+    var image_url = "Images/sinteredMetalTinted.png" // TODO: This is hard coded, make this dynamic later
+    let responseData = { text: formattedText, image: image_url };
+    $.ajax({
+        method: 'POST',
+        contentType: 'application/json',
+        headers: {"uid": uid, "session_key": sessionkey},
+        data: JSON.stringify(responseData),
+        url: base_url + '/i/uploadPython' + "?uid=" + uid + "&session_key=" + sessionkey,
+        dataType: 'json',
+        crossDomain: 'true',
+        xhrFields: {
+            withCredentials: true
+        },
+        success: function(callback) {
+
+            var window2 = new WorkWindow("Window 2", 0, 0, callback.data.image);
+            window2.drawWindow(0xDCDCDC, callback.data.image);
+
+            // This removes the loading screen
+            loadingcontainer.parent.removeChild(loadingcontainer);
+        },
+        error: function(xhr, status, error) {
+            alert("Internal Server Error: 500");
+
+            // This removes the loading screen
+            loadingcontainer.parent.removeChild(loadingcontainer);
+        },
+        timeout: 20000 // 20 second time out
+    });
 }

@@ -11,6 +11,41 @@ var session_key;
  * LOGIN AND ACCOUNT AJAX REQUESTS
  */
 
+
+ function tempTest()
+ {
+     // converts the username into json
+     var number;
+     var convertToJSON = {"number": number};
+ 
+     $.ajax({
+         method: 'POST',
+         contentType: 'application/json',
+         data: JSON.stringify(convertToJSON),
+         url: base_url + '/sripts/test',
+         dataType: 'json',
+         crossDomain: 'true',
+         xhrFields: {
+             withCredentials: true
+         },
+         success: function(callback) {
+             if(callback.errorCode != 0)
+             {
+                 alert("Incorrect");
+                 return;
+             }
+             uid = callback.data.uid;
+             session_key = callback.data.session_key;
+             toProjectSelection();
+             currentActivity = "AllProjects";
+         },
+         error: function(xhr, status, error) {
+             alert("Internal Server Error: 500");
+         }
+     });
+ }
+
+
 function loginToBackend()
 {
     // converts the username into json

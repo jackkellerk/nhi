@@ -14,6 +14,7 @@ class Statements {
     protected PWRelationship pwrelationship;
     protected ProjectSource projectSource;
     protected Line line;
+    protected Scripts scripts;
 
     protected class Common {
         protected final PreparedStatement selectLastInsertion, checkProjectOwnership, getPidByWid;
@@ -94,6 +95,14 @@ class Statements {
         }
     }
 
+    protected class Scripts {
+        protected final PreparedStatement  selectScripts;
+
+        private Scripts() throws SQLException {
+            selectScripts = mMySQLConnection.prepareStatement("select * from scripts");
+        }
+    }
+
     // put request to institution/source/object/image table here.
     protected class Source {
         protected final PreparedStatement selectObjectListBySid, selectHitBoxesByOid, selectImageByIid,
@@ -157,6 +166,7 @@ class Statements {
         uprelationship = new UPRelationship();
         pwrelationship = new PWRelationship();
         projectSource = new ProjectSource();
+        scripts = new Scripts();
     }
 
     protected synchronized static Statements getInstance() throws SQLException {

@@ -30,6 +30,7 @@ public class DatabaseManager {
     public final ProjectManager project;
     public final SourceManager source;
     //public final LineManager line;
+    public final ScriptsManager scripts;
     public final UPRelationshipManager uprelationship;
     public final ProjectSourceManager projectSourceManager;
 
@@ -41,6 +42,7 @@ public class DatabaseManager {
         project = new ProjectManager(this);
         source = new SourceManager(this);
         //line = new LineManager(this);
+        scripts = new ScriptsManager(this);
         uprelationship = new UPRelationshipManager(this);
         projectSourceManager = new ProjectSourceManager(this);
     }

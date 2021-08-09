@@ -1,0 +1,260 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>PyJEM.offline.TEM3.camera3 module &mdash; PyJEM 1.0.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="PyJEM 1.0.0.0 documentation" href="index.html" />
+    <link rel="up" title="PyJEM.offline.TEM3 package" href="PyJEM.offline.TEM3.html" />
+    <link rel="next" title="PyJEM.offline.TEM3.def3 module" href="PyJEM.offline.TEM3.def3.html" />
+    <link rel="prev" title="PyJEM.offline.TEM3.apt3 module" href="PyJEM.offline.TEM3.apt3.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-PyJEM.offline.TEM3.camera3">
+<span id="pyjem-offline-tem3-camera3-module"></span><h1>PyJEM.offline.TEM3.camera3 module<a class="headerlink" href="#module-PyJEM.offline.TEM3.camera3" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="PyJEM.offline.TEM3.camera3.Camera3">
+<em class="property">class </em><code class="descclassname">PyJEM.offline.TEM3.camera3.</code><code class="descname">Camera3</code><a class="headerlink" href="#PyJEM.offline.TEM3.camera3.Camera3" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dl class="method">
+<dt id="PyJEM.offline.TEM3.camera3.Camera3.ExposeShutter">
+<code class="descname">ExposeShutter</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.TEM3.camera3.Camera3.ExposeShutter" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><strong>Summary</strong></div>
+<div class="line">Open shutter and close it after wait. (sec)</div>
+<div class="line"><strong>arg</strong></div>
+<div class="line">type: int</div>
+<div class="line">value: 0.1-180.0 (sec)</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.offline.TEM3.camera3.Camera3.GetCurrentDensity">
+<code class="descname">GetCurrentDensity</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.TEM3.camera3.Camera3.GetCurrentDensity" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><strong>Summary</strong></div>
+<div class="line">Get electric current density. Converted value to film plane.(pA/cm2)</div>
+<div class="line"><strong>return</strong></div>
+<div class="line">type: int</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.offline.TEM3.camera3.Camera3.GetExpTime">
+<code class="descname">GetExpTime</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.TEM3.camera3.Camera3.GetExpTime" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><strong>Summary</strong></div>
+<div class="line">Get exposure time(sec).</div>
+<div class="line"><strong>return</strong></div>
+<div class="line">type: int</div>
+<div class="line">0-180.0 (sec)</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.offline.TEM3.camera3.Camera3.GetFilmLoadingMode">
+<code class="descname">GetFilmLoadingMode</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.TEM3.camera3.Camera3.GetFilmLoadingMode" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><strong>Summary</strong></div>
+<div class="line">Get film loading mode.</div>
+<div class="line"><strong>return</strong></div>
+<div class="line">type: int</div>
+<div class="line">0=Manual, 1=Auto(Load film to imaging position before photography), 2=Auto(Load film to imaging position after photography)</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.offline.TEM3.camera3.Camera3.GetMode">
+<code class="descname">GetMode</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.TEM3.camera3.Camera3.GetMode" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><strong>Summary</strong></div>
+<div class="line">Get the way to set shutter speed.</div>
+<div class="line"><strong>return</strong></div>
+<div class="line">type: int</div>
+<div class="line">0=Manual exposure, 1=Automatic exposure, 2=BULB</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.offline.TEM3.camera3.Camera3.GetPhotoMode">
+<code class="descname">GetPhotoMode</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.TEM3.camera3.Camera3.GetPhotoMode" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><strong>Summary</strong></div>
+<div class="line">Get photo mode.</div>
+<div class="line"><strong>return</strong></div>
+<div class="line">type: int</div>
+<div class="line">0=Normal, 1=Bulb, 2=Multi Exposure, 3=TF, 4=AMS, 5=MDS</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.offline.TEM3.camera3.Camera3.GetShutterPosition">
+<code class="descname">GetShutterPosition</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.TEM3.camera3.Camera3.GetShutterPosition" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><strong>Summary</strong></div>
+<div class="line">Get shutter status.</div>
+<div class="line"><strong>return</strong></div>
+<div class="line">type: int</div>
+<div class="line">0=Open, 1=Close, 2=Expose</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.offline.TEM3.camera3.Camera3.GetStatus">
+<code class="descname">GetStatus</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.TEM3.camera3.Camera3.GetStatus" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><strong>Summary</strong></div>
+<div class="line">Get Photography status.</div>
+<div class="line"><strong>return</strong></div>
+<div class="line">type: int</div>
+<div class="line">0=Rest, 1=Imaging</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.offline.TEM3.camera3.Camera3.GetUnused">
+<code class="descname">GetUnused</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.TEM3.camera3.Camera3.GetUnused" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.offline.TEM3.camera3.Camera3.SelectFilmLoadingMode">
+<code class="descname">SelectFilmLoadingMode</code><span class="sig-paren">(</span><em>mode</em><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.TEM3.camera3.Camera3.SelectFilmLoadingMode" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><strong>Summary</strong></div>
+<div class="line">Select film loading mode.</div>
+<div class="line"><strong>arg</strong></div>
+<div class="line">type: int</div>
+<div class="line">mode: 0=Manual, 1=Auto(Load film to imaging position before photography), 2=Auto(Load film to imaging position after photography)</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.offline.TEM3.camera3.Camera3.SelectMode">
+<code class="descname">SelectMode</code><span class="sig-paren">(</span><em>mode</em><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.TEM3.camera3.Camera3.SelectMode" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><strong>Summary</strong></div>
+<div class="line">Select the way to set Shutter Speed.</div>
+<div class="line"><strong>arg</strong></div>
+<div class="line">type: int</div>
+<div class="line">mode: 0=Manual exposure, 1=Automatic exposure, 2=BULB   </div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.offline.TEM3.camera3.Camera3.SetExpTime">
+<code class="descname">SetExpTime</code><span class="sig-paren">(</span><em>exp_time</em><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.TEM3.camera3.Camera3.SetExpTime" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><strong>Summary</strong></div>
+<div class="line">Set exposure time(sec). </div>
+<div class="line"><strong>arg</strong></div>
+<div class="line">type: int</div>
+<div class="line">exp_time: 0-180.0 (sec) </div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.offline.TEM3.camera3.Camera3.SetShutterPosition">
+<code class="descname">SetShutterPosition</code><span class="sig-paren">(</span><em>sw</em><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.TEM3.camera3.Camera3.SetShutterPosition" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><strong>Summary</strong></div>
+<div class="line">Open/Close shutter. This does not work while imaging. Time out error occurs after 1 minute closing.</div>
+<div class="line"><strong>arg</strong></div>
+<div class="line">type: int</div>
+<div class="line">sw: 0=Open, 1=Close</div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="PyJEM.html">PyJEM package</a><ul>
+  <li><a href="PyJEM.offline.html">PyJEM.offline package</a><ul>
+  <li><a href="PyJEM.offline.TEM3.html">PyJEM.offline.TEM3 package</a><ul>
+      <li>Previous: <a href="PyJEM.offline.TEM3.apt3.html" title="previous chapter">PyJEM.offline.TEM3.apt3 module</a></li>
+      <li>Next: <a href="PyJEM.offline.TEM3.def3.html" title="next chapter">PyJEM.offline.TEM3.def3 module</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/PyJEM.offline.TEM3.camera3.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;Copyright © 2006-2018 JEOL Ltd..
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
+      
+      |
+      <a href="_sources/PyJEM.offline.TEM3.camera3.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

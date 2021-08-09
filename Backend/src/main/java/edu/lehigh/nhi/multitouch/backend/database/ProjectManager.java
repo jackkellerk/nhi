@@ -1,6 +1,5 @@
 package edu.lehigh.nhi.multitouch.backend.database;
 
-import java.io.File;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -57,7 +56,7 @@ public class ProjectManager {
         statement.setInt(1, uid);
         ResultSet rs = statement.executeQuery();
         while(rs.next()){//Get one user's all of projects
-            int userId = rs.getInt("uid");
+            //int userId = rs.getInt("uid");
             int projId = rs.getInt("pid");
             projectId.add(projId);
         }

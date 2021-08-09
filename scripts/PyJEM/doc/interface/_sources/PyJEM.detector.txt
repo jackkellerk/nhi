@@ -1,0 +1,19 @@
+PyJEM.detector package
+======================
+
+Submodules
+----------
+
+.. toctree::
+
+   PyJEM.detector.app_func
+   PyJEM.detector.auto_param
+   PyJEM.detector.function
+
+Module contents
+---------------
+
+.. automodule:: PyJEM.detector
+    :members:
+    :undoc-members:
+    :show-inheritance:

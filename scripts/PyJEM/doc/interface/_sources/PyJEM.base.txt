@@ -1,0 +1,7 @@
+PyJEM.base module
+=================
+
+.. automodule:: PyJEM.base
+    :members:
+    :undoc-members:
+    :show-inheritance:

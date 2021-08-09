@@ -1,0 +1,1975 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>PyJEM.TEM3 package &mdash; PyJEM 1.0.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="PyJEM 1.0.0.0 documentation" href="index.html" />
+    <link rel="prev" title="PyJEM.exception module" href="PyJEM.exception.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="pyjem-tem3-package">
+<h1>PyJEM.TEM3 package<a class="headerlink" href="#pyjem-tem3-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-PyJEM.TEM3">
+<span id="pyjem-tem3"></span><h2>PyJEM.TEM3<a class="headerlink" href="#module-PyJEM.TEM3" title="Permalink to this headline">¶</a></h2>
+<p>Apt3
+Camera3
+Def3
+Detector3
+EOS3
+FEG3
+Filter3
+GUN3
+HT3
+Lens3
+Scan3
+Stage3
+VACUUM3</p>
+<dl class="class">
+<dt id="PyJEM.TEM3.Apt3">
+<em class="property">class </em><code class="descclassname">PyJEM.TEM3.</code><code class="descname">Apt3</code><a class="headerlink" href="#PyJEM.TEM3.Apt3" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">Boost.Python.instance</span></code></p>
+<p>It is a class that can operate the Aperture. To use it, it is necessary to create an instance.</p>
+<dl class="method">
+<dt id="PyJEM.TEM3.Apt3.GetExpKind">
+<code class="descname">GetExpKind</code><span class="sig-paren">(</span><em>(Apt3)arg1</em><span class="sig-paren">)</span> &rarr; int :<a class="headerlink" href="#PyJEM.TEM3.Apt3.GetExpKind" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get selected aperture type.(Expansion command)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Apt3.GetExpSize">
+<code class="descname">GetExpSize</code><span class="sig-paren">(</span><em>(Apt3)arg1</em>, <em>(int)arg2</em><span class="sig-paren">)</span> &rarr; int :<a class="headerlink" href="#PyJEM.TEM3.Apt3.GetExpSize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get aperture number.(Expansion command)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Apt3.GetKind">
+<code class="descname">GetKind</code><span class="sig-paren">(</span><em>(Apt3)arg1</em><span class="sig-paren">)</span> &rarr; int :<a class="headerlink" href="#PyJEM.TEM3.Apt3.GetKind" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the type of selected Aperture. Below is the Aperture indicated by the Return.</p>
+<p>0:Nothing, 1:CLA, 2:OLA, 3:HCA, 4:SAA, 5:ENTA, 6:EDS</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Apt3.GetPosition">
+<code class="descname">GetPosition</code><span class="sig-paren">(</span><em>(Apt3)arg1</em><span class="sig-paren">)</span> &rarr; list :<a class="headerlink" href="#PyJEM.TEM3.Apt3.GetPosition" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get Aperture position. The Selected Aperture is the Reading Target.</p>
+<p>..[0]-&gt;x, ..[1]-&gt;y 
+Range: 0-4095</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Apt3.GetSize">
+<code class="descname">GetSize</code><span class="sig-paren">(</span><em>(Apt3)arg1</em>, <em>(int)arg2</em><span class="sig-paren">)</span> &rarr; int :<a class="headerlink" href="#PyJEM.TEM3.Apt3.GetSize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get Aperture number.</p>
+<p>0:Open, 1-4:Number</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Apt3.SelectExpKind">
+<code class="descname">SelectExpKind</code><span class="sig-paren">(</span><em>(Apt3)arg1</em>, <em>(int)arg2</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#PyJEM.TEM3.Apt3.SelectExpKind" title="Permalink to this definition">¶</a></dt>
+<dd><p>Select aperture type.(Expansion command)</p>
+<p>0:CL1, 1:CL2, 2:OL(OL Upper), 3:HC(OL Lower), 4:SA, 5:ENT, 6:HX, 7:BF, 8:AUX1, 9:AUX2, 10:AUX3, 11:AUX4</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Apt3.SelectKind">
+<code class="descname">SelectKind</code><span class="sig-paren">(</span><em>(Apt3)arg1</em>, <em>(int)arg2</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#PyJEM.TEM3.Apt3.SelectKind" title="Permalink to this definition">¶</a></dt>
+<dd><p>SelectKindSelect Aperture type.</p>
+<p>arg2-&gt; 0:Nothing 1:CLA, 2:OLA, 3:HCA, 4:SAA, 5:ENTA, 6:EDS</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Apt3.SetExpSize">
+<code class="descname">SetExpSize</code><span class="sig-paren">(</span><em>(Apt3)arg1</em>, <em>(int)arg2</em>, <em>(int)arg3</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#PyJEM.TEM3.Apt3.SetExpSize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set aperture numbeer.(Expansion command)</p>
+<p>0:CL1, 1:CL2, 2:OL(OL Upper), 3:HC(OL Lower), 4:SA, 5:ENT, 6:HX, 7:BF, 8:AUX1, 9:AUX2, 10:AUX3, 11:AUX4</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Apt3.SetPosition">
+<code class="descname">SetPosition</code><span class="sig-paren">(</span><em>(Apt3)arg1</em>, <em>(int)arg2</em>, <em>(int)arg3</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#PyJEM.TEM3.Apt3.SetPosition" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set Aperture position. The Selected Aperture is the Operation Target.</p>
+<p>arg2-&gt; x, arg3-&gt;y 
+Range: 0-4095</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Apt3.SetSize">
+<code class="descname">SetSize</code><span class="sig-paren">(</span><em>(Apt3)arg1</em>, <em>(int)arg2</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#PyJEM.TEM3.Apt3.SetSize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set Aperture number. The Selected Aperture is the Operation Target.</p>
+<p>0:Open, 1-4:Number</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="PyJEM.TEM3.Camera3">
+<em class="property">class </em><code class="descclassname">PyJEM.TEM3.</code><code class="descname">Camera3</code><a class="headerlink" href="#PyJEM.TEM3.Camera3" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">Boost.Python.instance</span></code></p>
+<p>It is a class that can operate the Camera. To use it, it is necessary to create an instance.</p>
+<dl class="method">
+<dt id="PyJEM.TEM3.Camera3.ExposeShutter">
+<code class="descname">ExposeShutter</code><span class="sig-paren">(</span><em>(Camera3)arg1</em>, <em>(float)arg2</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#PyJEM.TEM3.Camera3.ExposeShutter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Open shutter and close it after wait.</p>
+<p>Range:0.1-180.0 (sec)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Camera3.GetCurrentDensity">
+<code class="descname">GetCurrentDensity</code><span class="sig-paren">(</span><em>(Camera3)arg1</em><span class="sig-paren">)</span> &rarr; float :<a class="headerlink" href="#PyJEM.TEM3.Camera3.GetCurrentDensity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get electric current density. Converted value to film plane.</p>
+<p>[unit] pA/cm2</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Camera3.GetExpTime">
+<code class="descname">GetExpTime</code><span class="sig-paren">(</span><em>(Camera3)arg1</em><span class="sig-paren">)</span> &rarr; float :<a class="headerlink" href="#PyJEM.TEM3.Camera3.GetExpTime" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get exposure time.</p>
+<p>Range: 0-180.0 (sec)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Camera3.GetFilmLoadingMode">
+<code class="descname">GetFilmLoadingMode</code><span class="sig-paren">(</span><em>(Camera3)arg1</em><span class="sig-paren">)</span> &rarr; int :<a class="headerlink" href="#PyJEM.TEM3.Camera3.GetFilmLoadingMode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get film loading mode.</p>
+<p>0:Manual, 1:Auto(Load film to imaging position before photography), 2:Auto(Load film to imaging position after photography)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Camera3.GetMode">
+<code class="descname">GetMode</code><span class="sig-paren">(</span><em>(Camera3)arg1</em><span class="sig-paren">)</span> &rarr; int :<a class="headerlink" href="#PyJEM.TEM3.Camera3.GetMode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the way to set shutter speed.</p>
+<p>0:Manual exposure, 1:Automatic exposure, 2:BULB</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Camera3.GetPhotoMode">
+<code class="descname">GetPhotoMode</code><span class="sig-paren">(</span><em>(Camera3)arg1</em><span class="sig-paren">)</span> &rarr; int :<a class="headerlink" href="#PyJEM.TEM3.Camera3.GetPhotoMode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get photo mode.</p>
+<p>0:Normal, 1:Bulb, 2:Multi Exposure, 3:TF, 4:AMS, 5:MDS</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Camera3.GetShutterPosition">
+<code class="descname">GetShutterPosition</code><span class="sig-paren">(</span><em>(Camera3)arg1</em><span class="sig-paren">)</span> &rarr; int :<a class="headerlink" href="#PyJEM.TEM3.Camera3.GetShutterPosition" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get shutter status.</p>
+<p>0:Open, 1:Close, 2:Expose</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Camera3.GetStatus">
+<code class="descname">GetStatus</code><span class="sig-paren">(</span><em>(Camera3)arg1</em><span class="sig-paren">)</span> &rarr; int :<a class="headerlink" href="#PyJEM.TEM3.Camera3.GetStatus" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get Photography status.</p>
+<p>0:Rest, 1:Imaging</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Camera3.GetUnused">
+<code class="descname">GetUnused</code><span class="sig-paren">(</span><em>(Camera3)arg1</em><span class="sig-paren">)</span> &rarr; int<a class="headerlink" href="#PyJEM.TEM3.Camera3.GetUnused" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Camera3.SelectFilmLoadingMode">
+<code class="descname">SelectFilmLoadingMode</code><span class="sig-paren">(</span><em>(Camera3)arg1</em>, <em>(int)arg2</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#PyJEM.TEM3.Camera3.SelectFilmLoadingMode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Select film loading mode.</p>
+<p>0:Manual, 1:Auto(Load film to imaging position before photography), 2:Auto(Load film to imaging position after photography)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Camera3.SelectMode">
+<code class="descname">SelectMode</code><span class="sig-paren">(</span><em>(Camera3)arg1</em>, <em>(int)arg2</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#PyJEM.TEM3.Camera3.SelectMode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Select the way to set Shutter Speed.</p>
+<p>0:Manual exposure, 1:Automatic exposure, 2:BULB</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Camera3.SetExpTime">
+<code class="descname">SetExpTime</code><span class="sig-paren">(</span><em>(Camera3)arg1</em>, <em>(float)arg2</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#PyJEM.TEM3.Camera3.SetExpTime" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set exposure time.</p>
+<p>Range: 0-180.0 (sec)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Camera3.SetShutterPosition">
+<code class="descname">SetShutterPosition</code><span class="sig-paren">(</span><em>(Camera3)arg1</em>, <em>(int)arg2</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#PyJEM.TEM3.Camera3.SetShutterPosition" title="Permalink to this definition">¶</a></dt>
+<dd><p>Open/Close shutter.
+This does not work while imaging.Time out error occurs after 1 minute closing.</p>
+<p>0:Open, 1:Close</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="PyJEM.TEM3.Def3">
+<em class="property">class </em><code class="descclassname">PyJEM.TEM3.</code><code class="descname">Def3</code><a class="headerlink" href="#PyJEM.TEM3.Def3" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">Boost.Python.instance</span></code></p>
+<p>It is a class that can operate the Deflector. To use it, it is necessary to create an instance.</p>
+<dl class="method">
+<dt id="PyJEM.TEM3.Def3.GetAngBal">
+<code class="descname">GetAngBal</code><span class="sig-paren">(</span><em>(Def3)arg1</em><span class="sig-paren">)</span> &rarr; list :<a class="headerlink" href="#PyJEM.TEM3.Def3.GetAngBal" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get AngleBalance value. this returns I/O output value.</p>
+<p>Range:0-FFFF(H)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Def3.GetBeamBlank">
+<code class="descname">GetBeamBlank</code><span class="sig-paren">(</span><em>(Def3)arg1</em><span class="sig-paren">)</span> &rarr; int :<a class="headerlink" href="#PyJEM.TEM3.Def3.GetBeamBlank" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get Beam branking status, 1:ON</p>
+<p>Branking method is defined on machine side.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Def3.GetCLA1">
+<code class="descname">GetCLA1</code><span class="sig-paren">(</span><em>(Def3)arg1</em><span class="sig-paren">)</span> &rarr; list :<a class="headerlink" href="#PyJEM.TEM3.Def3.GetCLA1" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get CLAlignment1 value. this returns I/O output value.</p>
+<p>Range:0-FFFF(H)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Def3.GetCLA2">
+<code class="descname">GetCLA2</code><span class="sig-paren">(</span><em>(Def3)arg1</em><span class="sig-paren">)</span> &rarr; list :<a class="headerlink" href="#PyJEM.TEM3.Def3.GetCLA2" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get CLAlignment2 value. this returns I/O output value.</p>
+<p>Range:0-FFFF(H)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Def3.GetCLs">
+<code class="descname">GetCLs</code><span class="sig-paren">(</span><em>(Def3)arg1</em><span class="sig-paren">)</span> &rarr; list :<a class="headerlink" href="#PyJEM.TEM3.Def3.GetCLs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get CLStig value. this returns I/O output value.</p>
+<p>Range:0-FFFF(H)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Def3.GetCorrection">
+<code class="descname">GetCorrection</code><span class="sig-paren">(</span><em>(Def3)arg1</em><span class="sig-paren">)</span> &rarr; list :<a class="headerlink" href="#PyJEM.TEM3.Def3.GetCorrection" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get Correction value. this returns I/O output value.</p>
+<p>Range:0-FFFF(H)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Def3.GetDetAlign">
+<code class="descname">GetDetAlign</code><span class="sig-paren">(</span><em>(Def3)arg1</em>, <em>(int)arg2</em><span class="sig-paren">)</span> &rarr; list :<a class="headerlink" href="#PyJEM.TEM3.Def3.GetDetAlign" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get Alignment value for detector. this returns I/O output value.arg1 is DetectorID.</p>
+<p>DetectorID -&gt; 0:&#8211;, 1:SEI, 2:EDS, 3:BI-PRISM, 4:DFI-EF, 5:TVCAM-U, 6:SSCAM-U, 7:FARADAY-CAGE, 8:BS, 9:HRD, 10:DFI-U, 11:BFI-U, 12:SCR-F, 13:SCR-L, 14:DFI-B, 15:BFI-B, 16:SSCAM-B,17:TVCAM-B, 18:EELS, 19:TVCAM-GIF, 20:SSCAM-GIF, 21:BEI-TOPO, 22:BEI-COMPO, 23:SEI-TOPO, 24:SEI-COMPO</p>
+<blockquote>
+<div>Range : 0 - FFFF(H)</div></blockquote>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Def3.GetFLA1">
+<code class="descname">GetFLA1</code><span class="sig-paren">(</span><em>(Def3)arg1</em><span class="sig-paren">)</span> &rarr; list :<a class="headerlink" href="#PyJEM.TEM3.Def3.GetFLA1" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get FLAlignment1 value. this returns I/O output value.</p>
+<p>Range:0-FFFF(H)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Def3.GetFLA2">
+<code class="descname">GetFLA2</code><span class="sig-paren">(</span><em>(Def3)arg1</em><span class="sig-paren">)</span> &rarr; list :<a class="headerlink" href="#PyJEM.TEM3.Def3.GetFLA2" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get FLAlignment2 value. this returns I/O output value.</p>
+<p>Range:0-FFFF(H)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Def3.GetFLs1">
+<code class="descname">GetFLs1</code><span class="sig-paren">(</span><em>(Def3)arg1</em><span class="sig-paren">)</span> &rarr; list :<a class="headerlink" href="#PyJEM.TEM3.Def3.GetFLs1" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get FLStig1 value. this returns I/O output value.</p>
+<p>Range:0-FFFF(H)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Def3.GetFLs2">
+<code class="descname">GetFLs2</code><span class="sig-paren">(</span><em>(Def3)arg1</em><span class="sig-paren">)</span> &rarr; list :<a class="headerlink" href="#PyJEM.TEM3.Def3.GetFLs2" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get FLStig1 value.. this returns I/O output value.</p>
+<p>Range:0-FFFF(H)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Def3.GetGunA1">
+<code class="descname">GetGunA1</code><span class="sig-paren">(</span><em>(Def3)arg1</em><span class="sig-paren">)</span> &rarr; list :<a class="headerlink" href="#PyJEM.TEM3.Def3.GetGunA1" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get GunAlignment1 value. this returns I/O output value.</p>
+<p>Range:0-FFFF(H)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Def3.GetGunA2">
+<code class="descname">GetGunA2</code><span class="sig-paren">(</span><em>(Def3)arg1</em><span class="sig-paren">)</span> &rarr; list :<a class="headerlink" href="#PyJEM.TEM3.Def3.GetGunA2" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get GunAlignment2 value. this returns I/O output value.</p>
+<p>Range:0-FFFF(H)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Def3.GetILs">
+<code class="descname">GetILs</code><span class="sig-paren">(</span><em>(Def3)arg1</em><span class="sig-paren">)</span> &rarr; list :<a class="headerlink" href="#PyJEM.TEM3.Def3.GetILs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get ILStig value. this returns I/O output value.</p>
+<p>Range:0-FFFF(H)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Def3.GetIS1">
+<code class="descname">GetIS1</code><span class="sig-paren">(</span><em>(Def3)arg1</em><span class="sig-paren">)</span> &rarr; list :<a class="headerlink" href="#PyJEM.TEM3.Def3.GetIS1" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get ImageShift1 value. this returns I/O output value. IS on imaging system.</p>
+<p>Range:0-FFFF(H)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Def3.GetIS2">
+<code class="descname">GetIS2</code><span class="sig-paren">(</span><em>(Def3)arg1</em><span class="sig-paren">)</span> &rarr; list :<a class="headerlink" href="#PyJEM.TEM3.Def3.GetIS2" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get ImageShift2 value. this returns I/O output value. IS on imaging system.</p>
+<p>Range:0-FFFF(H)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Def3.GetMagAdjust">
+<code class="descname">GetMagAdjust</code><span class="sig-paren">(</span><em>(Def3)arg1</em><span class="sig-paren">)</span> &rarr; list :<a class="headerlink" href="#PyJEM.TEM3.Def3.GetMagAdjust" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get MagAdjust value. this returns I/O output value.</p>
+<p>Range:0-FFFF(H)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Def3.GetOLs">
+<code class="descname">GetOLs</code><span class="sig-paren">(</span><em>(Def3)arg1</em><span class="sig-paren">)</span> &rarr; list :<a class="headerlink" href="#PyJEM.TEM3.Def3.GetOLs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get OLStig value. this returns I/O output value or OLS value on LM.</p>
+<p>Range:0-FFFF(H)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Def3.GetOffset">
+<code class="descname">GetOffset</code><span class="sig-paren">(</span><em>(Def3)arg1</em><span class="sig-paren">)</span> &rarr; list :<a class="headerlink" href="#PyJEM.TEM3.Def3.GetOffset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get Offset value. this returns I/O output value.</p>
+<p>Range:0-FFFF(H)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Def3.GetPLA">
+<code class="descname">GetPLA</code><span class="sig-paren">(</span><em>(Def3)arg1</em><span class="sig-paren">)</span> &rarr; list :<a class="headerlink" href="#PyJEM.TEM3.Def3.GetPLA" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get PLAlign value. this returns I/O output value.</p>
+<p>Range:0-FFFF(H)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Def3.GetRotation">
+<code class="descname">GetRotation</code><span class="sig-paren">(</span><em>(Def3)arg1</em><span class="sig-paren">)</span> &rarr; list :<a class="headerlink" href="#PyJEM.TEM3.Def3.GetRotation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get Rotation value. this returns I/O output value.</p>
+<p>Range:0-FFFF(H)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Def3.GetScan1">
+<code class="descname">GetScan1</code><span class="sig-paren">(</span><em>(Def3)arg1</em><span class="sig-paren">)</span> &rarr; list :<a class="headerlink" href="#PyJEM.TEM3.Def3.GetScan1" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get SCAN1 value. this returns I/O output value.</p>
+<p>Range:0-FFFF(H)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Def3.GetScan2">
+<code class="descname">GetScan2</code><span class="sig-paren">(</span><em>(Def3)arg1</em><span class="sig-paren">)</span> &rarr; list :<a class="headerlink" href="#PyJEM.TEM3.Def3.GetScan2" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get SCAN2 value. this returns I/O output value.</p>
+<p>Range:0-FFFF(H)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Def3.GetShifBal">
+<code class="descname">GetShifBal</code><span class="sig-paren">(</span><em>(Def3)arg1</em><span class="sig-paren">)</span> &rarr; list :<a class="headerlink" href="#PyJEM.TEM3.Def3.GetShifBal" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get ShiftBalance value. this returns I/O output value.</p>
+<p>Range:0-FFFF(H)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Def3.GetSpotA">
+<code class="descname">GetSpotA</code><span class="sig-paren">(</span><em>(Def3)arg1</em><span class="sig-paren">)</span> &rarr; list :<a class="headerlink" href="#PyJEM.TEM3.Def3.GetSpotA" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get SpotAlignment value. this returns I/O output value.</p>
+<p>Range:0-FFFF(H)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Def3.GetStemIS">
+<code class="descname">GetStemIS</code><span class="sig-paren">(</span><em>(Def3)arg1</em><span class="sig-paren">)</span> &rarr; list :<a class="headerlink" href="#PyJEM.TEM3.Def3.GetStemIS" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get IS value for ASID. The variable corresponds to IS value overlapped to CLA.</p>
+<p>Range:0-FFFF(H)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Def3.GetTiltBal">
+<code class="descname">GetTiltBal</code><span class="sig-paren">(</span><em>(Def3)arg1</em><span class="sig-paren">)</span> &rarr; list :<a class="headerlink" href="#PyJEM.TEM3.Def3.GetTiltBal" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get TiltBalance value. this returns I/O output value.</p>
+<p>Range:0-FFFF(H)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Def3.SetAngBal">
+<code class="descname">SetAngBal</code><span class="sig-paren">(</span><em>(Def3)arg1</em>, <em>(int)arg2</em>, <em>(int)arg3</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#PyJEM.TEM3.Def3.SetAngBal" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set AngleBalance value. The variable corresponds to I/O output value.</p>
+<p>Range:0-FFFF(H)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Def3.SetBeamBlank">
+<code class="descname">SetBeamBlank</code><span class="sig-paren">(</span><em>(Def3)arg1</em>, <em>(int)arg2</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#PyJEM.TEM3.Def3.SetBeamBlank" title="Permalink to this definition">¶</a></dt>
+<dd><p>ON/OFF Beam branking.</p>
+<p>0:OFF, 1:ON</p>
+<p>Branking method is defined on machine side.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Def3.SetCLA1">
+<code class="descname">SetCLA1</code><span class="sig-paren">(</span><em>(Def3)arg1</em>, <em>(int)arg2</em>, <em>(int)arg3</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#PyJEM.TEM3.Def3.SetCLA1" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set CLAlignment1 value. The variable corresponds to I/O output value.</p>
+<p>Range:0-FFFF(H)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Def3.SetCLA2">
+<code class="descname">SetCLA2</code><span class="sig-paren">(</span><em>(Def3)arg1</em>, <em>(int)arg2</em>, <em>(int)arg3</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#PyJEM.TEM3.Def3.SetCLA2" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set CLAlignment2 value. The variable corresponds to I/O output value.</p>
+<p>Range:0-FFFF(H)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Def3.SetCLs">
+<code class="descname">SetCLs</code><span class="sig-paren">(</span><em>(Def3)arg1</em>, <em>(int)arg2</em>, <em>(int)arg3</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#PyJEM.TEM3.Def3.SetCLs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set CLStig value. The variable corresponds to I/O output value.</p>
+<p>Range:0-FFFF(H)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Def3.SetDetAlign">
+<code class="descname">SetDetAlign</code><span class="sig-paren">(</span><em>(Def3)arg1</em>, <em>(int)arg2</em>, <em>(int)arg3</em>, <em>(int)arg4</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#PyJEM.TEM3.Def3.SetDetAlign" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set Alignment value for detector. The variable corresponds to I/O output value.</p>
+<p>arg1 is detector ID-&gt; 0:&#8211;, 1:SEI, 2:EDS, 3:BI-PRISM, 4:DFI-EF, 5:TVCAM-U, 6:SSCAM-U, 7:FARADAY-CAGE, 8:BS, 9:HRD, 10:DFI-U, 11:BFI-U, 12:SCR-F, 13:SCR-L, 14:DFI-B, 15:BFI-B, 16:SSCAM-B,17:TVCAM-B, 18:EELS, 19:TVCAM-GIF, 20:SSCAM-GIF, 21:BEI-TOPO, 22:BEI-COMPO, 23:SEI-TOPO, 24:SEI-COMPO</p>
+<p>Range of arg2, arg3:0-FFFF(H)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Def3.SetFLA1">
+<code class="descname">SetFLA1</code><span class="sig-paren">(</span><em>(Def3)arg1</em>, <em>(int)arg2</em>, <em>(int)arg3</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#PyJEM.TEM3.Def3.SetFLA1" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set FLAlignment1 value. The variable corresponds to I/O output value.</p>
+<p>Range:0-FFFF(H)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Def3.SetFLA2">
+<code class="descname">SetFLA2</code><span class="sig-paren">(</span><em>(Def3)arg1</em>, <em>(int)arg2</em>, <em>(int)arg3</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#PyJEM.TEM3.Def3.SetFLA2" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set FLAlignment2 value. The variable corresponds to I/O output value.</p>
+<p>Range:0-FFFF(H)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Def3.SetFLs1">
+<code class="descname">SetFLs1</code><span class="sig-paren">(</span><em>(Def3)arg1</em>, <em>(int)arg2</em>, <em>(int)arg3</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#PyJEM.TEM3.Def3.SetFLs1" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set FLStig1 value. The variable corresponds to I/O output value.</p>
+<p>Range:0-FFFF(H)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Def3.SetFLs2">
+<code class="descname">SetFLs2</code><span class="sig-paren">(</span><em>(Def3)arg1</em>, <em>(int)arg2</em>, <em>(int)arg3</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#PyJEM.TEM3.Def3.SetFLs2" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set FLStig2 value. The variable corresponds to I/O output value.</p>
+<p>Range:0-FFFF(H)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Def3.SetGunA1">
+<code class="descname">SetGunA1</code><span class="sig-paren">(</span><em>(Def3)arg1</em>, <em>(int)arg2</em>, <em>(int)arg3</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#PyJEM.TEM3.Def3.SetGunA1" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set GunAlignment1 value. The variable corresponds to I/O output value.</p>
+<p>Range:0-FFFF(H)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Def3.SetGunA2">
+<code class="descname">SetGunA2</code><span class="sig-paren">(</span><em>(Def3)arg1</em>, <em>(int)arg2</em>, <em>(int)arg3</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#PyJEM.TEM3.Def3.SetGunA2" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set GunAlignment2 value. The variable corresponds to I/O output value.</p>
+<p>Range:0-FFFF(H)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Def3.SetILs">
+<code class="descname">SetILs</code><span class="sig-paren">(</span><em>(Def3)arg1</em>, <em>(int)arg2</em>, <em>(int)arg3</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#PyJEM.TEM3.Def3.SetILs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set ILStig value. The variable corresponds to I/O output value.</p>
+<p>Range:0-FFFF(H)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Def3.SetIS1">
+<code class="descname">SetIS1</code><span class="sig-paren">(</span><em>(Def3)arg1</em>, <em>(int)arg2</em>, <em>(int)arg3</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#PyJEM.TEM3.Def3.SetIS1" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set ImageShift1 value. The variable corresponds to I/O output value. IS on imaging system.</p>
+<p>Range:0-FFFF(H)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Def3.SetIS2">
+<code class="descname">SetIS2</code><span class="sig-paren">(</span><em>(Def3)arg1</em>, <em>(int)arg2</em>, <em>(int)arg3</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#PyJEM.TEM3.Def3.SetIS2" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set ImageShift2 value. The variable corresponds to I/O output value. IS on imaging system.</p>
+<p>Range:0-FFFF(H)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Def3.SetNtrl">
+<code class="descname">SetNtrl</code><span class="sig-paren">(</span><em>(Def3)arg1</em>, <em>(int)arg2</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#PyJEM.TEM3.Def3.SetNtrl" title="Permalink to this definition">¶</a></dt>
+<dd><p>NTRL of the region which is being accessed.</p>
+<p>0:GUN1, 1:GUN2, 2:CLA1, 3:CLA2, 4:CMP-S, 5:CMP-T. 6:CMT-A, 7:CLS, 8:ISC1, 9:ISC2, 10:SPA, 11:PLA, 12:OLS, 13:ILS, 14:FLS1, 15:FLS2, 16:FLA1, 17:FLA2, 18:SCAN1, 19:SCAN2, 20:IS-ASID, 21:MAG-ADJ, 22:ROTATION, 23:CORRECTION, 24:OFFSET</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Def3.SetOLs">
+<code class="descname">SetOLs</code><span class="sig-paren">(</span><em>(Def3)arg1</em>, <em>(int)arg2</em>, <em>(int)arg3</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#PyJEM.TEM3.Def3.SetOLs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set OLStig value. The variable corresponds to I/O output value. Set OLS for LM.</p>
+<p>Range:0-FFFF(H)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Def3.SetPLA">
+<code class="descname">SetPLA</code><span class="sig-paren">(</span><em>(Def3)arg1</em>, <em>(int)arg2</em>, <em>(int)arg3</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#PyJEM.TEM3.Def3.SetPLA" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set PLAlign value. The variable corresponds to I/O output value.</p>
+<p>Range:0-FFFF(H)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Def3.SetScan1">
+<code class="descname">SetScan1</code><span class="sig-paren">(</span><em>(Def3)arg1</em>, <em>(int)arg2</em>, <em>(int)arg3</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#PyJEM.TEM3.Def3.SetScan1" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set SCAN1 value. The variable corresponds to I/O output value.</p>
+<p>Range:0-FFFF(H)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Def3.SetScan2">
+<code class="descname">SetScan2</code><span class="sig-paren">(</span><em>(Def3)arg1</em>, <em>(int)arg2</em>, <em>(int)arg3</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#PyJEM.TEM3.Def3.SetScan2" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set SCAN2 value. The variable corresponds to I/O output value.</p>
+<p>Range:0-FFFF(H)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Def3.SetShifBal">
+<code class="descname">SetShifBal</code><span class="sig-paren">(</span><em>(Def3)arg1</em>, <em>(int)arg2</em>, <em>(int)arg3</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#PyJEM.TEM3.Def3.SetShifBal" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set ShiftBalance value. The variable corresponds to I/O output value.</p>
+<p>Range:0-FFFF(H)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Def3.SetSpotA">
+<code class="descname">SetSpotA</code><span class="sig-paren">(</span><em>(Def3)arg1</em>, <em>(int)arg2</em>, <em>(int)arg3</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#PyJEM.TEM3.Def3.SetSpotA" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set SpotAlignment value. The variable corresponds to I/O output value.</p>
+<p>Range:0-FFFF(H)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Def3.SetStemA1CoarseRel">
+<code class="descname">SetStemA1CoarseRel</code><span class="sig-paren">(</span><em>(Def3)arg1</em>, <em>(int)arg2</em>, <em>(int)arg3</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#PyJEM.TEM3.Def3.SetStemA1CoarseRel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Increase or decrease A1 Coarse value for STEM.</p>
+<p>This works for ARM200F</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Def3.SetStemBeamTiltRel">
+<code class="descname">SetStemBeamTiltRel</code><span class="sig-paren">(</span><em>(Def3)arg1</em>, <em>(int)arg2</em>, <em>(int)arg3</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#PyJEM.TEM3.Def3.SetStemBeamTiltRel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Increase or decrease Beam Tilt value for STEM.</p>
+<p>This works for ARM200F</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Def3.SetStemIS">
+<code class="descname">SetStemIS</code><span class="sig-paren">(</span><em>(Def3)arg1</em>, <em>(int)arg2</em>, <em>(int)arg3</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#PyJEM.TEM3.Def3.SetStemIS" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set IS value for ASID. The variable corresponds to IS value overlapped to CLA.</p>
+<p>Range:0-FFFF(H)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Def3.SetStemStigA1Rel">
+<code class="descname">SetStemStigA1Rel</code><span class="sig-paren">(</span><em>(Def3)arg1</em>, <em>(int)arg2</em>, <em>(int)arg3</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#PyJEM.TEM3.Def3.SetStemStigA1Rel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Increase or decrease Stig A1 value for STEM.</p>
+<p>This works for ARM200F</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Def3.SetStemStigB2Rel">
+<code class="descname">SetStemStigB2Rel</code><span class="sig-paren">(</span><em>(Def3)arg1</em>, <em>(int)arg2</em>, <em>(int)arg3</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#PyJEM.TEM3.Def3.SetStemStigB2Rel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Increase or decrease Stig B2 value for STEM.</p>
+<p>This works for ARM200F</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Def3.SetStemUserBShiftRel">
+<code class="descname">SetStemUserBShiftRel</code><span class="sig-paren">(</span><em>(Def3)arg1</em>, <em>(int)arg2</em>, <em>(int)arg3</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#PyJEM.TEM3.Def3.SetStemUserBShiftRel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Increase or decrease User B Shift value for STEM.</p>
+<p>This works for ARM200F</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Def3.SetTemA1CoarseRel">
+<code class="descname">SetTemA1CoarseRel</code><span class="sig-paren">(</span><em>(Def3)arg1</em>, <em>(int)arg2</em>, <em>(int)arg3</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#PyJEM.TEM3.Def3.SetTemA1CoarseRel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Increase or decrease A1 Coarse value for TEM.</p>
+<p>This works for ARM200F</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Def3.SetTemDShiftRel">
+<code class="descname">SetTemDShiftRel</code><span class="sig-paren">(</span><em>(Def3)arg1</em>, <em>(int)arg2</em>, <em>(int)arg3</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#PyJEM.TEM3.Def3.SetTemDShiftRel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Increase or decrease D Shift value for TEM.</p>
+<p>This works for ARM200F</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Def3.SetTemDiStigRel">
+<code class="descname">SetTemDiStigRel</code><span class="sig-paren">(</span><em>(Def3)arg1</em>, <em>(int)arg2</em>, <em>(int)arg3</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#PyJEM.TEM3.Def3.SetTemDiStigRel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Increase or decrease Di Stig value for TEM.</p>
+<p>This works for ARM200F</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Def3.SetTemStigA1Rel">
+<code class="descname">SetTemStigA1Rel</code><span class="sig-paren">(</span><em>(Def3)arg1</em>, <em>(int)arg2</em>, <em>(int)arg3</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#PyJEM.TEM3.Def3.SetTemStigA1Rel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Increase or decrease Stig A1 value for TEM.</p>
+<p>This works for ARM200F</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Def3.SetTiltBal">
+<code class="descname">SetTiltBal</code><span class="sig-paren">(</span><em>(Def3)arg1</em>, <em>(int)arg2</em>, <em>(int)arg3</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#PyJEM.TEM3.Def3.SetTiltBal" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set TiltBalance value. The variable corresponds to I/O output value.</p>
+<p>Range:0-FFFF(H)</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="PyJEM.TEM3.Detector3">
+<em class="property">class </em><code class="descclassname">PyJEM.TEM3.</code><code class="descname">Detector3</code><a class="headerlink" href="#PyJEM.TEM3.Detector3" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">Boost.Python.instance</span></code></p>
+<p>It is a class that can operate the Detector. To use it, it is necessary to create an instance.</p>
+<dl class="method">
+<dt id="PyJEM.TEM3.Detector3.GetBrt">
+<code class="descname">GetBrt</code><span class="sig-paren">(</span><em>(Detector3)arg1</em>, <em>(int)arg2</em><span class="sig-paren">)</span> &rarr; int :<a class="headerlink" href="#PyJEM.TEM3.Detector3.GetBrt" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get Brightness of detector.</p>
+<p>arg2-&gt;DetectorID 
+Brighness Range(0-4095)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Detector3.GetCont">
+<code class="descname">GetCont</code><span class="sig-paren">(</span><em>(Detector3)arg1</em>, <em>(int)arg2</em><span class="sig-paren">)</span> &rarr; int :<a class="headerlink" href="#PyJEM.TEM3.Detector3.GetCont" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get Contrast of detector.</p>
+<p>arg2-&gt;DetectorID 
+Contrast Range(0-4095)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Detector3.GetImageSw">
+<code class="descname">GetImageSw</code><span class="sig-paren">(</span><em>(Detector3)arg1</em>, <em>(int)arg2</em><span class="sig-paren">)</span> &rarr; int :<a class="headerlink" href="#PyJEM.TEM3.Detector3.GetImageSw" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get input status from detector.</p>
+<p>arg2-&gt;DetectorID 
+Input signal(0:OUT, 1:IN)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Detector3.GetPosition">
+<code class="descname">GetPosition</code><span class="sig-paren">(</span><em>(Detector3)arg1</em>, <em>(int)arg2</em><span class="sig-paren">)</span> &rarr; int :<a class="headerlink" href="#PyJEM.TEM3.Detector3.GetPosition" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get Detector control.</p>
+<p>arg2-&gt;DetectorID 
+Detector Position(0:OUT, 1:IN)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Detector3.SetBrt">
+<code class="descname">SetBrt</code><span class="sig-paren">(</span><em>(Detector3)arg1</em>, <em>(int)arg2</em>, <em>(int)arg3</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#PyJEM.TEM3.Detector3.SetBrt" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set Brightness of detector.</p>
+<p>arg2-&gt;DetectorID, arg3-&gt;Brighness Range(0-4095)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Detector3.SetCont">
+<code class="descname">SetCont</code><span class="sig-paren">(</span><em>(Detector3)arg1</em>, <em>(int)arg2</em>, <em>(int)arg3</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#PyJEM.TEM3.Detector3.SetCont" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set Contrast of detector.</p>
+<p>arg2-&gt;DetectorID, arg3-&gt;Contrast Range(0-4095)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Detector3.SetImageSw">
+<code class="descname">SetImageSw</code><span class="sig-paren">(</span><em>(Detector3)arg1</em>, <em>(int)arg2</em>, <em>(int)arg3</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#PyJEM.TEM3.Detector3.SetImageSw" title="Permalink to this definition">¶</a></dt>
+<dd><p>ON/OFF input signal from detector.</p>
+<p>arg2-&gt;DetectorID, arg3-&gt;Input signal(0:OUT, 1:IN)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Detector3.SetPosition">
+<code class="descname">SetPosition</code><span class="sig-paren">(</span><em>(Detector3)arg1</em>, <em>(int)arg2</em>, <em>(int)arg3</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#PyJEM.TEM3.Detector3.SetPosition" title="Permalink to this definition">¶</a></dt>
+<dd><p>Detector control.</p>
+<p>arg2-&gt;DetectorID, arg3-&gt;Detector Position(0:OUT, 1:IN)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Detector3.SetScreen">
+<code class="descname">SetScreen</code><span class="sig-paren">(</span><em>(Detector3)arg1</em>, <em>(int)arg2</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#PyJEM.TEM3.Detector3.SetScreen" title="Permalink to this definition">¶</a></dt>
+<dd><p>Screen control.</p>
+<p>[Select Angle]0:0, 1:7, 2:90 (degree)</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="PyJEM.TEM3.EOS3">
+<em class="property">class </em><code class="descclassname">PyJEM.TEM3.</code><code class="descname">EOS3</code><a class="headerlink" href="#PyJEM.TEM3.EOS3" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">Boost.Python.instance</span></code></p>
+<p>It is a class that can operate the EOS. To use it, it is necessary to create an instance.</p>
+<dl class="method">
+<dt id="PyJEM.TEM3.EOS3.DownSelector">
+<code class="descname">DownSelector</code><span class="sig-paren">(</span><em>(EOS3)arg1</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#PyJEM.TEM3.EOS3.DownSelector" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decrement Magnification/Camera length/Rocking angle number. Down the magnification selector.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.EOS3.DownSpctrSelector">
+<code class="descname">DownSpctrSelector</code><span class="sig-paren">(</span><em>(EOS3)arg1</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#PyJEM.TEM3.EOS3.DownSpctrSelector" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decrement spectrum magnification number.</p>
+<p>Down the energy spectrometer selector.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.EOS3.DownStemCamSelector">
+<code class="descname">DownStemCamSelector</code><span class="sig-paren">(</span><em>(EOS3)arg1</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#PyJEM.TEM3.EOS3.DownStemCamSelector" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decrement imaging side camera length(magnification) number for STEM.</p>
+<p>Down the camera length selector.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.EOS3.GetAlpha">
+<code class="descname">GetAlpha</code><span class="sig-paren">(</span><em>(EOS3)arg1</em><span class="sig-paren">)</span> &rarr; int :<a class="headerlink" href="#PyJEM.TEM3.EOS3.GetAlpha" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get alpha number.</p>
+<p>Range:0-8</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.EOS3.GetAlphaSelectorEx">
+<code class="descname">GetAlphaSelectorEx</code><span class="sig-paren">(</span><em>(EOS3)arg1</em><span class="sig-paren">)</span> &rarr; list :<a class="headerlink" href="#PyJEM.TEM3.EOS3.GetAlphaSelectorEx" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get alpha number and string.</p>
+<p>..[0]-&gt; Alpha number Range:0-8</p>
+<p>..[1]-&gt;string: string</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.EOS3.GetCurrentMagSelectorID">
+<code class="descname">GetCurrentMagSelectorID</code><span class="sig-paren">(</span><em>(EOS3)arg1</em><span class="sig-paren">)</span> &rarr; int :<a class="headerlink" href="#PyJEM.TEM3.EOS3.GetCurrentMagSelectorID" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get MAG selector UD and Magnification value.</p>
+<p>..[0]-&gt;int: MAG selector ID</p>
+<p>..[1]-&gt;int: Magnification value.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.EOS3.GetFunctionMode">
+<code class="descname">GetFunctionMode</code><span class="sig-paren">(</span><em>(EOS3)arg1</em><span class="sig-paren">)</span> &rarr; list :<a class="headerlink" href="#PyJEM.TEM3.EOS3.GetFunctionMode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get imaging FUNCTION mode.</p>
+<p>..[0] -&gt; int :[On TEM Observation] 0:MAG, 1:MAG2, 2:LowMAG, 3:SAMAG, 4:DIFF</p>
+<p>[On STEM Observation] 0:Align, 1:SM-LMAG, 2:SM-MAG, 3:AMAG, 4:uuDIFF, 5:Rocking</p>
+<p>..[1] -&gt; str: FUNCTION mode explanation string.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.EOS3.GetIoData">
+<code class="descname">GetIoData</code><span class="sig-paren">(</span><em>(EOS3)arg1</em>, <em>(int)arg2</em><span class="sig-paren">)</span> &rarr; int :<a class="headerlink" href="#PyJEM.TEM3.EOS3.GetIoData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get I/O function.</p>
+<p>arg1 is target address.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.EOS3.GetMagValue">
+<code class="descname">GetMagValue</code><span class="sig-paren">(</span><em>(EOS3)arg1</em><span class="sig-paren">)</span> &rarr; list :<a class="headerlink" href="#PyJEM.TEM3.EOS3.GetMagValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get Magnification/Camera length/Rocking angle.</p>
+<p>..[0]-&gt;long :Magnification value(Magnification of scanning image for ASID.</p>
+<p>..[1]-&gt;str: Unit string.</p>
+<p>..[2]-&gt;str: Magnification label.)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.EOS3.GetProbeMode">
+<code class="descname">GetProbeMode</code><span class="sig-paren">(</span><em>(EOS3)arg1</em><span class="sig-paren">)</span> &rarr; list :<a class="headerlink" href="#PyJEM.TEM3.EOS3.GetProbeMode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get irradiative PROBE mode.</p>
+<p>0:TEM, 1:EDS, 2:NBD, 3:CBD</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.EOS3.GetSpctrMode">
+<code class="descname">GetSpctrMode</code><span class="sig-paren">(</span><em>(EOS3)arg1</em><span class="sig-paren">)</span> &rarr; int :<a class="headerlink" href="#PyJEM.TEM3.EOS3.GetSpctrMode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get spectrum mode status.</p>
+<p>0:OFF, 1:ON</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.EOS3.GetSpctrValue">
+<code class="descname">GetSpctrValue</code><span class="sig-paren">(</span><em>(EOS3)arg1</em><span class="sig-paren">)</span> &rarr; list :<a class="headerlink" href="#PyJEM.TEM3.EOS3.GetSpctrValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get spectrum magnification.</p>
+<p>..[0]-&gt;long: Magnification value (um/V)</p>
+<p>..[1]-&gt;string: Unit string</p>
+<p>..[2]-&gt; string: Magnification label</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.EOS3.GetSpotSize">
+<code class="descname">GetSpotSize</code><span class="sig-paren">(</span><em>(EOS3)arg1</em><span class="sig-paren">)</span> &rarr; int :<a class="headerlink" href="#PyJEM.TEM3.EOS3.GetSpotSize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get SPOTSIZE number</p>
+<p>Range:0-7</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.EOS3.GetStemCamValue">
+<code class="descname">GetStemCamValue</code><span class="sig-paren">(</span><em>(EOS3)arg1</em><span class="sig-paren">)</span> &rarr; list :<a class="headerlink" href="#PyJEM.TEM3.EOS3.GetStemCamValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get imaging side camera length(magnification) for STEM.</p>
+<p>..[0]-&gt;long: Camera length value (cm)</p>
+<p>..[1]-&gt;string: Unit string</p>
+<p>[2]-&gt;string: Camera length string.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.EOS3.GetTemStemMode">
+<code class="descname">GetTemStemMode</code><span class="sig-paren">(</span><em>(EOS3)arg1</em><span class="sig-paren">)</span> &rarr; int :<a class="headerlink" href="#PyJEM.TEM3.EOS3.GetTemStemMode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get TEM/ASID mode</p>
+<p>0:TEM, 1:ASID</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.EOS3.SelectFunctionMode">
+<code class="descname">SelectFunctionMode</code><span class="sig-paren">(</span><em>(EOS3)arg1</em>, <em>(int)arg2</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#PyJEM.TEM3.EOS3.SelectFunctionMode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set imaging FUNCTION mode.</p>
+<p>[On TEM Observation] 0:MAG, 1:MAG2, 2:LowMAG, 3:SAMAG, 4:DIFF</p>
+<p>[On STEM Observation] 0:Align, 1:SM-LMAG, 2:SM-MAG, 3:AMAG, 4:uuDIFF, 5:Rocking</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.EOS3.SelectProbMode">
+<code class="descname">SelectProbMode</code><span class="sig-paren">(</span><em>(EOS3)arg1</em>, <em>(int)arg2</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#PyJEM.TEM3.EOS3.SelectProbMode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set irradiative PROBE mode.</p>
+<p>0:TEM, 1:EDS, 2:NBD, 3:CBD</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.EOS3.SelectSpotSize">
+<code class="descname">SelectSpotSize</code><span class="sig-paren">(</span><em>(EOS3)arg1</em>, <em>(int)arg2</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#PyJEM.TEM3.EOS3.SelectSpotSize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set SPOTSIZE number</p>
+<p>Range:0-7</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.EOS3.SelectTemStem">
+<code class="descname">SelectTemStem</code><span class="sig-paren">(</span><em>(EOS3)arg1</em>, <em>(int)arg2</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#PyJEM.TEM3.EOS3.SelectTemStem" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set TEM/ASID mode</p>
+<p>0:TEM, 1:ASID</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.EOS3.SetAlphaSelector">
+<code class="descname">SetAlphaSelector</code><span class="sig-paren">(</span><em>(EOS3)arg1</em>, <em>(int)arg2</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#PyJEM.TEM3.EOS3.SetAlphaSelector" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set Alpha number.</p>
+<p>Range:0-8</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.EOS3.SetBrightness">
+<code class="descname">SetBrightness</code><span class="sig-paren">(</span><em>(EOS3)arg1</em>, <em>(int)arg2</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#PyJEM.TEM3.EOS3.SetBrightness" title="Permalink to this definition">¶</a></dt>
+<dd><p>Increase of decrease Lens value for BRIGHTNESS(MAG link). 
+Same as BRIGHTNESS knob.</p>
+<p>Range: Although full range of short type variable can be accepted. the value around +-1 to 50 is suitable because the range corresponds to that of the knob on the operation panel.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.EOS3.SetDiffFocus">
+<code class="descname">SetDiffFocus</code><span class="sig-paren">(</span><em>(EOS3)arg1</em>, <em>(int)arg2</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#PyJEM.TEM3.EOS3.SetDiffFocus" title="Permalink to this definition">¶</a></dt>
+<dd><p>Increase of decrease Lens value for DIFFFOCUS(MAG link). 
+Same as DIFFFOCUS knob.</p>
+<p>Range: Although full range of short type variable can be accepted. the value around +-1 to 50 is suitable because the range corresponds to that of the knob on the operation panel.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.EOS3.SetGIF">
+<code class="descname">SetGIF</code><span class="sig-paren">(</span><em>(EOS3)arg1</em>, <em>(int)arg2</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#PyJEM.TEM3.EOS3.SetGIF" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set GIF-mode.</p>
+<p>0:OFF, 1:ON</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.EOS3.SetIoData">
+<code class="descname">SetIoData</code><span class="sig-paren">(</span><em>(EOS3)arg1</em>, <em>(int)arg2</em>, <em>(int)arg3</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#PyJEM.TEM3.EOS3.SetIoData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set I/O function.</p>
+<p>arg1 is target address.</p>
+<p>arg2 is set value.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.EOS3.SetObjFocus">
+<code class="descname">SetObjFocus</code><span class="sig-paren">(</span><em>(EOS3)arg1</em>, <em>(int)arg2</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#PyJEM.TEM3.EOS3.SetObjFocus" title="Permalink to this definition">¶</a></dt>
+<dd><p>Increase of decrease Lens value for OBJ Focus(MAG link). 
+Same as OBJFOCUS knob.</p>
+<p>Range: Although full range of short type variable can be accepted. the value around +-1 to 50 is suitable because the range corresponds to that of the knob on the operation panel.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.EOS3.SetSelector">
+<code class="descname">SetSelector</code><span class="sig-paren">(</span><em>(EOS3)arg1</em>, <em>(int)arg2</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#PyJEM.TEM3.EOS3.SetSelector" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set Magnification/Camera length/Rocking angle number.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.EOS3.SetSpctrMode">
+<code class="descname">SetSpctrMode</code><span class="sig-paren">(</span><em>(EOS3)arg1</em>, <em>(int)arg2</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#PyJEM.TEM3.EOS3.SetSpctrMode" title="Permalink to this definition">¶</a></dt>
+<dd><p>ON/OFF spectrum mode.</p>
+<p>0:OFF, 1:ON</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.EOS3.SetSpctrSelector">
+<code class="descname">SetSpctrSelector</code><span class="sig-paren">(</span><em>(EOS3)arg1</em>, <em>(int)arg2</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#PyJEM.TEM3.EOS3.SetSpctrSelector" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set spectrum magnification number.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.EOS3.SetStemCamSelector">
+<code class="descname">SetStemCamSelector</code><span class="sig-paren">(</span><em>(EOS3)arg1</em>, <em>(int)arg2</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#PyJEM.TEM3.EOS3.SetStemCamSelector" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set imaging side camera length(magnification) number for STEM.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.EOS3.UpSelector">
+<code class="descname">UpSelector</code><span class="sig-paren">(</span><em>(EOS3)arg1</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#PyJEM.TEM3.EOS3.UpSelector" title="Permalink to this definition">¶</a></dt>
+<dd><p>Increment Magnification/Camera length/Rocking angle number. Up the magnification selector.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.EOS3.UpSpctrSelector">
+<code class="descname">UpSpctrSelector</code><span class="sig-paren">(</span><em>(EOS3)arg1</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#PyJEM.TEM3.EOS3.UpSpctrSelector" title="Permalink to this definition">¶</a></dt>
+<dd><p>Increment spectrum magnification number.</p>
+<p>Up the energy spectrometer selector.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.EOS3.UpStemCamSelector">
+<code class="descname">UpStemCamSelector</code><span class="sig-paren">(</span><em>(EOS3)arg1</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#PyJEM.TEM3.EOS3.UpStemCamSelector" title="Permalink to this definition">¶</a></dt>
+<dd><p>Increment imaging side camer a length(magnification) number for STEM.</p>
+<p>Up the camera length selector.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="PyJEM.TEM3.FEG3">
+<em class="property">class </em><code class="descclassname">PyJEM.TEM3.</code><code class="descname">FEG3</code><a class="headerlink" href="#PyJEM.TEM3.FEG3" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">Boost.Python.instance</span></code></p>
+<p>It is a class that can operate the FEG. To use it, it is necessary to create an instance.</p>
+<dl class="method">
+<dt id="PyJEM.TEM3.FEG3.ExecAutoFlashing">
+<code class="descname">ExecAutoFlashing</code><span class="sig-paren">(</span><em>(FEG3)arg1</em>, <em>(int)arg2</em><span class="sig-paren">)</span> &rarr; int :<a class="headerlink" href="#PyJEM.TEM3.FEG3.ExecAutoFlashing" title="Permalink to this definition">¶</a></dt>
+<dd><p>AutoFlashing execute.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.FEG3.ExecEmissionOn">
+<code class="descname">ExecEmissionOn</code><span class="sig-paren">(</span><em>(FEG3)arg1</em>, <em>(int)arg2</em><span class="sig-paren">)</span> &rarr; int<a class="headerlink" href="#PyJEM.TEM3.FEG3.ExecEmissionOn" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.FEG3.GetAutoFlashingStatus">
+<code class="descname">GetAutoFlashingStatus</code><span class="sig-paren">(</span><em>(FEG3)arg1</em><span class="sig-paren">)</span> &rarr; int<a class="headerlink" href="#PyJEM.TEM3.FEG3.GetAutoFlashingStatus" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.FEG3.GetBeamValve">
+<code class="descname">GetBeamValve</code><span class="sig-paren">(</span><em>(FEG3)arg1</em><span class="sig-paren">)</span> &rarr; int :<a class="headerlink" href="#PyJEM.TEM3.FEG3.GetBeamValve" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get FEGUN valve status.</p>
+<p>0:Close, 1:Open</p>
+<p>This works for FEG and 3100EF.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.FEG3.GetEmissionOnStatus">
+<code class="descname">GetEmissionOnStatus</code><span class="sig-paren">(</span><em>(FEG3)arg1</em><span class="sig-paren">)</span> &rarr; list<a class="headerlink" href="#PyJEM.TEM3.FEG3.GetEmissionOnStatus" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.FEG3.GetV1Ready">
+<code class="descname">GetV1Ready</code><span class="sig-paren">(</span><em>(FEG3)arg1</em><span class="sig-paren">)</span> &rarr; int :<a class="headerlink" href="#PyJEM.TEM3.FEG3.GetV1Ready" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get V1 Ready status.</p>
+<p>0:Not Ready, 1:Ready</p>
+<p>This works for ARM200F</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.FEG3.SetBeamValve">
+<code class="descname">SetBeamValve</code><span class="sig-paren">(</span><em>(FEG3)arg1</em>, <em>(int)arg2</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#PyJEM.TEM3.FEG3.SetBeamValve" title="Permalink to this definition">¶</a></dt>
+<dd><p>Open/Close FEGUN valve.</p>
+<p>0:Close, 1:Open</p>
+<p>This works for FEG and 3100EF.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.FEG3.SetFEGEmissionOff">
+<code class="descname">SetFEGEmissionOff</code><span class="sig-paren">(</span><em>(FEG3)arg1</em>, <em>(int)arg2</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#PyJEM.TEM3.FEG3.SetFEGEmissionOff" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set FEG Emission OFF.</p>
+<p>This works for ARM200F</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="PyJEM.TEM3.Filter3">
+<em class="property">class </em><code class="descclassname">PyJEM.TEM3.</code><code class="descname">Filter3</code><a class="headerlink" href="#PyJEM.TEM3.Filter3" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">Boost.Python.instance</span></code></p>
+<p>It is a class that can operate the Filter. To use it, it is necessary to create an instance.</p>
+<dl class="method">
+<dt id="PyJEM.TEM3.Filter3.GetEnergyShift">
+<code class="descname">GetEnergyShift</code><span class="sig-paren">(</span><em>(Filter3)arg1</em><span class="sig-paren">)</span> &rarr; float :<a class="headerlink" href="#PyJEM.TEM3.Filter3.GetEnergyShift" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get energy shift voltage.</p>
+<p>Variable range and unit can be obtained with GetEnergyShiftRange() 
+Unit:(V)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Filter3.GetEnergyShiftRange">
+<code class="descname">GetEnergyShiftRange</code><span class="sig-paren">(</span><em>(Filter3)arg1</em><span class="sig-paren">)</span> &rarr; list :<a class="headerlink" href="#PyJEM.TEM3.Filter3.GetEnergyShiftRange" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get maximum and minimum valve.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Filter3.GetEnergyShiftSw">
+<code class="descname">GetEnergyShiftSw</code><span class="sig-paren">(</span><em>(Filter3)arg1</em><span class="sig-paren">)</span> &rarr; int :<a class="headerlink" href="#PyJEM.TEM3.Filter3.GetEnergyShiftSw" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get energy shift status(ON or OFF)</p>
+<p>0:OFF, 1:ON</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Filter3.GetSlitPosition">
+<code class="descname">GetSlitPosition</code><span class="sig-paren">(</span><em>(Filter3)arg1</em><span class="sig-paren">)</span> &rarr; int :<a class="headerlink" href="#PyJEM.TEM3.Filter3.GetSlitPosition" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get slit status(IN or OUT)</p>
+<p>0:OUT, 1:IN</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Filter3.GetSlitWidth">
+<code class="descname">GetSlitWidth</code><span class="sig-paren">(</span><em>(Filter3)arg1</em><span class="sig-paren">)</span> &rarr; float :<a class="headerlink" href="#PyJEM.TEM3.Filter3.GetSlitWidth" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get slit width.</p>
+<p>Variable range and unit can be obtained with GetSlitWidthRange() 
+Unit:(eV)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Filter3.GetSlitWidthRange">
+<code class="descname">GetSlitWidthRange</code><span class="sig-paren">(</span><em>(Filter3)arg1</em><span class="sig-paren">)</span> &rarr; list :<a class="headerlink" href="#PyJEM.TEM3.Filter3.GetSlitWidthRange" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get maximum and minimum value.</p>
+<p>Unit:(eV)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Filter3.SetEnergyShift">
+<code class="descname">SetEnergyShift</code><span class="sig-paren">(</span><em>(Filter3)arg1</em>, <em>(float)arg2</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#PyJEM.TEM3.Filter3.SetEnergyShift" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set energy shift voltage.</p>
+<p>Variable range and unit can be obtained with GetEnergyShiftRange() 
+Unit:(V)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Filter3.SetEnergyShiftSw">
+<code class="descname">SetEnergyShiftSw</code><span class="sig-paren">(</span><em>(Filter3)arg1</em>, <em>(int)arg2</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#PyJEM.TEM3.Filter3.SetEnergyShiftSw" title="Permalink to this definition">¶</a></dt>
+<dd><p>ON/OFF energy shift.</p>
+<p>0:OFF, 1:ON</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Filter3.SetSlitPosition">
+<code class="descname">SetSlitPosition</code><span class="sig-paren">(</span><em>(Filter3)arg1</em>, <em>(int)arg2</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#PyJEM.TEM3.Filter3.SetSlitPosition" title="Permalink to this definition">¶</a></dt>
+<dd><p>IN/OUT slit.</p>
+<p>0:OUT, 1:IN</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Filter3.SetSlitWidth">
+<code class="descname">SetSlitWidth</code><span class="sig-paren">(</span><em>(Filter3)arg1</em>, <em>(float)arg2</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#PyJEM.TEM3.Filter3.SetSlitWidth" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set slit width.</p>
+<p>Variable range and unit can be obtained with GetSlitWidthRange() 
+Unit:(eV)</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="PyJEM.TEM3.GUN3">
+<em class="property">class </em><code class="descclassname">PyJEM.TEM3.</code><code class="descname">GUN3</code><a class="headerlink" href="#PyJEM.TEM3.GUN3" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">Boost.Python.instance</span></code></p>
+<p>It is a class that can operate the GUN. To use it, it is necessary to create an instance.</p>
+<dl class="method">
+<dt id="PyJEM.TEM3.GUN3.GetAnode1CurrentValue">
+<code class="descname">GetAnode1CurrentValue</code><span class="sig-paren">(</span><em>(GUN3)arg1</em><span class="sig-paren">)</span> &rarr; float :<a class="headerlink" href="#PyJEM.TEM3.GUN3.GetAnode1CurrentValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get Anode1 current value.</p>
+<p>Unit:(kV)</p>
+<p>This works for FEG.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.GUN3.GetAnode2CurrentValue">
+<code class="descname">GetAnode2CurrentValue</code><span class="sig-paren">(</span><em>(GUN3)arg1</em><span class="sig-paren">)</span> &rarr; float :<a class="headerlink" href="#PyJEM.TEM3.GUN3.GetAnode2CurrentValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get Anode2 current value.</p>
+<p>Unit:(kV)</p>
+<p>This works for FEG.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.GUN3.GetBeamSw">
+<code class="descname">GetBeamSw</code><span class="sig-paren">(</span><em>(GUN3)arg1</em><span class="sig-paren">)</span> &rarr; int :<a class="headerlink" href="#PyJEM.TEM3.GUN3.GetBeamSw" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get beam switch status.</p>
+<p>0:OFF, 1:ON</p>
+<p>This does not work for FEG.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.GUN3.GetEmissionCurrentValue">
+<code class="descname">GetEmissionCurrentValue</code><span class="sig-paren">(</span><em>(GUN3)arg1</em><span class="sig-paren">)</span> &rarr; float :<a class="headerlink" href="#PyJEM.TEM3.GUN3.GetEmissionCurrentValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get emission current value.</p>
+<p>Unit:(uA)</p>
+<p>This works for FEG.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.GUN3.GetFilamentCurrentValue">
+<code class="descname">GetFilamentCurrentValue</code><span class="sig-paren">(</span><em>(GUN3)arg1</em><span class="sig-paren">)</span> &rarr; float :<a class="headerlink" href="#PyJEM.TEM3.GUN3.GetFilamentCurrentValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get filament current value.</p>
+<p>Unit:(A)</p>
+<p>This works for FEG.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.GUN3.GetFilamentVal">
+<code class="descname">GetFilamentVal</code><span class="sig-paren">(</span><em>(GUN3)arg1</em><span class="sig-paren">)</span> &rarr; float :<a class="headerlink" href="#PyJEM.TEM3.GUN3.GetFilamentVal" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get filment current value.</p>
+<p>Range:0-4.095</p>
+<p>This does not work for FEG.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.GUN3.GetHtStts">
+<code class="descname">GetHtStts</code><span class="sig-paren">(</span><em>(GUN3)arg1</em><span class="sig-paren">)</span> &rarr; int :<a class="headerlink" href="#PyJEM.TEM3.GUN3.GetHtStts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get HT status.</p>
+<p>0:OFF, 1:ON, 2:Increasing or Decreasing</p>
+<p>This does not work for FEG.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.GUN3.SetBeamSw">
+<code class="descname">SetBeamSw</code><span class="sig-paren">(</span><em>(GUN3)arg1</em>, <em>(int)arg2</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#PyJEM.TEM3.GUN3.SetBeamSw" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set beam switch. Start heating filament.</p>
+<p>0:OFF, 1:ON</p>
+<p>This does not work for FEG.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.GUN3.SetFilamentVal">
+<code class="descname">SetFilamentVal</code><span class="sig-paren">(</span><em>(GUN3)arg1</em>, <em>(float)arg2</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#PyJEM.TEM3.GUN3.SetFilamentVal" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set filment current value.</p>
+<p>Range:0-4.095</p>
+<p>This does not work for FEG.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="PyJEM.TEM3.HT3">
+<em class="property">class </em><code class="descclassname">PyJEM.TEM3.</code><code class="descname">HT3</code><a class="headerlink" href="#PyJEM.TEM3.HT3" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">Boost.Python.instance</span></code></p>
+<p>It is a class that can operate the HT. To use it, it is necessary to create an instance.</p>
+<dl class="method">
+<dt id="PyJEM.TEM3.HT3.GetHtRange">
+<code class="descname">GetHtRange</code><span class="sig-paren">(</span><em>(HT3)arg1</em><span class="sig-paren">)</span> &rarr; list :<a class="headerlink" href="#PyJEM.TEM3.HT3.GetHtRange" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get accelarate voltage range.</p>
+<p>..[0]-&gt;float: HT max value (V).</p>
+<p>..[1]-&gt;float: HT min value (V).</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.HT3.GetHtValue">
+<code class="descname">GetHtValue</code><span class="sig-paren">(</span><em>(HT3)arg1</em><span class="sig-paren">)</span> &rarr; float :<a class="headerlink" href="#PyJEM.TEM3.HT3.GetHtValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get accelarate voltage. Variable range and unit can be obtained with GetHTRange()</p>
+<p>Unit: (V)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.HT3.SetHtValue">
+<code class="descname">SetHtValue</code><span class="sig-paren">(</span><em>(HT3)arg1</em>, <em>(float)arg2</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#PyJEM.TEM3.HT3.SetHtValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set accelarate voltage. Variable range and unit can be obtained with GetHTRange()</p>
+<p>Unit: (V)</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="PyJEM.TEM3.Lens3">
+<em class="property">class </em><code class="descclassname">PyJEM.TEM3.</code><code class="descname">Lens3</code><a class="headerlink" href="#PyJEM.TEM3.Lens3" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">Boost.Python.instance</span></code></p>
+<p>It is a class that can operate the Lens. To use it, it is necessary to create an instance.</p>
+<dl class="method">
+<dt id="PyJEM.TEM3.Lens3.GetCL1">
+<code class="descname">GetCL1</code><span class="sig-paren">(</span><em>(Lens3)arg1</em><span class="sig-paren">)</span> &rarr; int :<a class="headerlink" href="#PyJEM.TEM3.Lens3.GetCL1" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get CL1 value. This returns I/O output value.</p>
+<p>Range:0-FFFF(H)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Lens3.GetCL2">
+<code class="descname">GetCL2</code><span class="sig-paren">(</span><em>(Lens3)arg1</em><span class="sig-paren">)</span> &rarr; int :<a class="headerlink" href="#PyJEM.TEM3.Lens3.GetCL2" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get CL2 value. This returns I/O output value.</p>
+<p>Range:0-FFFF(H)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Lens3.GetCL3">
+<code class="descname">GetCL3</code><span class="sig-paren">(</span><em>(Lens3)arg1</em><span class="sig-paren">)</span> &rarr; int :<a class="headerlink" href="#PyJEM.TEM3.Lens3.GetCL3" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get CL3 value. This returns I/O output value.</p>
+<p>Range:0-FFFF(H)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Lens3.GetCM">
+<code class="descname">GetCM</code><span class="sig-paren">(</span><em>(Lens3)arg1</em><span class="sig-paren">)</span> &rarr; int :<a class="headerlink" href="#PyJEM.TEM3.Lens3.GetCM" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get CM value. This returns I/O output value.</p>
+<p>Range:0-FFFF(H)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Lens3.GetFLCInfo">
+<code class="descname">GetFLCInfo</code><span class="sig-paren">(</span><em>(Lens3)arg1</em>, <em>(int)arg2</em><span class="sig-paren">)</span> &rarr; list :<a class="headerlink" href="#PyJEM.TEM3.Lens3.GetFLCInfo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get Free Lens Control information.</p>
+<p>arg2-&gt;Lens_ID 0:CL1, 1 : CL2, 2 : CL3, 3 : CM, 4 : reserve, 5 : reserve, 6 : OL Coarse, 7 : OL Fine, 8 : OM1, 9 : OM2, 10 : IL1, 11 : IL2, 12 : IL3, 13 : IL4, 14 : PL1, 15 : PL2, 16 : PL3, 17 : reserve, 18 : reserve, 19 : FL Coarse, 20 : FL Fine, 21 : FL Ratio, 22 : reserve, 23 : reserve, 24 : reserve, 25 : reserve</p>
+<p>0:OFF, 1:ON</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Lens3.GetFLc">
+<code class="descname">GetFLc</code><span class="sig-paren">(</span><em>(Lens3)arg1</em><span class="sig-paren">)</span> &rarr; int :<a class="headerlink" href="#PyJEM.TEM3.Lens3.GetFLc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get FL Coarse value. This returns I/O output value.</p>
+<p>Range:0-FFFF(H)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Lens3.GetFLcomp1">
+<code class="descname">GetFLcomp1</code><span class="sig-paren">(</span><em>(Lens3)arg1</em><span class="sig-paren">)</span> &rarr; int :<a class="headerlink" href="#PyJEM.TEM3.Lens3.GetFLcomp1" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get FL Comp1 value. This returns I/O output value.</p>
+<p>Range:0-FFFF(H)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Lens3.GetFLcomp2">
+<code class="descname">GetFLcomp2</code><span class="sig-paren">(</span><em>(Lens3)arg1</em><span class="sig-paren">)</span> &rarr; int :<a class="headerlink" href="#PyJEM.TEM3.Lens3.GetFLcomp2" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get FL Comp2 value. This returns I/O output value.</p>
+<p>Range:0-FFFF(H)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Lens3.GetFLf">
+<code class="descname">GetFLf</code><span class="sig-paren">(</span><em>(Lens3)arg1</em><span class="sig-paren">)</span> &rarr; int :<a class="headerlink" href="#PyJEM.TEM3.Lens3.GetFLf" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get FL Fine value. This returns I/O output value.</p>
+<p>Range:0-FFFF(H)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Lens3.GetIL1">
+<code class="descname">GetIL1</code><span class="sig-paren">(</span><em>(Lens3)arg1</em><span class="sig-paren">)</span> &rarr; int :<a class="headerlink" href="#PyJEM.TEM3.Lens3.GetIL1" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get IL1 value. This returns I/O output value.</p>
+<p>Range:0-FFFF(H)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Lens3.GetIL2">
+<code class="descname">GetIL2</code><span class="sig-paren">(</span><em>(Lens3)arg1</em><span class="sig-paren">)</span> &rarr; int :<a class="headerlink" href="#PyJEM.TEM3.Lens3.GetIL2" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get IL2 value. This returns I/O output value.</p>
+<p>Range:0-FFFF(H)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Lens3.GetIL3">
+<code class="descname">GetIL3</code><span class="sig-paren">(</span><em>(Lens3)arg1</em><span class="sig-paren">)</span> &rarr; int :<a class="headerlink" href="#PyJEM.TEM3.Lens3.GetIL3" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get IL3 value. This returns I/O output value.</p>
+<p>Range:0-FFFF(H)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Lens3.GetIL4">
+<code class="descname">GetIL4</code><span class="sig-paren">(</span><em>(Lens3)arg1</em><span class="sig-paren">)</span> &rarr; int :<a class="headerlink" href="#PyJEM.TEM3.Lens3.GetIL4" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get IL4 value. This returns I/O output value.</p>
+<p>Range:0-FFFF(H)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Lens3.GetOLSuperFineSw">
+<code class="descname">GetOLSuperFineSw</code><span class="sig-paren">(</span><em>(Lens3)arg1</em><span class="sig-paren">)</span> &rarr; int :<a class="headerlink" href="#PyJEM.TEM3.Lens3.GetOLSuperFineSw" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get OL Super fine status.</p>
+<p>0:OFF, 1:ON</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Lens3.GetOLSuperFineValue">
+<code class="descname">GetOLSuperFineValue</code><span class="sig-paren">(</span><em>(Lens3)arg1</em><span class="sig-paren">)</span> &rarr; int :<a class="headerlink" href="#PyJEM.TEM3.Lens3.GetOLSuperFineValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get OL Super fine value.</p>
+<p>Range:0-FFF&#8217;H)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Lens3.GetOLc">
+<code class="descname">GetOLc</code><span class="sig-paren">(</span><em>(Lens3)arg1</em><span class="sig-paren">)</span> &rarr; int :<a class="headerlink" href="#PyJEM.TEM3.Lens3.GetOLc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get OL Coarse value. This returns I/O output value.</p>
+<p>Range:0-FFFF(H)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Lens3.GetOLf">
+<code class="descname">GetOLf</code><span class="sig-paren">(</span><em>(Lens3)arg1</em><span class="sig-paren">)</span> &rarr; int :<a class="headerlink" href="#PyJEM.TEM3.Lens3.GetOLf" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get OL Fine value. This returns I/O output value.</p>
+<p>Range:0-FFFF(H)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Lens3.GetOM">
+<code class="descname">GetOM</code><span class="sig-paren">(</span><em>(Lens3)arg1</em><span class="sig-paren">)</span> &rarr; int :<a class="headerlink" href="#PyJEM.TEM3.Lens3.GetOM" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get OM value. This returns I/O output value.</p>
+<p>Range:0-FFFF(H)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Lens3.GetOM2">
+<code class="descname">GetOM2</code><span class="sig-paren">(</span><em>(Lens3)arg1</em><span class="sig-paren">)</span> &rarr; int :<a class="headerlink" href="#PyJEM.TEM3.Lens3.GetOM2" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get OM2 value. This returns I/O output value.</p>
+<p>Range:0-FFFF(H)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Lens3.GetOM2Flag">
+<code class="descname">GetOM2Flag</code><span class="sig-paren">(</span><em>(Lens3)arg1</em><span class="sig-paren">)</span> &rarr; int :<a class="headerlink" href="#PyJEM.TEM3.Lens3.GetOM2Flag" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get OM2 polarity.</p>
+<p>0:The same polarity as OM1, 1:The contrary to OM1</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Lens3.GetPL1">
+<code class="descname">GetPL1</code><span class="sig-paren">(</span><em>(Lens3)arg1</em><span class="sig-paren">)</span> &rarr; int :<a class="headerlink" href="#PyJEM.TEM3.Lens3.GetPL1" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get PL1 value. This returns I/O output value.</p>
+<p>Range:0-FFFF(H)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Lens3.GetPL2">
+<code class="descname">GetPL2</code><span class="sig-paren">(</span><em>(Lens3)arg1</em><span class="sig-paren">)</span> &rarr; int :<a class="headerlink" href="#PyJEM.TEM3.Lens3.GetPL2" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get PL2 value. This returns I/O output value.</p>
+<p>Range:0-FFFF(H)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Lens3.GetPL3">
+<code class="descname">GetPL3</code><span class="sig-paren">(</span><em>(Lens3)arg1</em><span class="sig-paren">)</span> &rarr; int :<a class="headerlink" href="#PyJEM.TEM3.Lens3.GetPL3" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get PL3 value. This returns I/O output value.</p>
+<p>Range:0-FFFF(H)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Lens3.SetCL3">
+<code class="descname">SetCL3</code><span class="sig-paren">(</span><em>(Lens3)arg1</em>, <em>(int)arg2</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#PyJEM.TEM3.Lens3.SetCL3" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set CL3 value(without MAG link). The variable corresponds to I/O output value.</p>
+<p>Range:0-FFFF(H)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Lens3.SetDiffFocus">
+<code class="descname">SetDiffFocus</code><span class="sig-paren">(</span><em>(Lens3)arg1</em>, <em>(int)arg2</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#PyJEM.TEM3.Lens3.SetDiffFocus" title="Permalink to this definition">¶</a></dt>
+<dd><p>Increase or decrease value for DIFF Focus(without MAG link). The variable corresponds to I/O output value.</p>
+<p>Range:0-FFFF(H)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Lens3.SetFLCAbs">
+<code class="descname">SetFLCAbs</code><span class="sig-paren">(</span><em>(Lens3)arg1</em>, <em>(int)arg2</em>, <em>(int)arg3</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#PyJEM.TEM3.Lens3.SetFLCAbs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set lens value for Free Lens Control.</p>
+<p>arg2-&gt;Lens_ID 0:CL1, 1:CL2, 2:CL3, 3:CM, 4:reserve, 5:reserve, 6:OL Coarse, 7:OL Fine, 8:OM1, 9:OM2, 10:IL1, 11:IL2, 12:IL3, 13:IL4, 14:PL1, 15:PL2, 16:PL3, 17:reserve, 18:reserve, 19:FL Coarse, 20:FL Fine, 21:FL Ratio, 22:reserve, 23:reserve, 24:reserve, 25:reserve</p>
+<p>arg3-&gt;absolute value Range:0-FFFF(H)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Lens3.SetFLCRel">
+<code class="descname">SetFLCRel</code><span class="sig-paren">(</span><em>(Lens3)arg1</em>, <em>(int)arg2</em>, <em>(int)arg3</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#PyJEM.TEM3.Lens3.SetFLCRel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Increase or decrease lens value for Free Lens Control.</p>
+<p>arg2-&gt;Lens_ID 0:CL1, 1:CL2, 2:CL3, 3:CM, 4:reserve, 5:reserve, 6:OL Coarse, 7:OL Fine, 8:OM1, 9:OM2, 10:IL1, 11:IL2, 12:IL3, 13:IL4, 14:PL1, 15:PL2, 16:PL3, 17:reserve, 18:reserve, 19:FL Coarse, 20:FL Fine, 21:FL Ratio, 22:reserve, 23:reserve, 24:reserve, 25:reserve</p>
+<p>arg3-&gt;relative value.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Lens3.SetFLCSw">
+<code class="descname">SetFLCSw</code><span class="sig-paren">(</span><em>(Lens3)arg1</em>, <em>(int)arg2</em>, <em>(int)arg3</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#PyJEM.TEM3.Lens3.SetFLCSw" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set lens switch for Free lens Control.</p>
+<p>arg2-&gt;Lens_ID 0:CL1, 1 : CL2, 2 : CL3, 3 : CM, 4 : reserve, 5 : reserve, 6 : OL Coarse, 7 : OL Fine, 8 : OM1, 9 : OM2, 10 : IL1, 11 : IL2, 12 : IL3, 13 : IL4, 14 : PL1, 15 : PL2, 16 : PL3, 17 : reserve, 18 : reserve, 19 : FL Coarse, 20 : FL Fine, 21 : FL Ratio, 22 : reserve, 23 : reserve, 24 : reserve, 25 : reserve</p>
+<p>arg3-&gt;Set switch(ON/OFF) 0:OFF, 1:ON</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Lens3.SetFLCSwAllLens">
+<code class="descname">SetFLCSwAllLens</code><span class="sig-paren">(</span><em>(Lens3)arg1</em>, <em>(int)arg2</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#PyJEM.TEM3.Lens3.SetFLCSwAllLens" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set Lens switch for Free Lens Control.</p>
+<p>0:OFF, 1:ON</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Lens3.SetFLc">
+<code class="descname">SetFLc</code><span class="sig-paren">(</span><em>(Lens3)arg1</em>, <em>(int)arg2</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#PyJEM.TEM3.Lens3.SetFLc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Increase or decrease value for FLC(without MAG link). The variable corresponds to I/O output value without carry.</p>
+<p>Range:0-FFFF(H)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Lens3.SetFLf">
+<code class="descname">SetFLf</code><span class="sig-paren">(</span><em>(Lens3)arg1</em>, <em>(int)arg2</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#PyJEM.TEM3.Lens3.SetFLf" title="Permalink to this definition">¶</a></dt>
+<dd><p>Increase or decrease value for FLF(without MAG link). The variable corresponds to I/O output value without carry.</p>
+<p>Range:0-FFFF(H)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Lens3.SetILFocus">
+<code class="descname">SetILFocus</code><span class="sig-paren">(</span><em>(Lens3)arg1</em>, <em>(int)arg2</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#PyJEM.TEM3.Lens3.SetILFocus" title="Permalink to this definition">¶</a></dt>
+<dd><p>Increase or decrease value for IL Focus(without MAG link). The variable corresponds to I/O output value.</p>
+<p>Range:0-FFFF(H)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Lens3.SetNtrl">
+<code class="descname">SetNtrl</code><span class="sig-paren">(</span><em>(Lens3)arg1</em>, <em>(int)arg2</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#PyJEM.TEM3.Lens3.SetNtrl" title="Permalink to this definition">¶</a></dt>
+<dd><p>NTRL within only value range.</p>
+<p>0:Brightness, 1:OBJ Focus, 2:DIFF Focus, 3:IL Focus, 4:PL Focus, 5:FL Focus</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Lens3.SetOLSuperFineNeutral">
+<code class="descname">SetOLSuperFineNeutral</code><span class="sig-paren">(</span><em>(Lens3)arg1</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#PyJEM.TEM3.Lens3.SetOLSuperFineNeutral" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set Neutral of OL Super Fine.</p>
+<p>Neutral:800(H)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Lens3.SetOLSuperFineSw">
+<code class="descname">SetOLSuperFineSw</code><span class="sig-paren">(</span><em>(Lens3)arg1</em>, <em>(int)arg2</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#PyJEM.TEM3.Lens3.SetOLSuperFineSw" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set OL Super fine status.</p>
+<p>0:OFF, 1:ON</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Lens3.SetOLSuperFineValue">
+<code class="descname">SetOLSuperFineValue</code><span class="sig-paren">(</span><em>(Lens3)arg1</em>, <em>(int)arg2</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#PyJEM.TEM3.Lens3.SetOLSuperFineValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set OL Super fine value.</p>
+<p>Range:0-FFF&#8217;H)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Lens3.SetOLc">
+<code class="descname">SetOLc</code><span class="sig-paren">(</span><em>(Lens3)arg1</em>, <em>(int)arg2</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#PyJEM.TEM3.Lens3.SetOLc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set OLC value(without MAG link). The variable corresponds to I/O output value without carry.</p>
+<p>Range:0-FFFF(H)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Lens3.SetOLf">
+<code class="descname">SetOLf</code><span class="sig-paren">(</span><em>(Lens3)arg1</em>, <em>(int)arg2</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#PyJEM.TEM3.Lens3.SetOLf" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set OLF value(without MAG link). The variable corresponds to I/O output value without carry.</p>
+<p>Range:0-FFFF(H)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Lens3.SetOM">
+<code class="descname">SetOM</code><span class="sig-paren">(</span><em>(Lens3)arg1</em>, <em>(int)arg2</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#PyJEM.TEM3.Lens3.SetOM" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set OM value(without MAG link). The variable corresponds to OM I/O output value.</p>
+<p>Range:0-FFFF(H)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Lens3.SetPLFocus">
+<code class="descname">SetPLFocus</code><span class="sig-paren">(</span><em>(Lens3)arg1</em>, <em>(int)arg2</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#PyJEM.TEM3.Lens3.SetPLFocus" title="Permalink to this definition">¶</a></dt>
+<dd><p>Increase or decrease value for PLF Focus(without MAG link).The variable corresponds to I / O output value.</p>
+<p>Range:0 - FFFF(H)</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="PyJEM.TEM3.MDS3">
+<em class="property">class </em><code class="descclassname">PyJEM.TEM3.</code><code class="descname">MDS3</code><a class="headerlink" href="#PyJEM.TEM3.MDS3" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">Boost.Python.instance</span></code></p>
+<p>It is a class that can operate the MDS. To use it, it is necessary to create an instance.</p>
+<dl class="method">
+<dt id="PyJEM.TEM3.MDS3.EndMdsMode">
+<code class="descname">EndMdsMode</code><span class="sig-paren">(</span><em>(MDS3)arg1</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#PyJEM.TEM3.MDS3.EndMdsMode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Unset MDS mode.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.MDS3.GetMdsMode">
+<code class="descname">GetMdsMode</code><span class="sig-paren">(</span><em>(MDS3)arg1</em><span class="sig-paren">)</span> &rarr; int :<a class="headerlink" href="#PyJEM.TEM3.MDS3.GetMdsMode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get MDS mode.</p>
+<p>0:OFF, 1:Search, 2:Focus, 3:Photoset</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.MDS3.SetFocusMode">
+<code class="descname">SetFocusMode</code><span class="sig-paren">(</span><em>(MDS3)arg1</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#PyJEM.TEM3.MDS3.SetFocusMode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set to MDS focus mode.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.MDS3.SetPhotosetMode">
+<code class="descname">SetPhotosetMode</code><span class="sig-paren">(</span><em>(MDS3)arg1</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#PyJEM.TEM3.MDS3.SetPhotosetMode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set to MDS photoset mode.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.MDS3.SetSearchMode">
+<code class="descname">SetSearchMode</code><span class="sig-paren">(</span><em>(MDS3)arg1</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#PyJEM.TEM3.MDS3.SetSearchMode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set toMDS search mode.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="PyJEM.TEM3.Scan3">
+<em class="property">class </em><code class="descclassname">PyJEM.TEM3.</code><code class="descname">Scan3</code><a class="headerlink" href="#PyJEM.TEM3.Scan3" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">Boost.Python.instance</span></code></p>
+<p>It is a class that can operate the Scan. To use it, it is necessary to create an instance.</p>
+<dl class="method">
+<dt id="PyJEM.TEM3.Scan3.GetExtScanMode">
+<code class="descname">GetExtScanMode</code><span class="sig-paren">(</span><em>(Scan3)arg1</em><span class="sig-paren">)</span> &rarr; int :<a class="headerlink" href="#PyJEM.TEM3.Scan3.GetExtScanMode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get whether External scan is going on.</p>
+<p>0:OFF, 1:ON</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Scan3.GetNoiseCancellerVal">
+<code class="descname">GetNoiseCancellerVal</code><span class="sig-paren">(</span><em>(Scan3)arg1</em><span class="sig-paren">)</span> &rarr; int :<a class="headerlink" href="#PyJEM.TEM3.Scan3.GetNoiseCancellerVal" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get Noise Canceller value.</p>
+<p>This works for ARM200F and ARM300F.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Scan3.GetRotationAngle">
+<code class="descname">GetRotationAngle</code><span class="sig-paren">(</span><em>(Scan3)arg1</em><span class="sig-paren">)</span> &rarr; int :<a class="headerlink" href="#PyJEM.TEM3.Scan3.GetRotationAngle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get Scan Rotation angle.</p>
+<p>Range:0-359 (degree)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Scan3.SetExtScanMode">
+<code class="descname">SetExtScanMode</code><span class="sig-paren">(</span><em>(Scan3)arg1</em>, <em>(int)arg2</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#PyJEM.TEM3.Scan3.SetExtScanMode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Allow External scan.</p>
+<p>0:OFF, 1:ON</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Scan3.SetRotationAngle">
+<code class="descname">SetRotationAngle</code><span class="sig-paren">(</span><em>(Scan3)arg1</em>, <em>(int)arg2</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#PyJEM.TEM3.Scan3.SetRotationAngle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set Scan Rotation angle.</p>
+<p>Range:0-359 (degree)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Scan3.SetScanDataAbs">
+<code class="descname">SetScanDataAbs</code><span class="sig-paren">(</span><em>(Scan3)arg1</em>, <em>(int)arg2</em>, <em>(int)arg3</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#PyJEM.TEM3.Scan3.SetScanDataAbs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set Scan Data Value.</p>
+<p>arg2-&gt;Scanning condition kind 0:Mag Adjust H 1:Mag Adjust V, 2:Rotation H, 3:Rotation V, 4:Correction H, 5:Correction V, 6:Offset H, 7:Offset V</p>
+<p>arg3-&gt;long: absolute value 0-FFFF(H)</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="PyJEM.TEM3.Stage3">
+<em class="property">class </em><code class="descclassname">PyJEM.TEM3.</code><code class="descname">Stage3</code><a class="headerlink" href="#PyJEM.TEM3.Stage3" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">Boost.Python.instance</span></code></p>
+<p>It is a class that can operate the Stage. To use it, it is necessary to create an instance.</p>
+<dl class="method">
+<dt id="PyJEM.TEM3.Stage3.GetAccelAndDclrRate">
+<code class="descname">GetAccelAndDclrRate</code><span class="sig-paren">(</span><em>(Stage3)arg1</em>, <em>(int)arg2</em><span class="sig-paren">)</span> &rarr; list :<a class="headerlink" href="#PyJEM.TEM3.Stage3.GetAccelAndDclrRate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get acceleration / decelerateion rate during keystone control (for Z/Tx/Ty).</p>
+<p>arg1-&gt;2:Z axis, 3:Tx axis, 4:Ty axis, [0]-&gt;rate (64-65535)</p>
+<p>[1]-&gt;rate (64-65535)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Stage3.GetDirection">
+<code class="descname">GetDirection</code><span class="sig-paren">(</span><em>(Stage3)arg1</em><span class="sig-paren">)</span> &rarr; list :<a class="headerlink" href="#PyJEM.TEM3.Stage3.GetDirection" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get driving direction.</p>
+<p>0:-direction, 1:+direction</p>
+<p>..[0]-&gt;int: X</p>
+<p>..[1]-&gt;int: Y</p>
+<p>..[2]-&gt;int: Z</p>
+<p>..[3]-&gt;int: TiltX</p>
+<p>..[4]-&gt;int: TiltY</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Stage3.GetDrvMode">
+<code class="descname">GetDrvMode</code><span class="sig-paren">(</span><em>(Stage3)arg1</em><span class="sig-paren">)</span> &rarr; int :<a class="headerlink" href="#PyJEM.TEM3.Stage3.GetDrvMode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get selection on motor/piezo.</p>
+<p>0:Motor, 1:Piezo</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Stage3.GetHolderStts">
+<code class="descname">GetHolderStts</code><span class="sig-paren">(</span><em>(Stage3)arg1</em><span class="sig-paren">)</span> &rarr; int :<a class="headerlink" href="#PyJEM.TEM3.Stage3.GetHolderStts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get holder status(inserted or not)</p>
+<p>0:OUT, 1:IN</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Stage3.GetMovementValueMeasurementMethod">
+<code class="descname">GetMovementValueMeasurementMethod</code><span class="sig-paren">(</span><em>(Stage3)arg1</em><span class="sig-paren">)</span> &rarr; int :<a class="headerlink" href="#PyJEM.TEM3.Stage3.GetMovementValueMeasurementMethod" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get movement amount measurement method (for Z/Tx/Ty).</p>
+<p>0:encoder, 1:potens</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Stage3.GetPiezoPosi">
+<code class="descname">GetPiezoPosi</code><span class="sig-paren">(</span><em>(Stage3)arg1</em><span class="sig-paren">)</span> &rarr; list :<a class="headerlink" href="#PyJEM.TEM3.Stage3.GetPiezoPosi" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get piezo position.</p>
+<p>..[0]-&gt;float: X Range:+-100000.0(nm)</p>
+<p>..[1]-&gt;float: Y Range:+-10000.00(nm)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Stage3.GetPos">
+<code class="descname">GetPos</code><span class="sig-paren">(</span><em>(Stage3)arg1</em><span class="sig-paren">)</span> &rarr; list :<a class="headerlink" href="#PyJEM.TEM3.Stage3.GetPos" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get motor position.</p>
+<p>..[0]-&gt;float: X Range:+-100000.0(nm)</p>
+<p>..[1]-&gt;float: Y Range:+-100000.0(nm)</p>
+<p>..[2]-&gt;float: Z Range:+-100000.0(nm)</p>
+<p>..[3]-&gt;float: TiltX Range:+-90.00(degree))</p>
+<p>..[4]-&gt;float: TiltY Range:+-180.00(degree)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Stage3.GetStatus">
+<code class="descname">GetStatus</code><span class="sig-paren">(</span><em>(Stage3)arg1</em><span class="sig-paren">)</span> &rarr; list :<a class="headerlink" href="#PyJEM.TEM3.Stage3.GetStatus" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get driving status.</p>
+<p>0:Rest, 1:Moving, 2:Hardware limiter error</p>
+<p>..[0]-&gt;int: X</p>
+<p>..[1]-&gt;int: Y</p>
+<p>..[2]-&gt;int: Z</p>
+<p>..[3]-&gt;int: TiltX</p>
+<p>..[4]-&gt;int: TiltY</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Stage3.Getf1OverRate">
+<code class="descname">Getf1OverRate</code><span class="sig-paren">(</span><em>(Stage3)arg1</em>, <em>(int)arg2</em>, <em>(int)arg3</em><span class="sig-paren">)</span> &rarr; list :<a class="headerlink" href="#PyJEM.TEM3.Stage3.Getf1OverRate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get drive frequency f1.</p>
+<p>[0]-&gt;0:TKB, 1:Sw, 2:command</p>
+<p>[1]-&gt;0:trackbaul, 1:sw, 2:command</p>
+<p>[2]-&gt;0:motor, 1:piezo</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Stage3.Getf1OverRateTxNum">
+<code class="descname">Getf1OverRateTxNum</code><span class="sig-paren">(</span><em>(Stage3)arg1</em><span class="sig-paren">)</span> &rarr; int :<a class="headerlink" href="#PyJEM.TEM3.Stage3.Getf1OverRateTxNum" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get drive frequency f1 of TiltX.</p>
+<p><a href="#id1"><span class="problematic" id="id2">*</span></a>This function only work on Cryo-ARM.</p>
+<p><a href="#id3"><span class="problematic" id="id4">*</span></a>Only when electron beam 3D crystallography kit is enabled</p>
+<p>0:10[ / sec], 1:2[ /sec], 2:1[ /sec],3:0.5[ /sec].</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Stage3.SelDrvMode">
+<code class="descname">SelDrvMode</code><span class="sig-paren">(</span><em>(Stage3)arg1</em>, <em>(int)arg2</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#PyJEM.TEM3.Stage3.SelDrvMode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Select motor/piezo.</p>
+<p>0:Motor, 1:Piezo</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Stage3.SetAccelAndDclrRate">
+<code class="descname">SetAccelAndDclrRate</code><span class="sig-paren">(</span><em>(Stage3)arg1</em>, <em>(int)arg2</em>, <em>(int)arg3</em>, <em>(int)arg4</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#PyJEM.TEM3.Stage3.SetAccelAndDclrRate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Acceleration / decelerateion rate setting during keystone control (for Z/Tx/Ty).</p>
+<p>arg1-&gt;2:Z axis, 3:Tx axis, 4:Ty axis, arg2-&gt;rate (64-65535)</p>
+<p>arg3-&gt;rate (64-65535)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Stage3.SetMovementValueMeasurementMethod">
+<code class="descname">SetMovementValueMeasurementMethod</code><span class="sig-paren">(</span><em>(Stage3)arg1</em>, <em>(int)arg2</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#PyJEM.TEM3.Stage3.SetMovementValueMeasurementMethod" title="Permalink to this definition">¶</a></dt>
+<dd><p>Movement amount measurement method setting(for Z/Tx/Ty).</p>
+<p>0:encoder, 1:potens</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Stage3.SetOrg">
+<code class="descname">SetOrg</code><span class="sig-paren">(</span><em>(Stage3)arg1</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#PyJEM.TEM3.Stage3.SetOrg" title="Permalink to this definition">¶</a></dt>
+<dd><p>Move to origin</p>
+<p>Moving order: TiltY, TiltX, X, Z, Y</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Stage3.SetPosition">
+<code class="descname">SetPosition</code><span class="sig-paren">(</span><em>(Stage3)arg1</em>, <em>(float)arg2</em>, <em>(float)arg3</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#PyJEM.TEM3.Stage3.SetPosition" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set X-Y axis drive(with rotation compensation)</p>
+<p>arg2-&gt;float: x Range:+-100000.0 (nm)</p>
+<p>arg3-&gt;float: y Range:+-100000.0(nm)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Stage3.SetTXRel">
+<code class="descname">SetTXRel</code><span class="sig-paren">(</span><em>(Stage3)arg1</em>, <em>(float)arg2</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#PyJEM.TEM3.Stage3.SetTXRel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Relative tilt around TiltX.</p>
+<p>Range:90.00(degree)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Stage3.SetTYRel">
+<code class="descname">SetTYRel</code><span class="sig-paren">(</span><em>(Stage3)arg1</em>, <em>(float)arg2</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#PyJEM.TEM3.Stage3.SetTYRel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Relative tilt around TiltY.</p>
+<p>Range:90.00(degree)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Stage3.SetTiltXAngle">
+<code class="descname">SetTiltXAngle</code><span class="sig-paren">(</span><em>(Stage3)arg1</em>, <em>(float)arg2</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#PyJEM.TEM3.Stage3.SetTiltXAngle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set TiltX</p>
+<p>Range:+-90.00 (degree)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Stage3.SetTiltYAngle">
+<code class="descname">SetTiltYAngle</code><span class="sig-paren">(</span><em>(Stage3)arg1</em>, <em>(float)arg2</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#PyJEM.TEM3.Stage3.SetTiltYAngle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set TiltY</p>
+<p>Range:+-90.00 (degree)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Stage3.SetX">
+<code class="descname">SetX</code><span class="sig-paren">(</span><em>(Stage3)arg1</em>, <em>(float)arg2</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#PyJEM.TEM3.Stage3.SetX" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set X axis drive.</p>
+<p>For motor drive. Range: +-100000.0(nm)</p>
+<p>For piezo Range:+-10000.00(nm)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Stage3.SetXRel">
+<code class="descname">SetXRel</code><span class="sig-paren">(</span><em>(Stage3)arg1</em>, <em>(float)arg2</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#PyJEM.TEM3.Stage3.SetXRel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Relative move along X axis.</p>
+<p>For motor drive Range:+-100000.0(nm)</p>
+<p>For piezo Range:+-10000.00(nm)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Stage3.SetY">
+<code class="descname">SetY</code><span class="sig-paren">(</span><em>(Stage3)arg1</em>, <em>(float)arg2</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#PyJEM.TEM3.Stage3.SetY" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set Y axis drive.</p>
+<p>For motor drive. Range: +-100000.0(nm)</p>
+<p>For piezo Range:+-10000.00(nm)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Stage3.SetYRel">
+<code class="descname">SetYRel</code><span class="sig-paren">(</span><em>(Stage3)arg1</em>, <em>(float)arg2</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#PyJEM.TEM3.Stage3.SetYRel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Relative move along Y axis.</p>
+<p>For motor drive Range:+-100000.0(nm)</p>
+<p>For piezo Range:+-10000.00(nm)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Stage3.SetZ">
+<code class="descname">SetZ</code><span class="sig-paren">(</span><em>(Stage3)arg1</em>, <em>(float)arg2</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#PyJEM.TEM3.Stage3.SetZ" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set Z axis drive.</p>
+<p>This works only for motor drive. Range: +-100000.0(nm)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Stage3.SetZRel">
+<code class="descname">SetZRel</code><span class="sig-paren">(</span><em>(Stage3)arg1</em>, <em>(float)arg2</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#PyJEM.TEM3.Stage3.SetZRel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Relative move along Z axis.</p>
+<p>This works only for motor drive Range:+-100000.0(nm)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Stage3.Setf1OverRate">
+<code class="descname">Setf1OverRate</code><span class="sig-paren">(</span><em>(Stage3)arg1</em>, <em>(int)arg2</em>, <em>(int)arg3</em>, <em>(int)arg4</em>, <em>(int)arg5</em>, <em>(int)arg6</em>, <em>(int)arg7</em>, <em>(int)arg8</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#PyJEM.TEM3.Stage3.Setf1OverRate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Drive frequency f1 setting.</p>
+<p>arg1-&gt;0:TKB, 1:Sw, 2:command</p>
+<p>arg2-&gt;0:trackbaul, 1:sw, 2:command</p>
+<p>arg3-&gt;0:motor, 1:piezo</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Stage3.Setf1OverRateTxNum">
+<code class="descname">Setf1OverRateTxNum</code><span class="sig-paren">(</span><em>(Stage3)arg1</em>, <em>(int)arg2</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#PyJEM.TEM3.Stage3.Setf1OverRateTxNum" title="Permalink to this definition">¶</a></dt>
+<dd><p>Drive frequency f1 setting of TiltX.</p>
+<p><a href="#id5"><span class="problematic" id="id6">*</span></a>This function only work on Cryo-ARM.</p>
+<p><a href="#id7"><span class="problematic" id="id8">*</span></a>Only when electron beam 3D crystallography kit is enabled</p>
+<p>0:10[ / sec], 1:2[ /sec], 2:1[ /sec],3:0.5[ /sec].</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.Stage3.Stop">
+<code class="descname">Stop</code><span class="sig-paren">(</span><em>(Stage3)arg1</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#PyJEM.TEM3.Stage3.Stop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Stop all the drives.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="PyJEM.TEM3.VACUUM3">
+<em class="property">class </em><code class="descclassname">PyJEM.TEM3.</code><code class="descname">VACUUM3</code><a class="headerlink" href="#PyJEM.TEM3.VACUUM3" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">Boost.Python.instance</span></code></p>
+<p>It is a class that can operate the VACUUM. To use it, it is necessary to create an instance.</p>
+<dl class="method">
+<dt id="PyJEM.TEM3.VACUUM3.GetCameraAir">
+<code class="descname">GetCameraAir</code><span class="sig-paren">(</span><em>(VACUUM3)arg1</em><span class="sig-paren">)</span> &rarr; int :<a class="headerlink" href="#PyJEM.TEM3.VACUUM3.GetCameraAir" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get Camera Air status.</p>
+<p>0:Not Air, 1:Air</p>
+<p>This works for ARM200F and ARM300F</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.VACUUM3.GetCameraReady">
+<code class="descname">GetCameraReady</code><span class="sig-paren">(</span><em>(VACUUM3)arg1</em><span class="sig-paren">)</span> &rarr; int :<a class="headerlink" href="#PyJEM.TEM3.VACUUM3.GetCameraReady" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get Camera Ready status.</p>
+<p>0:Not Air, 1:Air</p>
+<p>This works for ARM200F and ARM300F</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.VACUUM3.GetColumnAir">
+<code class="descname">GetColumnAir</code><span class="sig-paren">(</span><em>(VACUUM3)arg1</em><span class="sig-paren">)</span> &rarr; int :<a class="headerlink" href="#PyJEM.TEM3.VACUUM3.GetColumnAir" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get Column Air status.</p>
+<p>0:Not Air, 1:Air</p>
+<p>This works for ARM200F and ARM300F</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.VACUUM3.GetColumnReady">
+<code class="descname">GetColumnReady</code><span class="sig-paren">(</span><em>(VACUUM3)arg1</em><span class="sig-paren">)</span> &rarr; int :<a class="headerlink" href="#PyJEM.TEM3.VACUUM3.GetColumnReady" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get Column Ready status.</p>
+<p>0:Not Air, 1:Air</p>
+<p>This works for ARM200F and ARM300F</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.VACUUM3.GetSpecimenAir">
+<code class="descname">GetSpecimenAir</code><span class="sig-paren">(</span><em>(VACUUM3)arg1</em><span class="sig-paren">)</span> &rarr; int :<a class="headerlink" href="#PyJEM.TEM3.VACUUM3.GetSpecimenAir" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get Specimen Air status.</p>
+<p>0:Not Air, 1:Air</p>
+<p>This works for ARM200F and ARM300F</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.VACUUM3.GetSpecimenPreEvacStart">
+<code class="descname">GetSpecimenPreEvacStart</code><span class="sig-paren">(</span><em>(VACUUM3)arg1</em><span class="sig-paren">)</span> &rarr; int :<a class="headerlink" href="#PyJEM.TEM3.VACUUM3.GetSpecimenPreEvacStart" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get Specimen previous evacuation Start status.</p>
+<p>0:Not Start, 1:Start</p>
+<p>This works for ARM200F and ARM300F</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.VACUUM3.GetSpecimenReady">
+<code class="descname">GetSpecimenReady</code><span class="sig-paren">(</span><em>(VACUUM3)arg1</em><span class="sig-paren">)</span> &rarr; int :<a class="headerlink" href="#PyJEM.TEM3.VACUUM3.GetSpecimenReady" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get Specimen Ready status.</p>
+<p>0:Not Air, 1:Air</p>
+<p>This works for ARM200F and ARM300F</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.TEM3.VACUUM3.GetValveStatus">
+<code class="descname">GetValveStatus</code><span class="sig-paren">(</span><em>(VACUUM3)arg1</em><span class="sig-paren">)</span> &rarr; list :<a class="headerlink" href="#PyJEM.TEM3.VACUUM3.GetValveStatus" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get valve status.</p>
+<p>..[0]-&gt;int: The number of the effective valves.</p>
+<p>..[1]-&gt;int: Bit the information represented in the OPEN/CLOSE of each valve.</p>
+<p>..[2]-&gt;int: Bit the information represented in the OPEN/CLOSE of each valve.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">PyJEM.TEM3 package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-PyJEM.TEM3">PyJEM.TEM3</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="PyJEM.exception.html" title="previous chapter">PyJEM.exception module</a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/TEM3.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;Copyright © 2006-2018 JEOL Ltd..
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
+      
+      |
+      <a href="_sources/TEM3.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

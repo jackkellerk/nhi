@@ -15,14 +15,16 @@ var session_key;
  function tempTest()
  {
      // converts the username into json
-     var number;
-     var convertToJSON = {"number": number};
+     var username = "hi";
+     var password = "9";
+     var convertToJSON = {"email": username, "password": password};
  
      $.ajax({
          method: 'POST',
          contentType: 'application/json',
+         headers: {"uid": uid, "session_key": session_key},
          data: JSON.stringify(convertToJSON),
-         url: base_url + '/sripts/test',
+         url: base_url + '/scripts/offGetInfo',
          dataType: 'json',
          crossDomain: 'true',
          xhrFields: {
@@ -34,10 +36,9 @@ var session_key;
                  alert("Incorrect");
                  return;
              }
-             uid = callback.data.uid;
-             session_key = callback.data.session_key;
-             toProjectSelection();
-             currentActivity = "AllProjects";
+             var out = callback.data.script_output;
+             console.log("OUTPUT---------------------1:"+out)
+             //currentActivity = "AllProjects";
          },
          error: function(xhr, status, error) {
              alert("Internal Server Error: 500");
@@ -45,6 +46,42 @@ var session_key;
      });
  }
 
+ function tempTest2(){
+         // converts the username into json
+    var username = "hi";
+    var password = "9";
+    var convertToJSON = {"email": username, "password": password};
+
+    var script_name = "offline_get_info_only.py";
+
+    $.ajax({
+        method: 'POST',
+        contentType: 'application/json',
+        headers: {"uid": uid, "session_key": session_key},
+        data: JSON.stringify(convertToJSON),
+        url: base_url + '/scripts/select/' + script_name,
+        dataType: 'json',
+        crossDomain: 'true',
+        xhrFields: {
+            withCredentials: true
+        },
+        success: function(callback) {
+            if(callback.errorCode != 0)
+            {
+                alert("Incorrect Email or Password");
+                return;
+            }
+            var out = callback.data.script_output;
+            console.log("OUTPUT---------------------2:"+out)
+            //session_key = callback.data.session_key;
+            //toProjectSelection();
+            //currentActivity = "AllProjects";
+        },
+        error: function(xhr, status, error) {
+            alert("Internal Server Error: 500");
+        }
+    });
+ }
 
 function loginToBackend()
 {

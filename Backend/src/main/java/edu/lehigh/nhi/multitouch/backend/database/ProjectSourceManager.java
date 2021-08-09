@@ -2,11 +2,7 @@ package edu.lehigh.nhi.multitouch.backend.database;
 
 import com.google.gson.Gson;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class ProjectSourceManager {

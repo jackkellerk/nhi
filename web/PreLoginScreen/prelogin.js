@@ -276,7 +276,8 @@ function startPreLogin() {
   loginText.y = login_hex.y + loginText.height * 2;
   loginText.interactive = true;
   loginText.buttonMode = true;
-  loginText.on("pointerdown", tempTest);
+  loginText.on("pointerdown", loginToBackend);
+  //loginText.on("pointerdown", loginToBackend);
   Inner_Login_UI.addChild(loginText);
 
   //Interactable text used to move to sign up screen

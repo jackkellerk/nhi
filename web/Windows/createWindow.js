@@ -26,6 +26,7 @@ class WorkWindow
         this.tool3 = new PIXI.Graphics();
         this.tool4 = new PIXI.Graphics();
         this.tool5 = new PIXI.Graphics();
+        this.tool6 = new PIXI.Graphics();
 
         // initialize interactive + dragable window border
         this.windowBorder = new PIXI.Graphics();
@@ -139,6 +140,22 @@ class WorkWindow
             pythonIcon.x = -37.5;
             pythonIcon.y = 3;
         this.tool5.addChild(pythonIcon);
+
+            this.tool6.lineStyle(2, 0xdddddd, 2);
+            this.tool6.beginFill(0xdcdcdc);
+            this.tool6.drawRoundedRect(-30,0, 55,45, 3);
+            this.tool6.endFill();
+            this.tool6.buttonMode = true;
+            this.tool6.x = this.tool5.x;
+            this.tool6.y = this.tool5.y + 45; 
+        this.container.addChild(this.tool6);
+
+        let playIcon = new PIXI.Sprite.from("Images/arrow.png");
+            playIcon.width = 74;
+            playIcon.height = 42;
+            playIcon.x = -37.5;
+            playIcon.y = 3;
+        this.tool6.addChild(playIcon);
 
 
         // ------------------------- window -------------------------

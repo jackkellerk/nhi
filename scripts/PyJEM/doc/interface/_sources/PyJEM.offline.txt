@@ -1,0 +1,18 @@
+PyJEM.offline package
+=====================
+
+Subpackages
+-----------
+
+.. toctree::
+
+    PyJEM.offline.TEM3
+    PyJEM.offline.detector
+
+Module contents
+---------------
+
+.. automodule:: PyJEM.offline
+    :members:
+    :undoc-members:
+    :show-inheritance:

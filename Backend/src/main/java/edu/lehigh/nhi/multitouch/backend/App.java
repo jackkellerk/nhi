@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 import edu.lehigh.nhi.multitouch.backend.database.DatabaseManager;
 import edu.lehigh.nhi.multitouch.backend.route.ProjectRouteSetter;
+import edu.lehigh.nhi.multitouch.backend.route.ScriptsRouteSetter;
 import edu.lehigh.nhi.multitouch.backend.route.SourceRouteSetter;
 import edu.lehigh.nhi.multitouch.backend.route.UserRouteSetter;
 import edu.lehigh.nhi.multitouch.backend.route.WindowRouteSetter;
@@ -85,6 +86,7 @@ public class App {
             UserRouteSetter.setRoutes(db, encryption);
             WindowRouteSetter.setRoutes(db, encryption);
             SourceRouteSetter.setRoutes(db, encryption);
+            ScriptsRouteSetter.setRoutes(db, encryption);
             UPRelationshipRouteSetter.setRoutes(db, encryption);
 
 

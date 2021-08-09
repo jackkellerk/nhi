@@ -1,0 +1,490 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>PyJEM.offline.TEM3.eos3 module &mdash; PyJEM 1.0.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="PyJEM 1.0.0.0 documentation" href="index.html" />
+    <link rel="up" title="PyJEM.offline.TEM3 package" href="PyJEM.offline.TEM3.html" />
+    <link rel="next" title="PyJEM.offline.TEM3.feg3 module" href="PyJEM.offline.TEM3.feg3.html" />
+    <link rel="prev" title="PyJEM.offline.TEM3.detector3 module" href="PyJEM.offline.TEM3.detector3.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-PyJEM.offline.TEM3.eos3">
+<span id="pyjem-offline-tem3-eos3-module"></span><h1>PyJEM.offline.TEM3.eos3 module<a class="headerlink" href="#module-PyJEM.offline.TEM3.eos3" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="PyJEM.offline.TEM3.eos3.EOS3">
+<em class="property">class </em><code class="descclassname">PyJEM.offline.TEM3.eos3.</code><code class="descname">EOS3</code><a class="headerlink" href="#PyJEM.offline.TEM3.eos3.EOS3" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dl class="method">
+<dt id="PyJEM.offline.TEM3.eos3.EOS3.DownSelector">
+<code class="descname">DownSelector</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.TEM3.eos3.EOS3.DownSelector" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><strong>Summary</strong></div>
+<div class="line">Decrement Magnification/Camera length/Rocking angle number. Down the magnification selector.</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.offline.TEM3.eos3.EOS3.DownSpctrSelector">
+<code class="descname">DownSpctrSelector</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.TEM3.eos3.EOS3.DownSpctrSelector" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><strong>Summary</strong></div>
+<div class="line">Decrement spectrum magnification number. Down the energy spectrometer selector.</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.offline.TEM3.eos3.EOS3.DownStemCamSelector">
+<code class="descname">DownStemCamSelector</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.TEM3.eos3.EOS3.DownStemCamSelector" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><strong>Summary</strong></div>
+<div class="line">Decrement imaging side camera length(magnification) number for STEM. Down the camera length selector.</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.offline.TEM3.eos3.EOS3.GetAlpha">
+<code class="descname">GetAlpha</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.TEM3.eos3.EOS3.GetAlpha" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><strong>Summary</strong></div>
+<div class="line">Get alpha number.</div>
+<div class="line"><strong>return</strong></div>
+<div class="line">type: int</div>
+<div class="line">0-8</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.offline.TEM3.eos3.EOS3.GetAlphaSelectorEx">
+<code class="descname">GetAlphaSelectorEx</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.TEM3.eos3.EOS3.GetAlphaSelectorEx" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><strong>Summary</strong></div>
+<div class="line">Get alpha number and string.</div>
+<div class="line"><strong>return</strong></div>
+<div class="line">type: list</div>
+<div class="line">[0]= Alpha number, int</div>
+<div class="line">[1]= Alpha Name, string </div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.offline.TEM3.eos3.EOS3.GetCurrentMagSelectorID">
+<code class="descname">GetCurrentMagSelectorID</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.TEM3.eos3.EOS3.GetCurrentMagSelectorID" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><strong>Summary</strong></div>
+<div class="line">Get MAG selector UD and Magnification value.</div>
+<div class="line"><strong>return</strong></div>
+<div class="line">type: list</div>
+<div class="line">[0]= MAG selector ID, int</div>
+<div class="line">[1]= Magnification value, int</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.offline.TEM3.eos3.EOS3.GetFunctionMode">
+<code class="descname">GetFunctionMode</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.TEM3.eos3.EOS3.GetFunctionMode" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><strong>Summary</strong></div>
+<div class="line">Get imaging FUNCTION mode.</div>
+<div class="line"><strong>return</strong></div>
+<div class="line">type: list</div>
+<div class="line">[0]= int</div>
+<div class="line-block">
+<div class="line">&lt;On TEM Observation&gt;:  0=MAG, 1=MAG2, 2=LowMAG, 3=SAMAG, 4=DIFF </div>
+<div class="line">&lt;On STEM Observation&gt;: 0=Align, 1=SM-LMAG, 2=SM-MAG, 3=AMAG, 4=uuDIFF, 5=Rocking</div>
+</div>
+<div class="line">[1]= FUNCTION mode explanation string. string</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.offline.TEM3.eos3.EOS3.GetMagValue">
+<code class="descname">GetMagValue</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.TEM3.eos3.EOS3.GetMagValue" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><strong>Summary</strong></div>
+<div class="line">Get Magnification/Camera length/Rocking angle. </div>
+<div class="line"><strong>return</strong></div>
+<div class="line">type: list</div>
+<div class="line">[0]= Magnification value.(Magnification of scanning image for ASID), string</div>
+<div class="line">[1]= Unit string, string</div>
+<div class="line">[2]= Magnification label ,string</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.offline.TEM3.eos3.EOS3.GetProbeMode">
+<code class="descname">GetProbeMode</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.TEM3.eos3.EOS3.GetProbeMode" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><strong>Summary</strong></div>
+<div class="line">Get irradiative PROBE mode.</div>
+<div class="line"><strong>return</strong></div>
+<div class="line">type: int</div>
+<div class="line">0=TEM, 1=EDS, 2=NBD, 3=CBD</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.offline.TEM3.eos3.EOS3.GetSpctrMode">
+<code class="descname">GetSpctrMode</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.TEM3.eos3.EOS3.GetSpctrMode" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><strong>Summary</strong></div>
+<div class="line">Get spectrum mode status.</div>
+<div class="line"><strong>return</strong></div>
+<div class="line">type: int</div>
+<div class="line">0=OFF, 1=ON</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.offline.TEM3.eos3.EOS3.GetSpctrValue">
+<code class="descname">GetSpctrValue</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.TEM3.eos3.EOS3.GetSpctrValue" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><strong>Summary</strong></div>
+<div class="line">Get spectrum magnification.</div>
+<div class="line"><strong>return</strong></div>
+<div class="line">type: list</div>
+<div class="line">[0]= long: Magnification value (um/V)</div>
+<div class="line">[1]= string: Unit string</div>
+<div class="line">[2]= string: Magnification label</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.offline.TEM3.eos3.EOS3.GetSpotSize">
+<code class="descname">GetSpotSize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.TEM3.eos3.EOS3.GetSpotSize" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><strong>Summary</strong></div>
+<div class="line">Get SPOTSIZE number.</div>
+<div class="line"><strong>return</strong></div>
+<div class="line">type: int</div>
+<div class="line">0-7</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.offline.TEM3.eos3.EOS3.GetStemCamValue">
+<code class="descname">GetStemCamValue</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.TEM3.eos3.EOS3.GetStemCamValue" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><strong>Summary</strong></div>
+<div class="line">Get imaging side camera length(magnification) for STEM. </div>
+<div class="line"><strong>return</strong></div>
+<div class="line">type: int</div>
+<div class="line">[0]= long: Camera length value (cm)</div>
+<div class="line">[1]= string: Unit string.</div>
+<div class="line">[2]= string: Camera length string.</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.offline.TEM3.eos3.EOS3.GetTemStemMode">
+<code class="descname">GetTemStemMode</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.TEM3.eos3.EOS3.GetTemStemMode" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><strong>Summary</strong></div>
+<div class="line">Get TEM/ASID mode.</div>
+<div class="line"><strong>return</strong></div>
+<div class="line">type: int</div>
+<div class="line">0=TEM, 1=ASID</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.offline.TEM3.eos3.EOS3.SelectFunctionMode">
+<code class="descname">SelectFunctionMode</code><span class="sig-paren">(</span><em>mode</em><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.TEM3.eos3.EOS3.SelectFunctionMode" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><strong>Summary</strong></div>
+<div class="line">Set imaging FUNCTION mode.</div>
+<div class="line"><strong>arg</strong></div>
+<div class="line">type: int</div>
+<div class="line">mode: </div>
+<div class="line-block">
+<div class="line">[On TEM Observation]  0=MAG, 1=MAG2, 2=LowMAG, 3=SAMAG, 4=DIFF</div>
+<div class="line">[On STEM Observation] 0=Align, 1=SM-LMAG, 2=SM-MAG, 3=AMAG, 4=uuDIFF, 5=Rocking</div>
+</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.offline.TEM3.eos3.EOS3.SelectProbMode">
+<code class="descname">SelectProbMode</code><span class="sig-paren">(</span><em>mode</em><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.TEM3.eos3.EOS3.SelectProbMode" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><strong>Summary</strong></div>
+<div class="line">Set irradiative PROBE mode.</div>
+<div class="line"><strong>arg</strong></div>
+<div class="line">type: int</div>
+<div class="line">mode: </div>
+<div class="line">0=TEM, 1=EDS, 2=NBD, 3=CBD</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.offline.TEM3.eos3.EOS3.SelectSpotSize">
+<code class="descname">SelectSpotSize</code><span class="sig-paren">(</span><em>size</em><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.TEM3.eos3.EOS3.SelectSpotSize" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><strong>Summary</strong></div>
+<div class="line">Set SPOTSIZE number.</div>
+<div class="line"><strong>arg</strong></div>
+<div class="line">type: int</div>
+<div class="line">size: </div>
+<div class="line">0-7</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.offline.TEM3.eos3.EOS3.SelectTemStem">
+<code class="descname">SelectTemStem</code><span class="sig-paren">(</span><em>mode</em><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.TEM3.eos3.EOS3.SelectTemStem" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><strong>Summary</strong></div>
+<div class="line">Set TEM/ASID mode.</div>
+<div class="line"><strong>arg</strong></div>
+<div class="line">type: int</div>
+<div class="line">mode: </div>
+<div class="line">0=TEM, 1=ASID</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.offline.TEM3.eos3.EOS3.SetAlphaSelector">
+<code class="descname">SetAlphaSelector</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.TEM3.eos3.EOS3.SetAlphaSelector" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><strong>Summary</strong></div>
+<div class="line">Set Alpha number.</div>
+<div class="line"><strong>arg</strong></div>
+<div class="line">type: int</div>
+<div class="line">value: </div>
+<div class="line">0-8</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.offline.TEM3.eos3.EOS3.SetBrightness">
+<code class="descname">SetBrightness</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.TEM3.eos3.EOS3.SetBrightness" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><strong>Summary</strong></div>
+<div class="line">Increase of decrease Lens value for BRIGHTNESS(MAG link). Same as BRIGHTNESS knob. 
+Although full range of short type variable can be accepted. 
+the value around +-1 to 50 is suitable because the range corresponds to that of the knob on the operation panel. </div>
+<div class="line"><strong>arg</strong></div>
+<div class="line">type: int</div>
+<div class="line">value: </div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.offline.TEM3.eos3.EOS3.SetDiffFocus">
+<code class="descname">SetDiffFocus</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.TEM3.eos3.EOS3.SetDiffFocus" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><strong>Summary</strong></div>
+<div class="line">Increase of decrease Lens value for DIFFFOCUS(MAG link). Same as DIFFFOCUS knob.
+Although full range of short type variable can be accepted.
+the value around +-1 to 50 is suitable because the range corresponds to that of the knob on the operation panel. </div>
+<div class="line"><strong>arg</strong></div>
+<div class="line">type: int</div>
+<div class="line">value: </div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.offline.TEM3.eos3.EOS3.SetGIF">
+<code class="descname">SetGIF</code><span class="sig-paren">(</span><em>mode</em><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.TEM3.eos3.EOS3.SetGIF" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><strong>Summary</strong></div>
+<div class="line">Set GIF-mode.</div>
+<div class="line"><strong>arg</strong></div>
+<div class="line">type: int</div>
+<div class="line">mode: </div>
+<div class="line">0=OFF, 1=ON</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.offline.TEM3.eos3.EOS3.SetObjFocus">
+<code class="descname">SetObjFocus</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.TEM3.eos3.EOS3.SetObjFocus" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><strong>Summary</strong></div>
+<div class="line">Increase of decrease Lens value for OBJ Focus(MAG link). Same as OBJ Focus knob. 
+Although full range of short type variable can be accepted. 
+the value around +-1 to 50 is suitable because the range corresponds to that of the knob on the operation panel.</div>
+<div class="line"><strong>arg</strong></div>
+<div class="line">type: int</div>
+<div class="line">value: </div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.offline.TEM3.eos3.EOS3.SetSelector">
+<code class="descname">SetSelector</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.TEM3.eos3.EOS3.SetSelector" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><strong>Summary</strong></div>
+<div class="line">Set Magnification/Camera length/Rocking angle number.</div>
+<div class="line"><strong>arg</strong></div>
+<div class="line">type: int</div>
+<div class="line">value: </div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.offline.TEM3.eos3.EOS3.SetSpctrMode">
+<code class="descname">SetSpctrMode</code><span class="sig-paren">(</span><em>mode</em><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.TEM3.eos3.EOS3.SetSpctrMode" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><strong>Summary</strong></div>
+<div class="line">ON/OFF spectrum mode.</div>
+<div class="line"><strong>arg</strong></div>
+<div class="line">type: int</div>
+<div class="line">mode: </div>
+<div class="line">0=OFF, 1=ON</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.offline.TEM3.eos3.EOS3.SetSpctrSelector">
+<code class="descname">SetSpctrSelector</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.TEM3.eos3.EOS3.SetSpctrSelector" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><strong>Summary</strong></div>
+<div class="line">Set spectrum magnification number.</div>
+<div class="line"><strong>arg</strong></div>
+<div class="line">type: int</div>
+<div class="line">value: </div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.offline.TEM3.eos3.EOS3.SetStemCamSelector">
+<code class="descname">SetStemCamSelector</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.TEM3.eos3.EOS3.SetStemCamSelector" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><strong>Summary</strong></div>
+<div class="line">Set imaging side camera length(magnification) number for STEM.</div>
+<div class="line"><strong>arg</strong></div>
+<div class="line">type: int</div>
+<div class="line">value: </div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.offline.TEM3.eos3.EOS3.UpSelector">
+<code class="descname">UpSelector</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.TEM3.eos3.EOS3.UpSelector" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><strong>Summary</strong></div>
+<div class="line">Increment Magnification/Camera length/Rocking angle number. Up the magnification selector.</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.offline.TEM3.eos3.EOS3.UpSpctrSelector">
+<code class="descname">UpSpctrSelector</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.TEM3.eos3.EOS3.UpSpctrSelector" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><strong>Summary</strong></div>
+<div class="line">Increment spectrum magnification number. Up the energy spectrometer selector.</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.offline.TEM3.eos3.EOS3.UpStemCamSelector">
+<code class="descname">UpStemCamSelector</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.TEM3.eos3.EOS3.UpStemCamSelector" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><strong>Summary</strong></div>
+<div class="line">Increment imaging side camer a length(magnification) number for STEM. Up the camera length selector.</div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="PyJEM.offline.TEM3.eos3.get_offlinedata">
+<code class="descclassname">PyJEM.offline.TEM3.eos3.</code><code class="descname">get_offlinedata</code><span class="sig-paren">(</span><em>temstemmode</em>, <em>funcmode</em>, <em>listname</em>, <em>index=None</em><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.TEM3.eos3.get_offlinedata" title="Permalink to this definition">¶</a></dt>
+<dd><p>this method is only here.
+online package dont have.</p>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="PyJEM.html">PyJEM package</a><ul>
+  <li><a href="PyJEM.offline.html">PyJEM.offline package</a><ul>
+  <li><a href="PyJEM.offline.TEM3.html">PyJEM.offline.TEM3 package</a><ul>
+      <li>Previous: <a href="PyJEM.offline.TEM3.detector3.html" title="previous chapter">PyJEM.offline.TEM3.detector3 module</a></li>
+      <li>Next: <a href="PyJEM.offline.TEM3.feg3.html" title="next chapter">PyJEM.offline.TEM3.feg3 module</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/PyJEM.offline.TEM3.eos3.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;Copyright © 2006-2018 JEOL Ltd..
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
+      
+      |
+      <a href="_sources/PyJEM.offline.TEM3.eos3.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,850 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>PyJEM.offline.TEM3.def3 module &mdash; PyJEM 1.0.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="PyJEM 1.0.0.0 documentation" href="index.html" />
+    <link rel="up" title="PyJEM.offline.TEM3 package" href="PyJEM.offline.TEM3.html" />
+    <link rel="next" title="PyJEM.offline.TEM3.detector3 module" href="PyJEM.offline.TEM3.detector3.html" />
+    <link rel="prev" title="PyJEM.offline.TEM3.camera3 module" href="PyJEM.offline.TEM3.camera3.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-PyJEM.offline.TEM3.def3">
+<span id="pyjem-offline-tem3-def3-module"></span><h1>PyJEM.offline.TEM3.def3 module<a class="headerlink" href="#module-PyJEM.offline.TEM3.def3" title="Permalink to this headline">¶</a></h1>
+<p>** detector ID **</p>
+<p>0       &#8211;      
+1       SEI     (Second electron detector)
+2       EDS     (EDS detector)
+3       BI-PRISM        (electron beam Bi-prism)
+4       DFI-EF  (Scanning dark field electron detector for FEF)
+5       TVCAM-U (TV camera [Diff chamber])
+6       SSCAM-U (Slow scan camera [Diff chamber])
+7       FARADAY-CAGE    (Faraday cage)
+8       BS      (Beam stopper)
+9       HRD     (High resolution electron diffraction holder)
+10      DFI-U   (Scanning dark field electron detector [Observation chamber])
+11      BFI-U   (Scanning bright field electron detector [Observation chamber])
+12      SCR-F   (Small screen)
+13      SCR-L   (Large screen)
+14      DFI-B   (Scanning dark field electron detector [below camera chamber])
+15      BFI-B   (Scanning bright field electron detector [below camera chamber])
+16      SSCAM-B (Slow scan camera [below camera chamber])
+17      TVCAM-B (TV camera [below camera chamber])
+18      EELS    (Electron energy loss spectrometer)
+19      TVCAM-GIF       (TV camera [GATAN energy filter])
+20      SSCAM-GIF       (Slow scan camera [GATAN energy filter])
+21      BEI-TOPO        
+22      BEI-COMPO       
+23      SEI-TOPO        
+24      SEI-COMPO</p>
+<dl class="class">
+<dt id="PyJEM.offline.TEM3.def3.Def3">
+<em class="property">class </em><code class="descclassname">PyJEM.offline.TEM3.def3.</code><code class="descname">Def3</code><a class="headerlink" href="#PyJEM.offline.TEM3.def3.Def3" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dl class="method">
+<dt id="PyJEM.offline.TEM3.def3.Def3.GetAngBal">
+<code class="descname">GetAngBal</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.TEM3.def3.Def3.GetAngBal" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><strong>Summary</strong></div>
+<div class="line">Get AngleBalance value. this returns I/O output value. Range:0-FFFF(H)</div>
+<div class="line"><strong>return</strong></div>
+<div class="line">type: list</div>
+<div class="line">0-65535</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.offline.TEM3.def3.Def3.GetBeamBlank">
+<code class="descname">GetBeamBlank</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.TEM3.def3.Def3.GetBeamBlank" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><strong>Summary</strong></div>
+<div class="line">Get Beam branking status, 1:ON. Branking method is defined on machine side.</div>
+<div class="line"><strong>return</strong></div>
+<div class="line">type: int</div>
+<div class="line">1=ON</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.offline.TEM3.def3.Def3.GetCLA1">
+<code class="descname">GetCLA1</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.TEM3.def3.Def3.GetCLA1" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><strong>Summary</strong></div>
+<div class="line">Get CLAlignment1 value. this returns I/O output value. Range:0-FFFF(H)</div>
+<div class="line"><strong>return</strong></div>
+<div class="line">type: list</div>
+<div class="line">0-65535</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.offline.TEM3.def3.Def3.GetCLA2">
+<code class="descname">GetCLA2</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.TEM3.def3.Def3.GetCLA2" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><strong>Summary</strong></div>
+<div class="line">Get CLAlignment2 value. this returns I/O output value. Range:0-FFFF(H)</div>
+<div class="line"><strong>return</strong></div>
+<div class="line">type: list</div>
+<div class="line">0-65535</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.offline.TEM3.def3.Def3.GetCLs">
+<code class="descname">GetCLs</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.TEM3.def3.Def3.GetCLs" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><strong>Summary</strong></div>
+<div class="line">Get CLStig value. this returns I/O output value. Range:0-FFFF(H)</div>
+<div class="line"><strong>return</strong></div>
+<div class="line">type: list</div>
+<div class="line">0-65535</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.offline.TEM3.def3.Def3.GetCorrection">
+<code class="descname">GetCorrection</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.TEM3.def3.Def3.GetCorrection" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><strong>Summary</strong></div>
+<div class="line">Get Collection value. this returns I/O output value. Range:0-FFFF(H)</div>
+<div class="line"><strong>return</strong></div>
+<div class="line">type: list</div>
+<div class="line">0-65535</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.offline.TEM3.def3.Def3.GetDetAlign">
+<code class="descname">GetDetAlign</code><span class="sig-paren">(</span><em>arg1</em><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.TEM3.def3.Def3.GetDetAlign" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><strong>Summary</strong></div>
+<div class="line">Get Alignment value for detector. </div>
+<div class="line">It is necessary input target detector. </div>
+<div class="line">this returns the variable corresponds to IS value overlapped to CLA. Range:0-FFFF(H)</div>
+<div class="line"><strong>return</strong></div>
+<div class="line">type: list</div>
+<div class="line">0-65535</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.offline.TEM3.def3.Def3.GetFLA1">
+<code class="descname">GetFLA1</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.TEM3.def3.Def3.GetFLA1" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><strong>Summary</strong></div>
+<div class="line">Get FLAlignment1 value. this returns I/O output value. Range:0-FFFF(H)</div>
+<div class="line"><strong>return</strong></div>
+<div class="line">type: list</div>
+<div class="line">0-65535</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.offline.TEM3.def3.Def3.GetFLA2">
+<code class="descname">GetFLA2</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.TEM3.def3.Def3.GetFLA2" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><strong>Summary</strong></div>
+<div class="line">Get FLAlignment2 value. this returns I/O output value. Range:0-FFFF(H)</div>
+<div class="line"><strong>return</strong></div>
+<div class="line">type: list</div>
+<div class="line">0-65535</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.offline.TEM3.def3.Def3.GetFLs1">
+<code class="descname">GetFLs1</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.TEM3.def3.Def3.GetFLs1" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><strong>Summary</strong></div>
+<div class="line">Get FLStig1 value. this returns I/O output value. Range:0-FFFF(H)</div>
+<div class="line"><strong>return</strong></div>
+<div class="line">type: list</div>
+<div class="line">0-65535</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.offline.TEM3.def3.Def3.GetFLs2">
+<code class="descname">GetFLs2</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.TEM3.def3.Def3.GetFLs2" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><strong>Summary</strong></div>
+<div class="line">Get FLStig2 value. this returns I/O output value. Range:0-FFFF(H)</div>
+<div class="line"><strong>return</strong></div>
+<div class="line">type: list</div>
+<div class="line">0-65535</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.offline.TEM3.def3.Def3.GetGunA1">
+<code class="descname">GetGunA1</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.TEM3.def3.Def3.GetGunA1" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><strong>Summary</strong></div>
+<div class="line">Get GunAlignment1 value. this returns I/O output value. Range:0-FFFF(H)</div>
+<div class="line"><strong>return</strong></div>
+<div class="line">type: list</div>
+<div class="line">0-65535</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.offline.TEM3.def3.Def3.GetGunA2">
+<code class="descname">GetGunA2</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.TEM3.def3.Def3.GetGunA2" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><strong>Summary</strong></div>
+<div class="line">Get GunAlignment2 value. this returns I/O output value. Range:0-FFFF(H)</div>
+<div class="line"><strong>return</strong></div>
+<div class="line">type: list</div>
+<div class="line">0-65535</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.offline.TEM3.def3.Def3.GetILs">
+<code class="descname">GetILs</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.TEM3.def3.Def3.GetILs" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><strong>Summary</strong></div>
+<div class="line">Get ILStig value. this returns I/O output value. Range:0-FFFF(H)</div>
+<div class="line"><strong>return</strong></div>
+<div class="line">type: list</div>
+<div class="line">0-65535</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.offline.TEM3.def3.Def3.GetIS1">
+<code class="descname">GetIS1</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.TEM3.def3.Def3.GetIS1" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><strong>Summary</strong></div>
+<div class="line">Get ImageShift1 value. this returns I/O output value. Range:0-FFFF(H)</div>
+<div class="line"><strong>return</strong></div>
+<div class="line">type: list</div>
+<div class="line">0-65535</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.offline.TEM3.def3.Def3.GetIS2">
+<code class="descname">GetIS2</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.TEM3.def3.Def3.GetIS2" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><strong>Summary</strong></div>
+<div class="line">Get ImageShift2 value. this returns I/O output value. Range:0-FFFF(H)</div>
+<div class="line"><strong>return</strong></div>
+<div class="line">type: list</div>
+<div class="line">0-65535</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.offline.TEM3.def3.Def3.GetMagAdjust">
+<code class="descname">GetMagAdjust</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.TEM3.def3.Def3.GetMagAdjust" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><strong>Summary</strong></div>
+<div class="line">Get MagAdjust value. this returns I/O output value. Range:0-FFFF(H)</div>
+<div class="line"><strong>return</strong></div>
+<div class="line">type: list</div>
+<div class="line">0-65535</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.offline.TEM3.def3.Def3.GetOLs">
+<code class="descname">GetOLs</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.TEM3.def3.Def3.GetOLs" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><strong>Summary</strong></div>
+<div class="line">Get OLStig value. this returns I/O output value. Range:0-FFFF(H)</div>
+<div class="line"><strong>return</strong></div>
+<div class="line">type: list</div>
+<div class="line">0-65535</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.offline.TEM3.def3.Def3.GetOffset">
+<code class="descname">GetOffset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.TEM3.def3.Def3.GetOffset" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><strong>Summary</strong></div>
+<div class="line">Get Offset value. this returns I/O output value. Range:0-FFFF(H)</div>
+<div class="line"><strong>return</strong></div>
+<div class="line">type: list</div>
+<div class="line">0-65535</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.offline.TEM3.def3.Def3.GetPLA">
+<code class="descname">GetPLA</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.TEM3.def3.Def3.GetPLA" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><strong>Summary</strong></div>
+<div class="line">Get PLAlign value. this returns I/O output value. Range:0-FFFF(H)</div>
+<div class="line"><strong>return</strong></div>
+<div class="line">type: list</div>
+<div class="line">0-65535</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.offline.TEM3.def3.Def3.GetRotation">
+<code class="descname">GetRotation</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.TEM3.def3.Def3.GetRotation" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><strong>Summary</strong></div>
+<div class="line">Get Rotation value. this returns I/O output value. Range:0-FFFF(H)</div>
+<div class="line"><strong>return</strong></div>
+<div class="line">type: list</div>
+<div class="line">0-65535</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.offline.TEM3.def3.Def3.GetScan1">
+<code class="descname">GetScan1</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.TEM3.def3.Def3.GetScan1" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><strong>Summary</strong></div>
+<div class="line">Get Scan1 value. this returns I/O output value. Range:0-FFFF(H)</div>
+<div class="line"><strong>return</strong></div>
+<div class="line">type: list</div>
+<div class="line">0-65535</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.offline.TEM3.def3.Def3.GetScan2">
+<code class="descname">GetScan2</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.TEM3.def3.Def3.GetScan2" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><strong>Summary</strong></div>
+<div class="line">Get Scan2 value. this returns I/O output value. Range:0-FFFF(H)</div>
+<div class="line"><strong>return</strong></div>
+<div class="line">type: list</div>
+<div class="line">0-65535</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.offline.TEM3.def3.Def3.GetShifBal">
+<code class="descname">GetShifBal</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.TEM3.def3.Def3.GetShifBal" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><strong>Summary</strong></div>
+<div class="line">Get ShiftBalance value. this returns I/O output value. Range:0-FFFF(H)</div>
+<div class="line"><strong>return</strong></div>
+<div class="line">type: list</div>
+<div class="line">0-65535</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.offline.TEM3.def3.Def3.GetSpotA">
+<code class="descname">GetSpotA</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.TEM3.def3.Def3.GetSpotA" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><strong>Summary</strong></div>
+<div class="line">Get SpotAlignment value. this returns I/O output value. Range:0-FFFF(H)</div>
+<div class="line"><strong>return</strong></div>
+<div class="line">type: list</div>
+<div class="line">0-65535</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.offline.TEM3.def3.Def3.GetStemIS">
+<code class="descname">GetStemIS</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.TEM3.def3.Def3.GetStemIS" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><strong>Summary</strong></div>
+<div class="line">Get IS value for ASID. The variable corresponds to IS value overlapped to CLA. Range:0-FFFF(H)</div>
+<div class="line"><strong>return</strong></div>
+<div class="line">type: list</div>
+<div class="line">0-65535</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.offline.TEM3.def3.Def3.GetTiltBal">
+<code class="descname">GetTiltBal</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.TEM3.def3.Def3.GetTiltBal" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><strong>Summary</strong></div>
+<div class="line">Get TiltBalance value for ASID. The variable corresponds to IS value overlapped to CLA. Range:0-FFFF(H)</div>
+<div class="line"><strong>return</strong></div>
+<div class="line">type: list</div>
+<div class="line">0-65535</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.offline.TEM3.def3.Def3.SetAngBal">
+<code class="descname">SetAngBal</code><span class="sig-paren">(</span><em>arg1</em>, <em>arg2</em><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.TEM3.def3.Def3.SetAngBal" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><strong>Summary</strong></div>
+<div class="line">Set AngleBalance value. The variable corresponds to I/O output value.</div>
+<div class="line"><strong>arg</strong></div>
+<div class="line">type: int</div>
+<div class="line">arg1: 0-65535, arg2: 0-65535</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.offline.TEM3.def3.Def3.SetBeamBlank">
+<code class="descname">SetBeamBlank</code><span class="sig-paren">(</span><em>sw</em><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.TEM3.def3.Def3.SetBeamBlank" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><strong>Summary</strong></div>
+<div class="line">ON/OFF Beam branking. Branking method is defined on machine side.</div>
+<div class="line"><strong>arg</strong></div>
+<div class="line">type: int</div>
+<div class="line">sw: 0=OFF, 1=ON</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.offline.TEM3.def3.Def3.SetCLA1">
+<code class="descname">SetCLA1</code><span class="sig-paren">(</span><em>arg1</em>, <em>arg2</em><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.TEM3.def3.Def3.SetCLA1" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><strong>Summary</strong></div>
+<div class="line">Set CLAlignment1 value. The variable corresponds to I/O output value.</div>
+<div class="line"><strong>arg</strong></div>
+<div class="line">type: int</div>
+<div class="line">arg1: 0-65535, arg2: 0-65535</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.offline.TEM3.def3.Def3.SetCLA2">
+<code class="descname">SetCLA2</code><span class="sig-paren">(</span><em>arg1</em>, <em>arg2</em><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.TEM3.def3.Def3.SetCLA2" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><strong>Summary</strong></div>
+<div class="line">Set CLAlignment2 value. The variable corresponds to I/O output value.</div>
+<div class="line"><strong>arg</strong></div>
+<div class="line">type: int</div>
+<div class="line">arg1: 0-65535, arg2: 0-65535</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.offline.TEM3.def3.Def3.SetCLs">
+<code class="descname">SetCLs</code><span class="sig-paren">(</span><em>arg1</em>, <em>arg2</em><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.TEM3.def3.Def3.SetCLs" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><strong>Summary</strong></div>
+<div class="line">Set CLStig value. The variable corresponds to I/O output value.</div>
+<div class="line"><strong>arg</strong></div>
+<div class="line">type: int</div>
+<div class="line">arg1: 0-65535, arg2: 0-65535</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.offline.TEM3.def3.Def3.SetDetAlign">
+<code class="descname">SetDetAlign</code><span class="sig-paren">(</span><em>arg1</em>, <em>arg2</em>, <em>arg3</em><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.TEM3.def3.Def3.SetDetAlign" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><strong>Summary</strong></div>
+<div class="line">Set Alignment value for detector. The variable corresponds to I/O output value.</div>
+<div class="line"><strong>arg</strong></div>
+<div class="line">type: int</div>
+<div class="line">arg1: arg1: 0-65535, arg2: 0-65535</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.offline.TEM3.def3.Def3.SetFLA1">
+<code class="descname">SetFLA1</code><span class="sig-paren">(</span><em>arg1</em>, <em>arg2</em><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.TEM3.def3.Def3.SetFLA1" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><strong>Summary</strong></div>
+<div class="line">Set FLAlignment1 value for detector. The variable corresponds to I/O output value.</div>
+<div class="line"><strong>arg</strong></div>
+<div class="line">type: int</div>
+<div class="line">arg1: 0-65535, arg2: 0-65535</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.offline.TEM3.def3.Def3.SetFLA2">
+<code class="descname">SetFLA2</code><span class="sig-paren">(</span><em>arg1</em>, <em>arg2</em><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.TEM3.def3.Def3.SetFLA2" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><strong>Summary</strong></div>
+<div class="line">Set FLAlignment2 value for detector. The variable corresponds to I/O output value.</div>
+<div class="line"><strong>arg</strong></div>
+<div class="line">type: int</div>
+<div class="line">arg1: 0-65535, arg2: 0-65535</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.offline.TEM3.def3.Def3.SetFLs1">
+<code class="descname">SetFLs1</code><span class="sig-paren">(</span><em>arg1</em>, <em>arg2</em><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.TEM3.def3.Def3.SetFLs1" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><strong>Summary</strong></div>
+<div class="line">Set FLStig1 value for detector. The variable corresponds to I/O output value.</div>
+<div class="line"><strong>arg</strong></div>
+<div class="line">type: int</div>
+<div class="line">arg1: 0-65535, arg2: 0-65535</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.offline.TEM3.def3.Def3.SetFLs2">
+<code class="descname">SetFLs2</code><span class="sig-paren">(</span><em>arg1</em>, <em>arg2</em><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.TEM3.def3.Def3.SetFLs2" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><strong>Summary</strong></div>
+<div class="line">Set FLStig2 value for detector. The variable corresponds to I/O output value.</div>
+<div class="line"><strong>arg</strong></div>
+<div class="line">type: int</div>
+<div class="line">arg1: 0-65535, arg2: 0-65535</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.offline.TEM3.def3.Def3.SetGunA1">
+<code class="descname">SetGunA1</code><span class="sig-paren">(</span><em>arg1</em>, <em>arg2</em><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.TEM3.def3.Def3.SetGunA1" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><strong>Summary</strong></div>
+<div class="line">Set GunAlignment1 value for detector. The variable corresponds to I/O output value.</div>
+<div class="line"><strong>arg</strong></div>
+<div class="line">type: int</div>
+<div class="line">arg1: 0-65535, arg2: 0-65535</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.offline.TEM3.def3.Def3.SetGunA2">
+<code class="descname">SetGunA2</code><span class="sig-paren">(</span><em>arg1</em>, <em>arg2</em><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.TEM3.def3.Def3.SetGunA2" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><strong>Summary</strong></div>
+<div class="line">Set GunAlignment2 value for detector. The variable corresponds to I/O output value.</div>
+<div class="line"><strong>arg</strong></div>
+<div class="line">type: int</div>
+<div class="line">arg1: 0-65535, arg2: 0-65535</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.offline.TEM3.def3.Def3.SetILs">
+<code class="descname">SetILs</code><span class="sig-paren">(</span><em>arg1</em>, <em>arg2</em><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.TEM3.def3.Def3.SetILs" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><strong>Summary</strong></div>
+<div class="line">Set ILStig value for detector. The variable corresponds to I/O output value.</div>
+<div class="line"><strong>arg</strong></div>
+<div class="line">type: int</div>
+<div class="line">arg1: 0-65535, arg2: 0-65535</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.offline.TEM3.def3.Def3.SetIS1">
+<code class="descname">SetIS1</code><span class="sig-paren">(</span><em>arg1</em>, <em>arg2</em><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.TEM3.def3.Def3.SetIS1" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><strong>Summary</strong></div>
+<div class="line">Set ImageShift1 value for detector. The variable corresponds to I/O output value.</div>
+<div class="line"><strong>arg</strong></div>
+<div class="line">type: int</div>
+<div class="line">arg1: 0-65535, arg2: 0-65535</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.offline.TEM3.def3.Def3.SetIS2">
+<code class="descname">SetIS2</code><span class="sig-paren">(</span><em>arg1</em>, <em>arg2</em><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.TEM3.def3.Def3.SetIS2" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><strong>Summary</strong></div>
+<div class="line">Set ImageShift2 value for detector. The variable corresponds to I/O output value.</div>
+<div class="line"><strong>arg</strong></div>
+<div class="line">type: int</div>
+<div class="line">arg1: 0-65535, arg2: 0-65535</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.offline.TEM3.def3.Def3.SetNtrl">
+<code class="descname">SetNtrl</code><span class="sig-paren">(</span><em>def_id</em><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.TEM3.def3.Def3.SetNtrl" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><strong>Summary</strong></div>
+<div class="line">NTRL of the region which is being accessed.</div>
+<div class="line"><strong>arg</strong></div>
+<div class="line">type: int</div>
+<div class="line">def_id: 0=GUN1, 1=GUN2, 2=CLA1, 3=CLA2, 4=CMP-S, 5=CMP-T. 6=CMT-A, 7=CLS, 8=ISC1, 9=ISC2, 10=SPA,</div>
+</div>
+<p>11=PLA, 12=OLS, 13=ILS, 14=FLS1, 15=FLS2, 16=FLA1, 17=FLA2, 18=SCAN1, 19=SCAN2,
+20=IS-ASID, 21=MAG-ADJ, 22=ROTATION, 23=CORRECTION, 24=OFFSET</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.offline.TEM3.def3.Def3.SetOLs">
+<code class="descname">SetOLs</code><span class="sig-paren">(</span><em>arg1</em>, <em>arg2</em><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.TEM3.def3.Def3.SetOLs" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><strong>Summary</strong></div>
+<div class="line">Set OLStig value for detector. The variable corresponds to I/O output value.</div>
+<div class="line"><strong>arg</strong></div>
+<div class="line">type: int</div>
+<div class="line">arg1: 0-65535, arg2: 0-65535</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.offline.TEM3.def3.Def3.SetPLA">
+<code class="descname">SetPLA</code><span class="sig-paren">(</span><em>arg1</em>, <em>arg2</em><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.TEM3.def3.Def3.SetPLA" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><strong>Summary</strong></div>
+<div class="line">Set PLAlign value for detector. The variable corresponds to I/O output value.</div>
+<div class="line"><strong>arg</strong></div>
+<div class="line">type: int</div>
+<div class="line">arg1: 0-65535, arg2: 0-65535</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.offline.TEM3.def3.Def3.SetScan1">
+<code class="descname">SetScan1</code><span class="sig-paren">(</span><em>arg1</em>, <em>arg2</em><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.TEM3.def3.Def3.SetScan1" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><strong>Summary</strong></div>
+<div class="line">Set Scan1 value for detector. The variable corresponds to I/O output value.</div>
+<div class="line"><strong>arg</strong></div>
+<div class="line">type: int</div>
+<div class="line">arg1: 0-65535, arg2: 0-65535</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.offline.TEM3.def3.Def3.SetScan2">
+<code class="descname">SetScan2</code><span class="sig-paren">(</span><em>arg1</em>, <em>arg2</em><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.TEM3.def3.Def3.SetScan2" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><strong>Summary</strong></div>
+<div class="line">Set Scan2 value for detector. The variable corresponds to I/O output value.</div>
+<div class="line"><strong>arg</strong></div>
+<div class="line">type: int</div>
+<div class="line">arg1: 0-65535, arg2: 0-65535</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.offline.TEM3.def3.Def3.SetShifBal">
+<code class="descname">SetShifBal</code><span class="sig-paren">(</span><em>arg1</em>, <em>arg2</em><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.TEM3.def3.Def3.SetShifBal" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><strong>Summary</strong></div>
+<div class="line">Set ShiftBalance value for detector. The variable corresponds to I/O output value.</div>
+<div class="line"><strong>arg</strong></div>
+<div class="line">type: int</div>
+<div class="line">arg1: 0-65535, arg2: 0-65535</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.offline.TEM3.def3.Def3.SetStemA1CoarseRel">
+<code class="descname">SetStemA1CoarseRel</code><span class="sig-paren">(</span><em>arg1</em>, <em>arg2</em><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.TEM3.def3.Def3.SetStemA1CoarseRel" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><strong>Summary</strong></div>
+<div class="line">Increase or decrease A1 Coarse value for STEM. This works for ARM200F</div>
+<div class="line"><strong>arg</strong></div>
+<div class="line">type: int</div>
+<div class="line">arg1: 0-65535, arg2: 0-65535</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.offline.TEM3.def3.Def3.SetStemBeamTiltRel">
+<code class="descname">SetStemBeamTiltRel</code><span class="sig-paren">(</span><em>arg1</em>, <em>arg2</em><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.TEM3.def3.Def3.SetStemBeamTiltRel" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><strong>Summary</strong></div>
+<div class="line">Increase or decrease Beam Tilt value for STEM. This works for ARM200F</div>
+<div class="line"><strong>arg</strong></div>
+<div class="line">type: int</div>
+<div class="line">arg1: 0-65535, arg2: 0-65535</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.offline.TEM3.def3.Def3.SetStemIS">
+<code class="descname">SetStemIS</code><span class="sig-paren">(</span><em>arg1</em>, <em>arg2</em><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.TEM3.def3.Def3.SetStemIS" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><strong>Summary</strong></div>
+<div class="line">Set IS value for detector. The variable corresponds to I/O output value.</div>
+<div class="line"><strong>arg</strong></div>
+<div class="line">type: int</div>
+<div class="line">arg1: 0-65535, arg2: 0-65535</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.offline.TEM3.def3.Def3.SetStemStigA1Rel">
+<code class="descname">SetStemStigA1Rel</code><span class="sig-paren">(</span><em>arg1</em>, <em>arg2</em><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.TEM3.def3.Def3.SetStemStigA1Rel" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><strong>Summary</strong></div>
+<div class="line">Increase or decrease Stig A1 value for STEM. This works for ARM200F</div>
+<div class="line"><strong>arg</strong></div>
+<div class="line">type: int</div>
+<div class="line">arg1: 0-65535, arg2: 0-65535</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.offline.TEM3.def3.Def3.SetStemStigB2Rel">
+<code class="descname">SetStemStigB2Rel</code><span class="sig-paren">(</span><em>arg1</em>, <em>arg2</em><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.TEM3.def3.Def3.SetStemStigB2Rel" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><strong>Summary</strong></div>
+<div class="line">Increase or decrease Stig B2 value for STEM. This works for ARM200F</div>
+<div class="line"><strong>arg</strong></div>
+<div class="line">type: int</div>
+<div class="line">arg1: 0-65535, arg2: 0-65535</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.offline.TEM3.def3.Def3.SetStemUserBShiftRel">
+<code class="descname">SetStemUserBShiftRel</code><span class="sig-paren">(</span><em>arg1</em>, <em>arg2</em><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.TEM3.def3.Def3.SetStemUserBShiftRel" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><strong>Summary</strong></div>
+<div class="line">Increase or decrease User B Shift value for STEM. This works for ARM200F</div>
+<div class="line"><strong>arg</strong></div>
+<div class="line">type: int</div>
+<div class="line">arg1: 0-65535, arg2: 0-65535</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.offline.TEM3.def3.Def3.SetTemA1CoarseRel">
+<code class="descname">SetTemA1CoarseRel</code><span class="sig-paren">(</span><em>arg1</em>, <em>arg2</em><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.TEM3.def3.Def3.SetTemA1CoarseRel" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><strong>Summary</strong></div>
+<div class="line">Increase or decrease A1 Coarse value for TEM. This works for ARM200F</div>
+<div class="line"><strong>arg</strong></div>
+<div class="line">type: int</div>
+<div class="line">arg1: 0-65535, arg2: 0-65535</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.offline.TEM3.def3.Def3.SetTemDShiftRel">
+<code class="descname">SetTemDShiftRel</code><span class="sig-paren">(</span><em>arg1</em>, <em>arg2</em><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.TEM3.def3.Def3.SetTemDShiftRel" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><strong>Summary</strong></div>
+<div class="line">Increase or decrease D Shift value for TEM. This works for ARM200F</div>
+<div class="line"><strong>arg</strong></div>
+<div class="line">type: int</div>
+<div class="line">arg1: 0-65535, arg2: 0-65535</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.offline.TEM3.def3.Def3.SetTemDiStigRel">
+<code class="descname">SetTemDiStigRel</code><span class="sig-paren">(</span><em>arg1</em>, <em>arg2</em><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.TEM3.def3.Def3.SetTemDiStigRel" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><strong>Summary</strong></div>
+<div class="line">Increase or decrease D Stig value for TEM. This works for ARM200F</div>
+<div class="line"><strong>arg</strong></div>
+<div class="line">type: int</div>
+<div class="line">arg1: 0-65535, arg2: 0-65535</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.offline.TEM3.def3.Def3.SetTemStigA1Rel">
+<code class="descname">SetTemStigA1Rel</code><span class="sig-paren">(</span><em>arg1</em>, <em>arg2</em><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.TEM3.def3.Def3.SetTemStigA1Rel" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><strong>Summary</strong></div>
+<div class="line">Increase or decrease A1 Stig value for TEM. This works for ARM200F</div>
+<div class="line"><strong>arg</strong></div>
+<div class="line">type: int</div>
+<div class="line">arg1: 0-65535, arg2: 0-65535</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.offline.TEM3.def3.Def3.SetTiltBal">
+<code class="descname">SetTiltBal</code><span class="sig-paren">(</span><em>arg1</em>, <em>arg2</em><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.TEM3.def3.Def3.SetTiltBal" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><strong>Summary</strong></div>
+<div class="line">Set Tilt Balance value for detector. The variable corresponds to I/O output value.</div>
+<div class="line"><strong>arg</strong></div>
+<div class="line">type: int</div>
+<div class="line">arg1: 0-65535, arg2: 0-65535</div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="PyJEM.html">PyJEM package</a><ul>
+  <li><a href="PyJEM.offline.html">PyJEM.offline package</a><ul>
+  <li><a href="PyJEM.offline.TEM3.html">PyJEM.offline.TEM3 package</a><ul>
+      <li>Previous: <a href="PyJEM.offline.TEM3.camera3.html" title="previous chapter">PyJEM.offline.TEM3.camera3 module</a></li>
+      <li>Next: <a href="PyJEM.offline.TEM3.detector3.html" title="next chapter">PyJEM.offline.TEM3.detector3 module</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/PyJEM.offline.TEM3.def3.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;Copyright © 2006-2018 JEOL Ltd..
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
+      
+      |
+      <a href="_sources/PyJEM.offline.TEM3.def3.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

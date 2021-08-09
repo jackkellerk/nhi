@@ -2,7 +2,6 @@ package edu.lehigh.nhi.multitouch.backend.route;
 
 import java.io.File;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import edu.lehigh.nhi.multitouch.backend.Encryption;
@@ -52,9 +51,16 @@ public final class UserRouteSetter {
                         dataJs.put("session_key", sessionKey);
                         dataJs.put("uid", uid);
                         return StructuredResponse.getResponse(dataJs);
+                        // String script_output = String.valueOf(9);
+                        // String path = "../scripts/whileLoop.py";
+                        // String script_output = db.scripts.testScript(path);
+                        // JSONObject dataJs = new JSONObject();
+                        // dataJs.put("script_output", script_output);
+                        // return StructuredResponse.getResponse(dataJs);
 
                     });
         });
+        
 
         // sign up
         RouteSetter.setRoute(RequestType.POST, "/signup", (request, response) -> {

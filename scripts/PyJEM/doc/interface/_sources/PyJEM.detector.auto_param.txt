@@ -1,0 +1,7 @@
+PyJEM.detector.auto_param module
+================================
+
+.. automodule:: PyJEM.detector.auto_param
+    :members:
+    :undoc-members:
+    :show-inheritance:

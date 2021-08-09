@@ -410,6 +410,21 @@ function startWindows(){
     window1.tool5.x += 5;
   });
 
+  window1.tool6.interactive = true;
+  window1.tool6.on('pointerdown', function(){
+    window1.clearWindow(window1);
+    // window1.multiBlockObject.UIBool(false);
+    // window1.spectrumObject.UIBool(false);
+    // window1.zoomObject.UIBool(false);
+    // window1.lineObject.UIBool(true);
+    // window1.container.addChild(window1.LIContainer);
+    // window1.LIContainer.mask = window1.windowRect;
+    //uploadCustomPythonScript();
+    tempTest();
+    tempTest2();
+    window1.tool6.x += 5;
+  });
+
   window1.closeWindowMenu.close.interactive = true;
   window1.closeWindowMenu.close.on('mouseover', function(){ window1.closeWindowMenu.close.alpha = 0.7; });
   window1.closeWindowMenu.close.on('mouseout', function(){ window1.closeWindowMenu.close.alpha = 0.4; });

@@ -37,7 +37,7 @@ public class ErrorHandler {
     }
 
     public static final class PATH {
-        public static final int PATH_NUM_FORMAT = 501, MISSING_QUERY_PARAM = 502;
+        public static final int PATH_NUM_FORMAT = 501, MISSING_QUERY_PARAM = 502, PATH_STRING_FORMAT =503;
     }
 
     public static final class PRIVILAGE {

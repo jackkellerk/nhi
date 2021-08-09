@@ -1,0 +1,7 @@
+PyJEM.exception module
+======================
+
+.. automodule:: PyJEM.exception
+    :members:
+    :undoc-members:
+    :show-inheritance:

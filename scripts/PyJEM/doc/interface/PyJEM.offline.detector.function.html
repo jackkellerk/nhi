@@ -1,0 +1,542 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>PyJEM.offline.detector.function module &mdash; PyJEM 1.0.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="PyJEM 1.0.0.0 documentation" href="index.html" />
+    <link rel="up" title="PyJEM.offline.detector package" href="PyJEM.offline.detector.html" />
+    <link rel="next" title="PyJEM.base module" href="PyJEM.base.html" />
+    <link rel="prev" title="PyJEM.offline.detector package" href="PyJEM.offline.detector.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-PyJEM.offline.detector.function">
+<span id="pyjem-offline-detector-function-module"></span><h1>PyJEM.offline.detector.function module<a class="headerlink" href="#module-PyJEM.offline.detector.function" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="PyJEM.offline.detector.function.Detector">
+<em class="property">class </em><code class="descclassname">PyJEM.offline.detector.function.</code><code class="descname">Detector</code><span class="sig-paren">(</span><em>detectorName</em><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.detector.function.Detector" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<blockquote>
+<div>It can acquire the information, acquire image data, 
+execute automatic function, etc. of detector specified by argument.</div></blockquote>
+<div class="line-block">
+<div class="line">Detector names to be entered as arguments can be obtained with 
+&#8220;detector.detectorlist&#8221; or &#8220;detector.get_attached_detector()&#8221;.</div>
+</div>
+<dl class="method">
+<dt id="PyJEM.offline.detector.function.Detector.AutoContrastBrightness">
+<code class="descname">AutoContrastBrightness</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.detector.function.Detector.AutoContrastBrightness" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><strong>Summary</strong></div>
+<div class="line">Execute AutoContrastBrightness</div>
+<div class="line"><strong>return</strong></div>
+<div class="line">Execution Result</div>
+<div class="line">type   ： json.Dict</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.offline.detector.function.Detector.AutoFocus">
+<code class="descname">AutoFocus</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.detector.function.Detector.AutoFocus" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><strong>Summary</strong></div>
+<div class="line">Execute AutoFocus</div>
+<div class="line"><strong>return</strong></div>
+<div class="line">Execution Result</div>
+<div class="line">type   ： json.Dict</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.offline.detector.function.Detector.AutoOrientation">
+<code class="descname">AutoOrientation</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.detector.function.Detector.AutoOrientation" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><strong>Summary</strong></div>
+<div class="line">Execute AutoOrientation</div>
+<div class="line"><strong>return</strong></div>
+<div class="line">Execution Result</div>
+<div class="line">type   ： json.Dict</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.offline.detector.function.Detector.AutoStigmator">
+<code class="descname">AutoStigmator</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.detector.function.Detector.AutoStigmator" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><strong>Summary</strong></div>
+<div class="line">Execute AutoStigmator</div>
+<div class="line"><strong>return</strong></div>
+<div class="line">Execution Result</div>
+<div class="line">type   ： json.Dict</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.offline.detector.function.Detector.AutoZ">
+<code class="descname">AutoZ</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.detector.function.Detector.AutoZ" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><strong>Summary</strong></div>
+<div class="line">Execute AutoZ</div>
+<div class="line"><strong>return</strong></div>
+<div class="line">Execution Result</div>
+<div class="line">type   ： json.Dict</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.offline.detector.function.Detector.get_detectorsetting">
+<code class="descname">get_detectorsetting</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.detector.function.Detector.get_detectorsetting" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">[Offline] </div>
+<div class="line"><strong>Summary</strong></div>
+<div class="line">Obtaining setting information of selected detector.</div>
+<div class="line"><strong>return</strong></div>
+<div class="line">{&#8220;status Name&#8221;:&#8221;value&#8221;}</div>
+<div class="line">type   : json.Dict</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.offline.detector.function.Detector.livesnapshot">
+<code class="descname">livesnapshot</code><span class="sig-paren">(</span><em>extention</em><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.detector.function.Detector.livesnapshot" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">[Offline] </div>
+<div class="line"><strong>Summary</strong></div>
+<div class="line">Take an image with the specified extension.</div>
+<div class="line">Obtaining images faster than &#8220;snapshot&#8221;.</div>
+<div class="line"><strong>arg</strong></div>
+<div class="line">extention - &#8220;jpg&#8221;, &#8220;png&#8221;, &#8220;bmp&#8221;, &#8220;tiff&#8221;</div>
+<div class="line"><strong>return</strong></div>
+<div class="line">File stream saved with the selected extension</div>
+<div class="line">type   : Stream</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.offline.detector.function.Detector.livestart">
+<code class="descname">livestart</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.detector.function.Detector.livestart" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">[Offline] </div>
+<div class="line"><strong>Summary</strong></div>
+<div class="line">Live View Start</div>
+<div class="line"><strong>return</strong></div>
+<div class="line">type: json.Dict</div>
+<div class="line">Execute Result</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.offline.detector.function.Detector.livestop">
+<code class="descname">livestop</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.detector.function.Detector.livestop" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">[Offline] </div>
+<div class="line"><strong>Summary</strong></div>
+<div class="line">Live View Stop</div>
+<div class="line"><strong>return</strong></div>
+<div class="line">type: json.Dict</div>
+<div class="line">Execute Result</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.offline.detector.function.Detector.set_areamode_imagingarea">
+<code class="descname">set_areamode_imagingarea</code><span class="sig-paren">(</span><em>X=None</em>, <em>Y=None</em>, <em>Width=None</em>, <em>Height=None</em><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.detector.function.Detector.set_areamode_imagingarea" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">[Offline] </div>
+<div class="line"><strong>Summary</strong></div>
+<div class="line">Set the beam position when ScanMode is &#8220;Area&#8221;.
+Sets which part of the scanning range set by ImagingArea is scanned.
+The top left vertex is (0, 0).</div>
+<div class="line">If no value is entered for the argument, the value is not changed.</div>
+<div class="line"><strong>arg</strong></div>
+<div class="line">x - 0-4096</div>
+<div class="line">y - 0-4096</div>
+<div class="line">Width - 0-4096</div>
+<div class="line">Height - 0-4096</div>
+<div class="line"><strong>return</strong></div>
+<div class="line">The value set to TEM.</div>
+<div class="line">type   : json.Dict</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.offline.detector.function.Detector.set_binningindex">
+<code class="descname">set_binningindex</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.detector.function.Detector.set_binningindex" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><strong>Summary</strong></div>
+<div class="line">Set the Binning value as index.
+(This function corresponds to camera only.)　　　　　</div>
+<div class="line"><strong>arg</strong></div>
+<div class="line">value - 0-4 (It depends on TEM model)</div>
+<div class="line"><strong>return</strong></div>
+<div class="line">The value set to TEM.</div>
+<div class="line">type   : json.Dict</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.offline.detector.function.Detector.set_exposuretime_index">
+<code class="descname">set_exposuretime_index</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.detector.function.Detector.set_exposuretime_index" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">[Offline] </div>
+<div class="line"><strong>Summary</strong></div>
+<div class="line">Set the exposure time as index.</div>
+<div class="line"><strong>arg</strong></div>
+<div class="line">value - 0 - 65535 (It depends on TEM model)</div>
+<div class="line"><strong>return</strong></div>
+<div class="line">The value set to TEM.</div>
+<div class="line">type   : json.Dict</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.offline.detector.function.Detector.set_exposuretime_value">
+<code class="descname">set_exposuretime_value</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.detector.function.Detector.set_exposuretime_value" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">[Offline] </div>
+<div class="line"><strong>Summary</strong></div>
+<div class="line">Set the exposure time as usec value.</div>
+<div class="line"><strong>arg</strong></div>
+<div class="line">value - 0-1000000[μsec] (It depends on TEM model)</div>
+<div class="line"><strong>return</strong></div>
+<div class="line">The value set to TEM.</div>
+<div class="line">type   : json.Dict</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.offline.detector.function.Detector.set_frameintegration">
+<code class="descname">set_frameintegration</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.detector.function.Detector.set_frameintegration" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">[Offline] </div>
+<div class="line"><strong>Summary</strong></div>
+<div class="line">Set the accumulation count.</div>
+<div class="line"><strong>arg</strong></div>
+<div class="line">value: 0-255 (It depends on TEM model)</div>
+<div class="line"><strong>return</strong></div>
+<div class="line">The value set to TEM.</div>
+<div class="line">type   : json.Dict</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.offline.detector.function.Detector.set_gainindex">
+<code class="descname">set_gainindex</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.detector.function.Detector.set_gainindex" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">[Offline] </div>
+<div class="line"><strong>Summary</strong></div>
+<div class="line">Set the gain value as index.</div>
+<div class="line"><strong>arg</strong></div>
+<div class="line">value - 0- 4095 (It depends on TEM model)</div>
+<div class="line"><strong>return</strong></div>
+<div class="line">The value set to TEM.</div>
+<div class="line">type   : json.Dict</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.offline.detector.function.Detector.set_imaging_area">
+<code class="descname">set_imaging_area</code><span class="sig-paren">(</span><em>Width=None</em>, <em>Height=None</em><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.detector.function.Detector.set_imaging_area" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">[Offline] </div>
+<div class="line">Summary: Set the number of pixels of the live image.
+x and y are the coordinates of the starting pixel of the read image.
+width and height are the coordinates of the end pixel of the read image.</div>
+<div class="line-block">
+<div class="line">If no value is entered for the argument, the value is not changed.</div>
+</div>
+<div class="line">arg    : x - 0-4096</div>
+<div class="line-block">
+<div class="line">y - 0-4096</div>
+</div>
+<div class="line">　　　　　　 Width - 0-4096</div>
+<div class="line">　　　　　　 Height - 0-4096</div>
+<div class="line">return : The value set to TEM.</div>
+<div class="line">type   : json.Dict</div>
+<div class="line">Except :</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.offline.detector.function.Detector.set_offsetindex">
+<code class="descname">set_offsetindex</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.detector.function.Detector.set_offsetindex" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">[Offline] </div>
+<div class="line"><strong>Summary</strong></div>
+<div class="line">Set the offset value as index.</div>
+<div class="line"><strong>arg</strong></div>
+<div class="line">value - 0- 4095 (It depends on TEM model)</div>
+<div class="line"><strong>return</strong></div>
+<div class="line">The value set to TEM.</div>
+<div class="line">type   : json.Dict</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.offline.detector.function.Detector.set_scanmode">
+<code class="descname">set_scanmode</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.detector.function.Detector.set_scanmode" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">[Offline] </div>
+<div class="line"><strong>Summary</strong></div>
+<div class="line">Set the scanMode.</div>
+<div class="line"><strong>arg</strong></div>
+<div class="line">value - 0:Scan, 1:Area, 3:Spot</div>
+<div class="line"><strong>return</strong></div>
+<div class="line">The value set to TEM.</div>
+<div class="line">type   : json.Dict</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.offline.detector.function.Detector.set_scanrotation">
+<code class="descname">set_scanrotation</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.detector.function.Detector.set_scanrotation" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">[Offline] </div>
+<div class="line"><strong>Summary</strong></div>
+<div class="line">Set the scanRotation angle as absolute value.</div>
+<div class="line"><strong>arg</strong></div>
+<div class="line">value - 0-360</div>
+<div class="line"><strong>return</strong></div>
+<div class="line">The value set to TEM.</div>
+<div class="line">type   : json.Dict</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.offline.detector.function.Detector.set_scanrotation_step">
+<code class="descname">set_scanrotation_step</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.detector.function.Detector.set_scanrotation_step" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">[Offline] </div>
+<div class="line"><strong>Summary</strong></div>
+<div class="line">Set the minimum variation of scanRotation.</div>
+<div class="line"><strong>arg</strong></div>
+<div class="line">value -</div>
+<div class="line"><strong>return</strong></div>
+<div class="line">The value set to TEM.</div>
+<div class="line">type   : json.Dict</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.offline.detector.function.Detector.set_spotposition">
+<code class="descname">set_spotposition</code><span class="sig-paren">(</span><em>X=None</em>, <em>Y=None</em><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.detector.function.Detector.set_spotposition" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">[Offline] </div>
+<div class="line"><strong>Summary</strong></div>
+<div class="line">Set the beam position when ScanMode is &#8220;Spot&#8221;.
+Sets which part of the scanning range set by ImagingArea is scanned.
+The top left vertex is (0, 0).</div>
+<div class="line">If no value is entered for the argument, the value is not changed.</div>
+<div class="line"><strong>arg</strong></div>
+<div class="line">x: 0-4096</div>
+<div class="line">y: 0-4096</div>
+<div class="line"><strong>return</strong></div>
+<div class="line">The value set to TEM.</div>
+<div class="line">type   : json.Dict</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.offline.detector.function.Detector.snapshot">
+<code class="descname">snapshot</code><span class="sig-paren">(</span><em>extention</em>, <em>save=False</em>, <em>filename=None</em>, <em>show=False</em><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.detector.function.Detector.snapshot" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">[Offline] </div>
+<div class="line"><strong>Summary</strong></div>
+<div class="line">Take an image with the specified extension.
+The captured image is returned as a file stream.</div>
+<div class="line">Select whether to save the image file with flag.</div>
+<div class="line"><strong>arg</strong></div>
+<div class="line-block">
+<div class="line">extention: &#8220;jpg&#8221;, &#8220;png&#8221;, &#8220;bmp&#8221;, &#8220;tiff&#8221;</div>
+<div class="line">flag: True: save image file.</div>
+<div class="line">filename: Name of file to save</div>
+<div class="line">show: show the saved file.</div>
+</div>
+<div class="line"><strong>return</strong></div>
+<div class="line">type   : Stream</div>
+<div class="line">File stream saved with the selected extension</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.offline.detector.function.Detector.snapshot_rawdata">
+<code class="descname">snapshot_rawdata</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.detector.function.Detector.snapshot_rawdata" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">[Offline] </div>
+<div class="line"><strong>Summary</strong></div>
+<div class="line">Raw data of the image acquired by the specified detector.
+the raw data is returned as a byte array.</div>
+<div class="line"><strong>arg</strong></div>
+<div class="line">extention: &#8220;jpg&#8221;, &#8220;png&#8221;, &#8220;bmp&#8221;, &#8220;tiff&#8221;</div>
+<div class="line"><strong>return</strong></div>
+<div class="line">type   : Stream</div>
+<div class="line">2 dimensional byte array of acquired image data.</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.offline.detector.function.Detector.snapshotframe">
+<code class="descname">snapshotframe</code><span class="sig-paren">(</span><em>extention</em><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.detector.function.Detector.snapshotframe" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">[Offline] </div>
+<div class="line"><strong>Summary</strong></div>
+<div class="line">Take an image with the specified extension.
+The captured image is returned as a file stream.</div>
+<div class="line"><strong>arg</strong></div>
+<div class="line">extention - &#8220;jpg&#8221;, &#8220;png&#8221;, &#8220;bmp&#8221;, &#8220;tiff&#8221;</div>
+<div class="line"><strong>return</strong></div>
+<div class="line">type   : Stream</div>
+<div class="line">File stream saved with the selected extension</div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="PyJEM.offline.detector.function.assign_channel">
+<code class="descclassname">PyJEM.offline.detector.function.</code><code class="descname">assign_channel</code><span class="sig-paren">(</span><em>detectorName</em>, <em>channel=None</em><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.detector.function.assign_channel" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">[Offline] </div>
+<div class="line"><strong>Summary</strong></div>
+<div class="line">Set the specified detector to Active.</div>
+<div class="line"><strong>arg</strong> </div>
+<div class="line">detectorName: Detector name, string</div>
+<div class="line">channel: Selection of channel to assign detectors (Only multiple channles), int</div>
+<div class="line"><strong>return</strong></div>
+<div class="line">type   ： Dict</div>
+<div class="line">Assigned Detector name</div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="PyJEM.offline.detector.function.get_attached_detector">
+<code class="descclassname">PyJEM.offline.detector.function.</code><code class="descname">get_attached_detector</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.detector.function.get_attached_detector" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">[Offline]     </div>
+<div class="line"><strong>Summary</strong></div>
+<div class="line">Acquisition of detector names currently available in TEMCenter.</div>
+<div class="line"><strong>return</strong></div>
+<div class="line">type: list</div>
+<div class="line">Available Detector Name</div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="PyJEM.offline.detector.function.imageselector_kind">
+<code class="descclassname">PyJEM.offline.detector.function.</code><code class="descname">imageselector_kind</code><span class="sig-paren">(</span><em>selector</em><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.detector.function.imageselector_kind" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">[Offline] </div>
+<div class="line"><strong>Summary</strong></div>
+<div class="line">Change ImageSelector mode (only JEM-2800)</div>
+<div class="line"><strong>arg</strong> </div>
+<div class="line">selector: 0= , 1=SEI, 2= , 3=BEI, 4=DF, 5=TEM, 6=DIFF</div>
+<div class="line"><strong>return</strong></div>
+<div class="line">type   : json.Dict</div>
+<div class="line">result status</div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="PyJEM.offline.detector.function.snapshotall">
+<code class="descclassname">PyJEM.offline.detector.function.</code><code class="descname">snapshotall</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.offline.detector.function.snapshotall" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">[Offline] </div>
+<div class="line"><strong>Summary</strong></div>
+<div class="line">All images of the selected STEM detector are taken.</div>
+<div class="line"><strong>return</strong></div>
+<div class="line">Execute Result</div>
+</div>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="PyJEM.html">PyJEM package</a><ul>
+  <li><a href="PyJEM.offline.html">PyJEM.offline package</a><ul>
+  <li><a href="PyJEM.offline.detector.html">PyJEM.offline.detector package</a><ul>
+      <li>Previous: <a href="PyJEM.offline.detector.html" title="previous chapter">PyJEM.offline.detector package</a></li>
+      <li>Next: <a href="PyJEM.base.html" title="next chapter">PyJEM.base module</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/PyJEM.offline.detector.function.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;Copyright © 2006-2018 JEOL Ltd..
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
+      
+      |
+      <a href="_sources/PyJEM.offline.detector.function.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

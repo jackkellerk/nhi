@@ -1,0 +1,243 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>PyJEM.base module &mdash; PyJEM 1.0.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="PyJEM 1.0.0.0 documentation" href="index.html" />
+    <link rel="up" title="PyJEM package" href="PyJEM.html" />
+    <link rel="next" title="PyJEM.config module" href="PyJEM.config.html" />
+    <link rel="prev" title="PyJEM.offline.detector.function module" href="PyJEM.offline.detector.function.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-PyJEM.base">
+<span id="pyjem-base-module"></span><h1>PyJEM.base module<a class="headerlink" href="#module-PyJEM.base" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="PyJEM.base.BaseConfig">
+<em class="property">class </em><code class="descclassname">PyJEM.base.</code><code class="descname">BaseConfig</code><a class="headerlink" href="#PyJEM.base.BaseConfig" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Class for accessing config.in.
+Information of config.in is acquired and set via this class.</p>
+<dl class="method">
+<dt id="PyJEM.base.BaseConfig.change_config">
+<code class="descname">change_config</code><span class="sig-paren">(</span><em>section</em>, <em>key</em>, <em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.base.BaseConfig.change_config" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.base.BaseConfig.get_config">
+<code class="descname">get_config</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.base.BaseConfig.get_config" title="Permalink to this definition">¶</a></dt>
+<dd><p>Getting information on config.in  
+Currently the option name obtained from config.in is specified in the list, 
+but all acquired options will be added to the list in future.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.base.BaseConfig.status">
+<code class="descname">status</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.base.BaseConfig.status" title="Permalink to this definition">¶</a></dt>
+<dd><p>PyJEMで利用できるサービス一覧と、Ip、画像等の保存場所等の一括取得</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="PyJEM.base.Connect">
+<em class="property">class </em><code class="descclassname">PyJEM.base.</code><code class="descname">Connect</code><span class="sig-paren">(</span><em>servicename</em>, <em>add_url=None</em><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.base.Connect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#PyJEM.base.BaseConfig" title="PyJEM.base.BaseConfig"><code class="xref py py-class docutils literal"><span class="pre">PyJEM.base.BaseConfig</span></code></a></p>
+<p>RESTサービスへの接続を行う</p>
+<dl class="method">
+<dt id="PyJEM.base.Connect.request">
+<code class="descname">request</code><span class="sig-paren">(</span><em>con_type</em>, <em>body=None</em>, <em>url=None</em><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.base.Connect.request" title="Permalink to this definition">¶</a></dt>
+<dd><p>urlはDetectorRESTServiceのようなURLが多いサービス用</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="PyJEM.base.Setting">
+<em class="property">class </em><code class="descclassname">PyJEM.base.</code><code class="descname">Setting</code><a class="headerlink" href="#PyJEM.base.Setting" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#PyJEM.base.BaseConfig" title="PyJEM.base.BaseConfig"><code class="xref py py-class docutils literal"><span class="pre">PyJEM.base.BaseConfig</span></code></a></p>
+<blockquote>
+<div>BaseConfigで取得したconfigの設定、取得を行う。
+このクラスでは、取得した設定情報からURLの作成を主に行う。 -&gt; 別クラスに分けたあため、このクラスでは設定のみ
+その一環に、portの変更やlocal</div></blockquote>
+<p>emoteの切り替え等も含む</p>
+<dl class="method">
+<dt id="PyJEM.base.Setting.change_ip">
+<code class="descname">change_ip</code><span class="sig-paren">(</span><em>ipname</em><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.base.Setting.change_ip" title="Permalink to this definition">¶</a></dt>
+<dd><p>ipname: local, remote, custom</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.base.Setting.change_port">
+<code class="descname">change_port</code><span class="sig-paren">(</span><em>service</em>, <em>port</em><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.base.Setting.change_port" title="Permalink to this definition">¶</a></dt>
+<dd><p>port番号の変更</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.base.Setting.change_service">
+<code class="descname">change_service</code><span class="sig-paren">(</span><em>appName</em><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.base.Setting.change_service" title="Permalink to this definition">¶</a></dt>
+<dd><p>port_temcenter or port_sightx</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.base.Setting.custom_ip">
+<code class="descname">custom_ip</code><span class="sig-paren">(</span><em>_ip=None</em><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.base.Setting.custom_ip" title="Permalink to this definition">¶</a></dt>
+<dd><p>localhost, 172.16.41.1以外のIPAddressへの変更</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.base.Setting.get_state">
+<code class="descname">get_state</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.base.Setting.get_state" title="Permalink to this definition">¶</a></dt>
+<dd><p># V1.0.1
+list型で、設定情報の取得
+[0]: hostname
+[1]: TEMCenter/SightX
+[2]:　利用可能なサービス
+# V1.0.2
+dict型に変更した。
+| key: value |        
+&#8212;&#8212;&#8212;&#8212;&#8211;
+| app: temcenter/sightx | 
+| ip : local |</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.base.Setting.imagefilepath">
+<code class="descname">imagefilepath</code><span class="sig-paren">(</span><em>path=None</em><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.base.Setting.imagefilepath" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.base.Setting.reload">
+<code class="descname">reload</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.base.Setting.reload" title="Permalink to this definition">¶</a></dt>
+<dd><p>BaseConfigクラスのリロード</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyJEM.base.Setting.serviceList">
+<code class="descname">serviceList</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.base.Setting.serviceList" title="Permalink to this definition">¶</a></dt>
+<dd><p>service名と使用しているport番号一覧を取得/表示する</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="PyJEM.base.UserSetting">
+<em class="property">class </em><code class="descclassname">PyJEM.base.</code><code class="descname">UserSetting</code><a class="headerlink" href="#PyJEM.base.UserSetting" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#PyJEM.base.BaseConfig" title="PyJEM.base.BaseConfig"><code class="xref py py-class docutils literal"><span class="pre">PyJEM.base.BaseConfig</span></code></a></p>
+<blockquote>
+<div>BaseConfigで取得したconfigの設定、取得を行う。
+このクラスでは、取得した設定情報からURLの作成を主に行う。 -&gt; 別クラスに分けたあため、このクラスでは設定のみ
+その一環に、portの変更やlocal</div></blockquote>
+<p>emoteの切り替え等も含む</p>
+<dl class="method">
+<dt id="PyJEM.base.UserSetting.imagefilepath">
+<code class="descname">imagefilepath</code><span class="sig-paren">(</span><em>path=None</em><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.base.UserSetting.imagefilepath" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="PyJEM.base.doc">
+<code class="descclassname">PyJEM.base.</code><code class="descname">doc</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.base.doc" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">Summary： Show the PyJEM Manual on the Browser.</div>
+<div class="line">arg    : </div>
+<div class="line">return :　</div>
+<div class="line">type   ： </div>
+<div class="line">Except ： </div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="PyJEM.base.read">
+<code class="descclassname">PyJEM.base.</code><code class="descname">read</code><span class="sig-paren">(</span><em>fname</em><span class="sig-paren">)</span><a class="headerlink" href="#PyJEM.base.read" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="PyJEM.html">PyJEM package</a><ul>
+      <li>Previous: <a href="PyJEM.offline.detector.function.html" title="previous chapter">PyJEM.offline.detector.function module</a></li>
+      <li>Next: <a href="PyJEM.config.html" title="next chapter">PyJEM.config module</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/PyJEM.base.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;Copyright © 2006-2018 JEOL Ltd..
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
+      
+      |
+      <a href="_sources/PyJEM.base.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

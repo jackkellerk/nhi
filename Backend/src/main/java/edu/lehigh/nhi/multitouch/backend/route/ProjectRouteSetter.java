@@ -18,6 +18,7 @@ import edu.lehigh.nhi.multitouch.backend.StructuredResponse;
 import edu.lehigh.nhi.multitouch.backend.database.DatabaseManager;
 import edu.lehigh.nhi.multitouch.backend.database.SourceManager;
 
+
 /**
  * Static class for creating routes related to projects. IMPORTANT: routes only
  * include changes to the project_t table. Update of windows, and user ownership
@@ -90,9 +91,12 @@ public final class ProjectRouteSetter {
                                         .getErrorResponse(ErrorHandler.UNKOWN.INSERTION_NO_UPDATE_UNKNOWN);
                             }
                             //If row got inserted, make directory 
-                            String path = "../images/" + uid + "/" +  name;
+                            System.out.println("Project name: "+ name);
+                            int lastInsertId =  db.getLastInsertedId();
+                            String path = "../images/" + uid + "/" +  lastInsertId;
+                            System.out.println("Path name: "+ path);
                             File file = new File(path);
-                            boolean bool = file.mkdir();
+                            boolean bool = file.mkdirs();
                             if(bool){
 
                                 ///project directory got made, time to copy files and insert paths to table
@@ -114,7 +118,8 @@ public final class ProjectRouteSetter {
                                     String imageExtension = splitByExtension[1];
 
                                     ///Create a string to represent the date
-                                    String pattern = "MM-dd-yyyy_HH:mm:ss";
+                                    String pattern = "MM-dd-yyyy_HH-mm-ss";
+                                    
                                     DateFormat df = new SimpleDateFormat(pattern);
                                     Date today = new Date();        
                                     String todayAsString = df.format(today);
@@ -122,7 +127,7 @@ public final class ProjectRouteSetter {
                                     System.out.println(todayAsString);
 
                                     ///Creating our paths and files
-                                    String newPath = "../images/" + uid + "/" + name + "/" + imageFileName + "_" + todayAsString + "." + imageExtension;
+                                    String newPath = "../images/" + uid + "/" + lastInsertId + "/" + imageFileName + "_" + todayAsString + "." + imageExtension;
                                     String origPath = "../images/" + splitByExtension[0] + "." + imageExtension ;
                                     // File origFile = new File(origPath);
                                     // File newFile = new File(newPath);

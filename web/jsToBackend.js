@@ -309,6 +309,45 @@ function getProjects()
     });
 }
 
+function getImages(projectSelected)
+{
+    // This loads the information about the userSettings
+    //var username = userTextBox.text;
+    console.log("2: "+ projectSelected)
+    $.ajax({
+        method: 'GET',
+        contentType: 'application/json',
+        headers: {"uid": uid, "session_key": session_key},
+        url: base_url + '/project/' + projectSelected + "/images",
+        dataType: 'json',
+        crossDomain: 'true',
+        xhrFields: {
+            withCredentials: true
+        },
+        success: function(callback) {
+            if(callback.errorCode == 703)
+            {
+                alert("Error loading the user settings!");
+            }
+            else{
+            
+            console.log(callback)
+            //project_list is an object that has 2D array containing all projects info
+            //project_list = Object.entries((callback.data).array);
+            //console.log(project_list);
+            //userSettingsResponse = callback.data;
+            //createUIProjects();
+            
+            
+            //end     
+            }    
+        },
+        error: function(xhr, status, error) {
+            alert("Internal Server Error: 500");
+        }
+    });
+}
+
 function getAllSources()
 {
     // This loads the information about the userSettings
@@ -359,12 +398,8 @@ function postNewProject(name, canvasWidth, canvasHeight, properties, institution
             withCredentials: true
         },
         success: function(callback) {
-            // if(callback.errorCode != 0)
-            // {
-            //     alert("Error loading the user settings!");
-            // }
-            // userSettingsResponse = callback.data;
-            // createUIProjects();
+            let callbackToString = JSON.stringify(callback);
+            console.log("Posted proj response" + callbackToString)
         },
         error: function(xhr, status, error) {
             alert("Internal Server Error: 500");

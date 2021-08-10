@@ -110,14 +110,17 @@ function startWindows(){
   w_saveMenu.leftButton.on('mouseout', function(){ w_saveMenu.leftButton.alpha = 0.7; });
   w_saveMenu.leftButton.on('pointerdown', function(){
     currentActivity = activityArray[1];
-    container = null;
-    scene = null;
-    camera = null;
-    controls = null;
-    renderer = null;
-    angle = 0;
-    radius = 500;
-    canvas.remove();
+
+    //Leftover 3js variables from when Jack K was using 3js 
+    //to make cube models for material samples
+    // container = null;
+    // scene = null;
+    // camera = null;
+    // controls = null;
+    // renderer = null;
+    // angle = 0;
+    // radius = 500;
+    //canvas.remove();
     alphaTransform(sprite, 0.0, 10 )
     positionTransform(0, a_titleContainer.y, a_titleContainer, 10)
     positionTransform(0, a_settingsContainer.y, a_settingsContainer, 10)

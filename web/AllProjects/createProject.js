@@ -67,8 +67,10 @@ class Project {
             details.position.y = shapeOutline.y + 60;
         infoContainer.addChild(details);
 
-        let titleMetrics = PIXI.TextMetrics.measureText(name, a_projecttitlestyle);
-        let title = new PIXI.Text(name, a_projecttitlestyle);
+        //If the name variable is a number, cast to string. Otherwise comment out
+        var nameInString = name.toString();
+        let titleMetrics = PIXI.TextMetrics.measureText(nameInString, a_projecttitlestyle);
+        let title = new PIXI.Text(nameInString, a_projecttitlestyle);
             title.position.x = this.infoHex.x - titleMetrics.width/2;
             title.position.y = this.infoHex.y - 32;
         this.container.addChild(title);

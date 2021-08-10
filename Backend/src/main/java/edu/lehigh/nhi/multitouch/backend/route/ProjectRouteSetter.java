@@ -90,6 +90,8 @@ public final class ProjectRouteSetter {
                                 return StructuredResponse
                                         .getErrorResponse(ErrorHandler.UNKOWN.INSERTION_NO_UPDATE_UNKNOWN);
                             }
+                            int projectId = retval.getInt("pid");
+                            System.out.println(projectId);
                             //If row got inserted, make directory 
                             System.out.println("Project name: "+ name);
                             int lastInsertId =  db.getLastInsertedId();
@@ -127,7 +129,7 @@ public final class ProjectRouteSetter {
                                     System.out.println(todayAsString);
 
                                     ///Creating our paths and files
-                                    String newPath = "../images/" + uid + "/" + lastInsertId + "/" + imageFileName + "_" + todayAsString + "." + imageExtension;
+                                    String newPath = "../images/" + uid + "/" + lastInsertId + "/" + imageFileName + "_" + i + "." + imageExtension;
                                     String origPath = "../images/" + splitByExtension[0] + "." + imageExtension ;
                                     // File origFile = new File(origPath);
                                     // File newFile = new File(newPath);
@@ -139,8 +141,8 @@ public final class ProjectRouteSetter {
                                         SourceManager.copyFile(origPath, newPath); 
                                         ////Image was copied over, time to insert into the table of our paths
                                         System.out.println("Image copy created successfully");
-                                        JSONObject imageRes = db.source.insertProjectImagePaths(newPath);
-                                        retval.put("Insert ImageRes", imageRes);   
+                                        JSONObject imageRes = db.source.insertProjectImagePaths(newPath, projectId);
+                                        //retval.put("Insert ImageRes", imageRes);   
                                     }
                                     catch (Exception e){
                                         System.out.println("Sorry couldn’t create image copy specified directory. Image index: " + i);

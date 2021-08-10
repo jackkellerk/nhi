@@ -11,6 +11,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+
+import com.google.gson.Gson;
 
 import org.apache.commons.io.FileUtils;
 
@@ -21,9 +24,22 @@ public class SourceManager {
     @SuppressWarnings("unused")
     private final DatabaseManager mManager;
     private final Statements mStatements;
+    private final Gson gson;
     Date date_creation;
+    
+
+    /** Project structure class being traslated into Json by Gson. */
+    @SuppressWarnings("unused")
+    private class Image {
+        int image_id;
+        Date time_created;
+        String file_path;
+        String description;
+        int project_id;
+    }
 
     protected SourceManager(final DatabaseManager manager) throws SQLException {
+        gson = new Gson();
         mManager = manager;
         mStatements = Statements.getInstance();
     }
@@ -46,13 +62,62 @@ public class SourceManager {
         return retval;
     }
 
-    public JSONObject insertProjectImagePaths(final String source) throws SQLException {
+    public JSONObject insertProjectImagePaths(final String source, final int projectId) throws SQLException {
         final PreparedStatement ps = mStatements.source.insertImagePath;
         ps.setTimestamp(1, new Timestamp(System.currentTimeMillis()));
         ps.setString(2, source);
+        ps.setInt(3, projectId);
         final ResultSet rs = ps.executeQuery();
         final JSONObject retval = DatabaseManager.convertToJSONObject(rs);
         rs.close();
+        return retval;
+    }
+
+    public JSONArray getImagesByProject( final int projectId) throws SQLException{
+        // JSONArray jsonArray = new JSONArray(); 
+        // //ArrayList<Integer> projectId = new ArrayList<Integer>();
+        // final PreparedStatement ps = mStatements.source.selectImagesByProject;
+        // ps.setInt(1, projectId);
+        // final ResultSet rs = ps.executeQuery();
+        // while(rs.next()){//Get one user's all of projects
+        //     //int userId = rs.getInt("uid");
+        //     jsonArray.put(rs);
+        // }
+        // rs.close();
+        // return jsonArray;
+
+        JSONArray jsonArray = new JSONArray(); 
+        ArrayList<Integer> imageId = new ArrayList<Integer>();
+        PreparedStatement statement = mStatements.source.selectImagesByProject;
+        statement.setInt(1, projectId);
+        ResultSet rs = statement.executeQuery();
+        while(rs.next()){//Get one user's all of projects
+            //int userId = rs.getInt("uid");
+            int image_index = rs.getInt("image_id");
+            imageId.add(image_index);
+        }
+        for(int i = 0; i < imageId.size(); ++i){
+            jsonArray.put(getImage(imageId.get(i)));
+        }
+        rs.close();
+        return jsonArray;
+    }
+
+    public JSONObject getImage(int pid) throws SQLException {
+        mStatements.source.selectImageByIid.setInt(1, pid);
+        ResultSet projectRS = mStatements.source.selectImageByIid.executeQuery();
+        JSONObject retval = null;
+        if (projectRS.next()) {
+            Image image = new Image();
+            image.image_id = projectRS.getInt("image_id");
+            image.time_created = projectRS.getDate("time_created");
+            image.file_path = projectRS.getString("file_path");
+            image.description = projectRS.getString("description");
+            image.project_id = projectRS.getInt("project_id");
+
+            retval = new JSONObject(gson.toJson(image));
+        }
+        projectRS.close();
         return retval;
     }
 

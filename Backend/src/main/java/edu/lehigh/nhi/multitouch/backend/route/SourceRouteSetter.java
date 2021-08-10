@@ -62,6 +62,21 @@ public final class SourceRouteSetter {
             });
         });
 
+        
+        RouteSetter.setRoute(RequestType.GET, "/project/:pid/images", (request, response) -> {
+            return RouteSetter.preprocessSessionCheck(request, response, encryption, (uid, sessionkey) -> {
+                int pid = -1;
+                try {
+                    pid = Integer.parseInt(request.params("pid"));
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                    return StructuredResponse.getErrorResponse(ErrorHandler.PATH.PATH_NUM_FORMAT);
+                }
+                JSONArray imageList = db.source.getImagesByProject(pid);
+                return StructuredResponse.getResponse(imageList);
+            });
+        });
+
         // serve image files
         RouteSetter.setRoute(RequestType.GET, "/i/:userName/:projectName/:fileName", (request, response) -> {
             // We directly request uid and sessionkey from the query parametesr. This is
@@ -266,7 +281,7 @@ public final class SourceRouteSetter {
         }
         //convert base64 string to binary data
         byte[] data = DatatypeConverter.parseBase64Binary(strings[1]);
-        String path = "C:/Users/agust/Documents/nhi/images/" +user+ "/" + project+ "/" + fileName +"." + extension;
+        String path = "../images/" +user+ "/" + project+ "/" + fileName +"." + extension;
         File file = new File(path);
         try (OutputStream outputStream = new BufferedOutputStream(new FileOutputStream(file))) {
             outputStream.write(data);

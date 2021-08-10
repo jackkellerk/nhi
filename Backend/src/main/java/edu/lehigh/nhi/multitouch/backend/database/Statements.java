@@ -106,16 +106,17 @@ class Statements {
     // put request to institution/source/object/image table here.
     protected class Source {
         protected final PreparedStatement selectObjectListBySid, selectHitBoxesByOid, selectImageByIid,
-                selectObjectByOid, selectSourceBySid, selectSourceListBySid, insertImagePath;
+                selectObjectByOid, selectSourceBySid, selectSourceListBySid, insertImagePath, selectImagesByProject;
 
         private Source() throws SQLException{
             selectObjectListBySid = mMySQLConnection.prepareStatement("select * from object where sid = ?");
             selectHitBoxesByOid = mMySQLConnection.prepareStatement("select * from object_hit_box where oid = ?");
-            selectImageByIid = mMySQLConnection.prepareStatement("select * from image where iid = ?");
+            selectImageByIid = mMySQLConnection.prepareStatement("select * from images_table where image_id = ?");
             selectObjectByOid = mMySQLConnection.prepareStatement("select * from object where oid = ?");
             selectSourceBySid = mMySQLConnection.prepareStatement("select * from source_t where sid = ?");
             selectSourceListBySid = mMySQLConnection.prepareStatement("select * from source_t");
-            insertImagePath = mMySQLConnection.prepareStatement("insert into image_table (time_created, file_path) values (?, ?)");
+            insertImagePath = mMySQLConnection.prepareStatement("insert into images_table (time_created, file_path, project_id) values (?, ?,?)");
+            selectImagesByProject = mMySQLConnection.prepareStatement("select * from images_table where project_id = ?");
         }
     }
 

@@ -109,7 +109,8 @@ public class ProjectManager {
                 mStatements.uprelationship.insertRelationship.setFloat(1, uid);
                 mStatements.uprelationship.insertRelationship.setFloat(2, pid);
                 mStatements.uprelationship.insertRelationship.executeUpdate();
-                return getProject(pid);
+                JSONObject retval = getProject(pid);
+                return retval;
             }
         }
         return null;

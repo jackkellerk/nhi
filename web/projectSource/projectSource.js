@@ -310,6 +310,7 @@ function confirmNewProject(){
     if(selectedSources.length != 0){
         postNewProject(project_name, app.screen.width, app.screen.height, newProjectProperties, "Lehigh", selectedSources);  // An Ajax "POST" call to backend
     }
+    selectedSources = [];
     currentActivity = activityArray[1];
     updateActivity();
     create_project++;

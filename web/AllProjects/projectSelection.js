@@ -6,6 +6,7 @@ const a_projectselectstyle = new PIXI.TextStyle({fill: "#000000", fontFamily: "A
 var a_titleContainer = new PIXI.Container();
 var a_settingsContainer = new PIXI.Container();
 var a_settIconContainer = new PIXI.Container();
+var a_newProjIconContainer = new PIXI.Container();
 var a_p1Container = new PIXI.Container();
 var a_p1InfoContainer = new PIXI.Container();
 var maskContainer = new PIXI.Container();
@@ -148,17 +149,12 @@ function createUIProjects()
         userSettingsHex.graphics.lineStyle(1, 0xFFFFFF, 1);
         userSettingsHex.graphics.buttonMode = true;
         userSettingsHex.graphics.interactive = true;
-        userSettingsHex.graphics.on('mouseover', function(){
-            userSettingsCirlce.alpha = 0.7;
-        });
-        userSettingsHex.graphics.on('mouseout', function(){
-            userSettingsCirlce.alpha = 0.5;
-        });
+        userSettingsHex.graphics.on('mouseover', function(){ userSettingsCirlce.alpha = 0.8; });
+        userSettingsHex.graphics.on('mouseout', function(){ userSettingsCirlce.alpha = 0.6; });
         userSettingsHex.graphics.on('pointerdown', a_SettingsSelect);
     userSettingsHex.draw(0x000000);
     app.stage.removeChild(userSettingsHex.container);
     a_settIconContainer.addChild(userSettingsHex.container);
-
     a_settIconContainer.addChild(userSettingsCirlce);
     
     
@@ -173,6 +169,34 @@ function createUIProjects()
         a_settIconContainer.scale.x = a_settIconContainer.scale.y = 0.5;
     }
     app.stage.addChild(a_settIconContainer);
+
+
+
+    let newProjHex = new Hexagon({x:297, y: 57}, 0, 37);
+        newProjHex.graphics.lineStyle(3, 0x909090, 3);
+        newProjHex.graphics.buttonMode = true;
+        newProjHex.graphics.interactive = true;
+        newProjHex.graphics.on('mouseover', function(){ plusIcon.alpha = 0.8; });
+        newProjHex.graphics.on('mouseout', function(){ plusIcon.alpha = 0.6; });
+        newProjHex.graphics.on('pointerdown', a_newPSelect);
+    newProjHex.draw(0x909090, 0.8);
+    app.stage.removeChild(newProjHex.container);
+    a_newProjIconContainer.addChild(newProjHex.container);
+
+    let plusIcon = new PIXI.Sprite.from("Images/plus-icon.png");
+        plusIcon.width = 47;
+        plusIcon.height = 47;
+        plusIcon.position.x = newProjHex.x-24;
+        plusIcon.position.y = newProjHex.y-24;
+        plusIcon.alpha = 0.6;
+    a_newProjIconContainer.addChild(plusIcon);
+
+    if (isTouch) {
+        a_newProjIconContainer.scale.x = a_newProjIconContainer.scale.y = 0.5;
+        // this.newProjectContainer.x = this.newProjectContainer.x + 461;
+        // this.newProjectContainer.y = this.newProjectContainer.y + 86;
+    }
+    app.stage.addChild(a_newProjIconContainer);
 
 
 
@@ -205,7 +229,7 @@ function createUIProjects()
     for(var i in project_list)
     {
        
-        let project1 = new Project("AKT Ceramics", "Images/LineIntegral.jpg", i);
+        let project1 = new Project( project_list[i][1]["pid"], "Images/LineIntegral.jpg", i);
         
         project1.select.on('mouseover', function(){
             project1.select.alpha = 1;
@@ -215,57 +239,63 @@ function createUIProjects()
         project1.select.alpha = 0.75;
         });
         project1.select.on('pointerdown', function(){
+            var pidInString = project_list[i][1]["pid"].toString();
+            console.log("1: " + pidInString)
+            getImages(pidInString);
             currentActivity = activityArray[2];
             moveLeftProjectSelection();
             setTimeout('updateActivity()', 200); 
         });
+
+        //console.log(project_list[i][1].pid);
+        //console.log(project_list[i][1]["name"]);
         //project1.newProject();
     
     }
    
    
-    let project1 = new Project("AKT Ceramics", "Images/LineIntegral.jpg", 0);
+    // let project1 = new Project("AKT Ceramics", "Images/LineIntegral.jpg", 0);
 
-    project1.select.on('mouseover', function(){
-        project1.select.alpha = 1;
-        app.stage.addChild(project1.container);
-    });
-    project1.select.on('mouseout', function(){
-       project1.select.alpha = 0.75;
-    });
-    project1.select.on('pointerdown', function(){
-        currentActivity = activityArray[2];
-        moveLeftProjectSelection();
-        setTimeout('updateActivity()', 200); 
-    });
+    // project1.select.on('mouseover', function(){
+    //     project1.select.alpha = 1;
+    //     app.stage.addChild(project1.container);
+    // });
+    // project1.select.on('mouseout', function(){
+    //    project1.select.alpha = 0.75;
+    // });
+    // project1.select.on('pointerdown', function(){
+    //     currentActivity = activityArray[2];
+    //     moveLeftProjectSelection();
+    //     setTimeout('updateActivity()', 200); 
+    // });
 
     
     
-    if(create_project > 0){
-        // create new Project instance
-        let project2 = new Project("AKT Metals", "Images/lowmag_test.jpg", 1);
+    // if(create_project > 0){
+    //     // create new Project instance
+    //     let project2 = new Project("AKT Metals", "Images/lowmag_test.jpg", 1);
         
-        project2.select.on('mouseover', function(){
-            project2.select.alpha = 1;
-            app.stage.addChild(project2.container);
-        });
-        project2.select.on('mouseout', function(){
-        project2.select.alpha = 0.75;
-        });
-        project2.select.on('pointerdown', function(){
-            currentActivity = activityArray[2];
-            moveLeftProjectSelection();
-            setTimeout('updateActivity()', 200); 
-        });
+    //     project2.select.on('mouseover', function(){
+    //         project2.select.alpha = 1;
+    //         app.stage.addChild(project2.container);
+    //     });
+    //     project2.select.on('mouseout', function(){
+    //     project2.select.alpha = 0.75;
+    //     });
+    //     project2.select.on('pointerdown', function(){
+    //         currentActivity = activityArray[2];
+    //         moveLeftProjectSelection();
+    //         setTimeout('updateActivity()', 200); 
+    //     });
 
-        // calling newProject on a project draws the "new project" plus icon to the right of given project
-        project2.newProject();
-    }
-    else{
+    //     // calling newProject on a project draws the "new project" plus icon to the right of given project
+    //     project2.newProject();
+    // }
+    // else{
     
-        project1.newProject();
+    //     project1.newProject();
         
-    }
+    // }
     
     
 
@@ -343,6 +373,7 @@ function a_generateTextBox(x, y, w)
 
 //Agustin: Edit to move some elements. Some hexagons are not being altered at the moment
 function moveLeftProjectSelection(){
+
     positionTransform(-1000, a_titleContainer.y, a_titleContainer, 10)
     positionTransform(-1000, a_settingsContainer.y, a_settingsContainer, 10)
     //positionTransform(-1000, project1.container.y, project1.container, 10)

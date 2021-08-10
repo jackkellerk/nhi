@@ -26,7 +26,7 @@ var userSettingsResponse; // valid uses of userSettingsResponse are: userSetting
 function startAllProjects()
 {
     gatherUserSettings(); // backend call
-    getOneProject(100);
+    //getOneProject(100);
     getProjects(uid); //TODO: Find out what is happening here
 }
 
@@ -68,6 +68,10 @@ function createUIProjects()
     }
 
     // draws background hexagon grid
+    /**
+     * Create a better hex grid outline in the future. 
+     * Currently the hex grid and the hexagonal projects do not match up
+     */
     a_drawHexGrid(isTouch);
 
 

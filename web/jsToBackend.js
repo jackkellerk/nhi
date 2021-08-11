@@ -332,6 +332,7 @@ function getImages(projectSelected)
             else{
             
             console.log(callback)
+            image_list = Object.entries((callback.data).array);
             //project_list is an object that has 2D array containing all projects info
             //project_list = Object.entries((callback.data).array);
             //console.log(project_list);

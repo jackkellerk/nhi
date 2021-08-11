@@ -310,14 +310,16 @@ function clearWindow(window) {
 
     if (window.tool1.x > window.tool2.x) { 
         window.tool1.x -= 5;
-    } else if (window.tool2.x > window.tool3.x) {
+    } else if (window.tool2.x > window.tool1.x) {
         window.tool2.x -= 5;
-    } else if (window.tool3.x > window.tool4.x) {
+    } else if (window.tool3.x > window.tool1.x) {
         window.tool3.x -= 5;
-    } else if (window.tool4.x > window.tool5.x) {
+    } else if (window.tool4.x > window.tool1.x) {
         window.tool4.x -= 5;
     } else if (window.tool5.x > window.tool1.x) {
         window.tool5.x -= 5;
+    } else if (window.tool6.x > window.tool1.x) {
+        window.tool6.x -= 5;
     }
 }
 

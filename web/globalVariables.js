@@ -72,4 +72,5 @@ var currentThreeJSInstance = null;
 
 /* Start of global variables for Backend project list */
 var project_list = null;
+var image_list = null;
 /* End of global variables for Backend project list */

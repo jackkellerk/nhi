@@ -1,7 +1,0 @@
-PyJEM.config module
-===================
-
-.. automodule:: PyJEM.config
-    :members:
-    :undoc-members:
-    :show-inheritance:

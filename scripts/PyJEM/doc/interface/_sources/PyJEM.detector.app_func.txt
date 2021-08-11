@@ -1,7 +1,0 @@
-PyJEM.detector.app_func module
-==============================
-
-.. automodule:: PyJEM.detector.app_func
-    :members:
-    :undoc-members:
-    :show-inheritance:

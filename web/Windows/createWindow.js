@@ -15,7 +15,7 @@ class WorkWindow
         this.height = 0.73125*h;
         this.sprite = new PIXI.Sprite();
         this.backgroundSprite =0;
-        this.image_src = image_src;
+        this.image_src = location.protocol + '//' + location.host + image_src + "?uid=" + uid + "&session_key=" + session_key;
         this.texture = 0;
         if (spriteOnly) { this.sprite = new PIXI.Sprite(image_src); } // image is a texture
         else { this.sprite = new PIXI.Sprite.from(image_src); } // "image" is a path
@@ -297,6 +297,8 @@ class WorkWindow
         this.tool3.x = this.xPositionWindow + this.width;
         this.tool4.x = this.xPositionWindow + this.width;
         this.tool5.x = this.xPositionWindow + this.width;
+        this.tool6.x = this.xPositionWindow + this.width;
+        
     }
 
 }

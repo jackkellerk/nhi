@@ -141,7 +141,8 @@ public final class ProjectRouteSetter {
                                         SourceManager.copyFile(origPath, newPath); 
                                         ////Image was copied over, time to insert into the table of our paths
                                         System.out.println("Image copy created successfully");
-                                        JSONObject imageRes = db.source.insertProjectImagePaths(newPath, projectId);
+                                        String image_url = newPath.replace("../images", "/i");
+                                        JSONObject imageRes = db.source.insertProjectImagePaths(image_url, projectId);
                                         //retval.put("Insert ImageRes", imageRes);   
                                     }
                                     catch (Exception e){

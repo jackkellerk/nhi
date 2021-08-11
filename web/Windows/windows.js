@@ -245,81 +245,231 @@ function startWindows(){
 
 
 
-  // for(var i in project_list){
+  for(var i in image_list){
+    ////////////////////////////////////
+    // window hex for individual window
+    ///////////////////////////////////
+    let windowHex = new Hexagon({x:menuButton.x, y:(100 + (i * 45))}, 0, 37);
+      windowHex.graphics.lineStyle(1, 0xFFFFFF, 1);
+      windowHex.graphics.buttonMode = true;
+      windowHex.graphics.interactive = true;
+      windowHex.graphics.on('mouseover', function(){ this.alpha = 1; });
+      windowHex.graphics.on('mouseout', function(){ this.alpha = 0.9; });
+      //window1Hex.graphics.on('pointerdown', w_WindowSelect);
+      windowHex.draw(0x000000, 0.9);
+      windowHex.graphics.on('pointerdown', function(){
+        newWindow.isOpen = true;
+        app.stage.addChild(newWindow.container);
+        windowHex.visible = false;
+      });
 
-  //   // Image Menu (Container)
-  //   let windowHex = new Hexagon({x:menuButton.x, y:(100 + (i * 45))}, 0, 37);
-  //     windowHex.graphics.lineStyle(1, 0xFFFFFF, 1);
-  //     windowHex.graphics.buttonMode = true;
-  //     windowHex.graphics.interactive = true;
-  //     windowHex.graphics.on('mouseover', function(){ this.alpha = 1; });
-  //     windowHex.graphics.on('mouseout', function(){ this.alpha = 0.9; });
-  //     //window1Hex.graphics.on('pointerdown', w_WindowSelect);
-  //     windowHex.draw(0x000000, 0.9);
-  //     app.stage.removeChild(windowHex.container);
+    let windowLabel = new PIXI.Text("Window\n" + (i+1), w_style);
+      windowLabel.position.x = 6;
+      windowLabel.position.y = 27;
+      windowHex.graphics.addChild(windowLabel);
+      windowHexes.addChild(windowHex.container);
+      windowHex.visible = false;
 
-  //   let windowLabel = new PIXI.Text("Window\n" + (i+1), w_style);
-  //     windowLabel.position.x = 6;
-  //     windowLabel.position.y = 27;
-  //     windowHex.graphics.addChild(windowLabel);
-  //     windowHexes.addChild(windowHex.container);
-  //     windowHex.visible = false;
-  // }
+    ////////////////////////////////
+    //
+    ////////////////////////////////
+    let newWindow = new WorkWindow("Window 1", 0, 0, image_list[i][1]["file_path"]);
+
+    newWindow.container.interactive = true;
+    newWindow.container.on('pointerdown', function(){
+      if (i == 0) {
+        app.stage.removeChild(newWindow.container);
+        app.stage.addChild(newWindow.container);
+        newWindow.inFront = true;
+      } else{
+        newWindow.inFront = false;
+    }}); 
+
+    newWindow.drawWindow(0xDCDCDC, "Images/sinteredMetal.png");
+    newWindow.windowBorder.interactive = true;
+    newWindow.windowBorder.on('pointerdown', onDragStart)
+      .on('pointerdown', getMousePositionBeforeWindow) // This is in Multi-block coord system
+      .on('pointerup', onDragEnd)
+      .on('pointerup', getMousePositionAfterWindow)
+      .on('pointerupoutside', onDragEnd)
+      .on('pointermove', onDragMove)
+      .on('pointermove', updateMousePositionWindow);
+
+    newWindow.tool1.interactive = true;
+    newWindow.tool1.on('pointerdown', function(){
+      newWindow.clearWindow(newWindow);
+      // window1.multiBlockObject.UIBool(true); // Enable Multi-Block UI
+      newWindow.spectrumObject.UIBool(false); // Disable Multispectrum
+      // window1.lineObject.UIBool(false);
+      //window1.threeJS.UIBool(false); // Disable ThreeJS
+      newWindow.tool1.x += 5;
+    });
+
+
+    newWindow.tool2.interactive = true;
+    newWindow.tool2.on('pointerdown', function(){
+      newWindow.clearWindow(newWindow);
+      // window1.multiBlockObject.UIBool(false); // Disable Multi-Block UI
+      newWindow.spectrumObject.UIBool(true); // Enable Multispectrum
+      // window1.lineObject.UIBool(false);
+      //window1.threeJS.UIBool(false); // Disable ThreeJS
+      newWindow.tool2.x += 5;
+    });
+    
+
+    newWindow.tool3.interactive = true;
+    newWindow.tool3.on('pointerdown', function(){
+      newWindow.clearWindow(newWindow);
+      // window1.multiBlockObject.UIBool(false);
+      newWindow.spectrumObject.UIBool(false);
+      //window1.zoomObject.UIBool(true);
+      // window1.lineObject.UIBool(false);
+      //window1.container.addChild(window1.MBContainer);
+      //MBContainer.mask = window1.windowRect;
+      newWindow.tool3.x += 5;
+    });
+
+    newWindow.tool4.interactive = true;
+    newWindow.tool4.on('pointerdown', function(){
+      newWindow.clearWindow(newWindow);
+      // window1.multiBlockObject.UIBool(false);
+      newWindow.spectrumObject.UIBool(false);
+      //window1.zoomObject.UIBool(false);
+      // window1.lineObject.UIBool(true);
+      // window1.container.addChild(window1.LIContainer);
+      // window1.LIContainer.mask = window1.windowRect;
+      newWindow.tool4.x += 5;
+    });
+
+    newWindow.tool5.interactive = true;
+    newWindow.tool5.on('pointerdown', function(){
+      newWindow.clearWindow(newWindow);
+      // window1.multiBlockObject.UIBool(false);
+      newWindow.spectrumObject.UIBool(false);
+      // window1.zoomObject.UIBool(false);
+      // window1.lineObject.UIBool(true);
+      // window1.container.addChild(window1.LIContainer);
+      // window1.LIContainer.mask = window1.windowRect;
+      uploadCustomPythonScript();
+      newWindow.tool5.x += 5;
+    });
+
+    newWindow.tool6.interactive = true;
+    newWindow.tool6.on('pointerdown', function(){
+      newWindow.clearWindow(newWindow);
+      // window1.multiBlockObject.UIBool(false);
+      // window1.spectrumObject.UIBool(false);
+      // window1.zoomObject.UIBool(false);
+      // window1.lineObject.UIBool(true);
+      // window1.container.addChild(window1.LIContainer);
+      // window1.LIContainer.mask = window1.windowRect;
+      //uploadCustomPythonScript();
+      tempTest();
+      tempTest2();
+      newWindow.tool6.x += 5;
+    });
+
+    newWindow.closeWindowMenu.close.interactive = true;
+    newWindow.closeWindowMenu.close.on('mouseover', function(){ newWindow.closeWindowMenu.close.alpha = 0.7; });
+    newWindow.closeWindowMenu.close.on('mouseout', function(){ newWindow.closeWindowMenu.close.alpha = 0.4; });
+    newWindow.closeWindowMenu.close.on('pointerdown', function(){
+      app.stage.removeChild(newWindow.closeWindowMenu.container);
+    });
+
+    newWindow.closeWindowMenu.leftButton.interactive = true;
+    newWindow.closeWindowMenu.leftButton.on('mouseover', function(){ newWindow.closeWindowMenu.leftButton.alpha = 1; });
+    newWindow.closeWindowMenu.leftButton.on('mouseout', function(){ newWindow.closeWindowMenu.leftButton.alpha = 0.7; });
+    newWindow.closeWindowMenu.leftButton.on('pointerdown', function(){
+      app.stage.removeChild(newWindow.closeWindowMenu.container);
+      app.stage.removeChild(newWindow.container);
+      windowHexes.addChild(windowHex.container);
+      Acc = 0;
+    });
+
+    newWindow.closeWindowMenu.rightButton.interactive = true;
+    newWindow.closeWindowMenu.rightButton.on('mouseover', function(){ newWindow.closeWindowMenu.rightButton.alpha = 1; });
+    newWindow.closeWindowMenu.rightButton.on('mouseout', function(){ newWindow.closeWindowMenu.rightButton.alpha = 0.7; });
+    newWindow.closeWindowMenu.rightButton.on('pointerdown', function(){
+      app.stage.removeChild(newWindow.closeWindowMenu.container);
+    });
+
+    newWindow.closeIcon.interactive = true;
+    newWindow.closeIcon.on('mouseover', function(){ newWindow.closeIcon.alpha = 1; });
+    newWindow.closeIcon.on('mouseout', function(){ newWindow.closeIcon.alpha = 0.8; });
+    newWindow.closeIcon.on('pointerdown', function(){
+      app.stage.addChild(newWindow.closeWindowMenu.container); 
+    });
+
+    newWindow.minIcon.interactive = true;
+    newWindow.minIcon.on('mouseover', function(){ newWindow.minIcon.alpha = 1; });
+    newWindow.minIcon.on('mouseout', function(){ newWindow.minIcon.alpha = 0.8; });
+    newWindow.minIcon.on('pointerdown', function(){
+      newWindow.isOpen = false;
+      app.stage.removeChild(newWindow.container);
+      app.stage.removeChild(tintBg); 
+      newWindow.visible = true;
+      app.stage.addChild(menuButton.container);
+    });
+
+    //manually triggers tool1 to be displayed from the start
+    newWindow.tool1.emit('pointerdown');
+  
+  }
 
   // Image Menu (Container)
 
-  window1Hex = new Hexagon({x:menuButton.x, y:100}, 0, 37);
-      window1Hex.graphics.lineStyle(1, 0xFFFFFF, 1);
-      window1Hex.graphics.buttonMode = true;
-      window1Hex.graphics.interactive = true;
-      window1Hex.graphics.on('mouseover', function(){ this.alpha = 1; });
-      window1Hex.graphics.on('mouseout', function(){ this.alpha = 0.9; });
-      //window1Hex.graphics.on('pointerdown', w_WindowSelect(window1, window1Hex));
-      window1Hex.draw(0x000000, 0.9);
-      window1Hex.graphics.on('pointerdown', function(){
-        window1.isOpen = true;
-        app.stage.addChild(window1.container);
-        window1Hex.visible = false;
-      });
-  //app.stage.removeChild(window1Hex.container);
+  // window1Hex = new Hexagon({x:menuButton.x, y:100}, 0, 37);
+  //     window1Hex.graphics.lineStyle(1, 0xFFFFFF, 1);
+  //     window1Hex.graphics.buttonMode = true;
+  //     window1Hex.graphics.interactive = true;
+  //     window1Hex.graphics.on('mouseover', function(){ this.alpha = 1; });
+  //     window1Hex.graphics.on('mouseout', function(){ this.alpha = 0.9; });
+  //     //window1Hex.graphics.on('pointerdown', w_WindowSelect(window1, window1Hex));
+  //     window1Hex.draw(0x000000, 0.9);
+  //     window1Hex.graphics.on('pointerdown', function(){
+  //       window1.isOpen = true;
+  //       app.stage.addChild(window1.container);
+  //       window1Hex.visible = false;
+  //     });
+  // //app.stage.removeChild(window1Hex.container);
 
-  window1Label = new PIXI.Text("Window\n     1", w_style);
-  window1Label.position.x = 6;
-  window1Label.position.y = 27;
-  window1Hex.graphics.addChild(window1Label);
+  // window1Label = new PIXI.Text("Window\n     1", w_style);
+  // window1Label.position.x = 6;
+  // window1Label.position.y = 27;
+  // window1Hex.graphics.addChild(window1Label);
 
-  window2Hex = new Hexagon({x:menuButton.x, y:window1Hex.y+45}, 0, 37);
-    window2Hex.graphics.lineStyle(1, 0xFFFFFF, 1);
-    window2Hex.graphics.buttonMode = true;
-    window2Hex.graphics.interactive = true;
-    window2Hex.graphics.on('mouseover', function(){ this.alpha = 1; });
-    window2Hex.graphics.on('mouseout', function(){ this.alpha = 0.9;  });
-    //window2Hex.graphics.on('pointerdown', w_WindowSelect(window2, window2Hex));
-    window2Hex.draw(0x000000, 0.9);
-    window2Hex.graphics.on('pointerdown', function(){
-      window2.isOpen = true;
-      app.stage.addChild(window2.container);
-      window2Hex.visible = false;
-    });
-  //app.stage.removeChild(window2Hex.container);
+  // window2Hex = new Hexagon({x:menuButton.x, y:window1Hex.y+45}, 0, 37);
+  //   window2Hex.graphics.lineStyle(1, 0xFFFFFF, 1);
+  //   window2Hex.graphics.buttonMode = true;
+  //   window2Hex.graphics.interactive = true;
+  //   window2Hex.graphics.on('mouseover', function(){ this.alpha = 1; });
+  //   window2Hex.graphics.on('mouseout', function(){ this.alpha = 0.9;  });
+  //   //window2Hex.graphics.on('pointerdown', w_WindowSelect(window2, window2Hex));
+  //   window2Hex.draw(0x000000, 0.9);
+  //   window2Hex.graphics.on('pointerdown', function(){
+  //     window2.isOpen = true;
+  //     app.stage.addChild(window2.container);
+  //     window2Hex.visible = false;
+  //   });
+  // //app.stage.removeChild(window2Hex.container);
   
-  window2Label = new PIXI.Text("Window\n     2", w_style);
-  window2Label.position.x = 6;
-  window2Label.position.y = 27;
-  window2Hex.graphics.addChild(window2Label);
+  // window2Label = new PIXI.Text("Window\n     2", w_style);
+  // window2Label.position.x = 6;
+  // window2Label.position.y = 27;
+  // window2Hex.graphics.addChild(window2Label);
 
 
-  // add window icons in reverse order for descending overlapping
+  // // add window icons in reverse order for descending overlapping
 
-  //windowHexes.addChild(window4Hex.container);
-  //windowHexes.addChild(window3Hex.container);
-  windowHexes.addChild(window2Hex.container);
-  windowHexes.addChild(window1Hex.container);
+  // //windowHexes.addChild(window4Hex.container);
+  // //windowHexes.addChild(window3Hex.container);
+  // windowHexes.addChild(window2Hex.container);
+  // windowHexes.addChild(window1Hex.container);
 
-  window2Hex.visible = false;
-  window1Hex.visible = false;
+  // window2Hex.visible = false;
+  // window1Hex.visible = false;
 
-  Acc = 1;
+  //Acc = 1;
   if (isTouch) {
     windowHexes.scale.x = windowHexes.scale.y = 0.5;
   }
@@ -328,281 +478,281 @@ function startWindows(){
 
 
 
-  // blurTransform(app.stage, 0.5, 10);
+  // // blurTransform(app.stage, 0.5, 10);
 
 
 
-  // ------------------------------------- Window 1 -----------------------------------------
-  var window1 = new WorkWindow("Window 1", 0, 0, "Images/sinteredMetal.png");
+  // // ------------------------------------- Window 1 -----------------------------------------
+  // var window1 = new WorkWindow("Window 1", 0, 0, "Images/sinteredMetal.png");
 
-  window1.container.interactive = true;
-  window1.container.on('pointerdown', function(){
-    if (!window1.inFront) {
-      app.stage.removeChild(window1.container);
-      app.stage.addChild(window1.container);
-      window1.inFront = true;
-      window2.inFront = false;
-    }}); 
-  window1.drawWindow(0xDCDCDC, "Images/sinteredMetal.png");
-  window1.windowBorder.interactive = true;
-  window1.windowBorder.on('pointerdown', onDragStart)
-    .on('pointerdown', getMousePositionBeforeWindow) // This is in Multi-block coord system
-    .on('pointerup', onDragEnd)
-    .on('pointerup', getMousePositionAfterWindow)
-    .on('pointerupoutside', onDragEnd)
-    .on('pointermove', onDragMove)
-    .on('pointermove', updateMousePositionWindow);
+  // window1.container.interactive = true;
+  // window1.container.on('pointerdown', function(){
+  //   if (!window1.inFront) {
+  //     app.stage.removeChild(window1.container);
+  //     app.stage.addChild(window1.container);
+  //     window1.inFront = true;
+  //     window2.inFront = false;
+  //   }}); 
+  // window1.drawWindow(0xDCDCDC, "Images/sinteredMetal.png");
+  // window1.windowBorder.interactive = true;
+  // window1.windowBorder.on('pointerdown', onDragStart)
+  //   .on('pointerdown', getMousePositionBeforeWindow) // This is in Multi-block coord system
+  //   .on('pointerup', onDragEnd)
+  //   .on('pointerup', getMousePositionAfterWindow)
+  //   .on('pointerupoutside', onDragEnd)
+  //   .on('pointermove', onDragMove)
+  //   .on('pointermove', updateMousePositionWindow);
 
-  window1.tool1.interactive = true;
-  window1.tool1.on('pointerdown', function(){
-    window1.clearWindow(window1);
-    // window1.multiBlockObject.UIBool(true); // Enable Multi-Block UI
-    window1.spectrumObject.UIBool(false); // Disable Multispectrum
-    // window1.lineObject.UIBool(false);
-    //window1.threeJS.UIBool(false); // Disable ThreeJS
-    window1.tool1.x += 5;
-  });
+  // window1.tool1.interactive = true;
+  // window1.tool1.on('pointerdown', function(){
+  //   window1.clearWindow(window1);
+  //   // window1.multiBlockObject.UIBool(true); // Enable Multi-Block UI
+  //   window1.spectrumObject.UIBool(false); // Disable Multispectrum
+  //   // window1.lineObject.UIBool(false);
+  //   //window1.threeJS.UIBool(false); // Disable ThreeJS
+  //   window1.tool1.x += 5;
+  // });
 
 
-  window1.tool2.interactive = true;
-  window1.tool2.on('pointerdown', function(){
-    window1.clearWindow(window1);
-    // window1.multiBlockObject.UIBool(false); // Disable Multi-Block UI
-    window1.spectrumObject.UIBool(true); // Enable Multispectrum
-    // window1.lineObject.UIBool(false);
-    //window1.threeJS.UIBool(false); // Disable ThreeJS
-    window1.tool2.x += 5;
-  });
+  // window1.tool2.interactive = true;
+  // window1.tool2.on('pointerdown', function(){
+  //   window1.clearWindow(window1);
+  //   // window1.multiBlockObject.UIBool(false); // Disable Multi-Block UI
+  //   window1.spectrumObject.UIBool(true); // Enable Multispectrum
+  //   // window1.lineObject.UIBool(false);
+  //   //window1.threeJS.UIBool(false); // Disable ThreeJS
+  //   window1.tool2.x += 5;
+  // });
   
 
-  window1.tool3.interactive = true;
-  window1.tool3.on('pointerdown', function(){
-    window1.clearWindow(window1);
-    // window1.multiBlockObject.UIBool(false);
-    window1.spectrumObject.UIBool(false);
-    //window1.zoomObject.UIBool(true);
-    // window1.lineObject.UIBool(false);
-    //window1.container.addChild(window1.MBContainer);
-    //MBContainer.mask = window1.windowRect;
-    window1.tool3.x += 5;
-  });
+  // window1.tool3.interactive = true;
+  // window1.tool3.on('pointerdown', function(){
+  //   window1.clearWindow(window1);
+  //   // window1.multiBlockObject.UIBool(false);
+  //   window1.spectrumObject.UIBool(false);
+  //   //window1.zoomObject.UIBool(true);
+  //   // window1.lineObject.UIBool(false);
+  //   //window1.container.addChild(window1.MBContainer);
+  //   //MBContainer.mask = window1.windowRect;
+  //   window1.tool3.x += 5;
+  // });
 
-  window1.tool4.interactive = true;
-  window1.tool4.on('pointerdown', function(){
-    window1.clearWindow(window1);
-    // window1.multiBlockObject.UIBool(false);
-    window1.spectrumObject.UIBool(false);
-    //window1.zoomObject.UIBool(false);
-    // window1.lineObject.UIBool(true);
-    // window1.container.addChild(window1.LIContainer);
-    // window1.LIContainer.mask = window1.windowRect;
-    window1.tool4.x += 5;
-  });
+  // window1.tool4.interactive = true;
+  // window1.tool4.on('pointerdown', function(){
+  //   window1.clearWindow(window1);
+  //   // window1.multiBlockObject.UIBool(false);
+  //   window1.spectrumObject.UIBool(false);
+  //   //window1.zoomObject.UIBool(false);
+  //   // window1.lineObject.UIBool(true);
+  //   // window1.container.addChild(window1.LIContainer);
+  //   // window1.LIContainer.mask = window1.windowRect;
+  //   window1.tool4.x += 5;
+  // });
 
-  window1.tool5.interactive = true;
-  window1.tool5.on('pointerdown', function(){
-    window1.clearWindow(window1);
-    // window1.multiBlockObject.UIBool(false);
-    window1.spectrumObject.UIBool(false);
-    // window1.zoomObject.UIBool(false);
-    // window1.lineObject.UIBool(true);
-    // window1.container.addChild(window1.LIContainer);
-    // window1.LIContainer.mask = window1.windowRect;
-    uploadCustomPythonScript();
-    window1.tool5.x += 5;
-  });
+  // window1.tool5.interactive = true;
+  // window1.tool5.on('pointerdown', function(){
+  //   window1.clearWindow(window1);
+  //   // window1.multiBlockObject.UIBool(false);
+  //   window1.spectrumObject.UIBool(false);
+  //   // window1.zoomObject.UIBool(false);
+  //   // window1.lineObject.UIBool(true);
+  //   // window1.container.addChild(window1.LIContainer);
+  //   // window1.LIContainer.mask = window1.windowRect;
+  //   uploadCustomPythonScript();
+  //   window1.tool5.x += 5;
+  // });
 
-  window1.tool6.interactive = true;
-  window1.tool6.on('pointerdown', function(){
-    window1.clearWindow(window1);
-    // window1.multiBlockObject.UIBool(false);
-    // window1.spectrumObject.UIBool(false);
-    // window1.zoomObject.UIBool(false);
-    // window1.lineObject.UIBool(true);
-    // window1.container.addChild(window1.LIContainer);
-    // window1.LIContainer.mask = window1.windowRect;
-    //uploadCustomPythonScript();
-    tempTest();
-    tempTest2();
-    window1.tool6.x += 5;
-  });
+  // window1.tool6.interactive = true;
+  // window1.tool6.on('pointerdown', function(){
+  //   window1.clearWindow(window1);
+  //   // window1.multiBlockObject.UIBool(false);
+  //   // window1.spectrumObject.UIBool(false);
+  //   // window1.zoomObject.UIBool(false);
+  //   // window1.lineObject.UIBool(true);
+  //   // window1.container.addChild(window1.LIContainer);
+  //   // window1.LIContainer.mask = window1.windowRect;
+  //   //uploadCustomPythonScript();
+  //   tempTest();
+  //   tempTest2();
+  //   window1.tool6.x += 5;
+  // });
 
-  window1.closeWindowMenu.close.interactive = true;
-  window1.closeWindowMenu.close.on('mouseover', function(){ window1.closeWindowMenu.close.alpha = 0.7; });
-  window1.closeWindowMenu.close.on('mouseout', function(){ window1.closeWindowMenu.close.alpha = 0.4; });
-  window1.closeWindowMenu.close.on('pointerdown', function(){
-    app.stage.removeChild(window1.closeWindowMenu.container);
-  });
+  // window1.closeWindowMenu.close.interactive = true;
+  // window1.closeWindowMenu.close.on('mouseover', function(){ window1.closeWindowMenu.close.alpha = 0.7; });
+  // window1.closeWindowMenu.close.on('mouseout', function(){ window1.closeWindowMenu.close.alpha = 0.4; });
+  // window1.closeWindowMenu.close.on('pointerdown', function(){
+  //   app.stage.removeChild(window1.closeWindowMenu.container);
+  // });
 
-  window1.closeWindowMenu.leftButton.interactive = true;
-  window1.closeWindowMenu.leftButton.on('mouseover', function(){ window1.closeWindowMenu.leftButton.alpha = 1; });
-  window1.closeWindowMenu.leftButton.on('mouseout', function(){ window1.closeWindowMenu.leftButton.alpha = 0.7; });
-  window1.closeWindowMenu.leftButton.on('pointerdown', function(){
-    app.stage.removeChild(window1.closeWindowMenu.container);
-    app.stage.removeChild(window1.container);
-    windowHexes.addChild(window1Hex.container);
-    Acc = 0;
-  });
+  // window1.closeWindowMenu.leftButton.interactive = true;
+  // window1.closeWindowMenu.leftButton.on('mouseover', function(){ window1.closeWindowMenu.leftButton.alpha = 1; });
+  // window1.closeWindowMenu.leftButton.on('mouseout', function(){ window1.closeWindowMenu.leftButton.alpha = 0.7; });
+  // window1.closeWindowMenu.leftButton.on('pointerdown', function(){
+  //   app.stage.removeChild(window1.closeWindowMenu.container);
+  //   app.stage.removeChild(window1.container);
+  //   windowHexes.addChild(window1Hex.container);
+  //   Acc = 0;
+  // });
 
-  window1.closeWindowMenu.rightButton.interactive = true;
-  window1.closeWindowMenu.rightButton.on('mouseover', function(){ window1.closeWindowMenu.rightButton.alpha = 1; });
-  window1.closeWindowMenu.rightButton.on('mouseout', function(){ window1.closeWindowMenu.rightButton.alpha = 0.7; });
-  window1.closeWindowMenu.rightButton.on('pointerdown', function(){
-    app.stage.removeChild(window1.closeWindowMenu.container);
-  });
+  // window1.closeWindowMenu.rightButton.interactive = true;
+  // window1.closeWindowMenu.rightButton.on('mouseover', function(){ window1.closeWindowMenu.rightButton.alpha = 1; });
+  // window1.closeWindowMenu.rightButton.on('mouseout', function(){ window1.closeWindowMenu.rightButton.alpha = 0.7; });
+  // window1.closeWindowMenu.rightButton.on('pointerdown', function(){
+  //   app.stage.removeChild(window1.closeWindowMenu.container);
+  // });
 
-  window1.closeIcon.interactive = true;
-  window1.closeIcon.on('mouseover', function(){ window1.closeIcon.alpha = 1; });
-  window1.closeIcon.on('mouseout', function(){ window1.closeIcon.alpha = 0.8; });
-  window1.closeIcon.on('pointerdown', function(){
-    app.stage.addChild(window1.closeWindowMenu.container); 
-  });
+  // window1.closeIcon.interactive = true;
+  // window1.closeIcon.on('mouseover', function(){ window1.closeIcon.alpha = 1; });
+  // window1.closeIcon.on('mouseout', function(){ window1.closeIcon.alpha = 0.8; });
+  // window1.closeIcon.on('pointerdown', function(){
+  //   app.stage.addChild(window1.closeWindowMenu.container); 
+  // });
 
-  window1.minIcon.interactive = true;
-  window1.minIcon.on('mouseover', function(){ window1.minIcon.alpha = 1; });
-  window1.minIcon.on('mouseout', function(){ window1.minIcon.alpha = 0.8; });
-  window1.minIcon.on('pointerdown', function(){
-    window1.isOpen = false;
-    app.stage.removeChild(window1.container);
-    app.stage.removeChild(tintBg); 
-    window1Hex.visible = true;
-    app.stage.addChild(menuButton.container);
-  });
+  // window1.minIcon.interactive = true;
+  // window1.minIcon.on('mouseover', function(){ window1.minIcon.alpha = 1; });
+  // window1.minIcon.on('mouseout', function(){ window1.minIcon.alpha = 0.8; });
+  // window1.minIcon.on('pointerdown', function(){
+  //   window1.isOpen = false;
+  //   app.stage.removeChild(window1.container);
+  //   app.stage.removeChild(tintBg); 
+  //   window1Hex.visible = true;
+  //   app.stage.addChild(menuButton.container);
+  // });
 
-  //manually triggers tool1 to be displayed from the start
-  window1.tool1.emit('pointerdown');
+  // //manually triggers tool1 to be displayed from the start
+  // window1.tool1.emit('pointerdown');
 
   
 
 
-  // ------------------------------------- Window 2 -----------------------------------------
-  window1.inFront = false; // because the last drawn window is always in front of screen
-  var window2 = new WorkWindow("Window 2", 0, 0, "Images/sinteredMetal");
-  window2.container.interactive = true;
-  window2.container.on('pointerdown', function(){
-    if (!window2.inFront) {
-      app.stage.removeChild(window2.container);
-      app.stage.addChild(window2.container);
-      window2.inFront = true;
-      window1.inFront = false;
-    }});
-  window2.drawWindow(0xDCDCDC, "Images/sinteredMetal.png");
-  window2.windowBorder.interactive = true;
-  window2.windowBorder.on('pointerdown', onDragStart)
-  .on('pointerdown', getMousePositionBeforeWindow) // This is in Multi-block coord system
-  .on('pointerup', onDragEnd)
-  .on('pointerup', getMousePositionAfterWindow)
-  .on('pointerupoutside', onDragEnd)
-  .on('pointermove', onDragMove)
-  .on('pointermove', updateMousePositionWindow);
+  // // ------------------------------------- Window 2 -----------------------------------------
+  // window1.inFront = false; // because the last drawn window is always in front of screen
+  // var window2 = new WorkWindow("Window 2", 0, 0, "Images/sinteredMetal");
+  // window2.container.interactive = true;
+  // window2.container.on('pointerdown', function(){
+  //   if (!window2.inFront) {
+  //     app.stage.removeChild(window2.container);
+  //     app.stage.addChild(window2.container);
+  //     window2.inFront = true;
+  //     window1.inFront = false;
+  //   }});
+  // window2.drawWindow(0xDCDCDC, "Images/sinteredMetal.png");
+  // window2.windowBorder.interactive = true;
+  // window2.windowBorder.on('pointerdown', onDragStart)
+  // .on('pointerdown', getMousePositionBeforeWindow) // This is in Multi-block coord system
+  // .on('pointerup', onDragEnd)
+  // .on('pointerup', getMousePositionAfterWindow)
+  // .on('pointerupoutside', onDragEnd)
+  // .on('pointermove', onDragMove)
+  // .on('pointermove', updateMousePositionWindow);
 
 
-  window2.tool1.interactive = true;
-  window2.tool1.on('pointerdown', function(){
-    window2.clearWindow(window2);
-    //window2.container.addChild(window2.LMSIContainer);
-    //window1.LMSIContainer.mask = window2.windowRect;
-    window2.tool1.x += 5;
-  });
+  // window2.tool1.interactive = true;
+  // window2.tool1.on('pointerdown', function(){
+  //   window2.clearWindow(window2);
+  //   //window2.container.addChild(window2.LMSIContainer);
+  //   //window1.LMSIContainer.mask = window2.windowRect;
+  //   window2.tool1.x += 5;
+  // });
   
-  window2.tool2.interactive = true;
-  window2.tool2.on('pointerdown', function(){
-    window2.clearWindow(window2);
-    //window2.container.addChild(window2.MSContainer);
-    //window2.MSContainer.mask = window2.windowRect;
-    window2.tool2.x += 5;
-  });
-  window2.tool3.interactive = true;
-  window2.tool3.on('pointerdown', function(){
-    window2.clearWindow(window2);
-    //window2.container.addChild(window2.MBContainer);
-    //window2.MBContainer.mask = window2.windowRect;
-    window2.tool3.x += 5;
-  });
-  window2.tool4.interactive = true;
-  window2.tool4.on('pointerdown', function(){
-    window2.clearWindow(window2);
-    //window2.container.addChild(window2.LIContainer);
-    //window2.LIContainer.mask = window2.windowRect;
-    window2.tool4.x += 5;
-  });
+  // window2.tool2.interactive = true;
+  // window2.tool2.on('pointerdown', function(){
+  //   window2.clearWindow(window2);
+  //   //window2.container.addChild(window2.MSContainer);
+  //   //window2.MSContainer.mask = window2.windowRect;
+  //   window2.tool2.x += 5;
+  // });
+  // window2.tool3.interactive = true;
+  // window2.tool3.on('pointerdown', function(){
+  //   window2.clearWindow(window2);
+  //   //window2.container.addChild(window2.MBContainer);
+  //   //window2.MBContainer.mask = window2.windowRect;
+  //   window2.tool3.x += 5;
+  // });
+  // window2.tool4.interactive = true;
+  // window2.tool4.on('pointerdown', function(){
+  //   window2.clearWindow(window2);
+  //   //window2.container.addChild(window2.LIContainer);
+  //   //window2.LIContainer.mask = window2.windowRect;
+  //   window2.tool4.x += 5;
+  // });
 
-  window2.tool5.interactive = true;
-  window2.tool5.on('pointerdown', function(){
-    window2.clearWindow(window1);
-    // window1.multiBlockObject.UIBool(false);
-    window2.spectrumObject.UIBool(false);
-    // window1.zoomObject.UIBool(false);
-    // window1.lineObject.UIBool(true);
-    // window1.container.addChild(window1.LIContainer);
-    // window1.LIContainer.mask = window1.windowRect;
-    uploadCustomPythonScript();
-    window2.tool5.x += 5;
-  });
+  // window2.tool5.interactive = true;
+  // window2.tool5.on('pointerdown', function(){
+  //   window2.clearWindow(window1);
+  //   // window1.multiBlockObject.UIBool(false);
+  //   window2.spectrumObject.UIBool(false);
+  //   // window1.zoomObject.UIBool(false);
+  //   // window1.lineObject.UIBool(true);
+  //   // window1.container.addChild(window1.LIContainer);
+  //   // window1.LIContainer.mask = window1.windowRect;
+  //   uploadCustomPythonScript();
+  //   window2.tool5.x += 5;
+  // });
 
-  window2.tool6.interactive = true;
-  window2.tool6.on('pointerdown', function(){
-    window2.clearWindow(window1);
-    // window1.multiBlockObject.UIBool(false);
-    // window1.spectrumObject.UIBool(false);
-    // window1.zoomObject.UIBool(false);
-    // window1.lineObject.UIBool(true);
-    // window1.container.addChild(window1.LIContainer);
-    // window1.LIContainer.mask = window1.windowRect;
-    //uploadCustomPythonScript();
-    tempTest();
-    tempTest2();
-    window2.tool6.x += 5;
-  });
-
-
-  window2.closeWindowMenu.close.interactive = true;
-  window2.closeWindowMenu.close.on('mouseover', function(){ window2.closeWindowMenu.close.alpha = 0.7; });
-  window2.closeWindowMenu.close.on('mouseout', function(){ window2.closeWindowMenu.close.alpha = 0.4; });
-  window2.closeWindowMenu.close.on('pointerdown', function(){
-    app.stage.removeChild(window2.closeWindowMenu.container);
-  });
+  // window2.tool6.interactive = true;
+  // window2.tool6.on('pointerdown', function(){
+  //   window2.clearWindow(window1);
+  //   // window1.multiBlockObject.UIBool(false);
+  //   // window1.spectrumObject.UIBool(false);
+  //   // window1.zoomObject.UIBool(false);
+  //   // window1.lineObject.UIBool(true);
+  //   // window1.container.addChild(window1.LIContainer);
+  //   // window1.LIContainer.mask = window1.windowRect;
+  //   //uploadCustomPythonScript();
+  //   tempTest();
+  //   tempTest2();
+  //   window2.tool6.x += 5;
+  // });
 
 
-  window2.closeWindowMenu.leftButton.interactive = true;
-  window2.closeWindowMenu.leftButton.on('mouseover', function(){ window2.closeWindowMenu.leftButton.alpha = 1; });
-  window2.closeWindowMenu.leftButton.on('mouseout', function(){ window2.closeWindowMenu.leftButton.alpha = 0.7; });
-  window2.closeWindowMenu.leftButton.on('pointerdown', function(){
-    app.stage.removeChild(window2.closeWindowMenu.container);
-    app.stage.removeChild(window2.container);
-    windowHexes.removeChild(window2Hex.container);
-    Acc = 0;
-  });
+  // window2.closeWindowMenu.close.interactive = true;
+  // window2.closeWindowMenu.close.on('mouseover', function(){ window2.closeWindowMenu.close.alpha = 0.7; });
+  // window2.closeWindowMenu.close.on('mouseout', function(){ window2.closeWindowMenu.close.alpha = 0.4; });
+  // window2.closeWindowMenu.close.on('pointerdown', function(){
+  //   app.stage.removeChild(window2.closeWindowMenu.container);
+  // });
 
 
-  window2.closeWindowMenu.rightButton.interactive = true;
-  window2.closeWindowMenu.rightButton.on('mouseover', function(){ window2.closeWindowMenu.rightButton.alpha = 1; });
-  window2.closeWindowMenu.rightButton.on('mouseout', function(){ window2.closeWindowMenu.rightButton.alpha = 0.7; });
-  window2.closeWindowMenu.rightButton.on('pointerdown', function(){
-    app.stage.removeChild(window2.closeWindowMenu.container);
-  });
+  // window2.closeWindowMenu.leftButton.interactive = true;
+  // window2.closeWindowMenu.leftButton.on('mouseover', function(){ window2.closeWindowMenu.leftButton.alpha = 1; });
+  // window2.closeWindowMenu.leftButton.on('mouseout', function(){ window2.closeWindowMenu.leftButton.alpha = 0.7; });
+  // window2.closeWindowMenu.leftButton.on('pointerdown', function(){
+  //   app.stage.removeChild(window2.closeWindowMenu.container);
+  //   app.stage.removeChild(window2.container);
+  //   windowHexes.removeChild(window2Hex.container);
+  //   Acc = 0;
+  // });
 
 
-  window2.closeIcon.interactive = true;
-  window2.closeIcon.on('mouseover', function(){ window2.closeIcon.alpha = 1; });
-  window2.closeIcon.on('mouseout', function(){ window2.closeIcon.alpha = 0.8; });
-  window2.closeIcon.on('pointerdown', function(){
-    app.stage.addChild(window2.closeWindowMenu.container); 
-  });
+  // window2.closeWindowMenu.rightButton.interactive = true;
+  // window2.closeWindowMenu.rightButton.on('mouseover', function(){ window2.closeWindowMenu.rightButton.alpha = 1; });
+  // window2.closeWindowMenu.rightButton.on('mouseout', function(){ window2.closeWindowMenu.rightButton.alpha = 0.7; });
+  // window2.closeWindowMenu.rightButton.on('pointerdown', function(){
+  //   app.stage.removeChild(window2.closeWindowMenu.container);
+  // });
 
 
-  window2.minIcon.interactive = true;
-  window2.minIcon.on('mouseover', function(){ window2.minIcon.alpha = 1; });
-  window2.minIcon.on('mouseout', function(){ window2.minIcon.alpha = 0.8; });
-  window2.minIcon.on('pointerdown', function(){
-    window2.isOpen = false;
-    app.stage.removeChild(window2.container);
-    app.stage.removeChild(tintBg); 
-    window2Hex.visible = true;
-    app.stage.addChild(menuButton.container);
-  });
-  //manually triggers tool1 to be displayed from the start
-  window2.tool1.emit('pointerdown');
+  // window2.closeIcon.interactive = true;
+  // window2.closeIcon.on('mouseover', function(){ window2.closeIcon.alpha = 1; });
+  // window2.closeIcon.on('mouseout', function(){ window2.closeIcon.alpha = 0.8; });
+  // window2.closeIcon.on('pointerdown', function(){
+  //   app.stage.addChild(window2.closeWindowMenu.container); 
+  // });
+
+
+  // window2.minIcon.interactive = true;
+  // window2.minIcon.on('mouseover', function(){ window2.minIcon.alpha = 1; });
+  // window2.minIcon.on('mouseout', function(){ window2.minIcon.alpha = 0.8; });
+  // window2.minIcon.on('pointerdown', function(){
+  //   window2.isOpen = false;
+  //   app.stage.removeChild(window2.container);
+  //   app.stage.removeChild(tintBg); 
+  //   window2Hex.visible = true;
+  //   app.stage.addChild(menuButton.container);
+  // });
+  // //manually triggers tool1 to be displayed from the start
+  // window2.tool1.emit('pointerdown');
   
 
   // window1.multiBlockObject.UIBool(false); // Disable Multi-Block UI initially so that ThreeJS is infront right now

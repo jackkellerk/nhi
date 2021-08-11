@@ -79,6 +79,7 @@ public final class SourceRouteSetter {
 
         // serve image files
         RouteSetter.setRoute(RequestType.GET, "/i/:userName/:projectName/:fileName", (request, response) -> {
+            
             // We directly request uid and sessionkey from the query parametesr. This is
             // special because put them in headers requires an ajax call.
             // Browsers are bad directly dealing with byte arrays, and ajax call returns a
